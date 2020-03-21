@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos disponibilités{% endblock %}
+
+{% block body %}
+{{ form_start(form) }}
+    <table class="table">
+        {% set choices = form.availabilities.vars.data %}
+
+        {% set nbChoicesPerDay = choices|length/7 %}
+        <thead>
+            <tr>
+                <th></th>
+                {% for i in 0..6 %}
+                    <th>{{ choices[nbChoicesPerDay*i].date|format_date(pattern="eeee dd") }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in 0..nbChoicesPerDay-1 %}
+                <tr>
+                    <td>{{ choices[i].date|date('H') }}-{{ choices[i+1].date|date('H') }}h</td>
+                    {% for j in 0..6 %}
+                        <td>{{ form_widget(form.availabilities.children[j*nbChoicesPerDay+i].tick) }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ form_row(form.submit) }}
+{{ form_end(form) }}
+{% endblock %}
