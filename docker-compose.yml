@@ -81,3 +81,14 @@ services:
       nofile:
         soft: "65536"
         hard: "65536"
+
+  node:
+    image: node:13-alpine
+    init: true
+    working_dir: /srv
+    # command: yarn encore dev --watch # Uncomment and add the "node" service in "make start" in order to watch webpack updates
+    environment:
+      - NODE_SASS_PLATFORM=alpine
+      - NODE_ENV=dev
+    volumes:
+      - ./:/srv
