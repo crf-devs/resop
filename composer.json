@@ -20,12 +20,13 @@
         "symfony/yaml": "5.*"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-master",
         "dama/doctrine-test-bundle": "^6.3",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpstan/phpstan-doctrine": "^0.12.8",
         "phpstan/phpstan-symfony": "^0.12.2",
         "phpunit/phpunit": "^7.5",
+        "roave/security-advisories": "dev-master",
         "symfony/maker-bundle": "^1.14",
         "symfony/profiler-pack": "^1.0",
         "symfony/test-pack": "^1.0"

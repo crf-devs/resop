@@ -2,12 +2,11 @@
 
 namespace App\Entity;
 
-use Assert\Assert;
 use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(uniqueConstraints={
+ * @ORM\Table(name="users", uniqueConstraints={
  *   @ORM\UniqueConstraint(name="user_identification_number_unique", columns={"identification_number"}),
  *   @ORM\UniqueConstraint(name="user_email_address_unique", columns={"email_address"})
  * })
@@ -84,7 +83,11 @@ class User
 
     public function setIdentificationNumber(string $identificationNumber): void
     {
-        $this->identificationNumber = ltrim($identificationNumber, '0');
+        $identificationNumber = ltrim($identificationNumber, '0');
+
+        Assertion::notEmpty($identificationNumber);
+
+        $this->identificationNumber = $identificationNumber;
     }
 
     public function getIdentificationNumber(): string
