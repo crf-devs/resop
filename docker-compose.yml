@@ -1,0 +1,83 @@
+version: "3.7"
+
+volumes:
+  postgres-data: ~
+
+services:
+  traefik:
+    image: traefik:1.7-alpine
+    ports:
+      - '7500:80'
+      - '7583:443'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=9000'
+      - 'traefik.frontend.rule=Host:traefik.vcap.me'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker/traefik/traefik.toml:/etc/traefik/traefik.toml
+      - ./.cache/ssl:/etc/ssl:ro
+
+  wait:
+    image: martin/wait
+
+  postgres:
+    image: postgres:11.4-alpine
+    environment:
+      - POSTGRES_DB=resop
+      - POSTGRES_USER=resop
+      - POSTGRES_PASSWORD=postgrespwd
+    volumes:
+      - postgres-data:/var/lib/postgresql/data:rw
+
+  adminer:
+    image: adminer
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=8080'
+      - 'traefik.frontend.rule=Host:adminer.vcap.me'
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+      target: withoutsources
+    volumes:
+      - ./public:/srv/public:ro
+    depends_on:
+      - fpm
+    environment:
+      - "FPM_ENDPOINT=fpm:9001"
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=80'
+      - 'traefik.frontend.rule=Host:resop.vcap.me'
+
+  fpm:
+    build:
+      context: .
+      dockerfile: docker/php-flex/Dockerfile
+      target: withoutsources-fpm
+    volumes:
+      - ./:/srv
+    environment:
+      - APP_ENV=dev
+      - APP_DEBUG=1
+
+  tools:
+    build:
+      context: .
+      dockerfile: docker/php-flex/Dockerfile
+      target: withoutsources
+    init: true
+    volumes:
+      - ./:/srv
+    environment:
+      - APP_ENV=dev
+      - APP_DEBUG=1
+    ulimits:
+      nofile:
+        soft: "65536"
+        hard: "65536"
