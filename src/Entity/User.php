@@ -78,7 +78,7 @@ class User
 
     public function __toString(): string
     {
-        return $this->organization->name .' / '. $this->getFullName();
+        return $this->organization->name.' / '.$this->getFullName();
     }
 
     public function setIdentificationNumber(string $identificationNumber): void
@@ -109,11 +109,11 @@ class User
 
     public function getFullName(): string
     {
-        return $this->firstName . ' ' . $this->lastName;
+        return $this->firstName.' '.$this->lastName;
     }
 
     public function getShortFullName(): string
     {
-        return $this->firstName . ' ' . $this->lastName[0] . '.';
+        return $this->firstName.' '.$this->lastName[0].'.';
     }
 }

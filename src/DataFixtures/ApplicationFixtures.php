@@ -58,7 +58,7 @@ final class ApplicationFixtures extends Fixture
 
     private function loadUsers(ObjectManager $manager): void
     {
-        $user = new User;
+        $user = new User();
         $user->id = 1;
         $user->firstName = 'Alain';
         $user->lastName = 'Proviste';

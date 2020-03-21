@@ -32,4 +32,13 @@ class Organization
         $this->name = $name;
         $this->parent = $parent;
     }
+
+    public function __toString(): string
+    {
+        if ($this->parent) {
+            return $this->parent->name.' - '.$this->name;
+        }
+
+        return $this->name;
+    }
 }

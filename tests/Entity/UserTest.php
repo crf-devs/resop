@@ -10,7 +10,7 @@ final class UserTest extends TestCase
 {
     public function testCreateUser(): void
     {
-        $user = new User;
+        $user = new User();
         $user->id = 1;
         $user->firstName = 'Alain';
         $user->lastName = 'Proviste';
