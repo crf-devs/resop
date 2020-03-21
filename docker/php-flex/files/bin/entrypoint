@@ -49,7 +49,7 @@ if [ "$1" == "php-fpm" ]; then
   php-fpm -d listen=127.0.0.1:9001 -D
 
   echo -e "\n===== Sending a GET / request in order to warmup the symfony cache\n"
-  REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/index.php HTTP_HOST=127.0.0.1 REQUEST_URI=/ REQUEST_METHOD=GET HTTP_USER_AGENT=probe cgi-fcgi -bind -connect 127.0.0.1:9001 || (echo "Unable to run the GET / request" && true)
+  REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/index.php HTTP_HOST=127.0.0.1 REMOTE_ADDR=127.0.0.1 REQUEST_URI=/ REQUEST_METHOD=GET HTTP_USER_AGENT=probe cgi-fcgi -bind -connect 127.0.0.1:9001 || (echo "Unable to run the GET / request" && true)
   killall -KILL php-fpm || true
 
   echo -e "\n===== Creating signal listener\n"
