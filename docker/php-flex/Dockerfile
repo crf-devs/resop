@@ -94,7 +94,7 @@ FROM withoutsources AS withsources
 
 ARG SOURCES_SRC
 
-COPY --chown=www-data:www-data ./${SOURCES_SRC}/composer.* ./${SOURCES_SRC}/symfony.lock /srv/
+COPY --chown=www-data:www-data ./${SOURCES_SRC}/composer.* ./${SOURCES_SRC}/symfony.lock ./${SOURCES_SRC}/package.json ./${SOURCES_SRC}/webpack.config.js ./${SOURCES_SRC}/yarn.lock /srv/
 
 RUN chown -R www-data:www-data /srv
 USER www-data
@@ -104,6 +104,7 @@ RUN composer install --no-dev --ignore-platform-reqs --no-scripts --prefer-dist 
 COPY --chown=www-data:www-data ./${SOURCES_SRC}/.env ./
 RUN composer dump-env prod && rm .env
 
+COPY --chown=www-data:www-data ./${SOURCES_SRC}/assets assets/
 COPY --chown=www-data:www-data ./${SOURCES_SRC}/bin bin/
 COPY --chown=www-data:www-data ./${SOURCES_SRC}/config config/
 COPY --chown=www-data:www-data ./${SOURCES_SRC}/public public/
