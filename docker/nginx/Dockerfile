@@ -7,7 +7,7 @@ RUN apk add --update --no-cache \
 
 COPY ./docker/nginx/files/. /
 
-ENV FPM_ENDPOINT "backend_php:9001"
+ENV FPM_ENDPOINT "fpm:9001"
 
 WORKDIR /srv
 
@@ -23,8 +23,6 @@ STOPSIGNAL SIGQUIT
 
 FROM withoutsources AS withsources
 
-ARG SOURCES_SRC
-
-COPY ./${SOURCES_SRC}/public/. /srv/public
+COPY ./public/. /srv/public
 
 CMD ["nginx"]

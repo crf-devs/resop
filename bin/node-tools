@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+BASEDIR="$( cd "$( dirname "$0" )" && pwd )"
+DOCKER_COMPOSE=${DOCKER_COMPOSE:-docker-compose}
+DISABLE_TTY=${DISABLE_TTY:-0} # When running a php command inside a docker container with tty, the exit code will always be 129. Use DISABLE_TTY=1 .
+
+cd $(dirname ${BASEDIR})
+
+if [ $# -eq 0 ]; then
+    set -- "sh"
+fi
+
+if [ -t 1 -a 1 -ne "${DISABLE_TTY}" ]; then
+    ${DOCKER_COMPOSE} run --rm -u $(id -u):$(id -g) node "$@"
+else
+    # CI and other runners
+    ${DOCKER_COMPOSE} run --rm -u node:node -T node "$@"
+fi

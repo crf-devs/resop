@@ -2,7 +2,7 @@
 DOCKER_COMPOSE_UP=docker-compose up --no-recreate --remove-orphans -d
 DOCKER_COMPOSE_UP_RECREATE=docker-compose up --force-recreate --remove-orphans -d
 
-all: pre-configure configure build vendors start
+all: pre-configure configure build vendors webpack-build-dev start
 
 restart: clean all
 
@@ -27,6 +27,11 @@ pull:
 
 build:
 	docker-compose build --pull
+
+build-prod:
+	docker build -t resop-fpm:latest -f docker/php-flex/Dockerfile --target withsources-fpm .
+	docker run --rm -v `pwd`:/host resop-fpm:latest sh -c "(rm -rf /host/public/*/ || true) && mv -f /srv/public/*/ /host/public && chown -R `id -u`:`id -g` /host/public/*/"
+	docker build -t resop-nginx:latest -f docker/nginx/Dockerfile --target withsources .
 
 start-db:
 	$(DOCKER_COMPOSE_UP) traefik postgres adminer
@@ -58,6 +63,13 @@ clean: clear-cache
 
 vendors:
 	bin/tools composer install -n -v --profile --apcu-autoloader --prefer-dist --ignore-platform-reqs
+	bin/node-tools yarn install --pure-lockfile
+
+webpack-build-dev:
+	bin/node-tools yarn encore dev
+
+webpack-build-prod:
+	bin/node-tools yarn encore production
 
 init-db: start-db
 	bin/tools rm -rf var/cache/*

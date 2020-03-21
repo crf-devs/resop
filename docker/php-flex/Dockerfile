@@ -90,28 +90,37 @@ STOPSIGNAL SIGTERM
 
 # ================================================
 
+FROM node:13-alpine AS withsources-npm
+
+WORKDIR /srv
+
+COPY package.json webpack.config.js yarn.lock ./
+RUN yarn install --pure-lockfile
+
+COPY assets assets/
+RUN yarn encore production
+
+# ================================================
+
 FROM withoutsources AS withsources
 
-ARG SOURCES_SRC
-
-COPY --chown=www-data:www-data ./${SOURCES_SRC}/composer.* ./${SOURCES_SRC}/symfony.lock ./${SOURCES_SRC}/package.json ./${SOURCES_SRC}/webpack.config.js ./${SOURCES_SRC}/yarn.lock /srv/
+COPY --chown=www-data:www-data composer.* symfony.lock /srv/
 
 RUN chown -R www-data:www-data /srv
 USER www-data
 
 RUN composer install --no-dev --ignore-platform-reqs --no-scripts --prefer-dist --no-suggest && composer clear-cache -n
 
-COPY --chown=www-data:www-data ./${SOURCES_SRC}/.env ./
+COPY --chown=www-data:www-data .env ./
 RUN composer dump-env prod && rm .env
 
-COPY --chown=www-data:www-data ./${SOURCES_SRC}/assets assets/
-COPY --chown=www-data:www-data ./${SOURCES_SRC}/bin bin/
-COPY --chown=www-data:www-data ./${SOURCES_SRC}/config config/
-COPY --chown=www-data:www-data ./${SOURCES_SRC}/public public/
-COPY --chown=www-data:www-data ./${SOURCES_SRC}/templates templates/
-COPY --chown=www-data:www-data ./${SOURCES_SRC}/translations translations/
-COPY --chown=www-data:www-data ./${SOURCES_SRC}/fixtures fixtures/
-COPY --chown=www-data:www-data ./${SOURCES_SRC}/src src/
+COPY --chown=www-data:www-data assets assets/
+COPY --chown=www-data:www-data bin bin/
+COPY --chown=www-data:www-data config config/
+COPY --chown=www-data:www-data public public/
+COPY --chown=www-data:www-data templates templates/
+COPY --chown=www-data:www-data src src/
+COPY --from=withsources-npm --chown=www-data:www-data /srv/public/build public/build/
 
 RUN set -eux; \
 	mkdir -p var/cache var/log; \
@@ -120,9 +129,7 @@ RUN set -eux; \
 	chmod +x bin/console; sync
 
 RUN set -eux; \
-  bin/console cache:warmup; \
-  bin/console cache:warmup --env=dev; \
-  bin/console assets:install --env=dev
+  bin/console cache:warmup;
 
 # TODO Add the opcache dump when opcache.preload will be fixed (see php.ini);
 
