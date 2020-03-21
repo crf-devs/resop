@@ -14,26 +14,22 @@ class Organization
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
      */
-    private $id;
+    public ?int $id;
 
     /**
      * @ORM\Column
      */
-    private $name;
+    public string $name;
 
-    public function __construct(?int $id, string $name)
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
+     */
+    public ?self $parent;
+
+    public function __construct(?int $id, string $name, self $parent = null)
     {
         $this->id = $id;
         $this->name = $name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
+        $this->parent = $parent;
     }
 }
