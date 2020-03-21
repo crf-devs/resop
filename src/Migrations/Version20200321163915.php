@@ -32,7 +32,6 @@ final class Version20200321163915 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE "user" DROP CONSTRAINT FK_8D93D64932C8A3DE');
         $this->addSql('DROP SEQUENCE organization_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE user_id_seq CASCADE');

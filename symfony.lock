@@ -1,4 +1,7 @@
 {
+    "beberlei/assert": {
+        "version": "v3.2.7"
+    },
     "composer/semver": {
         "version": "1.5.0"
     },

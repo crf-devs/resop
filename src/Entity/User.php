@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Assert\Assert;
+use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,124 +16,101 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     /**
+     * @ORM\Column
+     */
+    private ?string $identificationNumber = null;
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
      */
-    private $id;
+    public ?int $id = null;
 
     /**
      * @ORM\Column
      */
-    private $identificationNumber;
+    public ?string $emailAddress = null;
 
     /**
      * @ORM\Column
      */
-    private $emailAddress;
+    public ?string $firstName = null;
 
     /**
      * @ORM\Column
      */
-    private $firstName;
+    public ?string $lastName = null;
 
     /**
      * @ORM\Column
      */
-    private $lastName;
+    public ?string $phoneNumber = null;
 
     /**
      * @ORM\Column
      */
-    private $phoneNumber;
-
-    /**
-     * @ORM\Column
-     */
-    private $occupation;
+    public ?string $occupation = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
      */
-    private $organization;
+    public ?Organization $organization = null;
 
     /**
      * @ORM\Column(nullable=true)
      */
-    private $organizationOccupation;
+    public ?string $organizationOccupation = null;
 
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private $skillSet = [];
+    public array $skillSet = [];
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $vulnerable;
+    public bool $vulnerable = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $fullyEquipped;
+    public bool $fullyEquipped = false;
 
-    public function getId(): ?int
+    public function __toString(): string
     {
-        return $this->id;
+        return $this->organization->name .' / '. $this->getFullName();
     }
 
-    public function getIdentificationNumber(): ?string
+    public function setIdentificationNumber(string $identificationNumber): void
+    {
+        $this->identificationNumber = ltrim($identificationNumber, '0');
+    }
+
+    public function getIdentificationNumber(): string
     {
         return $this->identificationNumber;
     }
 
-    public function getEmailAddress(): ?string
+    public function setEmailAddress(string $emailAddress): void
+    {
+        Assertion::email($emailAddress);
+
+        $this->emailAddress = $emailAddress;
+    }
+
+    public function getEmailAddress(): string
     {
         return $this->emailAddress;
     }
 
-    public function getFirstName(): ?string
+    public function getFullName(): string
     {
-        return $this->firstName;
+        return $this->firstName . ' ' . $this->lastName;
     }
 
-    public function getLastName(): ?string
+    public function getShortFullName(): string
     {
-        return $this->lastName;
-    }
-
-    public function getPhoneNumber(): ?string
-    {
-        return $this->phoneNumber;
-    }
-
-    public function getOccupation(): ?string
-    {
-        return $this->occupation;
-    }
-
-    public function getOrganization(): ?Organization
-    {
-        return $this->organization;
-    }
-
-    public function getOrganizationOccupation(): ?string
-    {
-        return $this->organizationOccupation;
-    }
-
-    public function getSkillSet(): array
-    {
-        return $this->skillSet;
-    }
-
-    public function isVulnerable(): bool
-    {
-        return $this->vulnerable;
-    }
-
-    public function isFullyEquipped(): bool
-    {
-        return $this->fullyEquipped;
+        return $this->firstName . ' ' . $this->lastName[0] . '.';
     }
 }
