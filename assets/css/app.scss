@@ -1,0 +1,7 @@
+label.required:before {
+    color: crimson;
+    content: "*";
+    padding-right: 4px;
+}
+
+@import "~bootstrap/scss/bootstrap";

@@ -17,6 +17,7 @@
         "symfony/orm-pack": "^1.0",
         "symfony/serializer-pack": "^1.0",
         "symfony/validator": "5.*",
+        "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "5.*"
     },
     "require-dev": {
