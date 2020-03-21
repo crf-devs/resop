@@ -1,0 +1,17 @@
+version: "3.7"
+
+# services:
+
+#  traefik:
+#    ports:
+#      - '80:80' # Uncomment to use the 80 port on your host instead of the 7500 one.
+
+#  blackfire:
+#    image: blackfire/blackfire
+#    environment:
+#      - BLACKFIRE_SERVER_ID
+#      - BLACKFIRE_SERVER_TOKEN
+
+#  fpm:
+#    volumes:
+#      - ./:/srv:cached # Uncomment for MacOS

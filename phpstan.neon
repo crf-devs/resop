@@ -1,0 +1,23 @@
+includes:
+	  - vendor/phpstan/phpstan-symfony/extension.neon
+	  - vendor/phpstan/phpstan-doctrine/extension.neon
+
+parameters:
+    tmpDir: var/cache/phpstan
+    autoload_files:
+        - vendor/autoload.php
+    excludes_analyse:
+        - config/
+        - src/Migrations/
+        - public/
+        - features/
+        - var/
+        - vendor/
+    symfony:
+        container_xml_path: %rootDir%/../../../var/cache/test/App_KernelTestDebugContainer.xml
+    doctrine:
+        repositoryClass: Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository
+        objectManagerLoader: tests/object-manager.php
+    inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false

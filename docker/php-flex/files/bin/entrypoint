@@ -1,0 +1,65 @@
+#!/usr/bin/env sh
+set -e
+
+PHP_FPM_PID='/var/run/php-fpm.pid'
+
+wait_for_pid () {
+    try=0
+
+    while test $try -lt 35 ; do
+        if [ ! -f "$1" ] ; then
+            try=''
+            break
+        fi
+
+        echo -n .
+        try=`expr $try + 1`
+        sleep 1
+    done
+}
+
+clean_up () {
+    echo "Killing $(cat $PHP_FPM_PID)"
+
+    kill -QUIT `cat $PHP_FPM_PID`
+    wait_for_pid $PHP_FPM_PID
+
+    echo "Done!"
+    exit 0
+}
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- php-fpm "$@"
+fi
+
+if [ "$1" == "php-fpm" ]; then
+
+  echo -e "\n===== Testing PHP config\n"
+  php-fpm -v
+  php-fpm -t
+
+	mkdir -p var/cache var/log
+	# The www-data user has a random uid/guid
+	chown -R $(stat -c "%u" .):$(stat -c "%g" .) var
+	setfacl -R -m u:www-data:rwX -m u:"$(stat -c "%u" .)":rwX var 2>/dev/null || true # Can fail on OSx
+	setfacl -dR -m u:www-data:rwX -m u:"$(stat -c "%u" .)":rwX var 2>/dev/null || true
+
+  echo -e "\n===== Running FPM only for localhost\n"
+  php-fpm -d listen=127.0.0.1:9001 -D
+
+  echo -e "\n===== Sending a GET / request in order to warmup the symfony cache\n"
+  REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/index.php HTTP_HOST=127.0.0.1 REQUEST_URI=/ REQUEST_METHOD=GET HTTP_USER_AGENT=probe cgi-fcgi -bind -connect 127.0.0.1:9001 || (echo "Unable to run the GET / request" && true)
+  killall -KILL php-fpm || true
+
+  echo -e "\n===== Creating signal listener\n"
+  trap clean_up QUIT TERM INT
+
+  php-fpm -F --pid $PHP_FPM_PID &
+
+  while true; do sleep 1; done
+else
+  exec docker-php-entrypoint "$@"
+fi
+
+
