@@ -44,7 +44,7 @@ class UserType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $occupationChoices = array_combine(self::DEFAULT_OCCUPATIONS, self::DEFAULT_OCCUPATIONS);
+        $occupationChoices = (array) array_combine(self::DEFAULT_OCCUPATIONS, self::DEFAULT_OCCUPATIONS);
         $occupationChoices += ['Autre :' => '-'];
         $builder
             ->add('identificationNumber', HiddenType::class)

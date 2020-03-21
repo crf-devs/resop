@@ -1,8 +1,5 @@
 version: "3.7"
 
-volumes:
-  postgres-data: ~
-
 services:
   traefik:
     image: traefik:1.7-alpine
@@ -27,8 +24,6 @@ services:
       - POSTGRES_DB=resop
       - POSTGRES_USER=resop
       - POSTGRES_PASSWORD=postgrespwd
-    volumes:
-      - postgres-data:/var/lib/postgresql/data:rw
 
   adminer:
     image: adminer

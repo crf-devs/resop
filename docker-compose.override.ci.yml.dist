@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+  postgres:
+    tmpfs:
+      - /var/lib/postgresql/data:rw
+
+  nginx:
+    build:
+      cache_from:
+        - ${CI_REGISTRY_IMAGE}/nginx:latest
+
+  fpm:
+    build:
+      cache_from:
+        - ${CI_REGISTRY_IMAGE}/fpm:latest
+        - ${CI_REGISTRY_IMAGE}/php-flex-dev:latest
+
+  tools:
+    build:
+      cache_from:
+        - ${CI_REGISTRY_IMAGE}/php-flex-dev:latest
+    environment:
+      - APP_ENV=test
