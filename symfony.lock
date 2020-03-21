@@ -307,6 +307,9 @@
             ".env"
         ]
     },
+    "symfony/form": {
+        "version": "v5.0.5"
+    },
     "symfony/framework-bundle": {
         "version": "4.4",
         "recipe": {
