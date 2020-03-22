@@ -45,7 +45,4 @@ services:
     App\Form\Type\UserType:
         arguments:
             $availableSkillSets: '%app.available_skill_sets%'
-
-    App\Security\UserLoginFormAuthenticator:
-        arguments:
-            $password: 'covid19'
+            

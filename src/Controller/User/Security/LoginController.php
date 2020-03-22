@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\User\Security;
 
+use App\Form\Type\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,8 +24,13 @@ final class LoginController extends AbstractController
 
     public function __invoke(): Response
     {
+        $loginForm = $this->createForm(
+            LoginType::class,
+            ['identifier' => $this->authenticationUtils->getLastUsername()]
+        );
+
         return $this->render('user/login.html.twig', [
-            'last_username' => $this->authenticationUtils->getLastUsername(),
+            'loginForm' => $loginForm->createView(),
             'error' => $this->authenticationUtils->getLastAuthenticationError(),
         ]);
     }
