@@ -110,6 +110,25 @@ class User implements UserInterface
      */
     public bool $fullyEquipped = false;
 
+    public static function bootstrap(string $identifier = null): self
+    {
+        $user = new self();
+
+        if (empty($identifier)) {
+            return $user;
+        }
+
+        if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+            $user->setEmailAddress($identifier);
+
+            return $user;
+        }
+
+        $user->setIdentificationNumber($identifier);
+
+        return $user;
+    }
+
     public static function normalizeIdentificationNumber(string $identificationNumber): string
     {
         return u($identificationNumber)->trimStart('0')->toString();
