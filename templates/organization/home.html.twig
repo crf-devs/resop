@@ -1,9 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'organization/base.html.twig' %}
 
 {% block title %}Espace structure{% endblock %}
 
 {% block body %}
-    <h1>{{ organization.name }}</h1>
+    {{ include('misc/flash-messages.html.twig') }}
+
+    <h1>{{ app.user }}</h1>
 
     <p>Semaine actuelle : du {{ 'this week' | date('d/m/Y') }} au {{ 'sunday this week' | date('d/m/Y') }}</p>
     <p><a class="btn btn-primary" href="#" role="button">Afficher les disponibilités de mes bénévoles pour la semaine actuelle</a></p>
@@ -13,10 +15,10 @@
 
     <hr>
 
-    <p><a class="btn btn-primary" href="#" role="button">Afficher la liste de mes bénévoles inscrits</a></p>
-    <p><a class="btn btn-primary" href="{{ path('organization_commissionable_assets') }}" role="button">Afficher la liste de mes véhicules</a></p>
+    <p><button class="btn btn-primary" role="button" disabled>Afficher la liste de mes bénévoles inscrits</button></p>
+    <p><a class="btn btn-primary" href="{{ path('app_organization_commissionable_assets') }}" role="button">Afficher la liste de mes véhicules</a></p>
 
     <hr>
 
-    <p><a class="btn btn-primary" href="#" role="button">Afficher la liste de mes structures</a></p>
+    <p><button class="btn btn-primary" role="button" disabled>Afficher la liste de mes structures</button></p>
 {% endblock %}
