@@ -2,25 +2,35 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>ResOP - {% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
     </head>
     <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">ResOP</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('user_home')}}">Accueil</a>
+                    </li>
+                </ul>
+                <div class="my-2 my-lg-0">
+                    {% if not app.user %}
+                        <a class="nav-link" href="{{ path('app_login')}}">Connexion</a>
+                    {% else %}
+                        {{  app.user }} / {{ app.user.identificationNumber }}
+                        <a href="{{ path('app_logout') }}">Déconnexion</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
         <div class="container">
-            <header>
-                <nav>
-                    <ul>
-                        {% if not app.user %}
-                            <li><a href="{{ path('app_login') }}">Connexion</a></li>
-                        {% else %}
-                            <li>{{ app.user }} / {{ app.user.identificationNumber }}</li>
-                            <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </header>
             {% block body %}{% endblock %}
         </div>
         {% block javascripts %}

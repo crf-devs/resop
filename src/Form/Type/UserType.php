@@ -8,12 +8,10 @@ use App\Entity\Organization;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -50,7 +48,6 @@ class UserType extends AbstractType
         $occupationChoices = (array) array_combine(self::DEFAULT_OCCUPATIONS, self::DEFAULT_OCCUPATIONS);
         $occupationChoices += ['Autre :' => '-'];
         $builder
-            ->add('identificationNumber', HiddenType::class)
             ->add('organization', EntityType::class, [
                 'class' => Organization::class,
                 'choice_label' => 'name',
@@ -63,15 +60,11 @@ class UserType extends AbstractType
                 'format' => 'dd-MMMM-yyyy',
                 'input' => 'string',
             ])
-            ->add('occupation', ChoiceType::class, [
+            ->add('occupation', ChoiceWithOtherType::class, [
                 'choices' => $occupationChoices,
                 'required' => false,
                 'expanded' => true,
                 'placeholder' => false,
-            ])
-            ->add('otherOccupation', TextType::class, [
-                'required' => false,
-                'mapped' => false,
             ])
             ->add('organizationOccupation', TextType::class)
             ->add('vulnerable', ChoiceType::class, [
@@ -90,28 +83,15 @@ class UserType extends AbstractType
             ->add('submit', SubmitType::class)
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $data = $event->getData();
-            if (isset($data['occupation']) && '-' === $data['occupation']) {
-                $data['occupation'] = $data['otherOccupation'];
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            /** @var User $user */
+            $user = $event->getData();
+            $form = $event->getForm();
+
+            if (null === $user->getId()) {
+                $form->add('identificationNumber', TextType::class);
             }
         });
-
-        // Prevent null value
-        $builder->get('occupation')
-            ->addModelTransformer(new CallbackTransformer(
-                static function ($transformed) {
-                    return $transformed;
-                },
-                static function ($reverseTransformed) {
-                    if (empty($reverseTransformed)) {
-                        return '';
-                    }
-
-                    return $reverseTransformed;
-                }
-            ))
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
