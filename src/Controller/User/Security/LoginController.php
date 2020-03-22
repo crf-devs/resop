@@ -15,16 +15,23 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  */
 final class LoginController extends AbstractController
 {
-    public function __invoke(AuthenticationUtils $authenticationUtils): Response
+    private AuthenticationUtils $authenticationUtils;
+
+    public function __construct(AuthenticationUtils $authenticationUtils)
+    {
+        $this->authenticationUtils = $authenticationUtils;
+    }
+
+    public function __invoke(): Response
     {
         $loginForm = $this->createForm(
             LoginType::class,
-            ['identifier' => $authenticationUtils->getLastUsername()]
+            ['identifier' => $this->authenticationUtils->getLastUsername()]
         );
 
         return $this->render('user/login.html.twig', [
             'loginForm' => $loginForm->createView(),
-            'error' => $authenticationUtils->getLastAuthenticationError(),
+            'error' => $this->authenticationUtils->getLastAuthenticationError(),
         ]);
     }
 }
