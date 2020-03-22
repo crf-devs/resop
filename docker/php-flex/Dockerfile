@@ -14,45 +14,44 @@ RUN apk add --update --no-cache \
     curl \
     fcgi \
     su-exec \
-    supervisor \
-		acl \
-		file \
-		gettext \
-		git
+    acl \
+    file \
+    gettext \
+    git
 
 RUN set -eux; \
-	apk add --no-cache --virtual .build-deps \
-		$PHPIZE_DEPS \
-		icu-dev \
-		libzip-dev \
-		postgresql-dev \
-	; \
-	\
-	docker-php-ext-configure zip; \
-	docker-php-ext-install -j$(nproc) \
-		intl \
-		pdo_pgsql \
-		zip \
-		sockets \
-	; \
-	pecl install \
-		apcu-${APCU_VERSION} \
-	; \
-	pecl clear-cache; \
-	docker-php-ext-enable \
-		apcu \
-		opcache \
-	; \
-	\
-	runDeps="$( \
-		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/lib/php/extensions \
-			| tr ',' '\n' \
-			| sort -u \
-			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-	)"; \
-	apk add --no-cache --virtual .api-phpexts-rundeps $runDeps; \
-	\
-	apk del .build-deps
+  apk add --no-cache --virtual .build-deps \
+    $PHPIZE_DEPS \
+    icu-dev \
+    libzip-dev \
+    postgresql-dev \
+  ; \
+  \
+  docker-php-ext-configure zip; \
+  docker-php-ext-install -j$(nproc) \
+    intl \
+    pdo_pgsql \
+    zip \
+    sockets \
+  ; \
+  pecl install \
+    apcu-${APCU_VERSION} \
+  ; \
+  pecl clear-cache; \
+  docker-php-ext-enable \
+    apcu \
+    opcache \
+  ; \
+  \
+  runDeps="$( \
+    scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/lib/php/extensions \
+      | tr ',' '\n' \
+      | sort -u \
+      | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+  )"; \
+  apk add --no-cache --virtual .api-phpexts-rundeps $runDeps; \
+  \
+  apk del .build-deps
 
 RUN curl --insecure https://getcomposer.org/composer.phar -o /usr/bin/composer \
     && chmod +x /usr/bin/composer \
@@ -78,15 +77,6 @@ ENTRYPOINT ["/bin/entrypoint"]
 CMD ["php-fpm"]
 HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=3 CMD REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/ping.php REQUEST_URI=/ REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9001
 STOPSIGNAL SIGQUIT
-
-# ================================================
-
-FROM withoutsources AS withoutsources-worker
-
-ENTRYPOINT []
-CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
-HEALTHCHECK --interval=10s --timeout=6s --start-period=120s CMD ps | grep -v grep | grep -q supervisord || exit 1
-STOPSIGNAL SIGTERM
 
 # ================================================
 
@@ -123,10 +113,10 @@ COPY --chown=www-data:www-data src src/
 COPY --from=withsources-npm --chown=www-data:www-data /srv/public/build public/build/
 
 RUN set -eux; \
-	mkdir -p var/cache var/log; \
-	composer dump-autoload --optimize --apcu --classmap-authoritative --no-dev; \
-	composer run-script --no-dev post-install-cmd; \
-	chmod +x bin/console; sync
+  mkdir -p var/cache var/log; \
+  composer dump-autoload --optimize --apcu --classmap-authoritative --no-dev; \
+  composer run-script --no-dev post-install-cmd; \
+  chmod +x bin/console; sync
 
 RUN set -eux; \
   bin/console cache:warmup;
@@ -144,14 +134,5 @@ ENTRYPOINT ["/bin/entrypoint"]
 CMD ["php-fpm"]
 HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=3 CMD REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/ping.php REQUEST_URI=/ REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9001
 STOPSIGNAL SIGQUIT
-
-# ================================================
-
-FROM withsources AS withsources-worker
-
-ENTRYPOINT []
-CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
-HEALTHCHECK --interval=10s --timeout=6s --start-period=120s CMD ps | grep -v grep | grep -q supervisord || exit 1
-STOPSIGNAL SIGTERM
 
 # ================================================
