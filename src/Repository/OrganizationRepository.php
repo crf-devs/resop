@@ -33,7 +33,7 @@ class OrganizationRepository extends ServiceEntityRepository
     public function loadActiveOrganizations(): array
     {
         return $this
-            ->createQueryBuilder()
+            ->createActiveOrganizationQueryBuilder()
             ->getQuery()
             ->getResult()
         ;

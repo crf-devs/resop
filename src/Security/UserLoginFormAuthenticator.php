@@ -42,12 +42,12 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getCredentials(Request $request)
     {
-        $loginCredentials = $request->request->get('login');
+        $loginCredentials = (array) $request->request->get('user_login');
 
         $credentials = [
-            'identifier' => $loginCredentials['identifier'],
-            'birthday' => $this->formatBirthday($loginCredentials['birthday']),
-            'csrf_token' => $loginCredentials['_token'],
+            'identifier' => $loginCredentials['identifier'] ?? null,
+            'birthday' => $loginCredentials['birthday'] ?? false ? $this->formatBirthday($loginCredentials['birthday']) : null,
+            'csrf_token' => $loginCredentials['_token'] ?? null,
         ];
 
         $request->getSession()->set(Security::LAST_USERNAME, $credentials['identifier']);

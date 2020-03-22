@@ -9,7 +9,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">ResOP</a>
+            <a class="navbar-brand" href="{{ path('user_home')}}">ResOP</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -25,7 +25,7 @@
                         <a class="nav-link" href="{{ path('app_login')}}">Espace bénévole</a>
                         <a class="nav-link" href="{{ path('app_organization_login')}}">Espace structure</a>
                     {% else %}
-                        {{  app.user }}
+                        {{  app.user }} -
                         <a href="{{ logout_path() }}">Déconnexion</a>
                     {% endif %}
                 </div>
