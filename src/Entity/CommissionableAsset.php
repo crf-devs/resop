@@ -43,7 +43,7 @@ class CommissionableAsset
     /**
      * @ORM\Column(type="datetimetz_immutable", nullable=true)
      */
-    public \DateTimeImmutable $lastCommissionDate;
+    public ?\DateTimeImmutable $lastCommissionDate;
 
     public function __construct(
         ?int $id,
@@ -62,5 +62,10 @@ class CommissionableAsset
     public function commission(\DateTimeImmutable $date = null): void
     {
         $this->lastCommissionDate = $date ?: UserAvailability::createImmutableDateTime();
+    }
+
+    public function __toString(): string
+    {
+        return $this->type.' - '.$this->name;
     }
 }

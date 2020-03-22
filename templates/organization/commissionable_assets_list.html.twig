@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace structure{% endblock %}
+
+{% block body %}
+    <h1>Véhicules</h1>
+
+    <p><a class="btn btn-link" href="{{ path('organization_home') }}" role="button">Retourner à l'accueil</a> {{ organization.name }}</p>
+
+    <ul class="list-group list-group-flush mb-4">
+        {% for asset in assets %}
+        <li class="list-group-item list-group-item-action">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>{{ asset }}</span>
+                <span>
+                    <a class="btn btn-outline-secondary" href="#" role="button">Modifier</a>
+                    <a class="btn btn-outline-primary" href="#" role="button">Mettre à jour les disponibilités</a>
+                </span>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <p><a class="btn btn-primary" href="{{ path('organization_commissionable_add_asset') }}" role="button">Ajouter un nouveau véhicule</a></p>
+{% endblock %}
