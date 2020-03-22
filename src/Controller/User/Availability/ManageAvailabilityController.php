@@ -55,8 +55,8 @@ final class ManageAvailabilityController extends AbstractController
         $end = $start->add(new \DateInterval('P7D'));
 
         $availabilitiesDomain = AvailabilitiesDomain::generate(
-            $start->format('Y-m-d H:i'),
-            $end->format('Y-m-d H:i'),
+            $start,
+            $end,
             $this->userAvailabilityRepository->findBetweenDates($user, $start, $end)
         );
 
