@@ -18,7 +18,7 @@ final class AvailabilityDomain
     {
         $this->date = $date;
         $this->userAvailability = $userAvailability;
-        $this->tick = null !== $userAvailability;
+        $this->tick = null !== $userAvailability && UserAvailability::STATUS_LOCKED !== $userAvailability->status;
     }
 
     public function isEditable(): bool
