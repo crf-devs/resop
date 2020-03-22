@@ -132,7 +132,7 @@ final class ApplicationFixtures extends Fixture
     {
         $thisWeek = (new \DateTimeImmutable('monday this week'));
 
-        $availabities = [
+        $availabilities = [
             '9999999V' => [
                 'PT0H',
                 'P2DT10H',
@@ -146,7 +146,7 @@ final class ApplicationFixtures extends Fixture
             ],
         ];
 
-        foreach ($availabities as $user => $periods) {
+        foreach ($availabilities as $user => $periods) {
             foreach ($periods as $period) {
                 $startTime = $thisWeek->add(new \DateInterval($period));
 
@@ -181,7 +181,7 @@ final class ApplicationFixtures extends Fixture
     {
         $violations = $this->validator->validate($object);
 
-        if ($violations->count() > 0) {
+        if (\count($violations)) {
             throw new ConstraintViolationListException($violations);
         }
 
