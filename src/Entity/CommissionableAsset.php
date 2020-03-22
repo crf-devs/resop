@@ -59,6 +59,6 @@ class CommissionableAsset
 
     public function commission(\DateTimeImmutable $date = null): void
     {
-        $this->lastCommissionDate = $date ?: \DateTimeImmutable::createFromFormat('U', time());
+        $this->lastCommissionDate = $date ?: UserAvailability::createImmutableDateTime();
     }
 }
