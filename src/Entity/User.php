@@ -51,6 +51,13 @@ class User implements UserInterface
     public ?string $phoneNumber = null;
 
     /**
+     * @var string|null A "Y-m-d" formatted value
+     *
+     * @ORM\Column
+     */
+    public ?string $birthday = null;
+
+    /**
      * @ORM\Column
      */
     public string $occupation = '';

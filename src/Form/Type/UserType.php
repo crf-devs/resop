@@ -9,6 +9,7 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -58,6 +59,10 @@ class UserType extends AbstractType
             ->add('lastName', TextType::class)
             ->add('phoneNumber', TextType::class)
             ->add('emailAddress', EmailType::class)
+            ->add('birthday', BirthdayType::class, [
+                'format' => 'dd-MMMM-yyyy',
+                'input' => 'string',
+            ])
             ->add('occupation', ChoiceType::class, [
                 'choices' => $occupationChoices,
                 'required' => false,
