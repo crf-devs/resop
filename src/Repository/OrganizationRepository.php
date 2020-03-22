@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\Organization;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Organization|null find($id, $lockMode = null, $lockVersion = null)
@@ -31,13 +32,20 @@ class OrganizationRepository extends ServiceEntityRepository
      */
     public function loadActiveOrganizations(): array
     {
-        $qb = $this->createQueryBuilder('o');
-
-        return $qb
-            ->where($qb->expr()->isNotNull('o.password'))
-            ->orderBy('o.name', 'ASC')
+        return $this
+            ->createQueryBuilder()
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function createActiveOrganizationQueryBuilder(string $alias = 'o'): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder($alias);
+
+        return $qb
+            ->where($qb->expr()->isNotNull($alias.'.password'))
+            ->orderBy($alias.'.name', 'ASC')
         ;
     }
 }

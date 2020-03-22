@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
-use App\Entity\Organization;
 use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -19,7 +17,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+final class UserType extends AbstractType
 {
     private array $availableSkillSets;
 
@@ -49,10 +47,7 @@ class UserType extends AbstractType
         $occupationChoices += ['Autre :' => '-'];
         $builder
             ->add('identificationNumber', TextType::class)
-            ->add('organization', EntityType::class, [
-                'class' => Organization::class,
-                'choice_label' => 'name',
-            ])
+            ->add('organization', OrganizationEntityType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
             ->add('phoneNumber', TextType::class)

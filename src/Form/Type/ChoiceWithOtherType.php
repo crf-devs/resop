@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ChoiceWithOtherType extends AbstractType
+final class ChoiceWithOtherType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -22,7 +22,7 @@ class ChoiceWithOtherType extends AbstractType
         ;
 
         $builder->addModelTransformer(new CallbackTransformer(
-            function ($transformed) use ($options) {
+            static function ($transformed) use ($options) {
                 if (in_array($transformed, $options['choices'], true)) {
                     return [
                         'choice' => $transformed,
