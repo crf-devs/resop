@@ -6,11 +6,11 @@ namespace App\Controller;
 
 use App\Domain\AvailabilitiesDomain;
 use App\Entity\User;
-use App\Entity\UserAvailability;
 use App\Event\UserChangeVulnerabilityEvent;
 use App\Form\Type\AvailabilitiesDomainType;
 use App\Form\Type\UserType;
-use Doctrine\Common\Persistence\ObjectManager;
+use App\Repository\UserAvailabilityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,15 +21,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 /**
  * @Route("/user")
  */
-class UserController extends AbstractController
+final class UserController extends AbstractController
 {
-    private AuthenticationUtils $authenticationUtils;
-
-    public function __construct(AuthenticationUtils $authenticationUtils)
-    {
-        $this->authenticationUtils = $authenticationUtils;
-    }
-
     /**
      * @Route("/home", name="user_home", methods={"GET", "POST"})
      */
@@ -41,8 +34,11 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="user_new", methods={"GET", "POST"})
      */
-    public function new(Request $request): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        AuthenticationUtils $authenticationUtils
+    ): Response {
         if ($currentUser = $this->getUser()) {
             $this->addFlash('error', 'Vous possédez déjà un compte');
 
@@ -50,7 +46,7 @@ class UserController extends AbstractController
         }
         $user = new User();
 
-        $lastIdentifier = $this->authenticationUtils->getLastUsername();
+        $lastIdentifier = $authenticationUtils->getLastUsername();
         if ('' !== $lastIdentifier && filter_var($lastIdentifier, FILTER_VALIDATE_EMAIL)) {
             $user->setEmailAddress($lastIdentifier);
         } elseif ('' !== $lastIdentifier) {
@@ -61,7 +57,6 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -78,17 +73,22 @@ class UserController extends AbstractController
     /**
      * @Route("/edit", name="user_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, EventDispatcherInterface $eventDispatcher): Response
-    {
-        /** @var User $user */
+    public function edit(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher
+    ): Response {
         $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException();
+        }
+
         $originalUser = clone $user;
 
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -110,8 +110,17 @@ class UserController extends AbstractController
     /**
      * @Route("/availability/{week<\d{4}-W\d{2}>?}", name="user_availability", methods={"GET", "POST"})
      */
-    public function availability(Request $request, ?string $week): Response
-    {
+    public function availability(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserAvailabilityRepository $userAvailabilityRepository,
+        ?string $week
+    ): Response {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException();
+        }
+
         try {
             $start = new \DateTimeImmutable($week ?: 'monday this week');
         } catch (\Exception $e) {
@@ -126,23 +135,20 @@ class UserController extends AbstractController
 
         $end = $start->add(new \DateInterval('P7D'));
 
-        /** @var ObjectManager */
-        $om = $this->getDoctrine()->getManagerForClass(UserAvailability::class);
-
-        /** @var User */
-        $user = $this->getUser();
-
-        $userAvailabilities = $om->getRepository(UserAvailability::class)->findBetweenDates(
-            $user, $start, $end
+        $availabilitiesDomain = AvailabilitiesDomain::generate(
+            $start->format('Y-m-d H:i'),
+            $end->format('Y-m-d H:i'),
+            $userAvailabilityRepository->findBetweenDates($user, $start, $end)
         );
 
-        $availabilitiesDomain = new AvailabilitiesDomain($start, $end, $userAvailabilities);
+        $form = $this
+            ->createForm(AvailabilitiesDomainType::class, $availabilitiesDomain)
+            ->handleRequest($request)
+        ;
 
-        $form = $this->createForm(AvailabilitiesDomainType::class, $availabilitiesDomain);
-
-        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $availabilitiesDomain->compute($om, $user);
+            $availabilitiesDomain->compute($entityManager, $user);
+            $entityManager->flush();
 
             $this->addFlash('success', 'Vos disponibilités ont été mises à jour');
 
