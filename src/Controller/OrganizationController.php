@@ -50,7 +50,7 @@ class OrganizationController extends AbstractController
     {
         $organization = $this->organizationRepository->find(1);
         $assets = $this->assetRepository->findBy([
-            'organization' => $organization
+            'organization' => $organization,
         ]);
 
         return $this->render('organization/commissionable_assets_list.html.twig', [
