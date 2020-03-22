@@ -90,6 +90,8 @@ class UserType extends AbstractType
 
             if (null === $user->getId()) {
                 $form->add('identificationNumber', TextType::class);
+            } else {
+                $form->remove('birthday');
             }
         });
     }
