@@ -66,6 +66,6 @@ class CommissionableAsset
 
     public function __toString(): string
     {
-        return $this->type . ' - ' . $this->name;
+        return $this->type.' - '.$this->name;
     }
 }
