@@ -10,4 +10,29 @@ legend.required:before {
     padding-right: 4px;
 }
 
+table.availability-table {
+    text-align: center;
+}
+
+td.clickable-table-box {
+    cursor: pointer;
+}
+
+td.clickable-table-box:hover {
+    background-color: #eee;
+}
+
+td.clickable-table-box.checked {
+    background-color: #88d38b;
+}
+
+td.clickable-table-box.checked:hover {
+    background-color: #72a870;
+}
+
+td.clickable-table-box.disabled {
+    background-color: #67a2d3 !important;
+    cursor: default;
+}
+
 @import "~bootstrap/scss/bootstrap";
