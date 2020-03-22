@@ -13,7 +13,7 @@ pre-configure:
 configure:
 	test -f docker-compose.override.yml || cp docker-compose.override.yml.dist docker-compose.override.yml
 	mkdir -p .cache/ssl
-	test -f .cache/ssl/local.crt || (docker run --rm -v $$(pwd):/src alpine:latest sh -c "apk add openssl && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /src/.cache/ssl/local.key -out /src/.cache/ssl/local.crt -subj \"/C=FR/ST=Paris/L=Paris/O=Resop/CN=*.resop.docker\" && cat /src/.cache/ssl/local.crt /src/.cache/ssl/local.key > /src/.cache/ssl/local.pem  && chown -R $$(id -u):$$(id -g) /src/.cache")
+	test -f .cache/ssl/local.crt || (docker run --rm -v $$(pwd):/src alpine:3.9 sh -c "apk add openssl && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /src/.cache/ssl/local.key -out /src/.cache/ssl/local.crt -subj \"/C=FR/ST=Paris/L=Paris/O=Resop/CN=*.resop.docker\" && cat /src/.cache/ssl/local.crt /src/.cache/ssl/local.key > /src/.cache/ssl/local.pem  && chown -R $$(id -u):$$(id -g) /src/.cache")
 
 unconfigure:
 	rm -f .env.local docker-compose.override.yml
