@@ -15,9 +15,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  */
 final class LoginController extends AbstractController
 {
-    /**
-     * @Route("/login", name="app_login")
-     */
     public function __invoke(AuthenticationUtils $authenticationUtils): Response
     {
         $loginForm = $this->createForm(
