@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            Structure <strong>{{ app.user }}</strong>,
+            <a href="{{ path('app_organization_logout') }}">Déconnexion</a>
+        </div>
+    {% endif %}
+
+    <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+
+    <div class="form-row">
+        <label for="inputIdentifier">Structure</label>
+        <select name="identifier" id="inputIdentifier" required>
+            {% for organization in organizations %}
+                <option value="{{ organization.name }}" {{ last_username == organization.name ? 'selected' : '' }}>
+                    {{- organization.name -}}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-row">
+        <label for="inputPassword">Mot de passe</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" required>
+    </div>
+
+    <div class="form-row">
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Se souvenir de moi
+            </label>
+        </div>
+    </div>
+
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+    <button class="btn btn-lg btn-primary" type="submit">
+        Je me connecte
+    </button>
+
+</form>
+{% endblock %}

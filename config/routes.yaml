@@ -1,3 +1,4 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+_organizations:
+    resource: ../src/Controller/Organization/
+    type: annotation
+    prefix: /organizations
