@@ -17,12 +17,12 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{ path('user_home')}}">Accueil</a>
+                        <a class="nav-link" href="{{ path('app_organization_index')}}">Accueil</a>
                     </li>
                 </ul>
                 <div class="my-2 my-lg-0">
                     {% if not app.user %}
-                        <a class="nav-link" href="{{ path('app_login')}}">Connexion</a>
+                        <a class="nav-link" href="{{ path('app_organization_login')}}">Connexion</a>
                     {% else %}
                         {{  app.user }}
                         <a href="{{ logout_path() }}">Déconnexion</a>

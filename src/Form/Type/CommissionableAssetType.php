@@ -15,8 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CommissionableAssetType extends AbstractType
 {
     private const TYPES = [
-        'Véhicule léger' => 'VL',
-        'Véhicule de premiers secours' => 'VPSP',
+        'VL - Véhicule léger' => 'VL',
+        'VPSP - Véhicule de premiers secours' => 'VPSP',
     ];
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -26,7 +26,6 @@ class CommissionableAssetType extends AbstractType
                 'choices' => self::TYPES,
             ])
             ->add('name', TextType::class)
-
             ->add('submit', SubmitType::class)
         ;
     }

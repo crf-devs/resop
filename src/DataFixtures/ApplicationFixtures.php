@@ -68,7 +68,7 @@ final class ApplicationFixtures extends Fixture
         // Yield same password for all organizations.
         // Password generation can be expensive and time consuming.
         $encoder = $this->encoders->getEncoder(Organization::class);
-        $password = $encoder->encodePassword('organization2020', null);
+        $password = $encoder->encodePassword('covid19', null);
 
         $this->addOrganization($this->makeOrganization('INACTIVE_ORG'));
         $this->addOrganization($this->makeOrganization('DT75', $password));

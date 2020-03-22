@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,9 +28,7 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     private CsrfTokenManagerInterface $csrfTokenManager;
 
-    public function __construct(UserRepository $userRepository,
-                                RouterInterface $router,
-                                CsrfTokenManagerInterface $csrfTokenManager)
+    public function __construct(UserRepository $userRepository, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager)
     {
         $this->userRepository = $userRepository;
         $this->router = $router;
@@ -38,8 +37,7 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-        return $request->attributes->get('_route') === 'app_login'
-            && $request->isMethod('POST');
+        return 'app_login' === $request->attributes->get('_route') && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
@@ -59,11 +57,11 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     private function formatBirthday(array $birthdayArray): string
     {
-        $day = sprintf("%02d", $birthdayArray['day']);
-        $month = sprintf("%02d", $birthdayArray['month']);
+        $day = sprintf('%02d', $birthdayArray['day']);
+        $month = sprintf('%02d', $birthdayArray['month']);
         $year = $birthdayArray['year'];
 
-        return $birthday = $year . '-' . $month . '-' . $day;
+        return $year.'-'.$month.'-'.$day;
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
@@ -78,6 +76,10 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
+        if (!$user instanceof User) {
+            throw new \RuntimeException('Bad user type');
+        }
+
         //TODO Fix "Invalid credentials." translation key
         return $credentials['birthday'] === $user->getBirthday();
     }
@@ -95,7 +97,6 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         return parent::onAuthenticationFailure($request, $exception);
     }
-
 
     protected function getLoginUrl()
     {

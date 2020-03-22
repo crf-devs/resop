@@ -11,8 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/user")
@@ -47,9 +47,9 @@ class UserController extends AbstractController
         $user = new User();
 
         $lastIdentifier = $this->authenticationUtils->getLastUsername();
-        if ($lastIdentifier !== '' && filter_var($lastIdentifier, FILTER_VALIDATE_EMAIL)) {
+        if ('' !== $lastIdentifier && filter_var($lastIdentifier, FILTER_VALIDATE_EMAIL)) {
             $user->setEmailAddress($lastIdentifier);
-        } else if($lastIdentifier !== '') {
+        } elseif ('' !== $lastIdentifier) {
             $user->setIdentificationNumber($lastIdentifier);
         }
 

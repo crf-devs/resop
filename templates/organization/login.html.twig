@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'organization/base.html.twig' %}
 
 {% block title %}Connexion{% endblock %}
 
@@ -19,7 +19,7 @@
 
     <div class="form-row">
         <label for="inputIdentifier">Structure</label>
-        <select name="identifier" id="inputIdentifier" required>
+        <select name="identifier" id="inputIdentifier" class="form-control" required>
             {% for organization in organizations %}
                 <option value="{{ organization.name }}" {{ last_username == organization.name ? 'selected' : '' }}>
                     {{- organization.name -}}
