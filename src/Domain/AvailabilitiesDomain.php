@@ -22,12 +22,12 @@ final class AvailabilitiesDomain
      *
      * @throws \Exception
      */
-    public static function generate(string $start, string $end, array $userAvailabilities = []): self
+    public static function generate(\DateTimeImmutable $start, \DateTimeImmutable $end, array $userAvailabilities = []): self
     {
         $period = new \DatePeriod(
-            new \DateTimeImmutable($start),
+            $start,
             new \DateInterval(self::SLOT_INTERVAL),
-            new \DateTimeImmutable($end)
+            $end
         );
 
         $availabilities = [];
