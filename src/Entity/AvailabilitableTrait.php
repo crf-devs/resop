@@ -53,8 +53,10 @@ trait AvailabilitableTrait
 
     public static function createImmutableDateTime(): \DateTimeImmutable
     {
-        $date = self::createImmutableDateTime();
-        Assertion::notEmpty($date);
+        $date = \DateTimeImmutable::createFromFormat('U', (string) time());
+        if (false === $date) {
+            throw new \RuntimeException('Unable to create the datetime');
+        }
 
         return $date;
     }
