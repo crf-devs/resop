@@ -68,6 +68,9 @@ vendors:
 webpack-build-dev:
 	bin/node-tools yarn encore dev
 
+webpack-watch-dev:
+	bin/node-tools yarn encore dev --watch
+
 webpack-build-prod:
 	bin/node-tools yarn encore production
 

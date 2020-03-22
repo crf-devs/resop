@@ -25,8 +25,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('user-form', './assets/js/user-form.js')
-    //.addEntry('page1', './assets/js/page1.js')
-    //.addEntry('page2', './assets/js/page2.js')
+    .addEntry('availability-form', './assets/js/availability-form.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

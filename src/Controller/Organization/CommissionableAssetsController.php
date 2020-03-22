@@ -8,7 +8,6 @@ use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
 use App\Form\Type\CommissionableAssetType;
 use App\Repository\CommissionableAssetRepository;
-use App\Repository\OrganizationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,15 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CommissionableAssetsController extends AbstractController
 {
-    private OrganizationRepository $organizationRepository;
-
     private CommissionableAssetRepository $assetRepository;
 
-    public function __construct(
-        OrganizationRepository $organizationRepository,
-        CommissionableAssetRepository $assetRepository
-    ) {
-        $this->organizationRepository = $organizationRepository;
+    public function __construct(CommissionableAssetRepository $assetRepository)
+    {
         $this->assetRepository = $assetRepository;
     }
 
@@ -33,12 +27,8 @@ class CommissionableAssetsController extends AbstractController
      */
     public function assets(): Response
     {
-        $assets = $this->assetRepository->findBy([
-            'organization' => $this->getUser(),
-        ]);
-
         return $this->render('organization/commissionable_assets_list.html.twig', [
-            'assets' => $assets,
+            'assets' => $this->assetRepository->findBy(['organization' => $this->getUser()]),
         ]);
     }
 

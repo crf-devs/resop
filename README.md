@@ -95,4 +95,7 @@ A node container is available in order to run `yarn` commands for `webpack encor
 
 ```bash
 bin/node-tools yarn encore dev
+
+webpack-build-dev
+make webpack-watch-dev
 ```
