@@ -24,8 +24,8 @@
                     {% if not app.user %}
                         <a class="nav-link" href="{{ path('app_login')}}">Connexion</a>
                     {% else %}
-                        {{  app.user }} / {{ app.user.identificationNumber }}
-                        <a href="{{ path('app_logout') }}">Déconnexion</a>
+                        {{  app.user }} / {{ app.user.username }}
+                        <a href="{{ logout_path() }}">Déconnexion</a>
                     {% endif %}
                 </div>
             </div>

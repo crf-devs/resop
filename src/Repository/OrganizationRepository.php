@@ -20,4 +20,24 @@ class OrganizationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Organization::class);
     }
+
+    public function loadUserByUsername(string $name): ?Organization
+    {
+        return $this->findOneBy(['name' => $name]);
+    }
+
+    /**
+     * @return Organization[]
+     */
+    public function loadActiveOrganizations(): array
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        return $qb
+            ->where($qb->expr()->isNotNull('o.password'))
+            ->orderBy('o.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

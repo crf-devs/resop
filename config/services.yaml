@@ -46,6 +46,6 @@ services:
         arguments:
             $availableSkillSets: '%app.available_skill_sets%'
 
-    App\Security\LoginFormAuthenticator:
+    App\Security\UserLoginFormAuthenticator:
         arguments:
             $password: 'covid19'
