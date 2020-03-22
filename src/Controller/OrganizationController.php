@@ -49,7 +49,9 @@ class OrganizationController extends AbstractController
     public function assets(): Response
     {
         $organization = $this->organizationRepository->find(1);
-        $assets = $this->assetRepository->findByOrganization($organization);
+        $assets = $this->assetRepository->findBy([
+            'organization' => $organization
+        ]);
 
         return $this->render('organization/commissionable_assets_list.html.twig', [
             'organization' => $organization,
