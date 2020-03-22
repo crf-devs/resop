@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(
@@ -22,12 +23,13 @@ class Organization implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
      */
-    public ?int $id;
+    public ?int $id = null;
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * @ORM\Column(nullable=true)
@@ -37,7 +39,7 @@ class Organization implements UserInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
      */
-    public ?self $parent;
+    public ?self $parent = null;
 
     public function __construct(?int $id, string $name, self $parent = null)
     {

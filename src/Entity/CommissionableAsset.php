@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommissionableAssetRepository")
  */
 class CommissionableAsset
 {
-    private const TYPES = [
+    public const TYPES = [
         'Véhicule léger' => 'VL',
         'Véhicule de premiers secours' => 'VPSP',
     ];
@@ -22,17 +22,20 @@ class CommissionableAsset
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
+     * @Assert\Choice(choices=CommissionableAsset::TYPES)
      */
-    public string $type;
+    public string $type = '';
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
@@ -43,7 +46,7 @@ class CommissionableAsset
     /**
      * @ORM\Column(type="datetimetz_immutable", nullable=true)
      */
-    public ?\DateTimeImmutable $lastCommissionDate;
+    public ?\DateTimeImmutable $lastCommissionDate = null;
 
     public function __construct(
         ?int $id,
@@ -51,8 +54,6 @@ class CommissionableAsset
         string $type,
         string $name
     ) {
-        Assertion::inArray($type, self::TYPES);
-
         $this->id = $id;
         $this->organization = $organization;
         $this->type = $type;

@@ -4,25 +4,27 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function Symfony\Component\String\u;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="users", uniqueConstraints={
  *   @ORM\UniqueConstraint(name="user_identification_number_unique", columns={"identification_number"}),
  *   @ORM\UniqueConstraint(name="user_email_address_unique", columns={"email_address"})
- * })
+ * }, indexes={
+ *   @ORM\Index(name="user_skill_set_idx", columns={"skill_set"}),
+ *   @ORM\Index(name="user_vulnerable_idx", columns={"vulnerable"}),
+ *   @ORM\Index(name="user_fully_equipped_idx", columns={"fully_equipped"}),
+ * }))
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("emailAddress")
+ * @UniqueEntity("identificationNumber")
  */
 class User implements UserInterface
 {
-    /**
-     * @ORM\Column
-     */
-    private ?string $identificationNumber = null;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -32,48 +34,69 @@ class User implements UserInterface
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
-    public ?string $emailAddress = null;
+    private string $identificationNumber = '';
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
+     * @Assert\Email
      */
-    public ?string $firstName = null;
+    public string $emailAddress = '';
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
-    public ?string $lastName = null;
+    public string $firstName = '';
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
-    public ?string $phoneNumber = null;
+    public string $lastName = '';
 
     /**
-     * @var string|null A "Y-m-d" formatted value
+     * @ORM\Column
+     * @Assert\NotBlank
+     */
+    public string $phoneNumber = '';
+
+    /**
+     * @var string A "Y-m-d" formatted value
      *
      * @ORM\Column
+     * @Assert\NotBlank
+     * @Assert\Date
      */
-    public ?string $birthday = null;
+    public string $birthday = '';
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
     public string $occupation = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
+     * @Assert\NotNull()
      */
     public ?Organization $organization = null;
 
     /**
      * @ORM\Column(nullable=true)
+     * @Assert\NotBlank
      */
-    public ?string $organizationOccupation = null;
+    public string $organizationOccupation = '';
 
     /**
-     * @ORM\Column(type="json", nullable=true)
+     * @ORM\Column(type="text[]", nullable=true)
+     * @Assert\NotBlank
+     * @Assert\All({
+     *     @Assert\NotBlank
+     * })
+     * TODO Add a custom contraint in order to validate skills
      */
     public array $skillSet = [];
 
@@ -113,40 +136,32 @@ class User implements UserInterface
 
     public function setIdentificationNumber(string $identificationNumber): void
     {
-        $identificationNumber = self::normalizeIdentificationNumber($identificationNumber);
-
-        Assertion::notEmpty($identificationNumber);
-
-        $this->identificationNumber = $identificationNumber;
+        $this->identificationNumber = self::normalizeIdentificationNumber($identificationNumber);
     }
 
     public function getIdentificationNumber(): string
     {
-        return (string) $this->identificationNumber;
+        return $this->identificationNumber;
     }
 
     public function setEmailAddress(string $emailAddress): void
     {
-        $emailAddress = self::normalizeEmailAddress($emailAddress);
-
-        Assertion::email($emailAddress);
-
-        $this->emailAddress = $emailAddress;
+        $this->emailAddress = self::normalizeEmailAddress($emailAddress);
     }
 
-    public function getEmailAddress(): ?string
+    public function getEmailAddress(): string
     {
-        return (string) $this->emailAddress;
+        return $this->emailAddress;
     }
 
     public function getFullName(): string
     {
-        return $this->firstName.' '.$this->lastName;
+        return "{$this->firstName} {$this->lastName}";
     }
 
     public function getShortFullName(): string
     {
-        return $this->firstName.' '.substr($this->lastName ?: '', 0, 1).'.';
+        return sprintf('%s %s.', $this->firstName, substr($this->lastName ?: '', 0, 1));
     }
 
     public function getRoles(): array
@@ -166,7 +181,7 @@ class User implements UserInterface
 
     public function getUsername(): string
     {
-        return (string) $this->identificationNumber;
+        return $this->identificationNumber;
     }
 
     public function eraseCredentials(): void

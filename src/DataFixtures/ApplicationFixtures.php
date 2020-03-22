@@ -8,9 +8,11 @@ use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
 use App\Entity\User;
 use App\Entity\UserAvailability;
+use App\Exception\ConstraintViolationListException;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ApplicationFixtures extends Fixture
 {
@@ -35,17 +37,20 @@ final class ApplicationFixtures extends Fixture
         'UL 20',
     ];
 
+    private ValidatorInterface $validator;
+
+    private EncoderFactoryInterface $encoders;
+
     /** @var Organization[] */
     private array $organizations = [];
 
     /** @var User[] */
     private array $users = [];
 
-    private EncoderFactoryInterface $encoders;
-
-    public function __construct(EncoderFactoryInterface $encoders)
+    public function __construct(EncoderFactoryInterface $encoders, ValidatorInterface $validator)
     {
         $this->encoders = $encoders;
+        $this->validator = $validator;
     }
 
     public function load(ObjectManager $manager): void
@@ -74,7 +79,7 @@ final class ApplicationFixtures extends Fixture
 
         // Persist all organizations
         foreach ($this->organizations as $organization) {
-            $manager->persist($organization);
+            $this->validateAndPersist($manager, $organization);
         }
     }
 
@@ -114,13 +119,13 @@ final class ApplicationFixtures extends Fixture
         $user->birthday = '1990-02-28';
         $user->occupation = 'Pharmacien';
         $user->organizationOccupation = 'Secouriste';
-        $user->skillSet = ['CI Alpha', 'CI Réseau'];
+        $user->skillSet = ['ci_alpha', 'ci_reseau'];
         $user->vulnerable = true;
         $user->fullyEquipped = true;
 
         $this->users[$user->getIdentificationNumber()] = $user;
 
-        $manager->persist($user);
+        $this->validateAndPersist($manager, $user);
     }
 
     private function loadUserAvailabilities(ObjectManager $manager): void
@@ -170,5 +175,16 @@ final class ApplicationFixtures extends Fixture
     private function addOrganization(Organization $organization): void
     {
         $this->organizations[$organization->name] = $organization;
+    }
+
+    private function validateAndPersist(ObjectManager $manager, object $object): void
+    {
+        $violations = $this->validator->validate($object);
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationListException($violations);
+        }
+
+        $manager->persist($object);
     }
 }
