@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création d'un véhicule{% endblock %}
+
+{% block body %}
+    <h1>Création d'un véhicule</h1>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.type, {label: 'Type'}) }}
+    {{ form_row(form.name, {label: 'Nom'}) }}
+    {{ form_end(form) }}
+{% endblock %}

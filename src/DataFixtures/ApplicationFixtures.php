@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
 use App\Entity\User;
 use App\Entity\UserAvailability;
@@ -42,6 +43,7 @@ final class ApplicationFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $this->loadOrganizations($manager);
+        $this->loadCommissionableAssets($manager);
         $this->loadUsers($manager);
         $this->loadUserAvailabilities($manager);
 
@@ -58,6 +60,29 @@ final class ApplicationFixtures extends Fixture
             $this->organizations[$name] = $organization = new Organization(null, $name, $main);
             $manager->persist($organization);
         }
+    }
+
+    private function loadCommissionableAssets(ObjectManager $manager): void
+    {
+        $manager->persist(new CommissionableAsset(
+            null,
+            $this->organizations['DT75'],
+            'VPSP',
+            '75092'
+        ));
+
+        $manager->persist(new CommissionableAsset(
+            null,
+            $this->organizations['DT75'],
+            'VPSP',
+            '75094'
+        ));
+        $manager->persist(new CommissionableAsset(
+            null,
+            $this->organizations['DT75'],
+            'VL',
+            '75096'
+        ));
     }
 
     private function loadUsers(ObjectManager $manager): void
