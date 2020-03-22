@@ -12,6 +12,13 @@ legend.required:before {
 
 table.availability-table {
     text-align: center;
+    position: relative;
+}
+
+table.availability-table label.day-title {
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
 }
 
 td.clickable-table-box {
@@ -33,6 +40,11 @@ td.clickable-table-box.checked:hover {
 td.clickable-table-box.disabled {
     background-color: #67a2d3 !important;
     cursor: default;
+}
+
+table.availability-table button.select-all {
+    position: absolute;
+    right: 0;
 }
 
 @import "~bootstrap/scss/bootstrap";
