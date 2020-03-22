@@ -21,17 +21,17 @@
     {{ form_row(loginForm.identifier, {label: 'Numéro NIVOL / Adresse e-mail'}) }}
     {{ form_row(loginForm.birthday, {label: 'Date de naissance'}) }}
 
-    <button class="btn btn-lg btn-primary" type="submit">Je me connecte</button>
-
-    {{ form_end(loginForm) }}
-
-    <div class="checkbox mb-3">
-        <label>
+    <div class="mt-4 mt-md-5 mb-2 d-flex">
+        <label class="mx-auto">
             <input type="checkbox" name="_remember_me"> Se souvenir de moi
         </label>
     </div>
 
-    <p>&nbsp;</p>
-    <p><a class="btn btn-lg btn-info" href="{{ path('user_new') }}">Créer mon profil</a></p>
+    <button class="btn btn-lg btn-primary w-100" type="submit">Je me connecte</button>
+
+    {{ form_end(loginForm) }}
+
+    <br />
+    <p><a class="btn btn-lg btn-info w-100" href="{{ path('user_new') }}">Créer mon profil</a></p>
 </form>
 {% endblock %}

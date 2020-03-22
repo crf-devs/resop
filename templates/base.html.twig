@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>ResOP - {% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -20,18 +21,18 @@
                         <a class="nav-link" href="{{ path('user_home')}}">Accueil</a>
                     </li>
                 </ul>
-                <div class="my-2 my-lg-0">
+                <div class="my-2 my-lg-0 d-flex">
                     {% if not app.user %}
                         <a class="nav-link" href="{{ path('app_login')}}">Espace bénévole</a>
                         <a class="nav-link" href="{{ path('app_organization_login')}}">Espace structure</a>
                     {% else %}
-                        {{  app.user }} -
-                        <a href="{{ logout_path() }}">Déconnexion</a>
+                        {{  app.user }}
+                        <a class="mx-4" href="{{ logout_path() }}">Déconnexion</a>
                     {% endif %}
                 </div>
             </div>
         </nav>
-        <div class="container">
+        <div class="container my-4">
             {% block body %}{% endblock %}
         </div>
         {% block javascripts %}
