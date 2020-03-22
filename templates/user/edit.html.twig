@@ -15,12 +15,12 @@
     {{ form_row(form.firstName, {label: 'Prénom'}) }}
     {{ form_row(form.lastName, {label: 'Nom'}) }}
     {{ form_row(form.emailAddress, {label: 'Adresse e-mail'}) }}
-    {{ form_row(form.phoneNumber, {label: 'Téléphone'}) }}
-    {{ form_row(form.organization, {label: 'Structure de rattachement', help: 'À quelle unité locale êtes-vous rattaché.e ?'}) }}
-    {{ form_row(form.vulnerable, {label: false}) }}
-    {{ form_row(form.organizationOccupation, {label: 'Fonctions de cadre au sein de votre structure'}) }}
-    {{ form_row(form.skillSet, {label: 'Vos compétences Croix-Rouge', help: 'Cochez toutes vos compétences'}) }}
-    {{ form_row(form.occupation, {label: 'Votre profession', attr: {'class': 'js-occupation'}}) }}
+    {{ form_row(form.phoneNumber, {label: 'Numéro de téléphone portable'}) }}
+    {{ form_row(form.organization, {label: 'Votre structure de rattachement', help: 'À quelle unité locale êtes-vous rattaché.e ?'}) }}
+    {{ form_row(form.vulnerable, {label: false, help: '<ul><li>malade chronique</li><li>obésité morbide</li><li>syndrome grippal</li><li>immunodéprimé</li><li>personne mineure ou personne de plus de 70 ans</li><li>avis défavorable de votre unité locale ou du pole santé (local ou territorial)</li></ul>' }) }}
+    {{ form_row(form.organizationOccupation, {label: 'Fonctions de cadre au sein de votre UL / DT' }) }}
+    {{ form_row(form.skillSet, {label: 'Quelles sont vos compétences Croix-Rouge ?', help: 'Cochez toutes vos compétences'}) }}
+    {{ form_row(form.occupation, {label: 'Quelle est votre profession ?', attr: {'class': 'js-occupation'}}) }}
     {{ form_row(form.fullyEquipped, {label: 'Avez-vous un uniforme en dotation chez vous ?'}) }}
     {{ form_row(form.submit, {label: 'Valider'}) }}
     {{ form_end(form) }}

@@ -46,7 +46,6 @@ final class UserType extends AbstractType
         $occupationChoices = (array) array_combine(self::DEFAULT_OCCUPATIONS, self::DEFAULT_OCCUPATIONS);
         $occupationChoices += ['Autre :' => '-'];
         $builder
-            ->add('identificationNumber', TextType::class)
             ->add('organization', OrganizationEntityType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
@@ -69,6 +68,7 @@ final class UserType extends AbstractType
                     0 => 'Je ne fais PAS partie des personnes vulnérables',
                 ]),
                 'expanded' => true,
+                'help_html' => true,
             ])
             ->add('fullyEquipped', CheckboxType::class, ['required' => false])
             ->add('skillSet', ChoiceType::class, [
