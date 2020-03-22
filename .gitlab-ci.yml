@@ -46,7 +46,7 @@ test:
     - docker-compose up -d postgres
     # Compiled assets files are required for functional tests. TODO Make it optional
     - bin/node-tools yarn install --pure-lockfile && make webpack-build-prod
-    - make test-unit
+    - make test-unit-coverage
 
 build:
   stage: build

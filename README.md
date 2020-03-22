@@ -1,6 +1,9 @@
 # crf-resop
 =======
 
+[![pipeline status](https://gitlab.com/mRoca/resop/badges/master/pipeline.svg)](https://gitlab.com/mRoca/resop/commits/master)
+[![coverage report](https://gitlab.com/mRoca/resop/badges/master/coverage.svg)](https://gitlab.com/mRoca/resop/commits/master)
+
 ## Install
 
 ### Requirements
