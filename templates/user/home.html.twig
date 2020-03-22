@@ -3,8 +3,9 @@
 {% block title %}Espace utilisateur{% endblock %}
 
 {% block body %}
-    <h1>Bienvenue, XXXXX</h1>
-    <p>NIVOL : XXXXX</p>
+    {{ include('misc/flash-messages.html.twig') }}
+    <h1>Bienvenue, {{ app.user.fullName }}</h1>
+    <p>NIVOL : {{ app.user.identificationNumber }}</p>
     <p><a class="btn btn-primary" href="{{ path('user_edit') }}" role="button">Modifier mes informations</a></p>
 
     <p>Semaine actuelle : du {{ 'this week' | date('d/m/Y') }} au {{ 'sunday this week' | date('d/m/Y') }}</p>

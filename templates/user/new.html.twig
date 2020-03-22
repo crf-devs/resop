@@ -9,20 +9,19 @@
 
 {% block body %}
     <h1>Création de compte</h1>
-    <p>NIVOL : {{ identificationNumber }}</p>
     {{ form_start(form) }}
     {{ form_errors(form) }}
+    {{ form_row(form.identificationNumber, {label: 'NVOL'}) }}
     {{ form_row(form.firstName, {label: 'Prénom'}) }}
     {{ form_row(form.lastName, {label: 'Nom'}) }}
     {{ form_row(form.emailAddress, {label: 'Adresse e-mail'}) }}
     {{ form_row(form.birthday, {label: 'Date de naissance'}) }}
     {{ form_row(form.phoneNumber, {label: 'Téléphone'}) }}
-    {{ form_row(form.organization, {label: 'Structure de rattachement'}) }}
+    {{ form_row(form.organization, {label: 'Structure de rattachement', help: 'À quelle unité locale êtes-vous rattaché.e ?'}) }}
     {{ form_row(form.vulnerable, {label: false}) }}
     {{ form_row(form.organizationOccupation, {label: 'Fonctions de cadre au sein de votre structure'}) }}
     {{ form_row(form.skillSet, {label: 'Vos compétences Croix-Rouge', help: 'Cochez toutes vos compétences'}) }}
     {{ form_row(form.occupation, {label: 'Votre profession', attr: {'class': 'js-occupation'}}) }}
-    {{ form_row(form.otherOccupation, {label: false, attr: {'class': 'js-otherOccupation'}}) }}
     {{ form_row(form.fullyEquipped, {label: 'Avez-vous un uniforme en dotation chez vous ?'}) }}
     {{ form_row(form.submit, {label: 'Valider'}) }}
     {{ form_end(form) }}

@@ -106,6 +106,11 @@ class User implements UserInterface
         return $this->organization->name.' / '.$this->getFullName();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function setIdentificationNumber(string $identificationNumber): void
     {
         $identificationNumber = self::normalizeIdentificationNumber($identificationNumber);
