@@ -20,6 +20,7 @@ final class UserTest extends TestCase
         $user->setIdentificationNumber('00001752114V');
         $user->setEmailAddress('user+ALIAS@some-domain.tld');
         $user->phoneNumber = '+33102030405';
+        $user->birthday = '1990-02-28';
         $user->occupation = 'Pharmacien';
         $user->organizationOccupation = 'Secouriste';
         $user->skillSet = ['CI Alpha', 'CI Réseau'];
@@ -35,6 +36,7 @@ final class UserTest extends TestCase
         $this->assertSame('1752114V', $user->getIdentificationNumber());
         $this->assertSame('user+alias@some-domain.tld', $user->getEmailAddress());
         $this->assertSame('+33102030405', $user->phoneNumber);
+        $this->assertSame('1990-02-28', $user->birthday);
         $this->assertSame('Pharmacien', $user->occupation);
         $this->assertSame('Secouriste', $user->organizationOccupation);
         $this->assertSame(['CI Alpha', 'CI Réseau'], $user->skillSet);
