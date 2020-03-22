@@ -24,6 +24,11 @@ class Organization
     public string $name;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $password = null;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
      */
     public ?self $parent;
