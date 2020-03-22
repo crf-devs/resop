@@ -18,4 +18,18 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+
+    public function loadUserByUsername(string $identifier): ?User
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        return $qb
+            ->where($qb->expr()->eq('u.identificationNumber', ':identificationNumber'))
+            ->orWhere($qb->expr()->eq('u.emailAddress', ':emailAddress'))
+            ->setParameter('identificationNumber', User::normalizeIdentificationNumber($identifier))
+            ->setParameter('emailAddress', User::normalizeEmailAddress($identifier))
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

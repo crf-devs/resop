@@ -9,6 +9,18 @@
     </head>
     <body>
         <div class="container">
+            <header>
+                <nav>
+                    <ul>
+                        {% if not app.user %}
+                            <li><a href="{{ path('app_login') }}">Connexion</a></li>
+                        {% else %}
+                            <li>{{ app.user }} / {{ app.user.identificationNumber }}</li>
+                            <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </header>
             {% block body %}{% endblock %}
         </div>
         {% block javascripts %}
