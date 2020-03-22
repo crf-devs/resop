@@ -16,7 +16,7 @@ final class AvailabilitiesDomainType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('availabilities', CollectionType::class, [
+            ->add('availabilityDomains', CollectionType::class, [
                 'entry_type' => AvailabilityDomainType::class,
             ])
             ->add('submit', SubmitType::class)

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
-use App\Entity\User;
-use App\Entity\UserAvailability;
+use App\Entity\AvailabilityInterface;
 use Assert\Assertion;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -13,16 +12,16 @@ final class AvailabilitiesDomain
 {
     private const SLOT_INTERVAL = 'PT2H';
 
-    public array $availabilities = [];
+    public array $availabilityDomains = [];
 
     /**
-     * @param UserAvailability[] $userAvailabilities
+     * @param AvailabilityInterface[] $availabilities
      *
      * @return AvailabilitiesDomain
      *
      * @throws \Exception
      */
-    public static function generate(\DateTimeImmutable $start, \DateTimeImmutable $end, array $userAvailabilities = []): self
+    public static function generate(\DateTimeImmutable $start, \DateTimeImmutable $end, array $availabilities = []): self
     {
         $period = new \DatePeriod(
             $start,
@@ -30,47 +29,47 @@ final class AvailabilitiesDomain
             $end
         );
 
-        $availabilities = [];
+        $availabilityDomains = [];
         foreach ($period as $date) {
-            $userAvailability = null;
-            foreach ($userAvailabilities as $k => $ua) {
-                if ($ua->startTime->format('Y-m-d H:i') === $date->format('Y-m-d H:i')) {
-                    $userAvailability = $ua;
-                    unset($userAvailabilities[$k]);
+            $availabilityEntity = null;
+            foreach ($availabilities as $k => $availibility) {
+                if ($availibility->getStartTime()->format('Y-m-d H:i') === $date->format('Y-m-d H:i')) {
+                    $availabilityEntity = $availibility;
+                    unset($availabilities[$k]);
 
                     break;
                 }
             }
 
-            $availabilities[] = new AvailabilityDomain($date, $userAvailability);
+            $availabilityDomains[] = new AvailabilityDomain($date, $availabilityEntity);
         }
 
-        return new self($availabilities);
+        return new self($availabilityDomains);
     }
 
     /**
-     * @param AvailabilityDomain[] $availabilities
+     * @param AvailabilityDomain[] $availabilityDomains
      */
-    public function __construct(array $availabilities)
+    public function __construct(array $availabilityDomains)
     {
-        Assertion::allIsInstanceOf($availabilities, AvailabilityDomain::class);
+        Assertion::allIsInstanceOf($availabilityDomains, AvailabilityDomain::class);
 
-        $this->availabilities = $availabilities;
+        $this->availabilityDomains = $availabilityDomains;
     }
 
-    public function compute(EntityManagerInterface $em, User $user): void
+    public function compute(EntityManagerInterface $em, string $avaibilityClass, object $object): void
     {
-        foreach ($this->availabilities as $availability) {
-            if ($availability->tick && null === $availability->userAvailability) {
-                $em->persist(new UserAvailability(
+        foreach ($this->availabilityDomains as $availabilityDomain) {
+            if ($availabilityDomain->tick && null === $availabilityDomain->availability) {
+                $em->persist(new $avaibilityClass(
                     null,
-                    $user,
-                    $availability->date,
-                    $availability->date->add(new \DateInterval(self::SLOT_INTERVAL)),
-                    UserAvailability::STATUS_AVAILABLE
+                    $object,
+                    $availabilityDomain->date,
+                    $availabilityDomain->date->add(new \DateInterval(self::SLOT_INTERVAL)),
+                    AvailabilityInterface::STATUS_AVAILABLE
                 ));
-            } elseif (!$availability->tick && null !== $availability->userAvailability) {
-                $em->remove($availability->userAvailability);
+            } elseif (!$availabilityDomain->tick && null !== $availabilityDomain->availability) {
+                $em->remove($availabilityDomain->availability);
             }
         }
     }

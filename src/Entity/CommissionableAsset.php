@@ -22,7 +22,7 @@ class CommissionableAsset implements AvailabilitableInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
      */
-    private ?int $id = null;
+    public ?int $id = null;
 
     /**
      * @ORM\Column

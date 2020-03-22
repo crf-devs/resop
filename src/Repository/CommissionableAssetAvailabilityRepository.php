@@ -23,4 +23,20 @@ class CommissionableAssetAvailabilityRepository extends ServiceEntityRepository 
     {
         parent::__construct($registry, CommissionableAssetAvailability::class);
     }
+
+    public function findBetweenDates(CommissionableAsset $asset, \DateTimeInterface $start, \DateTimeInterface $end): array
+    {
+        return $this->createQueryBuilder('caa')
+            ->where('caa.asset = :asset')
+            ->andWhere('caa.startTime >= :start')
+            ->andWhere('caa.endTime <= :end')
+            ->setParameters([
+                'asset' => $asset,
+                'start' => $start,
+                'end' => $end,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\User\Availability;
+namespace App\Controller\Organization\CommissionableAsset\Availability;
 
 use App\Domain\AvailabilitiesDomain;
-use App\Entity\User;
-use App\Entity\UserAvailability;
+use App\Entity\CommissionableAssetAvailability;
 use App\Form\Type\AvailabilitiesDomainType;
-use App\Repository\UserAvailabilityRepository;
+use App\Repository\CommissionableAssetAvailabilityRepository;
+use App\Repository\CommissionableAssetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,26 +16,31 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/user/availability/{week<\d{4}-W\d{2}>?}", name="user_availability", methods={"GET", "POST"})
+ * @Route("/commissionable-assets/{id<\d+>}/availability/{week<\d{4}-W\d{2}>?}", name="organization_commisionable_asset_availability", methods={"GET", "POST"})
  */
 final class ManageAvailabilityController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
-    private UserAvailabilityRepository $userAvailabilityRepository;
+    private CommissionableAssetAvailabilityRepository $commissionableAssetAvailabilityRepository;
+    private CommissionableAssetRepository $commissionableAssetRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        UserAvailabilityRepository $userAvailabilityRepository
+        CommissionableAssetAvailabilityRepository $commissionableAssetAvailabilityRepository,
+        CommissionableAssetRepository $commissionableAssetRepository
     ) {
         $this->entityManager = $entityManager;
-        $this->userAvailabilityRepository = $userAvailabilityRepository;
+        $this->commissionableAssetAvailabilityRepository = $commissionableAssetAvailabilityRepository;
+        $this->commissionableAssetRepository = $commissionableAssetRepository;
     }
 
     public function __invoke(Request $request): Response
     {
-        $user = $this->getUser();
+        $asset = $this->commissionableAssetRepository->findOneBy([
+            'id' => $request->attributes->get('id'),
+        ]);
 
-        if (!$user instanceof User) {
+        if (null === $asset) {
             throw $this->createAccessDeniedException();
         }
 
@@ -44,13 +49,13 @@ final class ManageAvailabilityController extends AbstractController
         try {
             $start = new \DateTimeImmutable($week ?: 'monday this week');
         } catch (\Exception $e) {
-            return $this->redirectToRoute('user_home');
+            return $this->redirectToRoute('app_organization_commissionable_assets');
         }
 
         $interval = $start->diff(new \DateTimeImmutable());
         // edit current week and next week only
         if ($interval->days > 6) {
-            return $this->redirectToRoute('user_home');
+            return $this->redirectToRoute('app_organization_commissionable_assets');
         }
 
         $end = $start->add(new \DateInterval('P7D'));
@@ -58,7 +63,7 @@ final class ManageAvailabilityController extends AbstractController
         $availabilitiesDomain = AvailabilitiesDomain::generate(
             $start,
             $end,
-            $this->userAvailabilityRepository->findBetweenDates($user, $start, $end)
+            $this->commissionableAssetAvailabilityRepository->findBetweenDates($asset, $start, $end)
         );
 
         $form = $this
@@ -67,16 +72,17 @@ final class ManageAvailabilityController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $availabilitiesDomain->compute($this->entityManager, UserAvailability::class, $user);
+            $availabilitiesDomain->compute($this->entityManager, CommissionableAssetAvailability::class, $asset);
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Vos disponibilités ont été mises à jour avec succès.');
 
-            return $this->redirectToRoute('user_home');
+            return $this->redirectToRoute('app_organization_commissionable_assets');
         }
 
-        return $this->render('user/availability.html.twig', [
+        return $this->render('organization/commissionable-asset-availability.html.twig', [
             'form' => $form->createView(),
+            'asset' => $asset,
         ]);
     }
 }
