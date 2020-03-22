@@ -19,7 +19,7 @@ class CommissionableAssetAvailability implements AvailabilityInterface
     use AvailabilitableTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CommissionableAsset")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CommissionableAsset", inversedBy="availabilities")
      * @ORM\JoinColumn(nullable=false)
      */
     public CommissionableAsset $asset;

@@ -1,0 +1,42 @@
+<div class="planning-filter-box" style="border: 1px solid gray">
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.organizations) }}
+        </div>
+        <div class="col-md-5">
+            {{ form_row(form.from) }}
+        </div>
+        <div class="col-md-5">
+            {{ form_row(form.to) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.volunteer) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.volunteerSkills) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.volunteerEquipped) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.volunteerHideVulnerable) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.asset) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.assetTypes) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form_row(form.submit) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>

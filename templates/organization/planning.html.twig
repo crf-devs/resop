@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Planning{% endblock %}
+
+{% block body %}
+    <h1>Planning - du {{ from|date('l d m') }} au {{ to|date('l d m') }}</h1>
+    {% include 'organization/planning/_search_type.html.twig' %}
+    {% include 'organization/planning/_results.html.twig' %}
+{% endblock %}

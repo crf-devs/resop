@@ -110,6 +110,11 @@ class User implements UserInterface
      */
     public bool $fullyEquipped = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserAvailability", mappedBy="user")
+     */
+    public iterable $availabilities;
+
     public static function bootstrap(string $identifier = null): self
     {
         $user = new self();
