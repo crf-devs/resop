@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use function Symfony\Component\String\u;
 
 /**
  * @ORM\Table(name="users", uniqueConstraints={
@@ -12,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Column
@@ -76,6 +78,16 @@ class User
      */
     public bool $fullyEquipped = false;
 
+    public static function normalizeIdentificationNumber(string $identificationNumber): string
+    {
+        return u($identificationNumber)->trimStart('0');
+    }
+
+    public static function normalizeEmailAddress(string $emailAddress): string
+    {
+        return u($emailAddress)->trim()->lower();
+    }
+
     public function __toString(): string
     {
         if (null === $this->organization) {
@@ -87,7 +99,7 @@ class User
 
     public function setIdentificationNumber(string $identificationNumber): void
     {
-        $identificationNumber = ltrim($identificationNumber, '0');
+        $identificationNumber = self::normalizeIdentificationNumber($identificationNumber);
 
         Assertion::notEmpty($identificationNumber);
 
@@ -101,6 +113,8 @@ class User
 
     public function setEmailAddress(string $emailAddress): void
     {
+        $emailAddress = self::normalizeEmailAddress($emailAddress);
+
         Assertion::email($emailAddress);
 
         $this->emailAddress = $emailAddress;
@@ -119,5 +133,29 @@ class User
     public function getShortFullName(): string
     {
         return $this->firstName.' '.substr($this->lastName ?: '', 0, 1).'.';
+    }
+
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getPassword(): string
+    {
+        return '';
+    }
+
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    public function getUsername(): string
+    {
+        return (string) $this->identificationNumber;
+    }
+
+    public function eraseCredentials(): void
+    {
     }
 }

@@ -6,14 +6,14 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class IndexControllerTest extends WebTestCase
+final class IndexControllerTest extends WebTestCase
 {
     public function testIndexAction(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/');
+        $client->request('GET', '/login');
 
         self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('h1', 'Hello World');
+        self::assertSelectorTextContains('h1', 'Connexion');
     }
 }
