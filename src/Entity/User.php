@@ -49,7 +49,7 @@ class User
     /**
      * @ORM\Column
      */
-    public ?string $occupation = null;
+    public string $occupation = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
@@ -102,7 +102,7 @@ class User
         $this->emailAddress = $emailAddress;
     }
 
-    public function getEmailAddress(): string
+    public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
     }

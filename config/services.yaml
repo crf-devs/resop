@@ -4,6 +4,23 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    app.available_skill_sets:
+        animateur_cours_fle: Animateur.rice de cours de FLE
+        chauffeur_vl: Chauffeur VL
+        chauffeur_vpsp: Chauffeur VPSP
+        chef_equipe_maraude: Chef.fe d'équipe maraudes
+        ci: CI
+        ci_alpha: CI Alpha
+        ci_reseau: CI Réseau
+        infirmier_local: Infirmier.e local.e
+        logicticien_croix_rouge: Logisticien.ne Croix-Rouge
+        maraudeur: Maraudeur.se
+        psc1: PSC1
+        pse1: PSE1
+        pse2: PSE2
+        resp_permanence_locale: Responsable Permanence Sociale
+        tsa_coreg: TSA / Coreg
+        nouveau_benevole: Nouveau bénévole
 
 services:
     # default configuration for services in *this* file
@@ -25,3 +42,6 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Form\Type\UserType:
+        arguments:
+            $availableSkillSets: '%app.available_skill_sets%'

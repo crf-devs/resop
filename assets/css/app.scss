@@ -1,4 +1,10 @@
-label.required:before {
+label.required:not(.form-check-label):before {
+    color: crimson;
+    content: "*";
+    padding-right: 4px;
+}
+
+legend.required:before {
     color: crimson;
     content: "*";
     padding-right: 4px;

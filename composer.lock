@@ -5181,24 +5181,24 @@
         },
         {
             "name": "webimpress/safe-writer",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webimpress/safe-writer.git",
-                "reference": "d03bea3b98abe1d4c8b24cbebf524361ffaafee4"
+                "reference": "d6e879960febb307c112538997316371f1e95b12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webimpress/safe-writer/zipball/d03bea3b98abe1d4c8b24cbebf524361ffaafee4",
-                "reference": "d03bea3b98abe1d4c8b24cbebf524361ffaafee4",
+                "url": "https://api.github.com/repos/webimpress/safe-writer/zipball/d6e879960febb307c112538997316371f1e95b12",
+                "reference": "d6e879960febb307c112538997316371f1e95b12",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.4.3",
-                "webimpress/coding-standard": "dev-develop"
+                "phpunit/phpunit": "^8.5.2 || ^9.0.1",
+                "webimpress/coding-standard": "^1.1.4"
             },
             "type": "library",
             "extra": {
@@ -5225,7 +5225,13 @@
                 "safe writer",
                 "webimpress"
             ],
-            "time": "2019-11-27T19:40:53+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/michalbundyra",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-03-21T15:49:08+00:00"
         },
         {
             "name": "webmozart/assert",
