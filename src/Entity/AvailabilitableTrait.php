@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Assert\Assertion;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait AvailabilitableTrait
 {
@@ -13,7 +14,7 @@ trait AvailabilitableTrait
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
      */
-    public ?int $id;
+    public ?int $id = null;
 
     /**
      * @ORM\Column(type="datetimetz_immutable")
@@ -27,19 +28,21 @@ trait AvailabilitableTrait
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
+     * @Assert\Choice(choices=AvailabilityInterface::STATUSES)
      */
-    public string $status;
+    public string $status = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=true)
      */
-    public ?User $planningAgent;
+    public ?User $planningAgent = null;
 
     /**
      * @ORM\Column(type="datetimetz_immutable", nullable=true)
      */
-    public ?\DateTimeImmutable $bookedAt;
+    public ?\DateTimeImmutable $bookedAt = null;
 
     /**
      * @ORM\Column(type="datetimetz_immutable")
@@ -49,7 +52,7 @@ trait AvailabilitableTrait
     /**
      * @ORM\Column(type="datetimetz_immutable", nullable=true)
      */
-    public ?\DateTimeImmutable $updatedAt;
+    public ?\DateTimeImmutable $updatedAt = null;
 
     public static function createImmutableDateTime(): \DateTimeImmutable
     {
@@ -63,8 +66,6 @@ trait AvailabilitableTrait
 
     private function initialize(?int $id, \DateTimeImmutable $startTime, \DateTimeImmutable $endTime, string $status = self::STATUS_LOCKED): void
     {
-        Assertion::inArray($status, AvailabilityInterface::STATUSES);
-
         $this->id = $id;
         $this->startTime = $startTime;
         $this->endTime = $endTime;

@@ -135,6 +135,9 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.1"
     },
+    "martin-georgiev/postgresql-for-doctrine": {
+        "version": "v1.3.0"
+    },
     "myclabs/deep-copy": {
         "version": "1.9.4"
     },

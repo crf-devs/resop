@@ -1,14 +1,22 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
-
-        # IMPORTANT: You MUST configure your server version,
-        # either here or in the DATABASE_URL env var (see .env file)
-        #server_version: '5.7'
+        server_version: '11'
+        types:
+            text[]: MartinGeorgiev\Doctrine\DBAL\Types\TextArray
+            # Some other types are available in MartinGeorgiev\Doctrine
+        mapping_types:
+            text[]: text[]
+            _text: text[]
     orm:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
+        dql:
+            string_functions:
+                ALL_OF: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\All
+                ANY_OF: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Any
+                IN_ARRAY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\InArray
         mappings:
             App:
                 is_bundle: false
