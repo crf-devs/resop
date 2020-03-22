@@ -130,7 +130,7 @@ final class ApplicationFixtures extends Fixture
 
     private function loadUserAvailabilities(ObjectManager $manager): void
     {
-        $thisWeek = (new \DateTimeImmutable('previous monday'))->setTime(0, 0, 0);
+        $thisWeek = (new \DateTimeImmutable('monday this week'));
 
         $availabities = [
             '9999999V' => [

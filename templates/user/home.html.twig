@@ -9,8 +9,8 @@
     <p><a class="btn btn-primary" href="{{ path('user_edit') }}" role="button">Modifier mes informations</a></p>
 
     <p>Semaine actuelle : du {{ 'this week' | date('d/m/Y') }} au {{ 'sunday this week' | date('d/m/Y') }}</p>
-    <p><a class="btn btn-primary" href="#" role="button">Modifier mes disponibilités</a></p>
+    <p><a class="btn btn-primary" href="{{ path('user_availability') }}" role="button">Modifier mes disponibilités</a></p>
 
     <p>Semaine prochaine : du {{ 'next week' | date('d/m/Y') }} au {{ 'sunday next week' | date('d/m/Y') }}</p>
-    <p><a class="btn btn-primary" href="#" role="button">Modifier mes disponibilités</a></p>
+    <p><a class="btn btn-primary" href="{{ path('user_availability', { week: 'next week'|date('o-\\WW') }) }}" role="button">Modifier mes disponibilités</a></p>
 {% endblock %}

@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Domain\AvailabilitiesDomain;
 use App\Entity\User;
+use App\Entity\UserAvailability;
 use App\Event\UserChangeVulnerabilityEvent;
+use App\Form\Type\AvailabilitiesDomainType;
 use App\Form\Type\UserType;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -100,6 +104,53 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
             'identificationNumber' => $user->getIdentificationNumber(),
+        ]);
+    }
+
+    /**
+     * @Route("/availability/{week<\d{4}-W\d{2}>?}", name="user_availability", methods={"GET", "POST"})
+     */
+    public function availability(Request $request, ?string $week): Response
+    {
+        try {
+            $start = new \DateTimeImmutable($week ?: 'monday this week');
+        } catch (\Exception $e) {
+            return $this->redirectToRoute('user_home');
+        }
+
+        $interval = $start->diff(new \DateTimeImmutable());
+        // edit current week and next week only
+        if ($interval->days > 6) {
+            return $this->redirectToRoute('user_home');
+        }
+
+        $end = $start->add(new \DateInterval('P7D'));
+
+        /** @var ObjectManager */
+        $om = $this->getDoctrine()->getManagerForClass(UserAvailability::class);
+
+        /** @var User */
+        $user = $this->getUser();
+
+        $userAvailabilities = $om->getRepository(UserAvailability::class)->findBetweenDates(
+            $user, $start, $end
+        );
+
+        $availabilitiesDomain = new AvailabilitiesDomain($start, $end, $userAvailabilities);
+
+        $form = $this->createForm(AvailabilitiesDomainType::class, $availabilitiesDomain);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $availabilitiesDomain->compute($om, $user);
+
+            $this->addFlash('success', 'Vos disponibilités ont été mises à jour');
+
+            return $this->redirectToRoute('user_home');
+        }
+
+        return $this->render('user/availability.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }
