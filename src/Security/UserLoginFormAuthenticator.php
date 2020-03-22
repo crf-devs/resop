@@ -19,7 +19,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 
-final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
+final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     private UserRepository $userRepository;
 

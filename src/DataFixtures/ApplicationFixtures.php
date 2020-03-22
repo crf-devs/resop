@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Entity\UserAvailability;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 final class ApplicationFixtures extends Fixture
 {
@@ -35,10 +36,17 @@ final class ApplicationFixtures extends Fixture
     ];
 
     /** @var Organization[] */
-    private $organizations = [];
+    private array $organizations = [];
 
     /** @var User[] */
-    private $users = [];
+    private array $users = [];
+
+    private EncoderFactoryInterface $encoders;
+
+    public function __construct(EncoderFactoryInterface $encoders)
+    {
+        $this->encoders = $encoders;
+    }
 
     public function load(ObjectManager $manager): void
     {
@@ -52,12 +60,20 @@ final class ApplicationFixtures extends Fixture
 
     private function loadOrganizations(ObjectManager $manager): void
     {
-        $this->organizations['DT75'] = $main = new Organization(null, 'DT75');
+        // Yield same password for all organizations.
+        // Password generation can be expensive and time consuming.
+        $encoder = $this->encoders->getEncoder(Organization::class);
+        $password = $encoder->encodePassword('organization2020', null);
 
-        $manager->persist($main);
+        $this->addOrganization($this->makeOrganization('INACTIVE_ORG'));
+        $this->addOrganization($this->makeOrganization('DT75', $password));
 
         foreach (self::ORGANIZATIONS as $name) {
-            $this->organizations[$name] = $organization = new Organization(null, $name, $main);
+            $this->addOrganization($this->makeOrganization($name, $password, $this->organizations['DT75']));
+        }
+
+        // Persist all organizations
+        foreach ($this->organizations as $organization) {
             $manager->persist($organization);
         }
     }
@@ -138,5 +154,21 @@ final class ApplicationFixtures extends Fixture
                 ));
             }
         }
+    }
+
+    private function makeOrganization(string $name, string $password = null, Organization $parent = null): Organization
+    {
+        $organization = new Organization(null, $name, $parent);
+
+        if ($password) {
+            $organization->password = $password;
+        }
+
+        return $organization;
+    }
+
+    private function addOrganization(Organization $organization): void
+    {
+        $this->organizations[$organization->name] = $organization;
     }
 }
