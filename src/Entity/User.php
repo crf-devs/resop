@@ -78,6 +78,10 @@ class User
 
     public function __toString(): string
     {
+        if (null === $this->organization) {
+            return $this->getFullName();
+        }
+
         return $this->organization->name.' / '.$this->getFullName();
     }
 
@@ -92,7 +96,7 @@ class User
 
     public function getIdentificationNumber(): string
     {
-        return $this->identificationNumber;
+        return (string) $this->identificationNumber;
     }
 
     public function setEmailAddress(string $emailAddress): void
@@ -104,7 +108,7 @@ class User
 
     public function getEmailAddress(): string
     {
-        return $this->emailAddress;
+        return (string) $this->emailAddress;
     }
 
     public function getFullName(): string
@@ -114,6 +118,6 @@ class User
 
     public function getShortFullName(): string
     {
-        return $this->firstName.' '.$this->lastName[0].'.';
+        return $this->firstName.' '.substr($this->lastName ?: '', 0, 1).'.';
     }
 }
