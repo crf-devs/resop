@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CommissionableAssetType extends AbstractType
+final class CommissionableAssetType extends AbstractType
 {
     private const TYPES = [
         'VL - Véhicule léger' => 'VL',
