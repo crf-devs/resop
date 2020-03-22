@@ -85,76 +85,32 @@ final class ApplicationFixtures extends Fixture
     {
         $thisWeek = (new \DateTimeImmutable('previous monday'))->setTime(0, 0, 0);
 
-        $manager->persist(new UserAvailability(
-            null,
-            $this->users['9999999V'],
-            $thisWeek->add(new \DateInterval('PT0H')),
-            $thisWeek->add(new \DateInterval('PT2H')),
-            UserAvailability::STATUS_AVAILABLE
-        ));
+        $availabities = [
+            '9999999V' => [
+                'PT0H',
+                'P2DT10H',
+                'P2DT12H',
+                'P7DT22H',
+                'P8DT16H',
+                'P9DT20H',
+                'P9DT22H',
+                'P10DT8H',
+                'P10DT10H',
+            ],
+        ];
 
-        $manager->persist(new UserAvailability(
-            null,
-            $this->users['9999999V'],
-            $thisWeek->add(new \DateInterval('P2DT10H')),
-            $thisWeek->add(new \DateInterval('P2DT12H')),
-            UserAvailability::STATUS_AVAILABLE
-        ));
+        foreach ($availabities as $user => $periods) {
+            foreach ($periods as $period) {
+                $startTime = $thisWeek->add(new \DateInterval($period));
 
-        $manager->persist(new UserAvailability(
-            null,
-            $this->users['9999999V'],
-            $thisWeek->add(new \DateInterval('P2DT12H')),
-            $thisWeek->add(new \DateInterval('P2DT14H')),
-            UserAvailability::STATUS_AVAILABLE
-        ));
-
-        $manager->persist(new UserAvailability(
-            null,
-            $this->users['9999999V'],
-            $thisWeek->add(new \DateInterval('P7DT22H')),
-            $thisWeek->add(new \DateInterval('P7DT24H')),
-            UserAvailability::STATUS_AVAILABLE
-        ));
-
-        $manager->persist(new UserAvailability(
-            null,
-            $this->users['9999999V'],
-            $thisWeek->add(new \DateInterval('P8DT16H')),
-            $thisWeek->add(new \DateInterval('P8DT18H')),
-            UserAvailability::STATUS_AVAILABLE
-        ));
-
-        $manager->persist(new UserAvailability(
-            null,
-            $this->users['9999999V'],
-            $thisWeek->add(new \DateInterval('P9DT20H')),
-            $thisWeek->add(new \DateInterval('P9DT22H')),
-            UserAvailability::STATUS_AVAILABLE
-        ));
-
-        $manager->persist(new UserAvailability(
-            null,
-            $this->users['9999999V'],
-            $thisWeek->add(new \DateInterval('P9DT22H')),
-            $thisWeek->add(new \DateInterval('P9DT24H')),
-            UserAvailability::STATUS_AVAILABLE
-        ));
-
-        $manager->persist(new UserAvailability(
-            null,
-            $this->users['9999999V'],
-            $thisWeek->add(new \DateInterval('P10DT8H')),
-            $thisWeek->add(new \DateInterval('P10DT10H')),
-            UserAvailability::STATUS_AVAILABLE
-        ));
-
-        $manager->persist(new UserAvailability(
-            null,
-            $this->users['9999999V'],
-            $thisWeek->add(new \DateInterval('P10DT10H')),
-            $thisWeek->add(new \DateInterval('P10DT12H')),
-            UserAvailability::STATUS_AVAILABLE
-        ));
+                $manager->persist(new UserAvailability(
+                    null,
+                    $this->users[$user],
+                    $startTime,
+                    $startTime->add(new \DateInterval('PT2H')),
+                    UserAvailability::STATUS_AVAILABLE
+                ));
+            }
+        }
     }
 }
