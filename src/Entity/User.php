@@ -82,12 +82,12 @@ class User implements UserInterface
 
     public static function normalizeIdentificationNumber(string $identificationNumber): string
     {
-        return u($identificationNumber)->trimStart('0');
+        return u($identificationNumber)->trimStart('0')->toString();
     }
 
     public static function normalizeEmailAddress(string $emailAddress): string
     {
-        return u($emailAddress)->trim()->lower();
+        return u($emailAddress)->trim()->lower()->toString();
     }
 
     public function __toString(): string
