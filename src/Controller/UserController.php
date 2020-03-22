@@ -12,12 +12,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * @Route("/user")
  */
 class UserController extends AbstractController
 {
+    private AuthenticationUtils $authenticationUtils;
+
+    public function __construct(AuthenticationUtils $authenticationUtils)
+    {
+        $this->authenticationUtils = $authenticationUtils;
+    }
+
     /**
      * @Route("/home", name="user_home", methods={"GET", "POST"})
      */
@@ -37,6 +45,13 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_home');
         }
         $user = new User();
+
+        $lastIdentifier = $this->authenticationUtils->getLastUsername();
+        if ($lastIdentifier !== '' && filter_var($lastIdentifier, FILTER_VALIDATE_EMAIL)) {
+            $user->setEmailAddress($lastIdentifier);
+        } else if($lastIdentifier !== '') {
+            $user->setIdentificationNumber($lastIdentifier);
+        }
 
         $form = $this->createForm(UserType::class, $user);
 

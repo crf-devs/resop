@@ -48,6 +48,7 @@ class UserType extends AbstractType
         $occupationChoices = (array) array_combine(self::DEFAULT_OCCUPATIONS, self::DEFAULT_OCCUPATIONS);
         $occupationChoices += ['Autre :' => '-'];
         $builder
+            ->add('identificationNumber', TextType::class)
             ->add('organization', EntityType::class, [
                 'class' => Organization::class,
                 'choice_label' => 'name',

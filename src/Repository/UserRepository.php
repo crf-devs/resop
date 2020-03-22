@@ -21,7 +21,7 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function loadUserByUsername(string $identifier): ?User
+    public function findUserByIdentifier(string $identifier): ?User
     {
         $qb = $this->createQueryBuilder('u');
 

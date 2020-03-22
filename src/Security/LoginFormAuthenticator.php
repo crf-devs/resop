@@ -7,53 +7,49 @@ namespace App\Security;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
-use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
-use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
+final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
-    use TargetPathTrait;
+    private UserRepository $userRepository;
 
-    private $userRepostiory;
-    private $urlGenerator;
-    private $csrfTokenManager;
-    private $password;
+    private RouterInterface $router;
 
-    public function __construct(
-        UserRepository $userRepository,
-        UrlGeneratorInterface $urlGenerator,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        string $password
-    ) {
-        $this->userRepostiory = $userRepository;
-        $this->urlGenerator = $urlGenerator;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+
+    public function __construct(UserRepository $userRepository,
+                                RouterInterface $router,
+                                CsrfTokenManagerInterface $csrfTokenManager)
+    {
+        $this->userRepository = $userRepository;
+        $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
-        $this->password = $password;
     }
 
     public function supports(Request $request)
     {
-        return 'app_login' === $request->attributes->get('_route')
+        return $request->attributes->get('_route') === 'app_login'
             && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
     {
+        $loginCredentials = $request->request->get('login');
+
         $credentials = [
-            'identifier' => $request->request->get('identifier', ''),
-            'password' => $request->request->get('password'),
-            'csrf_token' => $request->request->get('_csrf_token'),
+            'identifier' => $loginCredentials['identifier'],
+            'birthday' => $this->formatBirthday($loginCredentials['birthday']),
+            'csrf_token' => $loginCredentials['_token'],
         ];
 
         $request->getSession()->set(Security::LAST_USERNAME, $credentials['identifier']);
@@ -61,50 +57,48 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
         return $credentials;
     }
 
+    private function formatBirthday(array $birthdayArray): string
+    {
+        $day = sprintf("%02d", $birthdayArray['day']);
+        $month = sprintf("%02d", $birthdayArray['month']);
+        $year = $birthdayArray['year'];
+
+        return $birthday = $year . '-' . $month . '-' . $day;
+    }
+
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
-
-        if (!$this->csrfTokenManager->isTokenValid($token)) {
+        $csrfToken = new CsrfToken('authenticate', $credentials['csrf_token']);
+        if (!$this->csrfTokenManager->isTokenValid($csrfToken)) {
             throw new InvalidCsrfTokenException();
         }
 
-        if (!$user = $this->userRepostiory->loadUserByUsername($credentials['identifier'])) {
-            throw new CustomUserMessageAuthenticationException('Identification number could not be found.');
-        }
-
-        return $user;
+        return $this->userRepository->findUserByIdentifier($credentials['identifier']);
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $credentials['password'] === $this->password;
+        //TODO Fix "Invalid credentials." translation key
+        return $credentials['birthday'] === $user->getBirthday();
     }
 
-    /**
-     * @param array $credentials The submitted credentials
-     */
-    public function getPassword($credentials): ?string
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
-        return $credentials['password'];
+        return new RedirectResponse($this->router->generate('user_home'));
     }
 
-    /**
-     * @param string $providerKey
-     *
-     * @return Response|null
-     */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-            return new RedirectResponse($targetPath);
+        if ($exception instanceof UsernameNotFoundException) {
+            return new RedirectResponse($this->router->generate('user_new'));
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('user_home'));
+        return parent::onAuthenticationFailure($request, $exception);
     }
 
-    protected function getLoginUrl(): string
+
+    protected function getLoginUrl()
     {
-        return $this->urlGenerator->generate('app_login');
+        return $this->router->generate('app_login');
     }
 }

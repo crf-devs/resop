@@ -172,4 +172,9 @@ class User implements UserInterface
     public function eraseCredentials(): void
     {
     }
+
+    public function getBirthday(): ?string
+    {
+        return $this->birthday;
+    }
 }
