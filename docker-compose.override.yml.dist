@@ -1,6 +1,9 @@
 version: "3.7"
 
-# services:
+volumes:
+  postgres-data: ~
+
+services:
 
 #  traefik:
 #    ports:
@@ -15,3 +18,7 @@ version: "3.7"
 #  fpm:
 #    volumes:
 #      - ./:/srv:cached # Uncomment for MacOS
+
+  postgres:
+    volumes:
+      - postgres-data:/var/lib/postgresql/data:rw

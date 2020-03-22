@@ -45,6 +45,11 @@ if [ "$1" == "php-fpm" ]; then
 	setfacl -R -m u:www-data:rwX -m u:"$(stat -c "%u" .)":rwX var 2>/dev/null || true # Can fail on OSx
 	setfacl -dR -m u:www-data:rwX -m u:"$(stat -c "%u" .)":rwX var 2>/dev/null || true
 
+  if [ -n "${INIT_DB}" ]; then
+    echo -e "\n===== Init db and fixtures\n"
+    bin/post-install-dev.sh || true
+  fi
+
   echo -e "\n===== Running FPM only for localhost\n"
   php-fpm -d listen=127.0.0.1:9001 -D
 

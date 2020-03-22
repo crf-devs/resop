@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "beberlei/assert": "^3.2",
         "doctrine/annotations": "^1.8",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "sensio/framework-extra-bundle": "5.*",
         "symfony/console": "5.*",
         "symfony/dotenv": "5.*",
@@ -23,7 +24,6 @@
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.3",
-        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpstan/phpstan-doctrine": "^0.12.8",
         "phpstan/phpstan-symfony": "^0.12.2",
