@@ -11,8 +11,8 @@ if [ $# -eq 0 ]; then
 fi
 
 if [ -t 1 -a 1 -ne "${DISABLE_TTY}" ]; then
-    ${DOCKER_COMPOSE} run --rm -u $(id -u):$(id -g) node "$@"
+    ${DOCKER_COMPOSE} run --rm -u $(id -u):$(id -g) -e "HOME=/tmp" node "$@"
 else
     # CI and other runners
-    ${DOCKER_COMPOSE} run --rm -u node:node -T node "$@"
+    ${DOCKER_COMPOSE} run --rm -u node:node -T -e "HOME=/tmp" node "$@"
 fi
