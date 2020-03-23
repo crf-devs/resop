@@ -14,7 +14,6 @@ use App\Repository\CommissionableAssetAvailabilityRepository;
 use App\Repository\CommissionableAssetRepository;
 use App\Repository\UserAvailabilityRepository;
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +39,18 @@ class PlanningController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $form = $this->container->get('form.factory')->createNamed('', PlanningSearchType::class, null, ['method' => 'GET']);
+        $data = [
+            'from' => new \DateTimeImmutable('monday'),
+            'to' => (new \DateTimeImmutable('monday'))->add(new \DateInterval('P1W')),
+            'availableFrom' => new \DateTimeImmutable('today'),
+            'availableTo' => (new \DateTimeImmutable('today'))->add(new \DateInterval('P1D')),
+            'volunteer' => true,
+            'volunteerEquipped' => true,
+            'volunteerHideVulnerable' => true,
+            'asset' => true,
+        ];
+
+        $form = $this->container->get('form.factory')->createNamed('', PlanningSearchType::class, $data, ['method' => 'GET']);
         $form->handleRequest($request);
 
         $from = $form->get('from')->getData();
@@ -64,17 +74,8 @@ class PlanningController extends AbstractController
 
     private function searchEntities(array $formData): array
     {
-        $organizations = $formData['organizations'] instanceof ArrayCollection ? $formData['organizations']->toArray() : [];
-
-        // TODO Filter by availabilty on a given date
-        $users = $formData['volunteer'] ? $this->userRepository->findBySkillsAndEquippedAndVulnerableAndOrganizations(
-            $formData['volunteerSkills'],
-            $formData['volunteerEquipped'],
-            !$formData['volunteerHideVulnerable'],
-            $organizations
-        ) : [];
-
-        $assets = $formData['asset'] ? $this->assetRepository->findByTypesAndOrganizations($formData['assetTypes'], $organizations) : [];
+        $users = $this->userRepository->findByFilters($formData);
+        $assets = $this->assetRepository->findByFilters($formData);
 
         return [$users, $assets];
     }
