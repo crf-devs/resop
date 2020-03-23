@@ -6,6 +6,7 @@ namespace App\Controller\User\Account;
 
 use App\Entity\User;
 use App\Form\Type\UserType;
+use App\Security\UserAutomaticLoginHandler;
 use App\Security\UserLoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,13 +22,16 @@ final class CreateAccountController extends AbstractController
 {
     private AuthenticationUtils $authenticationUtils;
     private EntityManagerInterface $entityManager;
+    private UserAutomaticLoginHandler $automaticLoginHandler;
 
     public function __construct(
         AuthenticationUtils $authenticationUtils,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        UserAutomaticLoginHandler $automaticLoginHandler
     ) {
         $this->authenticationUtils = $authenticationUtils;
         $this->entityManager = $entityManager;
+        $this->automaticLoginHandler = $automaticLoginHandler;
     }
 
     public function __invoke(Request $request): Response
@@ -49,7 +53,7 @@ final class CreateAccountController extends AbstractController
 
             $this->addFlash('success', 'Votre compte utilisateur a été créé avec succès.');
 
-            return $this->redirectToRoute('user_home');
+            return $this->automaticLoginHandler->handleAuthentication($request, $user);
         }
 
         return $this->render('user/create-account.html.twig', [
