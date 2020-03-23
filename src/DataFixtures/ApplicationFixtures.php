@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\AvailabilityInterface;
 use App\Entity\CommissionableAsset;
+use App\Entity\CommissionableAssetAvailability;
 use App\Entity\Organization;
 use App\Entity\User;
 use App\Entity\UserAvailability;
@@ -47,18 +49,28 @@ final class ApplicationFixtures extends Fixture
     /** @var User[] */
     private array $users = [];
 
-    public function __construct(EncoderFactoryInterface $encoders, ValidatorInterface $validator)
-    {
+    /** @var CommissionableAsset[] */
+    private array $assets = [];
+
+    private array $availableSkillSets;
+
+    public function __construct(
+        EncoderFactoryInterface $encoders,
+        ValidatorInterface $validator,
+        array $availableSkillSets = []
+    ) {
         $this->encoders = $encoders;
         $this->validator = $validator;
+        $this->availableSkillSets = $availableSkillSets;
     }
 
     public function load(ObjectManager $manager): void
     {
         $this->loadOrganizations($manager);
         $this->loadCommissionableAssets($manager);
+        $this->loadAvailabilities($manager, $this->assets, CommissionableAssetAvailability::class);
         $this->loadUsers($manager);
-        $this->loadUserAvailabilities($manager);
+        $this->loadAvailabilities($manager, $this->users, UserAvailability::class);
 
         $manager->flush();
     }
@@ -85,79 +97,112 @@ final class ApplicationFixtures extends Fixture
 
     private function loadCommissionableAssets(ObjectManager $manager): void
     {
-        $manager->persist(new CommissionableAsset(
-            null,
-            $this->organizations['DT75'],
-            'VPSP',
-            '75092'
-        ));
+        $combinations = [
+            ['VPSP', '2'],
+            ['VPSP', '4'],
+            ['VL', '6'],
+        ];
 
-        $manager->persist(new CommissionableAsset(
-            null,
-            $this->organizations['DT75'],
-            'VPSP',
-            '75094'
-        ));
-        $manager->persist(new CommissionableAsset(
-            null,
-            $this->organizations['DT75'],
-            'VL',
-            '75096'
-        ));
+        foreach ($this->organizations as $organization) {
+            if ('DT75' == $organization->name) {
+                $ulId = '99';
+            } else {
+                $ulId = substr(str_replace(' ', '', $organization->name), 1, 2);
+            }
+
+            foreach ($combinations as list($type, $suffix)) {
+                $asset = new CommissionableAsset(
+                    null,
+                    $organization,
+                    'VPSP',
+                    '75'.$ulId.$suffix
+                );
+
+                $this->validateAndPersist($manager, $asset);
+                $this->assets[] = $asset;
+            }
+        }
+
+        $manager->flush();
     }
 
     private function loadUsers(ObjectManager $manager): void
     {
-        $user = new User();
-        $user->id = 1;
-        $user->firstName = 'Alain';
-        $user->lastName = 'Proviste';
-        $user->organization = $this->organizations['UL 09'];
-        $user->setIdentificationNumber('00009999999V');
-        $user->setEmailAddress('user+alias@some-domain.tld');
-        $user->phoneNumber = '0102030405';
-        $user->birthday = '1990-02-28';
-        $user->occupation = 'Pharmacien';
-        $user->organizationOccupation = 'Secouriste';
-        $user->skillSet = ['ci_alpha', 'ci_reseau'];
-        $user->vulnerable = true;
-        $user->fullyEquipped = true;
+        $startIdNumber = 990000;
+        $firstNames = ['Philippe', 'Bastien', 'Hugo', 'Michel', 'Mathias', 'Florian', 'Fabien', 'Nassim', 'Mathieu', 'Francis', 'Thomas'];
+        $lastNames = ['Skywalker', 'Merkel', 'Johnson', 'Trump', 'Macron', 'Musk', 'Jones', 'Diesel', 'Walker'];
+        $occupations = ['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'];
+        $lettersRange = range('A', 'Z');
+        $yearsRange = range(1950, 2005);
+        $monthsRange = range(1, 12);
+        $daysRange = range(1, 28);
 
-        $this->users[$user->getIdentificationNumber()] = $user;
+        $x = 1;
+        foreach ($this->organizations as $organization) {
+            for ($i = 0; $i < rand(5, 15); ++$i) {
+                $user = new User();
+                $user->id = $i + 1;
+                $user->firstName = $firstNames[array_rand($firstNames)];
+                $user->lastName = $lastNames[array_rand($lastNames)];
+                $user->organization = $this->organizations[array_rand($this->organizations)];
+                $user->setIdentificationNumber(str_pad(''.++$startIdNumber.'', 10, '0', STR_PAD_LEFT).$lettersRange[array_rand($lettersRange)]);
+                $user->setEmailAddress($user->firstName.'.'.$user->lastName.$x.'@some-domain.tld');
+                $user->phoneNumber = '0102030405';
+                $user->birthday = implode('-', [
+                    $yearsRange[array_rand($yearsRange)],
+                    str_pad($monthsRange[array_rand($monthsRange)].'', 2, '0', STR_PAD_LEFT),
+                    str_pad($daysRange[array_rand($daysRange)].'', 2, '0', STR_PAD_LEFT),
+                ]);
+                $user->occupation = $occupations[array_rand($occupations)];
+                $user->organizationOccupation = 'Secouriste';
+                $user->skillSet = (array) array_rand($this->availableSkillSets, random_int(2, 4));
+                $user->vulnerable = (bool) random_int(0, 1);
+                $user->fullyEquipped = (bool) random_int(0, 1);
 
-        $this->validateAndPersist($manager, $user);
+                $this->users[$user->getIdentificationNumber()] = $user;
+
+                $this->validateAndPersist($manager, $user);
+                ++$x;
+            }
+        }
     }
 
-    private function loadUserAvailabilities(ObjectManager $manager): void
+    private function loadAvailabilities(ObjectManager $manager, array $owners, string $availabilityClass): void
     {
         $thisWeek = (new \DateTimeImmutable('monday this week'));
 
-        $availabilities = [
-            '9999999V' => [
-                'PT0H',
-                'P2DT10H',
-                'P2DT12H',
-                'P7DT22H',
-                'P8DT16H',
-                'P9DT20H',
-                'P9DT22H',
-                'P10DT8H',
-                'P10DT10H',
-            ],
-        ];
+        $dateIntervals = [];
+        for ($d = 0; $d <= 10; ++$d) {
+            for ($t = 0; $t < 22; $t = $t + 2) {
+                $dateIntervals[] = 'P'.$d.'DT'.$t.'H';
+            }
+        }
 
-        foreach ($availabilities as $user => $periods) {
-            foreach ($periods as $period) {
-                $startTime = $thisWeek->add(new \DateInterval($period));
+        foreach ($owners as $owner) {
+            $currentIntervals = $dateIntervals;
+            for ($i = 0; $i < 40; ++$i) {
+                $key = array_rand($currentIntervals);
 
-                $manager->persist(new UserAvailability(
+                $startTime = $thisWeek->add(new \DateInterval($currentIntervals[$key]));
+
+                $availability = new $availabilityClass(
                     null,
-                    $this->users[$user],
+                    $owner,
                     $startTime,
                     $startTime->add(new \DateInterval('PT2H')),
-                    UserAvailability::STATUS_AVAILABLE
-                ));
+                    AvailabilityInterface::STATUSES[array_rand(AvailabilityInterface::STATUSES)]
+                );
+
+                if (AvailabilityInterface::STATUS_BOOKED == $availability->status) {
+                    $availability->planningAgent = $this->organizations[array_rand($this->organizations)];
+                }
+
+                $manager->persist($availability);
+
+                unset($currentIntervals[$key]);
             }
+
+            $manager->flush();
         }
     }
 
