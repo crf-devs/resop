@@ -33,6 +33,7 @@
             </div>
         </nav>
         <div class="container my-4">
+            {{ include('misc/flash-messages.html.twig') }}
             {% block body %}{% endblock %}
         </div>
         {% block javascripts %}

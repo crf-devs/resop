@@ -59,4 +59,26 @@ class CommissionableAssetsController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/commissionable-assets/{id}/edit", name="app_organization_commissionable_edit_asset", methods={"GET", "POST"}, requirements={"id": "\d+"})
+     */
+    public function editAsset(Request $request, CommissionableAsset $asset): Response
+    {
+        $form = $this->createForm(CommissionableAssetType::class, $asset);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            $this->addFlash('success', sprintf('Véhicule "%s" mis à jour avec succès', $asset));
+
+            return $this->redirectToRoute('app_organization_commissionable_assets');
+        }
+
+        return $this->render('organization/commissionable_assets_add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 }
