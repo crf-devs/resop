@@ -58,6 +58,7 @@ class PlanningSearchType extends AbstractType
                 'multiple' => true,
                 'choice_label' => 'name',
                 'required' => false,
+                'attr' => ['class' => 'selectpicker'],
             ])
             ->add('volunteer', CheckboxType::class, [
                 'label' => 'Bénévoles',
@@ -67,6 +68,7 @@ class PlanningSearchType extends AbstractType
                 'choices' => array_flip($this->availableSkillSets),
                 'multiple' => true,
                 'required' => false,
+                'attr' => ['class' => 'selectpicker'],
             ])
             ->add('volunteerEquipped', CheckboxType::class, [
                 'label' => 'Avec uniforme seulement',
@@ -75,13 +77,14 @@ class PlanningSearchType extends AbstractType
                 'label' => 'Cacher les personnes signalées comme vulnérables',
             ])
             ->add('asset', CheckboxType::class, [
-                'label' => 'Véhicules',
+                'label' => 'Afficher les véhicules',
             ])
             ->add('assetTypes', ChoiceType::class, [
                 'label' => 'Type de véhicules',
                 'choices' => CommissionableAsset::TYPES,
                 'multiple' => true,
                 'required' => false,
+                'attr' => ['class' => 'selectpicker'],
             ])
             ->add('submit', SubmitType::class, ['label' => 'Filtrer'])
         ;
