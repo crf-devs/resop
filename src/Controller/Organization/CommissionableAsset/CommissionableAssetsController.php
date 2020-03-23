@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Organization;
+namespace App\Controller\Organization\CommissionableAsset;
 
 use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
@@ -23,17 +23,17 @@ class CommissionableAssetsController extends AbstractController
     }
 
     /**
-     * @Route("/commissionable-assets", name="app_organization_commissionable_assets", methods={"GET"})
+     * @Route("/", name="app_organization_commissionable_assets", methods={"GET"})
      */
     public function assets(): Response
     {
-        return $this->render('organization/commissionable_assets_list.html.twig', [
+        return $this->render('organization/commissionable_asset/list.html.twig', [
             'assets' => $this->assetRepository->findBy(['organization' => $this->getUser()]),
         ]);
     }
 
     /**
-     * @Route("/commissionable-assets/add", name="app_organization_commissionable_add_asset", methods={"GET", "POST"})
+     * @Route("add", name="app_organization_commissionable_add_asset", methods={"GET", "POST"})
      */
     public function addAsset(Request $request): Response
     {
@@ -54,14 +54,14 @@ class CommissionableAssetsController extends AbstractController
             return $this->redirectToRoute('app_organization_commissionable_assets');
         }
 
-        return $this->render('organization/commissionable_assets_add.html.twig', [
+        return $this->render('organization/commissionable_asset/add.html.twig', [
             'organization' => $organization,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/commissionable-assets/{id}/edit", name="app_organization_commissionable_edit_asset", methods={"GET", "POST"}, requirements={"id": "\d+"})
+     * @Route("/{id}/edit", name="app_organization_commissionable_edit_asset", methods={"GET", "POST"}, requirements={"id": "\d+"})
      */
     public function editAsset(Request $request, CommissionableAsset $asset): Response
     {
@@ -77,7 +77,7 @@ class CommissionableAssetsController extends AbstractController
             return $this->redirectToRoute('app_organization_commissionable_assets');
         }
 
-        return $this->render('organization/commissionable_assets_add.html.twig', [
+        return $this->render('organization/commissionable_asset/add.html.twig', [
             'form' => $form->createView(),
         ]);
     }

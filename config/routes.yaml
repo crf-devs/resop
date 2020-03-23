@@ -2,3 +2,8 @@ _organizations:
     resource: ../src/Controller/Organization/
     type: annotation
     prefix: /organizations
+
+_organizations_commissionable_assets:
+    resource: ../src/Controller/Organization/CommissionableAsset
+    type: annotation
+    prefix: /organizations/commissionable-assets

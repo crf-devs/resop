@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Organization\CommissionableAsset\Availability;
+namespace App\Controller\Organization\CommissionableAsset;
 
 use App\Domain\AvailabilitiesDomain;
 use App\Entity\CommissionableAssetAvailability;
@@ -16,9 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/commissionable-assets/{id<\d+>}/availability/{week<\d{4}-W\d{2}>?}", name="organization_commisionable_asset_availability", methods={"GET", "POST"})
+ * @Route("/{id<\d+>}/availability/{week<\d{4}-W\d{2}>?}", name="organization_commisionable_asset_availability", methods={"GET", "POST"})
  */
-final class ManageAvailabilityController extends AbstractController
+final class AvailabilityController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private CommissionableAssetAvailabilityRepository $commissionableAssetAvailabilityRepository;
@@ -80,7 +80,7 @@ final class ManageAvailabilityController extends AbstractController
             return $this->redirectToRoute('app_organization_commissionable_assets');
         }
 
-        return $this->render('organization/commissionable-asset-availability.html.twig', [
+        return $this->render('organization/commissionable_asset/availability.html.twig', [
             'form' => $form->createView(),
             'asset' => $asset,
         ]);
