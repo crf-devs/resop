@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Assert\Assertion;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait AvailabilitableTrait
@@ -34,10 +33,10 @@ trait AvailabilitableTrait
     public string $status = '';
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
      * @ORM\JoinColumn(nullable=true)
      */
-    public ?User $planningAgent = null;
+    public ?Organization $planningAgent = null;
 
     /**
      * @ORM\Column(type="datetimetz_immutable", nullable=true)
@@ -73,10 +72,8 @@ trait AvailabilitableTrait
         $this->createdAt = self::createImmutableDateTime();
     }
 
-    public function book(User $planningAgent, \DateTimeImmutable $bookedAt = null): void
+    public function book(Organization $planningAgent, \DateTimeImmutable $bookedAt = null): void
     {
-        Assertion::eq($this->status, self::STATUS_AVAILABLE);
-
         $this->planningAgent = $planningAgent;
         $this->bookedAt = $bookedAt ?: self::createImmutableDateTime();
         $this->updatedAt = $bookedAt ?: self::createImmutableDateTime();
@@ -85,15 +82,24 @@ trait AvailabilitableTrait
 
     public function declareAvailable(\DateTimeImmutable $updatedAt = null): void
     {
-        Assertion::eq($this->status, self::STATUS_LOCKED);
-
         $this->updatedAt = $updatedAt ?: self::createImmutableDateTime();
         $this->status = self::STATUS_AVAILABLE;
+    }
+
+    public function lock(\DateTimeImmutable $updatedAt = null): void
+    {
+        $this->updatedAt = $updatedAt ?: self::createImmutableDateTime();
+        $this->status = self::STATUS_LOCKED;
     }
 
     public function getStartTime(): \DateTimeImmutable
     {
         return $this->startTime;
+    }
+
+    public function getEndTime(): \DateTimeImmutable
+    {
+        return $this->endTime;
     }
 
     public function getStatus(): string

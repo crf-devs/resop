@@ -34,4 +34,9 @@ class UserAvailability implements AvailabilityInterface
         $this->initialize($id, $startTime, $endTime, $status);
         $this->user = $user;
     }
+
+    public function getOwner(): AvailabilitableInterface
+    {
+        return $this->user;
+    }
 }

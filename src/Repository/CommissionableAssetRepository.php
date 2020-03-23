@@ -15,11 +15,16 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method CommissionableAsset[]    findAll()
  * @method CommissionableAsset[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CommissionableAssetRepository extends ServiceEntityRepository
+class CommissionableAssetRepository extends ServiceEntityRepository implements AvailabilitableRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CommissionableAsset::class);
+    }
+
+    public function findByIds(array $ids): array
+    {
+        return $this->findBy(['id' => $ids]);
     }
 
     /**

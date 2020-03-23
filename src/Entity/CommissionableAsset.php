@@ -79,4 +79,9 @@ class CommissionableAsset implements AvailabilitableInterface
     {
         return $this->availabilities;
     }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 }

@@ -39,4 +39,20 @@ class CommissionableAssetAvailabilityRepository extends ServiceEntityRepository 
             ->getResult()
         ;
     }
+
+    public function findByOwnerAndDates(array $owners, \DateTimeInterface $start, \DateTimeInterface $end): array
+    {
+        return $this->createQueryBuilder('ua')
+            ->where('ua.asset IN (:owners)')
+            ->andWhere('ua.startTime >= :start')
+            ->andWhere('ua.endTime <= :end')
+            ->setParameters([
+                'owners' => $owners,
+                'start' => $start,
+                'end' => $end,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

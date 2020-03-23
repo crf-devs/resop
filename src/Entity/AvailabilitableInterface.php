@@ -7,4 +7,6 @@ namespace App\Entity;
 interface AvailabilitableInterface
 {
     public function getAvailabilities(): iterable;
+
+    public function getId(): ?int;
 }
