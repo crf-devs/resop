@@ -84,7 +84,7 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
             0 === $this->validator->validate($credentials['identifier'], [new Assert\Regex(['pattern' => User::NIVOL_FORMAT])])->count()
             || 0 === $this->validator->validate($credentials['identifier'], [new Assert\Email()])->count()
         )) {
-            throw new BadCredentialsException('Veuillez saisir un numéro NIVOL ou une adresse e-mail.');
+            throw new BadCredentialsException();
         }
 
         return $this->userRepository->loadUserByUsername($credentials['identifier']);
