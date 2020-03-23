@@ -83,7 +83,6 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new \RuntimeException('Bad user type');
         }
 
-        //TODO Fix "Invalid credentials." translation key
         return $credentials['birthday'] === $user->getBirthday();
     }
 
