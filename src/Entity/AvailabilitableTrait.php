@@ -90,4 +90,9 @@ trait AvailabilitableTrait
         $this->updatedAt = $updatedAt ?: self::createImmutableDateTime();
         $this->status = self::STATUS_AVAILABLE;
     }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
 }

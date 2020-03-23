@@ -6,6 +6,7 @@ namespace App\Entity;
 
 interface AvailabilityInterface
 {
+    public const STATUS_UNKNOW = 'unknown'; // Same as not existing in the DB
     public const STATUS_AVAILABLE = 'available';
     public const STATUS_BOOKED = 'booked';
     public const STATUS_LOCKED = 'locked';
@@ -19,4 +20,6 @@ interface AvailabilityInterface
     public function book(User $planningAgent, \DateTimeImmutable $bookedAt = null): void;
 
     public function declareAvailable(\DateTimeImmutable $updatedAt = null): void;
+
+    public function getStatus(): string;
 }

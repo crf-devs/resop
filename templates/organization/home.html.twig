@@ -8,10 +8,10 @@
     <h1>{{ app.user }}</h1>
 
     <p>Semaine actuelle : du {{ 'this week' | date('d/m/Y') }} au {{ 'sunday this week' | date('d/m/Y') }}</p>
-    <p><a class="btn btn-primary" href="#" role="button">Afficher les disponibilités de mes bénévoles pour la semaine actuelle</a></p>
+    <p><button class="btn btn-primary" role="button" disabled>Afficher les disponibilités de mes bénévoles pour la semaine actuelle</button></p>
 
     <p>Semaine prochaine : du {{ 'next week' | date('d/m/Y') }} au {{ 'sunday next week' | date('d/m/Y') }}</p>
-    <p><a class="btn btn-primary" href="#" role="button">Afficher les disponibilités de mes bénévoles pour la semaine prochaine</a></p>
+    <p><button class="btn btn-primary" role="button" disabled>Afficher les disponibilités de mes bénévoles pour la semaine prochaine</button></p>
 
     <hr>
 
@@ -21,4 +21,6 @@
     <hr>
 
     <p><button class="btn btn-primary" role="button" disabled>Afficher la liste de mes structures</button></p>
+
+    <p><a class="btn btn-primary" href="{{ path('planning') }}" role="button">Afficher les disponibilités des bénévoles</a></p>
 {% endblock %}

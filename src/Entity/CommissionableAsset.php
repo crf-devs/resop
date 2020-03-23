@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommissionableAssetRepository")
  */
-class CommissionableAsset
+class CommissionableAsset implements AvailabilitableInterface
 {
     public const TYPES = [
         'Véhicule léger' => 'VL',
@@ -51,7 +51,7 @@ class CommissionableAsset
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CommissionableAssetAvailability", mappedBy="asset")
      */
-    public iterable $availabilities;
+    public iterable $availabilities = [];
 
     public function __construct(
         ?int $id,
@@ -73,5 +73,10 @@ class CommissionableAsset
     public function __toString(): string
     {
         return $this->type.' - '.$this->name;
+    }
+
+    public function getAvailabilities(): iterable
+    {
+        return $this->availabilities;
     }
 }

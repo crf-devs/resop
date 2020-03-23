@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("emailAddress")
  * @UniqueEntity("identificationNumber")
  */
-class User implements UserInterface
+class User implements UserInterface, AvailabilitableInterface
 {
     /**
      * @ORM\Id
@@ -113,7 +113,7 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\UserAvailability", mappedBy="user")
      */
-    public iterable $availabilities;
+    private iterable $availabilities = [];
 
     public static function bootstrap(string $identifier = null): self
     {
@@ -220,5 +220,10 @@ class User implements UserInterface
     public function setBirthday(string $birthday): void
     {
         $this->birthday = $birthday;
+    }
+
+    public function getAvailabilities(): iterable
+    {
+        return $this->availabilities;
     }
 }

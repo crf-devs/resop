@@ -6,7 +6,6 @@ namespace App\Form\Type;
 
 use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
-use App\Exception\ConstraintViolationListException;
 use DateTimeImmutable;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -30,19 +29,31 @@ class PlanningSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('from', DateTimeType::class, [
+                'input' => 'datetime_immutable',
+                'label' => 'Afficher les disponibilités de ',
+                'data' => new DateTimeImmutable(),
+                'with_minutes' => false,
+            ])
+            ->add('to', DateTimeType::class, [
+                'input' => 'datetime_immutable',
+                'label' => 'à',
+                'data' => (new DateTimeImmutable())->add(new \DateInterval('P1W')),
+                'with_minutes' => false,
+            ])
             ->add('organizations', EntityType::class, [
                 'label' => 'Structures',
                 'class' => Organization::class,
                 'multiple' => true,
                 'choice_label' => 'name',
             ])
-            ->add('from', DateTimeType::class, [
+            ->add('availableFrom', DateTimeType::class, [
                 'input' => 'datetime_immutable',
                 'label' => 'Seulement les ressources disponibles de ',
                 'data' => new DateTimeImmutable(),
                 'with_minutes' => false,
             ])
-            ->add('to', DateTimeType::class, [
+            ->add('availableFrom', DateTimeType::class, [
                 'input' => 'datetime_immutable',
                 'label' => 'à',
                 'data' => (new DateTimeImmutable())->add(new \DateInterval('P1W')),
@@ -85,7 +96,7 @@ class PlanningSearchType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $event) {
             $data = $event->getData() ?? [];
             if (array_key_exists('from', $data) && array_key_exists('to', $data) && $data['from'] >= $data['to']) {
-                throw new ConstraintViolationListException('alala');
+                throw new \InvalidArgumentException('Invalid payload'); // TODO Put a better error
             }
         });
     }
