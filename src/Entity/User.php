@@ -211,4 +211,9 @@ class User implements UserInterface
     {
         return $this->birthday;
     }
+
+    public function setBirthday(string $birthday): void
+    {
+        $this->birthday = $birthday;
+    }
 }
