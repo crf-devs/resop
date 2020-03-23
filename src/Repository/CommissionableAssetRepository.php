@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\CommissionableAsset;
-use App\Entity\Organization;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -23,22 +23,19 @@ class CommissionableAssetRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string[]       $assetTypes
-     * @param Organization[] $organizations
+     * @return ArrayCollection
      */
-    public function findByTypesAndOrganizations(array $assetTypes, array $organizations): iterable
+    public function findByFilters(array $formData)
     {
-        $organizationIds = array_map(static function (Organization $organization) {
-            return $organization->id;
-        }, $organizations);
-
         $qb = $this->createQueryBuilder('a');
-        $qb->where(
-            $qb->expr()->andX(
-                $qb->expr()->in('a.type', $assetTypes),
-                $qb->expr()->in('a.organization', $organizationIds)
-            )
-        );
+
+        if (0 < count($formData['assetTypes'])) {
+            $qb->andWhere('a.type IN (:types)')->setParameter('types', $formData['assetTypes']);
+        }
+
+        if (0 < $formData['organizations']->count()) {
+            $qb->andWhere('a.organization IN (:organisations)')->setParameter('organisations', $formData['organizations']);
+        }
 
         return $qb->getQuery()->getResult();
     }

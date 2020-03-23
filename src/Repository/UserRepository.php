@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\Organization;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
@@ -38,33 +38,39 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     }
 
     /**
-     * @param string[]       $skills
-     * @param Organization[] $organizations
+     * @return ArrayCollection
      */
-    public function findBySkillsAndEquippedAndVulnerableAndOrganizations(array $skills, bool $equipped, bool $vulnerable, array $organizations): iterable
+    public function findByFilters(array $formData)
     {
         $qb = $this->createQueryBuilder('u');
 
         $skillsQueries = [];
-        foreach (array_values($skills) as $key => $skill) {
+        foreach (array_values($formData['volunteerSkills']) as $key => $skill) {
             $skillsQueries[] = sprintf('CONTAINS(u.skillSet, ARRAY(:skill%d)) = TRUE', $key);
             $qb->setParameter(sprintf('skill%d', $key), $skill);
         }
 
-        $organizationIds = array_map(static function (Organization $organization) {
-            return $organization->id;
-        }, $organizations);
+        if (0 < $formData['organizations']->count()) {
+            $qb->andWhere('u.organization IN (:organisations)')->setParameter('organisations', $formData['organizations']);
+        }
 
-        $qb->where(
-            $qb->expr()
-                ->andX(
-                    $qb->expr()->eq('u.fullyEquipped', $qb->expr()->literal($equipped)),
-                    $qb->expr()->eq('u.vulnerable', $qb->expr()->literal($vulnerable)),
-                    $qb->expr()->in('u.organization', $organizationIds),
-                    $qb->expr()->orX(...$skillsQueries)
-                )
-            )
-        ;
+        if ($formData['volunteerEquipped']) {
+            $qb->andWhere('u.fullyEquipped = TRUE');
+        }
+
+        if ($formData['volunteerHideVulnerable']) {
+            $qb->andWhere('u.vulnerable = FALSE');
+        }
+
+        if (0 < count($formData['volunteerSkills'])) {
+            $skillsQueries = [];
+            foreach (array_values($formData['volunteerSkills']) as $key => $skill) {
+                $skillsQueries[] = sprintf('CONTAINS(u.skillSet, ARRAY(:skill%d)) = TRUE', $key);
+                $qb->setParameter(sprintf('skill%d', $key), $skill);
+            }
+
+            $qb->andWhere($qb->expr()->orX(...$skillsQueries));
+        }
 
         return $qb->getQuery()->getResult();
     }

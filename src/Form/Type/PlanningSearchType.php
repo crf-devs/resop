@@ -31,14 +31,23 @@ class PlanningSearchType extends AbstractType
         $builder
             ->add('from', DateTimeType::class, [
                 'input' => 'datetime_immutable',
-                'label' => 'Afficher les disponibilités de ',
-                'data' => new DateTimeImmutable(),
+                'label' => 'Visualiser les jours de ',
                 'with_minutes' => false,
             ])
             ->add('to', DateTimeType::class, [
                 'input' => 'datetime_immutable',
                 'label' => 'à',
-                'data' => (new DateTimeImmutable())->add(new \DateInterval('P1W')),
+                'with_minutes' => false,
+            ])
+            ->add('availableFrom', DateTimeType::class, [
+                'input' => 'datetime_immutable',
+                'label' => 'Rechercher les disponibilités de ',
+                'with_minutes' => false,
+            ])
+            ->add('availableTo', DateTimeType::class, [
+                'input' => 'datetime_immutable',
+                'label' => 'à',
+                'data' => (new DateTimeImmutable('today'))->add(new \DateInterval('P1D')),
                 'with_minutes' => false,
             ])
             ->add('organizations', EntityType::class, [
@@ -46,23 +55,10 @@ class PlanningSearchType extends AbstractType
                 'class' => Organization::class,
                 'multiple' => true,
                 'choice_label' => 'name',
-            ])
-            ->add('availableFrom', DateTimeType::class, [
-                'input' => 'datetime_immutable',
-                'label' => 'Seulement les ressources disponibles de ',
-                'data' => new DateTimeImmutable(),
-                'with_minutes' => false,
-            ])
-            ->add('availableFrom', DateTimeType::class, [
-                'input' => 'datetime_immutable',
-                'label' => 'à',
-                'data' => (new DateTimeImmutable())->add(new \DateInterval('P1W')),
-                'with_minutes' => false,
+                'required' => false,
             ])
             ->add('volunteer', CheckboxType::class, [
                 'label' => 'Bénévoles',
-                'data' => true,
-                'required' => false,
             ])
             ->add('volunteerSkills', ChoiceType::class, [
                 'label' => 'Compétences',
@@ -71,17 +67,13 @@ class PlanningSearchType extends AbstractType
                 'required' => false,
             ])
             ->add('volunteerEquipped', CheckboxType::class, [
-                'label' => 'Avec uniforme',
-                'required' => false,
+                'label' => 'Avec uniforme seulement',
             ])
             ->add('volunteerHideVulnerable', CheckboxType::class, [
                 'label' => 'Cacher les personnes signalées comme vulnérables',
-                'data' => true,
-                'required' => false,
             ])
             ->add('asset', CheckboxType::class, [
                 'label' => 'Véhicules',
-                'required' => false,
             ])
             ->add('assetTypes', ChoiceType::class, [
                 'label' => 'Type de véhicules',
@@ -89,7 +81,7 @@ class PlanningSearchType extends AbstractType
                 'multiple' => true,
                 'required' => false,
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, ['label' => 'Filtrer'])
         ;
 
         // Cannot use contraint in upper types, because it's not bound to an entity (therefore PropertyAccessor cannot succeed)
