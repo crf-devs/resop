@@ -25,6 +25,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, AvailabilitableInterface
 {
+    const NIVOL_FORMAT = '#^\d+[A-Z]$#';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -35,6 +37,10 @@ class User implements UserInterface, AvailabilitableInterface
     /**
      * @ORM\Column
      * @Assert\NotBlank
+     * @Assert\Regex(
+     *     pattern=User::NIVOL_FORMAT,
+     *     message="Le format est invalide, exemple : 0123456789A."
+     * )
      */
     private string $identificationNumber = '';
 
@@ -59,7 +65,10 @@ class User implements UserInterface, AvailabilitableInterface
 
     /**
      * @ORM\Column
-     * @Assert\NotBlank
+     * @Assert\Regex(
+     *     pattern="#^0[1-9][0-9]{8}$#",
+     *     message="Le format est invalide, exemple : 0601020304."
+     * )
      */
     public string $phoneNumber = '';
 
