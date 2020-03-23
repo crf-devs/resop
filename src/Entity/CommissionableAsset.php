@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommissionableAssetRepository")
  */
-class CommissionableAsset
+class CommissionableAsset implements AvailabilitableInterface
 {
     public const TYPES = [
         'Véhicule léger' => 'VL',
@@ -41,12 +41,17 @@ class CommissionableAsset
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
      * @ORM\JoinColumn(nullable=false)
      */
-    private Organization $organization;
+    public Organization $organization;
 
     /**
      * @ORM\Column(type="datetimetz_immutable", nullable=true)
      */
     public ?\DateTimeImmutable $lastCommissionDate = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CommissionableAssetAvailability", mappedBy="asset")
+     */
+    public iterable $availabilities = [];
 
     public function __construct(
         ?int $id,
@@ -68,5 +73,10 @@ class CommissionableAsset
     public function __toString(): string
     {
         return $this->type.' - '.$this->name;
+    }
+
+    public function getAvailabilities(): iterable
+    {
+        return $this->availabilities;
     }
 }

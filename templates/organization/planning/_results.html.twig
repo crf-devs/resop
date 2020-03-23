@@ -1,0 +1,46 @@
+<div class="table-responsive">
+    <table class="table table-sm table-bordered">
+        <thead>
+        <tr>
+            <th rowspan="2"></th>
+            {% for item in periodCalculator.days %}
+                <th colspan="{{ item.slots }}">
+                    {{ item.date|format_date(pattern="eeee dd MMMM") }}
+                </th>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for item in periodCalculator.period %}
+                <th>
+                    {{ item|format_date(pattern="HH") }}
+                </th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>>
+            {% for item in assetsAvailabilities %}
+                <tr>
+                    <td>{{ item.entity }}</td>
+                    {% for slot in item.availabilities %}
+                        <td data-status="{{ slot.status }}" data-from="{{ slot.from|date("Y-m-d h:i") }}" data-to="{{ slot.to|date("Y-m-d h:i") }}">
+                            <input type="checkbox">
+                        </td>
+                    {% endfor %}
+                </tr
+            {% endfor %}
+            <tr>
+                <td colspan="{{ periodCalculator.period|length }}"></td>
+            </tr>
+            {% for item in usersAvailabilities %}
+                <tr>
+                    <td>{{ item.entity }}</td>
+                    {% for slot in item.availabilities %}
+                        <td data-status="{{ slot.status }}" data-from="{{ slot.from|date("Y-m-d h:i") }}" data-to="{{ slot.to|date("Y-m-d h:i") }}">
+                            <input type="checkbox">
+                        </td>
+                    {% endfor %}
+                </tr
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

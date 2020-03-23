@@ -19,7 +19,7 @@ class UserAvailability implements AvailabilityInterface
     use AvailabilitableTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="availabilities")
      * @ORM\JoinColumn(nullable=false)
      */
     public User $user;

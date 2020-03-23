@@ -15,8 +15,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method UserAvailability[]    findAll()
  * @method UserAvailability[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserAvailabilityRepository extends ServiceEntityRepository
+class UserAvailabilityRepository extends ServiceEntityRepository implements AvailabilityRepositoryInterface
 {
+    use AvailabilityRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UserAvailability::class);

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Planning{% endblock %}
+
+{% block body %}
+    <h1>Planning - du {{ periodCalculator.from|format_date(pattern="eeee dd MMMM") }} au {{ periodCalculator.to|format_date(pattern="eeee dd MMMM") }}</h1>
+    {% include 'organization/planning/_search_type.html.twig' %}
+    {% include 'organization/planning/_results.html.twig' %}
+{% endblock %}
