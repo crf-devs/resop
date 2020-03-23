@@ -77,7 +77,7 @@ class PlanningSearchType extends AbstractType
             ])
             ->add('assetTypes', ChoiceType::class, [
                 'label' => 'Type de véhicules',
-                'choices' => array_flip(CommissionableAsset::TYPES),
+                'choices' => CommissionableAsset::TYPES,
                 'multiple' => true,
                 'required' => false,
             ])

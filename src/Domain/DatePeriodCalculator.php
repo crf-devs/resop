@@ -18,6 +18,19 @@ class DatePeriodCalculator
         return $this->period;
     }
 
+    public function getInterval(): \DateInterval
+    {
+        return $this->period->getDateInterval();
+    }
+
+    /**
+     * @return \DateTimeImmutable[]
+     */
+    public function getSlots(): array
+    {
+        return iterator_to_array($this->getPeriod());
+    }
+
     public function getDays(): array
     {
         /** @var \DateTimeInterface[] $period */
@@ -48,5 +61,14 @@ class DatePeriodCalculator
     public function getTo(): \DateTimeInterface
     {
         return $this->period->getEndDate();
+    }
+
+    public static function createRoundedToDay(\DateTimeImmutable $from, \DateInterval $interval, \DateTimeImmutable $to): self
+    {
+        return new self(
+            $from->setTime(0, 0, 0, 0),
+            new \DateInterval('PT2H'),
+            $to->add(new \DateInterval('P1D'))->setTime(0, 0, 0, 0)
+        );
     }
 }
