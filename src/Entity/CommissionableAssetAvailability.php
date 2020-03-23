@@ -34,4 +34,9 @@ class CommissionableAssetAvailability implements AvailabilityInterface
         $this->initialize($id, $startTime, $endTime, $status);
         $this->asset = $asset;
     }
+
+    public function getOwner(): AvailabilitableInterface
+    {
+        return $this->asset;
+    }
 }

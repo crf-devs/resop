@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements UserLoaderInterface
+class UserRepository extends ServiceEntityRepository implements UserLoaderInterface, AvailabilitableRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -35,6 +35,11 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function findByIds(array $ids): array
+    {
+        return $this->findBy(['id' => $ids]);
     }
 
     /**
