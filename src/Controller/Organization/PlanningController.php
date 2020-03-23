@@ -56,7 +56,7 @@ class PlanningController extends AbstractController
         $from = $form->get('from')->getData();
         $to = $form->get('to')->getData();
 
-        $periodCalculator = new DatePeriodCalculator($from, new \DateInterval('PT2H'), $to);
+        $periodCalculator = DatePeriodCalculator::createRoundedToDay($from, new \DateInterval('PT2H'), $to);
 
         if ($form->isSubmitted() && $form->isValid()) {
             [$users, $assets] = $this->searchEntities($form->getData());

@@ -1,5 +1,5 @@
-<div class="table-responsive">
-    <table class="table table-sm table-bordered">
+<div class="table-responsive planning-container">
+    <table class="planning table table-sm table-bordered">
         <thead>
         <tr>
             <th rowspan="2"></th>
@@ -10,37 +10,29 @@
             {% endfor %}
         </tr>
         <tr>
-            {% for item in periodCalculator.period %}
-                <th>
-                    {{ item|format_date(pattern="HH") }}
+            {% for item in periodCalculator.slots %}
+                <th class="slot-name">
+                    {{ item|format_date(pattern="HH") }}<br>{{ item|date_modify(periodCalculator.interval.format('+ %h hours'))|format_date(pattern="HH") }}
                 </th>
             {% endfor %}
         </tr>
         </thead>
-        <tbody>>
-            {% for item in assetsAvailabilities %}
+        <tbody>
+        {% for list in [assetsAvailabilities, usersAvailabilities] %}
+            {% for item in list %}
                 <tr>
-                    <td>{{ item.entity }}</td>
+                    <th class="item-detail">{{ item.entity }}</th>
                     {% for slot in item.availabilities %}
-                        <td data-status="{{ slot.status }}" data-from="{{ slot.from|date("Y-m-d h:i") }}" data-to="{{ slot.to|date("Y-m-d h:i") }}">
+                        <td class="slot-box {{ slot.status }}" data-status="{{ slot.status }}" data-from="{{ slot.from|date("Y-m-d h:i") }}" data-to="{{ slot.to|date("Y-m-d h:i") }}">
                             <input type="checkbox">
                         </td>
                     {% endfor %}
-                </tr
+                </tr>
             {% endfor %}
             <tr>
-                <td colspan="{{ periodCalculator.period|length }}"></td>
+                <td colspan="{{ 1 + periodCalculator.slots|length }}" class="separator"></td>
             </tr>
-            {% for item in usersAvailabilities %}
-                <tr>
-                    <td>{{ item.entity }}</td>
-                    {% for slot in item.availabilities %}
-                        <td data-status="{{ slot.status }}" data-from="{{ slot.from|date("Y-m-d h:i") }}" data-to="{{ slot.to|date("Y-m-d h:i") }}">
-                            <input type="checkbox">
-                        </td>
-                    {% endfor %}
-                </tr
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
 </div>

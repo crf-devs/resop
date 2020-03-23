@@ -13,38 +13,42 @@ legend.required:before {
 table.availability-table {
     text-align: center;
     position: relative;
-}
 
-table.availability-table label.day-title {
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-}
+    label.day-title {
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+    }
 
-td.clickable-table-box {
-    cursor: pointer;
-}
+    td.clickable-table-box {
+        cursor: pointer;
 
-td.clickable-table-box:hover {
-    background-color: #eee;
-}
+        &:hover {
+            background-color: #eee;
+        }
 
-td.clickable-table-box.checked {
-    background-color: #88d38b;
-}
+        &.checked {
+            background-color: #88d38b;
 
-td.clickable-table-box.checked:hover {
-    background-color: #72a870;
-}
+            &:hover {
+                background-color: #72a870;
+            }
+        }
 
-td.clickable-table-box.disabled {
-    background-color: #67a2d3 !important;
-    cursor: default;
-}
+        &.disabled {
+            background-color: #67a2d3 !important;
+            cursor: default;
+        }
 
-table.availability-table button.select-all {
-    position: absolute;
-    right: 0;
+        input[type=checkbox] {
+            cursor: pointer;
+        }
+    }
+
+    button.select-all {
+        position: absolute;
+        right: 0;
+    }
 }
 
 @import "~bootstrap/scss/bootstrap";

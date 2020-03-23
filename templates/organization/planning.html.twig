@@ -1,9 +1,19 @@
 {% extends 'organization/base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('planning') }}
+{% endblock %}
+
 {% block title %}Planning{% endblock %}
 
-{% block body %}
-    <h1>Planning - du {{ periodCalculator.from|format_date(pattern="eeee dd MMMM") }} au {{ periodCalculator.to|format_date(pattern="eeee dd MMMM") }}</h1>
-    {% include 'organization/planning/_search_type.html.twig' %}
-    {% include 'organization/planning/_results.html.twig' %}
+{% block container %}
+    <div>
+        <div class="container my-4">
+            {{ include('misc/flash-messages.html.twig') }}
+            <h1>Planning - du {{ periodCalculator.from|format_date(pattern="eeee dd MMMM") }} au {{ periodCalculator.to|format_date(pattern="eeee dd MMMM") }}</h1>
+            {% include 'organization/planning/_search_type.html.twig' %}
+        </div>
+        {% include 'organization/planning/_results.html.twig' %}
+    </div>
 {% endblock %}

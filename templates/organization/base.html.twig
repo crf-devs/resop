@@ -32,10 +32,12 @@
                 </div>
             </div>
         </nav>
-        <div class="container my-4">
-            {{ include('misc/flash-messages.html.twig') }}
-            {% block body %}{% endblock %}
-        </div>
+        {% block container %}
+            <div class="container my-4">
+                {{ include('misc/flash-messages.html.twig') }}
+                {% block body %}{% endblock %}
+            </div>
+        {% endblock %}
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
