@@ -82,7 +82,6 @@ final class ApplicationFixtures extends Fixture
         $encoder = $this->encoders->getEncoder(Organization::class);
         $password = $encoder->encodePassword('covid19', null);
 
-        $this->addOrganization($this->makeOrganization('INACTIVE_ORG'));
         $this->addOrganization($this->makeOrganization('DT75', $password));
 
         foreach (self::ORGANIZATIONS as $name) {
