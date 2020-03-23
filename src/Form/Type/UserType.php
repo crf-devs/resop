@@ -7,7 +7,6 @@ namespace App\Form\Type;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -63,14 +62,22 @@ final class UserType extends AbstractType
             ])
             ->add('organizationOccupation', TextType::class)
             ->add('vulnerable', ChoiceType::class, [
-                'choices' => array_flip([
-                    1 => 'Je fais partie des personnes vulnérables',
-                    0 => 'Je ne fais PAS partie des personnes vulnérables',
-                ]),
+                'choices' => [
+                    'Je fais partie des personnes vulnérables' => 1,
+                    'Je ne fais PAS partie des personnes vulnérables' => 0,
+                ],
                 'expanded' => true,
                 'help_html' => true,
             ])
-            ->add('fullyEquipped', CheckboxType::class, ['required' => false])
+            ->add('fullyEquipped', ChoiceType::class, [
+                'choices' => [
+                    'Oui' => 1,
+                    'Non' => 0,
+                ],
+                'required' => true,
+                'expanded' => true,
+                'placeholder' => false,
+            ])
             ->add('skillSet', ChoiceType::class, [
                 'choices' => array_flip($this->availableSkillSets),
                 'multiple' => true,
