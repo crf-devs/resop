@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\Security;
 
+use App\Entity\User;
 use App\Repository\OrganizationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +28,7 @@ final class LoginController extends AbstractController
     public function __invoke(): Response
     {
         if (is_object($this->getUser())) {
-            return $this->redirectToRoute('app_organization_index');
+            return $this->redirectToRoute($this->getUser() instanceof User ? 'user_home' : 'app_organization_index');
         }
 
         return $this->render('organization/login.html.twig', [

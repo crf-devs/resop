@@ -8,13 +8,6 @@
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            Structure <strong>{{ app.user }}</strong>,
-            <a href="{{ path('app_organization_logout') }}">Déconnexion</a>
-        </div>
-    {% endif %}
-
     <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
 
     <div class="form-row mb-4">
