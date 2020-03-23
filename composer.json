@@ -20,11 +20,12 @@
         "symfony/security-bundle": "5.0.*",
         "symfony/serializer-pack": "^1.0",
         "symfony/string": "5.0.*",
+        "symfony/translation": "5.0.*",
         "symfony/twig-pack": "^1.0",
-        "twig/intl-extra": "^3.0",
         "symfony/validator": "5.*",
         "symfony/webpack-encore-bundle": "^1.7",
-        "symfony/yaml": "5.*"
+        "symfony/yaml": "5.*",
+        "twig/intl-extra": "^3.0"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.3",
