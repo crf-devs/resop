@@ -47,10 +47,16 @@ final class ApplicationFixtures extends Fixture
     /** @var User[] */
     private array $users = [];
 
-    public function __construct(EncoderFactoryInterface $encoders, ValidatorInterface $validator)
-    {
+    private array $availableSkillSets;
+
+    public function __construct(
+        EncoderFactoryInterface $encoders,
+        ValidatorInterface $validator,
+        array $availableSkillSets = []
+    ) {
         $this->encoders = $encoders;
         $this->validator = $validator;
+        $this->availableSkillSets = $availableSkillSets;
     }
 
     public function load(ObjectManager $manager): void
@@ -85,47 +91,60 @@ final class ApplicationFixtures extends Fixture
 
     private function loadCommissionableAssets(ObjectManager $manager): void
     {
-        $manager->persist(new CommissionableAsset(
-            null,
-            $this->organizations['DT75'],
-            'VPSP',
-            '75092'
-        ));
+        foreach ($this->organizations as $organization) {
 
-        $manager->persist(new CommissionableAsset(
-            null,
-            $this->organizations['DT75'],
-            'VPSP',
-            '75094'
-        ));
-        $manager->persist(new CommissionableAsset(
-            null,
-            $this->organizations['DT75'],
-            'VL',
-            '75096'
-        ));
+            $asset = new CommissionableAsset(
+                null,
+                $organization,
+                'VPSP',
+                '750'.random_int(10, 20)
+            );
+
+            $this->validateAndPersist($manager, $asset);
+
+            $asset = new CommissionableAsset(
+                null,
+                $organization,
+                'VPSP',
+                '750'.random_int(20, 30)
+            );
+
+            $this->validateAndPersist($manager, $asset);
+
+            $asset = new CommissionableAsset(
+                null,
+                $organization,
+                'VL',
+                '750'.random_int(30, 40)
+            );
+
+            $this->validateAndPersist($manager, $asset);
+        }
+
     }
 
     private function loadUsers(ObjectManager $manager): void
     {
-        $user = new User();
-        $user->id = 1;
-        $user->firstName = 'Alain';
-        $user->lastName = 'Proviste';
-        $user->organization = $this->organizations['UL 09'];
-        $user->setIdentificationNumber('00009999999V');
-        $user->setEmailAddress('user+alias@some-domain.tld');
-        $user->phoneNumber = '0102030405';
-        $user->birthday = '1990-02-28';
-        $user->occupation = 'Pharmacien';
-        $user->organizationOccupation = 'Secouriste';
-        $user->skillSet = ['ci_alpha', 'ci_reseau'];
-        $user->vulnerable = true;
-        $user->fullyEquipped = true;
+        for ($i = 0; $i < 10; $i ++) {
+            $user = new User();
+            $user->id = $i + 1;
+            $user->firstName = 'Alain';
+            $user->lastName = 'Proviste';
+            $user->organization = $this->organizations[array_rand($this->organizations)];
+            $user->setIdentificationNumber('0000999999'.$i.'V');
+            $user->setEmailAddress('user+alias'.$i.'@some-domain.tld');
+            $user->phoneNumber = '0102030405';
+            $user->birthday = '1990-02-28';
+            $user->occupation = 'Pharmacien';
+            $user->organizationOccupation = 'Secouriste';
+            $user->skillSet = array_rand($this->availableSkillSets, random_int(2, 4));
+            $user->vulnerable = (bool) random_int(0, 1);
+            $user->fullyEquipped = (bool) random_int(0, 1);
 
-        $this->users[$user->getIdentificationNumber()] = $user;
+            $this->users[$user->getIdentificationNumber()] = $user;
 
-        $this->validateAndPersist($manager, $user);
+            $this->validateAndPersist($manager, $user);
+        }
     }
 
     private function loadUserAvailabilities(ObjectManager $manager): void
@@ -133,6 +152,94 @@ final class ApplicationFixtures extends Fixture
         $thisWeek = (new \DateTimeImmutable('monday this week'));
 
         $availabilities = [
+            '9999990V' => [
+                'PT0H',
+                'P2DT10H',
+                'P2DT12H',
+                'P7DT22H',
+                'P8DT16H',
+                'P9DT20H',
+                'P9DT22H',
+                'P10DT8H',
+                'P10DT10H',
+            ],
+            '9999991V' => [
+                'PT0H',
+                'P2DT10H',
+                'P2DT12H',
+                'P7DT22H',
+                'P8DT16H',
+                'P9DT20H',
+                'P9DT22H',
+                'P10DT8H',
+                'P10DT10H',
+            ],
+            '9999992V' => [
+                'PT0H',
+                'P2DT10H',
+                'P2DT12H',
+                'P7DT22H',
+                'P8DT16H',
+                'P9DT20H',
+                'P9DT22H',
+                'P10DT8H',
+                'P10DT10H',
+            ],
+            '9999993V' => [
+                'PT0H',
+                'P2DT10H',
+                'P2DT12H',
+                'P7DT22H',
+                'P8DT16H',
+                'P9DT20H',
+                'P9DT22H',
+                'P10DT8H',
+                'P10DT10H',
+            ],
+            '9999995V' => [
+                'PT0H',
+                'P2DT10H',
+                'P2DT12H',
+                'P7DT22H',
+                'P8DT16H',
+                'P9DT20H',
+                'P9DT22H',
+                'P10DT8H',
+                'P10DT10H',
+            ],
+            '9999996V' => [
+                'PT0H',
+                'P2DT10H',
+                'P2DT12H',
+                'P7DT22H',
+                'P8DT16H',
+                'P9DT20H',
+                'P9DT22H',
+                'P10DT8H',
+                'P10DT10H',
+            ],
+            '9999997V' => [
+                'PT0H',
+                'P2DT10H',
+                'P2DT12H',
+                'P7DT22H',
+                'P8DT16H',
+                'P9DT20H',
+                'P9DT22H',
+                'P10DT8H',
+                'P10DT10H',
+            ],
+            '9999998V' => [
+                'PT0H',
+                'P2DT10H',
+                'P2DT12H',
+                'P7DT22H',
+                'P8DT16H',
+                'P9DT20H',
+                'P9DT22H',
+                'P10DT8H',
+                'P10DT10H',
+            ],
             '9999999V' => [
                 'PT0H',
                 'P2DT10H',
