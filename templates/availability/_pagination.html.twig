@@ -2,13 +2,13 @@
 <nav>
     <ul class="pagination">
         <li class="page-item{% if nowIsCurrent %} active{% endif %}">
-            <a class="page-link" href="{{ path('user_availability', { week: 'now'|date('o-\\WW') }) }}">
+            <a class="page-link" href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({week: 'now'|date('o-\\WW')})) }}">
                 <span aria-hidden="true">&laquo;</span>
                 {{ 'monday' | date('d/m/Y') }} au {{ 'sunday' | date('d/m/Y') }}
             </a>
         </li>
         <li class="page-item{% if not nowIsCurrent %} active{% endif %}">
-            <a class="page-link" href="{{ path('user_availability', { week: 'next week'|date('o-\\WW') }) }}">
+            <a class="page-link" href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({week: 'next week'|date('o-\\WW')})) }}">
                 {{ 'monday next week' | date('d/m/Y') }} au {{ 'sunday next week' | date('d/m/Y') }}
                 <span aria-hidden="true">&raquo;</span>
             </a>
