@@ -44,6 +44,7 @@ test:
     - make test-cs
     - make test-advanced
     - docker-compose up -d postgres
+    - bin/tools bin/post-install-dev.sh
     # Compiled assets files are required for functional tests. TODO Make it optional
     - bin/node-tools yarn install --pure-lockfile && make webpack-build-prod
     - make test-unit-coverage
