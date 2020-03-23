@@ -6,13 +6,13 @@ namespace App\Controller\User\Account;
 
 use App\Entity\User;
 use App\Form\Type\UserType;
+use App\Security\UserAutomaticLoginHandler;
 use App\Security\UserLoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
@@ -22,19 +22,16 @@ final class CreateAccountController extends AbstractController
 {
     private AuthenticationUtils $authenticationUtils;
     private EntityManagerInterface $entityManager;
-    private GuardAuthenticatorHandler $guardHandler;
-    private UserLoginFormAuthenticator $formAuthenticator;
+    private UserAutomaticLoginHandler $automaticLoginHandler;
 
     public function __construct(
         AuthenticationUtils $authenticationUtils,
         EntityManagerInterface $entityManager,
-        GuardAuthenticatorHandler $guardHandler,
-        UserLoginFormAuthenticator $formAuthenticator
+        UserAutomaticLoginHandler $automaticLoginHandler
     ) {
         $this->authenticationUtils = $authenticationUtils;
         $this->entityManager = $entityManager;
-        $this->guardHandler = $guardHandler;
-        $this->formAuthenticator = $formAuthenticator;
+        $this->automaticLoginHandler = $automaticLoginHandler;
     }
 
     public function __invoke(Request $request): Response
@@ -56,12 +53,7 @@ final class CreateAccountController extends AbstractController
 
             $this->addFlash('success', 'Votre compte utilisateur a été créé avec succès.');
 
-            return $this->guardHandler->authenticateUserAndHandleSuccess(
-                $user,
-                $request,
-                $this->formAuthenticator,
-                'main'
-            );
+            return $this->automaticLoginHandler->handleAuthentication($request, $user);
         }
 
         return $this->render('user/create-account.html.twig', [
