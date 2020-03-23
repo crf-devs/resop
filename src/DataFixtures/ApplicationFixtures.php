@@ -139,7 +139,7 @@ final class ApplicationFixtures extends Fixture
 
         $x = 1;
         foreach ($this->organizations as $organization) {
-            for ($i = 0; $i < rand(5, 15); ++$i ) {
+            for ($i = 0; $i < rand(5, 15); ++$i) {
                 $user = new User();
                 $user->id = $i + 1;
                 $user->firstName = $firstNames[array_rand($firstNames)];
