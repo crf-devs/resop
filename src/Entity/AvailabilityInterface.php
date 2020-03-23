@@ -22,4 +22,6 @@ interface AvailabilityInterface
     public function declareAvailable(\DateTimeImmutable $updatedAt = null): void;
 
     public function getStatus(): string;
+
+    public function getStartTime(): \DateTimeImmutable;
 }

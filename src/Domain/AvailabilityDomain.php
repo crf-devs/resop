@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
-use App\Entity\UserAvailability;
+use App\Entity\AvailabilityInterface;
 
 final class AvailabilityDomain
 {
     public bool $tick = false;
 
-    public ?UserAvailability $userAvailability;
+    public ?AvailabilityInterface $availability;
 
     public \DateTimeImmutable $date;
 
-    public function __construct(\DateTimeImmutable $date, ?UserAvailability $userAvailability)
+    public function __construct(\DateTimeImmutable $date, ?AvailabilityInterface $availability)
     {
         $this->date = $date;
-        $this->userAvailability = $userAvailability;
-        $this->tick = null !== $userAvailability && UserAvailability::STATUS_LOCKED !== $userAvailability->status;
+        $this->availability = $availability;
+        $this->tick = null !== $availability && AvailabilityInterface::STATUS_LOCKED !== $availability->getStatus();
     }
 
     public function isEditable(): bool
     {
-        return null === $this->userAvailability || UserAvailability::STATUS_AVAILABLE === $this->userAvailability->status;
+        return null === $this->availability || AvailabilityInterface::STATUS_AVAILABLE === $this->availability->getStatus();
     }
 }

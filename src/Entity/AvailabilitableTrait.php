@@ -91,6 +91,11 @@ trait AvailabilitableTrait
         $this->status = self::STATUS_AVAILABLE;
     }
 
+    public function getStartTime(): \DateTimeImmutable
+    {
+        return $this->startTime;
+    }
+
     public function getStatus(): string
     {
         return $this->status;
