@@ -26,6 +26,10 @@ final class LoginController extends AbstractController
 
     public function __invoke(): Response
     {
+        if (is_object($this->getUser())) {
+            return $this->redirectToRoute('app_organization_index');
+        }
+
         return $this->render('organization/login.html.twig', [
             'organizations' => $this->organizationRepository->loadActiveOrganizations(),
             'last_username' => $this->authenticationUtils->getLastUsername(),

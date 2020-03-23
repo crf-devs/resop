@@ -24,6 +24,10 @@ final class LoginController extends AbstractController
 
     public function __invoke(): Response
     {
+        if (is_object($this->getUser())) {
+            return $this->redirectToRoute('user_home');
+        }
+
         $loginForm = $this->createForm(
             UserLoginType::class,
             ['identifier' => $this->authenticationUtils->getLastUsername()]
