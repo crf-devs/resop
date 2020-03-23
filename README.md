@@ -1,6 +1,6 @@
 # Projet ResOp - Réserve Opérationnelle
 
-![Planning mockup](https://raw.githubusercontent.com/crf-devs/resop/master/doc/planning-mockup.png)
+![Planning mockup](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/planning-mockup.png)
 
 # Contributing
 
