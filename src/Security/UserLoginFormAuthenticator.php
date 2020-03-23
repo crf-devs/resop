@@ -22,6 +22,8 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 
 final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
+    const SECURITY_LAST_BIRTHDAY = '_security.last_birthday';
+
     private UserRepository $userRepository;
 
     private RouterInterface $router;
@@ -51,6 +53,7 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
         ];
 
         $request->getSession()->set(Security::LAST_USERNAME, $credentials['identifier']);
+        $request->getSession()->set(self::SECURITY_LAST_BIRTHDAY, $credentials['birthday']);
 
         return $credentials;
     }

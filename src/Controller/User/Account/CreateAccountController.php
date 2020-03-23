@@ -6,6 +6,7 @@ namespace App\Controller\User\Account;
 
 use App\Entity\User;
 use App\Form\Type\UserType;
+use App\Security\UserLoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +39,7 @@ final class CreateAccountController extends AbstractController
         }
 
         $user = User::bootstrap($this->authenticationUtils->getLastUsername());
+        $user->setBirthday($request->getSession()->get(UserLoginFormAuthenticator::SECURITY_LAST_BIRTHDAY));
 
         $form = $this->createForm(UserType::class, $user)->handleRequest($request);
 
