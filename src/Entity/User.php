@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, AvailabilitableInterface
 {
-    const NIVOL_FORMAT = '^\d+[A-Z]$';
+    const NIVOL_FORMAT = '#^\d+[A-Z]$#';
 
     /**
      * @ORM\Id

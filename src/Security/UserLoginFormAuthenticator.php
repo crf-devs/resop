@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Security;
@@ -19,6 +20,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
@@ -30,11 +33,14 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     private CsrfTokenManagerInterface $csrfTokenManager;
 
-    public function __construct(UserRepository $userRepository, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager)
+    private ValidatorInterface $validator;
+
+    public function __construct(UserRepository $userRepository, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, ValidatorInterface $validator)
     {
         $this->userRepository = $userRepository;
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
+        $this->validator = $validator;
     }
 
     public function supports(Request $request)
@@ -72,6 +78,13 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $csrfToken = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($csrfToken)) {
             throw new InvalidCsrfTokenException();
+        }
+
+        if (!(
+            0 === $this->validator->validate($credentials['identifier'], [new Assert\Regex(['pattern' => User::NIVOL_FORMAT])])->count()
+            || 0 === $this->validator->validate($credentials['identifier'], [new Assert\Email()])->count()
+        )) {
+            throw new BadCredentialsException('Veuillez saisir un numéro NIVOL ou une adresse e-mail.');
         }
 
         return $this->userRepository->loadUserByUsername($credentials['identifier']);
