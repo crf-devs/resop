@@ -11,7 +11,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <span>{{ asset }}</span>
                 <span>
-                    <button class="btn btn-outline-secondary" role="button" disabled>Modifier</button>
+                    <a class="btn btn-outline-secondary" href="{{ path('app_organization_commissionable_edit_asset', { id: asset.id }) }}">Modifier</a>
                     <a class="btn btn-outline-primary" href="{{ path('organization_commisionable_asset_availability', { id: asset.id }) }}">Disponibilités pour cette semaine</a>
                     <a class="btn btn-outline-primary" href="{{ path('organization_commisionable_asset_availability', { id: asset.id, week: 'next week' | date('o-\\WW') }) }}">Disponibilités de la semaine du lundi {{ 'monday next week' | date('d/m/Y') }}</a>
                 </span>

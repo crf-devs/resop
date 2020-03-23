@@ -75,7 +75,7 @@ final class ManageAvailabilityController extends AbstractController
             $availabilitiesDomain->compute($this->entityManager, CommissionableAssetAvailability::class, $asset);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Vos disponibilités ont été mises à jour avec succès.');
+            $this->addFlash('success', sprintf('Les disponibilités du véhicule "%s" ont été mises à jour avec succès', $asset));
 
             return $this->redirectToRoute('app_organization_commissionable_assets');
         }
