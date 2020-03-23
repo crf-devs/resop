@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Regex;
 
 final class UserType extends AbstractType
 {
@@ -49,7 +50,11 @@ final class UserType extends AbstractType
             ->add('organization', OrganizationEntityType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
-            ->add('phoneNumber', TextType::class)
+            ->add('phoneNumber', TextType::class, [
+                'constraints' => [
+                    new Regex(['pattern' => '#^0[1-9][0-9]{8}$#', 'message' => 'Le format est invalide, exemple : 0601020304.']),
+                ],
+            ])
             ->add('emailAddress', EmailType::class)
             ->add('birthday', BirthdayType::class, [
                 'format' => 'dd-MMMM-yyyy',
