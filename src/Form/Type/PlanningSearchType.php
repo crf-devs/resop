@@ -40,11 +40,13 @@ class PlanningSearchType extends AbstractType
                 'with_minutes' => false,
             ])
             ->add('availableFrom', DateTimeType::class, [
+                'widget' => 'single_text',
                 'input' => 'datetime_immutable',
                 'label' => 'Rechercher les disponibilités de ',
                 'with_minutes' => false,
             ])
             ->add('availableTo', DateTimeType::class, [
+                'widget' => 'single_text',
                 'input' => 'datetime_immutable',
                 'label' => 'à',
                 'data' => (new DateTimeImmutable('today'))->add(new \DateInterval('P1D')),
