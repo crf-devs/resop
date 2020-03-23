@@ -115,7 +115,7 @@ final class ApplicationFixtures extends Fixture
         $user->organization = $this->organizations['UL 09'];
         $user->setIdentificationNumber('00009999999V');
         $user->setEmailAddress('user+alias@some-domain.tld');
-        $user->phoneNumber = '+33102030405';
+        $user->phoneNumber = '0102030405';
         $user->birthday = '1990-02-28';
         $user->occupation = 'Pharmacien';
         $user->organizationOccupation = 'Secouriste';
