@@ -8,6 +8,7 @@
 {% block body %}
 {% block before_form '' %}
 
+{% include 'availability/_pagination.html.twig' %}
 {{ form_start(form) }}
     <table class="table availability-table">
         {% set choices = form.availabilityDomains.vars.data %}
@@ -44,4 +45,5 @@
 
     {{ form_row(form.submit) }}
 {{ form_end(form) }}
+
 {% endblock %}
