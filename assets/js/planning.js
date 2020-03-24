@@ -35,7 +35,7 @@ function initDatesRange($picker, $from, $to, withTime)
     cancelClass: 'btn-sm btn-default',
     locale: {
       cancelLabel: 'Supprimer',
-      format: 'DD/MM/YYYY hh:mm',
+      format: 'DD/MM/YYYY HH:mm',
       separator: ' - ',
       applyLabel: 'Valider',
       fromLabel: 'De',
@@ -151,5 +151,11 @@ $(document).ready(function () {
   // Datepickers
   initDatesRange($('#fromToRange'), $('#from'), $('#to'));
   initDatesRange($('#availableRange'), $('#availableFrom'), $('#availableTo'), true);
+
+  // Form submit
+  $('#submit-search').on('click', function () {
+    $("#planning-form").submit()
+  });
+
 });
 

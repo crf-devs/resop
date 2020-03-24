@@ -12,10 +12,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PlanningSearchType extends AbstractType
 {
@@ -94,7 +94,6 @@ class PlanningSearchType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'selectpicker'],
             ])
-            ->add('submit', SubmitType::class, ['label' => 'Filtrer'])
         ;
 
         // Cannot use contraint in upper types, because it's not bound to an entity (therefore PropertyAccessor cannot succeed)
@@ -104,5 +103,17 @@ class PlanningSearchType extends AbstractType
                 throw new \InvalidArgumentException('Invalid payload'); // TODO Put a better error
             }
         });
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     *
+     * @return array
+     */
+    public function configureOptions(OptionsResolver $resolver): array
+    {
+        $resolver->setDefaults([
+            'csrf_protection' => false,
+        ]);
     }
 }

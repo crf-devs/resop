@@ -38,16 +38,27 @@ class PlanningController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $data = [
-            'from' => new \DateTimeImmutable('monday'),
-            'to' => (new \DateTimeImmutable('monday'))->add(new \DateInterval('P1W')),
-            'volunteer' => true,
-            'volunteerEquipped' => true,
-            'volunteerHideVulnerable' => true,
-            'asset' => true,
-        ];
+        $data = [];
+        if (!$request->query->get('from') instanceof \DateTimeImmutable) {
+            $data['from'] = new \DateTimeImmutable('monday');
+        }
 
-        $form = $this->container->get('form.factory')->createNamed('', PlanningSearchType::class, $data, ['method' => 'GET', 'attr' => ['autocomplete' => 'off']]);
+        if (!$request->query->get('to') instanceof \DateTimeImmutable) {
+            $data['to'] = (new \DateTimeImmutable('monday'))->add(new \DateInterval('P1W'));
+        }
+
+        if (0 === $request->query->count()) {
+            $data = [
+                'from' => new \DateTimeImmutable('monday'),
+                'to' => (new \DateTimeImmutable('monday'))->add(new \DateInterval('P1W')),
+                'volunteer' => true,
+                'volunteerEquipped' => true,
+                'volunteerHideVulnerable' => true,
+                'asset' => true,
+            ];
+        }
+
+        $form = $this->container->get('form.factory')->createNamed('', PlanningSearchType::class, $data, ['method' => 'GET', 'action' => $this->generateUrl('planning'), 'attr' => ['autocomplete' => 'off']]);
         $form->handleRequest($request);
 
         $from = $form->get('from')->getData();
@@ -55,11 +66,9 @@ class PlanningController extends AbstractController
 
         $periodCalculator = DatePeriodCalculator::createRoundedToDay($from, new \DateInterval('PT2H'), $to);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            [$users, $assets] = $this->searchEntities($form->getData());
-            $usersAvailabilities = $this->prepareAvailabilities($this->userAvailabilityRepository, $users, $periodCalculator);
-            $assetsAvailabilities = $this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $periodCalculator);
-        }
+        [$users, $assets] = $this->searchEntities($form->getData());
+        $usersAvailabilities = $this->prepareAvailabilities($this->userAvailabilityRepository, $users, $periodCalculator);
+        $assetsAvailabilities = $this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $periodCalculator);
 
         return $this->render('organization/planning.html.twig', [
             'form' => $form->createView(),
