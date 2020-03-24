@@ -3,8 +3,14 @@
         <div class="col-md">
             <div class="text-center" id="loader">
                 <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">Chargement...</span>
                 </div>
+            </div>
+            <div class="display-more-container form-check">
+                <input class="form-check-input" type="checkbox" id="display-more">
+                <label class="form-check-label" for="display-more">
+                    Afficher plus d'informations
+                </label>
             </div>
         </div>
         <div class="col-md">
@@ -18,11 +24,13 @@
     </div>
 </div>
 
+{% set itemDataRow = 8 %}
 <div class="table-responsive planning-container">
     <table class="planning table table-sm table-bordered">
         <thead>
         <tr>
             <th rowspan="2"></th>
+            <th colspan="{{ itemDataRow }}" class="item-data">Informations</th>
             {% for item in periodCalculator.days %}
                 <th colspan="{{ item.slots }}">
                     {{ item.date|format_date(pattern="eeee dd MMMM") }}
@@ -30,6 +38,14 @@
             {% endfor %}
         </tr>
         <tr>
+            <th class="item-data">NIVOL</th>
+            <th class="item-data">Tel</th>
+            <th class="item-data">Email</th>
+            <th class="item-data">Profession</th>
+            <th class="item-data">Cadre</th>
+            <th class="item-data">Compétences</th>
+            <th class="item-data">Uniforme</th>
+            <th class="item-data">Vulnérable</th>
             {% for item in periodCalculator.slots %}
                 <th class="slot-name">
                     {{ item|format_date(pattern="HH") }}<br>{{ item|date_modify(periodCalculator.interval.format('+ %h hours'))|format_date(pattern="HH") }}
@@ -42,6 +58,22 @@
             {% for item in list %}
                 <tr data-type="{{ type }}" data-id="{{ item.entity.id }}">
                     <th class="item-detail">{{ item.entity }}</th>
+                    {% if type == 'users' %}
+                        <td class="item-data">{{ item.entity.identificationNumber }}</td>
+                        <td class="item-data">{{ item.entity.phoneNumber }}</td>
+                        <td class="item-data">{{ item.entity.emailAddress }}</td>
+                        <td class="item-data">{{ item.entity.occupation }}</td>
+                        <td class="item-data">{{ item.entity.organizationOccupation }}</td>
+                        <td class="item-data">
+                            {% for skill in item.entity.skillSet -%}
+                                <span class="badge badge-secondary">{{ skill }}</span>
+                            {%- endfor %}
+                        </td>
+                        <td class="item-data">{{ item.entity.fullyEquipped ? 'Oui' : '-' }}</td>
+                        <td class="item-data">{{ item.entity.vulnerable ? 'Oui' : '-' }}</td>
+                    {% else %}
+                        <td class="item-data" colspan="{{ itemDataRow }}"></td>
+                    {% endif %}
                     {% for slot in item.availabilities %}
                         <td class="slot-box {{ slot.status }}" data-status="{{ slot.status }}" data-from="{{ slot.from|date("Y-m-d H:i") }}" data-to="{{ slot.to|date("Y-m-d H:i") }}">
                             <input type="checkbox">
@@ -50,7 +82,7 @@
                 </tr>
             {% endfor %}
             <tr>
-                <td colspan="{{ 1 + periodCalculator.slots|length }}" class="separator"></td>
+                <td colspan="{{ 1 + itemDataRow + periodCalculator.slots|length }}" class="separator"></td>
             </tr>
         {% endfor %}
         </tbody>

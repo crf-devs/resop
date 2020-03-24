@@ -138,6 +138,10 @@ function hideUselessFilters() {
   $('.search [data-hide="assets"]').css('visibility', $('#hideAssets').prop('checked') ? 'hidden' : 'visible');
 }
 
+function toggleMoreInfos() {
+  $('.planning').find('.item-data').toggle($('#display-more').prop('checked'));
+}
+
 $(document).ready(function () {
   var $planning = $('.planning');
 
@@ -162,6 +166,8 @@ $(document).ready(function () {
 
   $('#hideUsers').on('change', hideUselessFilters);
   $('#hideAssets').on('change', hideUselessFilters);
+
+  $('#display-more').on('change', toggleMoreInfos);
 
   $planning.find('input[type=checkbox]:checked').closest('.slot-box').addClass('checked');
   $('#loader').hide();
