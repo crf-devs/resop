@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\AvailabilityInterface;
 use DateTimeInterface;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 trait AvailabilityRepositoryTrait
 {
-    public function findOneByInterval(DateTimeInterface $from, DateTimeInterface $to): ?AvailabilityInterface
+    private function getRawSlots(QueryBuilder $qb, DateTimeInterface $from, DateTimeInterface $to): array
     {
-        $qb = $this->createQueryBuilder('a');
-
-        $qb->where(
-            $qb->expr()->andX(
-                $qb->expr()->lte('a.startTime', $qb->expr()->literal($to->format('Y-m-d H:i:s'))),
-                $qb->expr()->gte('a.endTime', $qb->expr()->literal($from->format('Y-m-d H:i:s')))
-            )
-        );
-
-        return $qb->getQuery()->getResult()[0] ?? null;
+        return $qb->andWhere('(ua.startTime >= :start and ua.endTime <= :end) or (ua.startTime <= :start and ua.endTime >= :start) or (ua.startTime <= :end and ua.endTime >= :end)')
+            ->setParameter('start', $from)
+            ->setParameter('end', $to)
+            ->getQuery()
+            ->setHint(Query::HINT_INCLUDE_META_COLUMNS, true)
+            ->getArrayResult();
     }
 }

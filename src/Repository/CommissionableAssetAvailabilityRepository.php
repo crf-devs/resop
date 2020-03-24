@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -22,6 +23,15 @@ class CommissionableAssetAvailabilityRepository extends ServiceEntityRepository 
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CommissionableAssetAvailability::class);
+    }
+
+    public function loadRawDataForEntity(array $availabilitables, DateTimeInterface $from, DateTimeInterface $to): array
+    {
+        $qb = $this->createQueryBuilder('ua');
+        $qb->where($qb->expr()->in('ua.asset', ':assets'))
+            ->setParameter('assets', $availabilitables);
+
+        return $this->getRawSlots($qb, $from, $to);
     }
 
     public function findBetweenDates(CommissionableAsset $asset, \DateTimeInterface $start, \DateTimeInterface $end): array

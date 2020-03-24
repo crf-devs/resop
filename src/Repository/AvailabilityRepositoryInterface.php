@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\AvailabilityInterface;
 use DateTimeInterface;
 
 interface AvailabilityRepositoryInterface
 {
-    public function findOneByInterval(DateTimeInterface $from, DateTimeInterface $to): ?AvailabilityInterface;
+    public function loadRawDataForEntity(array $availabilitables, DateTimeInterface $from, DateTimeInterface $to): array;
 
     public function findByOwnerAndDates(array $owners, \DateTimeInterface $start, \DateTimeInterface $end): array;
 }
