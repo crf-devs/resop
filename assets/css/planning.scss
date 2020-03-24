@@ -13,6 +13,11 @@ $tableBoxSize: 40px;
     .btn:hover {
         opacity: 0.8;
     }
+
+    .display-more-container {
+        position: absolute;
+        bottom: 0;
+    }
 }
 
 .planning-container {
@@ -53,6 +58,14 @@ $tableBoxSize: 40px;
             height: 60px;
         }
 
+        td.item-data {
+            white-space: nowrap;
+
+            .badge {
+                margin-right: 2px;
+            }
+        }
+
         td.slot-box {
             width: $tableBoxSize;
             height: $tableBoxSize;
@@ -80,6 +93,10 @@ $tableBoxSize: 40px;
 }
 
 .planning-container, .planning-actions-container {
+    .item-data {
+        display: none;
+    }
+
     .unknown {
         background-color: #ff767f;
         color: white;
@@ -87,10 +104,12 @@ $tableBoxSize: 40px;
 
     .available {
         background-color: #76bd79;
+        color: white;
     }
 
     .booked {
         background-color: #67a2d3;
+        color: white;
     }
 
     .locked {
@@ -100,6 +119,14 @@ $tableBoxSize: 40px;
 }
 
 @media screen and (max-width: 1000px) {
+
+    .planning-actions-container {
+        .display-more-container {
+            position: initial;
+            margin-bottom: 10px;
+        }
+    }
+
     .planning-container {
         margin-left: 0;
         width: auto;

@@ -13,12 +13,12 @@ parameters:
         ci_alpha: CI Alpha
         ci_reseau: CI Réseau
         infirmier_local: Infirmier.e local.e
-        logicticien_croix_rouge: Logisticien.ne Croix-Rouge
+        logisticien: Logisticien.ne Croix-Rouge
         maraudeur: Maraudeur.se
         psc1: PSC1
         pse1: PSE1
         pse2: PSE2
-        resp_permanence_locale: Responsable Permanence Sociale
+        respo_permanence_locale: Responsable Permanence Sociale
         tsa_coreg: TSA / Coreg
         nouveau_benevole: Nouveau bénévole
 
