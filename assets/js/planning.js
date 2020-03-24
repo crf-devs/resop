@@ -19,6 +19,39 @@ function selectTableBox ($tableBox) {
   colorTableBox($tableBox);
 }
 
+function triggerUpdate(url, newStatus, $planning) {
+  var payload = generatePayload($planning);
+  $.ajax({
+    contentType: 'application/json',
+    method: 'POST',
+    dataType: 'json',
+    url: url,
+    data: JSON.stringify(payload),
+    success: () => {
+      updatePlanningFromPayload($planning, newStatus, payload);
+    },
+    error: function(data) {
+      window.alert('Une erreur est survenue, merci de vérifier vos paramètres.');
+    }
+  });
+}
+
+function updatePlanningFromPayload($planning, newStatus, payload) {
+  ['users', 'assets'].forEach(ownerType => {
+    var currentObjects = payload[ownerType] || {};
+    Object.keys(currentObjects).forEach(objectId => {
+        payload[ownerType][objectId].forEach(schedule => {
+          var [from,to] = schedule;
+          $td = $planning.find('tr[data-type="'+ownerType+'"][data-id="'+objectId+'"] td[data-from="'+from+'"][data-to="'+to+'"]');
+          $td
+            .removeClass($td.data('status'))
+            .addClass(newStatus)
+            .data('status', newStatus);
+        });    
+    });
+  });
+}
+
 function generatePayload($planning) {
   var payload = {
     users: {},
@@ -53,8 +86,8 @@ $(document).ready(function () {
     selectTableBox($(this));
   });
 
-  $('#triggerToRemove').on('click', function () { 
-    console.log(JSON.stringify(generatePayload($planning)));
+  $('.trigger-update').on('click', function () { 
+    triggerUpdate($(this).data('href'), $(this).data('status'), $planning);
   });
 });
 

@@ -1,6 +1,10 @@
-<button id="triggerToRemove">Trigger to remove</button>
-
 <div class="table-responsive planning-container">
+    <div class="planning-actions-container">
+        <button class="trigger-update booked" action="book" data-status="booked" data-href="{{ path('planning_update', { action: 'book' }) }}">Book</button>
+        <button class="trigger-update available" action="allow" data-status="available" data-href="{{ path('planning_update', { action: 'allow' }) }}">Allow</button>
+        <button class="trigger-update locked" action="lock" data-status="locked" data-href="{{ path('planning_update', { action: 'lock' }) }}">Lock</button>
+        <button class="trigger-update unknown" action="delete" data-status="unknown" data-href="{{ path('planning_update', { action: 'delete' }) }}">Delete</button>
+    </div>
     <table class="planning table table-sm table-bordered">
         <thead>
         <tr>
@@ -25,7 +29,7 @@
                 <tr data-type="{{ type }}" data-id="{{ item.entity.id }}">
                     <th class="item-detail">{{ item.entity }}</th>
                     {% for slot in item.availabilities %}
-                        <td class="slot-box {{ slot.status }}" data-status="{{ slot.status }}" data-from="{{ slot.from|date("Y-m-d h:i") }}" data-to="{{ slot.to|date("Y-m-d h:i") }}">
+                        <td class="slot-box {{ slot.status }}" data-status="{{ slot.status }}" data-from="{{ slot.from|date("Y-m-d H:i") }}" data-to="{{ slot.to|date("Y-m-d H:i") }}">
                             <input type="checkbox">
                         </td>
                     {% endfor %}

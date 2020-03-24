@@ -86,11 +86,11 @@ class PlanningUpdateDomain
         $this->validateAction();
         $this->validatePayload();
 
-        if (isset($this->payload[self::PAYLOAD_USERS_KEY]) && is_array($this->payload[self::PAYLOAD_USERS_KEY])) {
+        if (isset($this->payload[self::PAYLOAD_USERS_KEY]) && !empty($this->payload[self::PAYLOAD_USERS_KEY])) {
             $this->process(User::class, UserAvailability::class, $this->payload[self::PAYLOAD_USERS_KEY]);
         }
 
-        if (isset($this->payload[self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY]) && is_array($this->payload[self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY])) {
+        if (isset($this->payload[self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY]) && !empty($this->payload[self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY])) {
             $this->process(CommissionableAsset::class, CommissionableAssetAvailability::class, $this->payload[self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY]);
         }
 
@@ -134,7 +134,7 @@ class PlanningUpdateDomain
 
                 if (self::ACTION_DELETE == $this->action) {
                     if (!$availability) {
-                        throw new \InvalidArgumentException('Invalid availability object');
+                        continue;
                     }
 
                     $this->om->remove($availability);

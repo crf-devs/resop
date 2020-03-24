@@ -52,30 +52,30 @@ $tableBoxSize: 40px;
             &:hover {
                 background-color: #eee;
             }
+        }
+    }
 
-            &.available {
-                background-color: #88d38b;
+    .available {
+        background-color: #88d38b;
 
-                &:hover {
-                    background-color: #72a870;
-                }
-            }
+        &:hover {
+            background-color: #72a870;
+        }
+    }
 
-            &.booked {
-                background-color: #67a2d3;
+    .booked {
+        background-color: #67a2d3;
 
-                &:hover {
-                    background-color: #6090bf;
-                }
-            }
+        &:hover {
+            background-color: #6090bf;
+        }
+    }
 
-            &.locked {
-                background-color: #7a7a7a;
+    .locked {
+        background-color: #7a7a7a;
 
-                &:hover {
-                    background-color: #535353;
-                }
-            }
+        &:hover {
+            background-color: #535353;
         }
     }
 }
