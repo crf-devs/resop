@@ -2,6 +2,7 @@
 /docker-compose.override.yml
 /.idea
 /.cache
+/.vscode
 
 ###> symfony/framework-bundle ###
 /.env.local
