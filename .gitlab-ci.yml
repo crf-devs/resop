@@ -48,6 +48,8 @@ test:
     # Compiled assets files are required for functional tests. TODO Make it optional
     - bin/node-tools yarn install --pure-lockfile && make webpack-build-prod
     - make test-unit-coverage
+  except:
+    - tags
 
 build:
   stage: build
@@ -63,8 +65,8 @@ build:
     - docker push ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG}
     - docker push ${CI_REGISTRY_IMAGE}/nginx:latest
     - echo "Tag => $CI_COMMIT_TAG"
-    - test -n "$CI_COMMIT_TAG" && docker tag ${CI_REGISTRY_IMAGE}/fpm:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}/fpm:release-latest && docker push ${CI_REGISTRY_IMAGE}/fpm:release-latest
-    - test -n "$CI_COMMIT_TAG" && docker tag ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}/nginx:release-latest && docker push ${CI_REGISTRY_IMAGE}/nginx:release-latest
+    - (test -n "$CI_COMMIT_TAG" && docker tag ${CI_REGISTRY_IMAGE}/fpm:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}/fpm:release-latest && docker push ${CI_REGISTRY_IMAGE}/fpm:release-latest) || true
+    - (test -n "$CI_COMMIT_TAG" && docker tag ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}/nginx:release-latest && docker push ${CI_REGISTRY_IMAGE}/nginx:release-latest) || true
   only:
     - master
     - tags
