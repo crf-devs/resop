@@ -49,7 +49,8 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      */
     public function findByFilters(array $formData)
     {
-        $qb = $this->createQueryBuilder('u');
+        $qb = $this->createQueryBuilder('u')
+        ->join('u.organization', 'o');
 
         if (count($formData['organizations'] ?? []) > 0) {
             $qb->andWhere('u.organization IN (:organisations)')->setParameter('organisations', $formData['organizations']);
@@ -95,6 +96,10 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             $qb->setParameter('searchStartEndTime', $formData['availableFrom']);
             $qb->setParameter('searchEndEndTime', $formData['availableTo']);
         }
+
+        $qb->orderBy('o.name');
+        $qb->addOrderBy('u.firstName');
+        $qb->addOrderBy('u.lastName');
 
         return $qb->getQuery()->getResult();
     }
