@@ -171,7 +171,7 @@ final class ApplicationFixtures extends Fixture
 
         $dateIntervals = [];
         for ($d = 0; $d <= 10; ++$d) {
-            for ($t = 0; $t < 22; $t = $t + 2) {
+            for ($t = 0; $t < 24; $t = $t + 6) {
                 $dateIntervals[] = 'P'.$d.'DT'.$t.'H';
             }
         }
@@ -180,27 +180,36 @@ final class ApplicationFixtures extends Fixture
             $currentIntervals = $dateIntervals;
             for ($i = 0; $i < 40; ++$i) {
                 $key = array_rand($currentIntervals);
+                $data = [
+                    'owner' => $owner,
+                    'startTime' => $thisWeek->add(new \DateInterval($currentIntervals[$key])),
+                    'status' => AvailabilityInterface::STATUSES[array_rand(AvailabilityInterface::STATUSES)],
+                ];
 
-                $startTime = $thisWeek->add(new \DateInterval($currentIntervals[$key]));
-
-                $availability = new $availabilityClass(
-                    null,
-                    $owner,
-                    $startTime,
-                    $startTime->add(new \DateInterval('PT2H')),
-                    AvailabilityInterface::STATUSES[array_rand(AvailabilityInterface::STATUSES)]
-                );
-
-                if (AvailabilityInterface::STATUS_BOOKED == $availability->status) {
-                    $availability->planningAgent = $this->organizations[array_rand($this->organizations)];
-                }
-
-                $manager->persist($availability);
+                $this->makeIntervalAvailability($availabilityClass, $data, $manager);
 
                 unset($currentIntervals[$key]);
             }
+        }
+    }
 
-            $manager->flush();
+    private function makeIntervalAvailability(string $availabilityClass, array $data, ObjectManager $manager): void
+    {
+        $startTime = $data['startTime'];
+        for ($i = 0; $i < rand(2, 6); $i = $i + 2) {
+            $availability = new $availabilityClass(
+                null,
+                $data['owner'],
+                $startTime->add(new \DateInterval(sprintf('PT%sH', $i))),
+                $startTime->add(new \DateInterval(sprintf('PT%sH', ($i + 2)))),
+                $data['status']
+            );
+
+            if (AvailabilityInterface::STATUS_BOOKED == $availability->status) {
+                $availability->planningAgent = $this->organizations[array_rand($this->organizations)];
+            }
+
+            $manager->persist($availability);
         }
     }
 
