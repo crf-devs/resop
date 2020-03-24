@@ -13,6 +13,7 @@ use App\Repository\CommissionableAssetAvailabilityRepository;
 use App\Repository\CommissionableAssetRepository;
 use App\Repository\UserAvailabilityRepository;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,21 +40,32 @@ class PlanningController extends AbstractController
     public function __invoke(Request $request): Response
     {
         $data = [
-            'from' => new \DateTimeImmutable('monday'),
-            'to' => (new \DateTimeImmutable('monday'))->add(new \DateInterval('P1W')),
+            'from' => new \DateTimeImmutable('monday this week 00:00:00'),
+            'to' => new \DateTimeImmutable('sunday this week 23:59:59'),
             'volunteer' => true,
             'volunteerEquipped' => true,
             'volunteerHideVulnerable' => true,
             'asset' => true,
         ];
 
+        if ($request->query->has('preselect')) {
+            $data['organizations'] = new ArrayCollection();
+            $data['organizations']->add($this->getUser());
+
+            if (2 === $request->query->getInt('preselect')) {
+                $data['from'] = new \DateTimeImmutable('monday next week 00:00:00');
+                $data['to'] = new \DateTimeImmutable('sunday next week 23:59:59');
+            }
+        }
+
         $form = $this->container->get('form.factory')->createNamed('', PlanningSearchType::class, $data, ['method' => 'GET']);
         $form->handleRequest($request);
 
-        $from = $form->get('from')->getData();
-        $to = $form->get('to')->getData();
-
-        $periodCalculator = DatePeriodCalculator::createRoundedToDay($from, new \DateInterval('PT2H'), $to);
+        $periodCalculator = DatePeriodCalculator::createRoundedToDay(
+            $form->get('from')->getData(),
+            new \DateInterval('PT2H'),
+            $form->get('to')->getData()
+        );
 
         if ($form->isSubmitted() && $form->isValid()) {
             [$users, $assets] = $this->searchEntities($form->getData());
