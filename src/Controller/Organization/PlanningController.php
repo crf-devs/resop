@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Organization;
 
 use App\Domain\DatePeriodCalculator;
+use App\Entity\AvailabilitableInterface;
 use App\Entity\AvailabilityInterface;
-use App\Entity\CommissionableAsset;
-use App\Entity\User;
 use App\Form\Type\PlanningSearchType;
 use App\Repository\AvailabilityRepositoryInterface;
 use App\Repository\CommissionableAssetAvailabilityRepository;
@@ -60,8 +59,8 @@ class PlanningController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             [$users, $assets] = $this->searchEntities($form->getData());
-            $usersAvailabilities = $this->prepareAvailabilities(User::class, $users, $periodCalculator);
-            $assetsAvailabilities = $this->prepareAvailabilities(CommissionableAsset::class, $assets, $periodCalculator);
+            $usersAvailabilities = $this->prepareAvailabilities($this->userAvailabilityRepository, $users, $periodCalculator);
+            $assetsAvailabilities = $this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $periodCalculator);
         }
 
         return $this->render('organization/planning.html.twig', [
@@ -80,12 +79,12 @@ class PlanningController extends AbstractController
         return [$users, $assets];
     }
 
-    private function prepareAvailabilities(string $class, iterable $availabilitables, DatePeriodCalculator $periodCalculator): array
+    /**
+     * @param AvailabilitableInterface[] $availabilitables
+     */
+    private function prepareAvailabilities(AvailabilityRepositoryInterface $repository, array $availabilitables, DatePeriodCalculator $periodCalculator): array
     {
-        $availabilityRepository = $this->getAvailabilityRepository($class);
-        if (!$availabilityRepository instanceof AvailabilityRepositoryInterface) {
-            throw new \LogicException('Bad entity name');
-        }
+        $slots = self::parseRawSlots($repository->loadRawDataForEntity($availabilitables, $periodCalculator->getFrom(), $periodCalculator->getTo()));
 
         $result = [];
         foreach ($availabilitables as $availabilitable) {
@@ -94,12 +93,12 @@ class PlanningController extends AbstractController
             /** @var \DateTime $from */
             foreach ($periodCalculator->getPeriod() as $from) {
                 $to = (clone $from)->add($periodCalculator->getPeriod()->interval);
-                $intervalAvailability = $availabilityRepository->findOneByInterval($from, $to); // TODO use only one sql request
-
+                $existingSlot = $slots[$availabilitable->getId()][$from->format('Y-m-d H:i')] ?? [];
+                // TODO Check the end time, just in case
                 $intervalAvailabilities[] = [
                     'from' => $from,
                     'to' => $to,
-                    'status' => $intervalAvailability ? $intervalAvailability->getStatus() : AvailabilityInterface::STATUS_UNKNOW,
+                    'status' => $existingSlot['status'] ?? AvailabilityInterface::STATUS_UNKNOW,
                 ];
             }
 
@@ -112,11 +111,17 @@ class PlanningController extends AbstractController
         return $result;
     }
 
-    private function getAvailabilityRepository(string $class): ?AvailabilityRepositoryInterface
+    private static function parseRawSlots(array $rawSlots): array
     {
-        return [
-                User::class => $this->userAvailabilityRepository,
-                CommissionableAsset::class => $this->assetAvailabilityRepository,
-            ][$class] ?? null;
+        $slots = [];
+        foreach ($rawSlots as $slot) {
+            $slotStart = $slot['startTime'] ?? null;
+            if (!$slotStart instanceof \DateTimeInterface) {
+                continue;
+            }
+            $slots[$slot['user_id'] ?? $slot['asset_id'] ?? 0][$slotStart->format('Y-m-d H:i')] = $slot;
+        }
+
+        return $slots;
     }
 }

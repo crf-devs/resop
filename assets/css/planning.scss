@@ -27,7 +27,7 @@ $tableBoxSize: 40px;
 
         th.item-detail {
             position: absolute;
-            left: 0;
+            left: 10px;
             width: $leftColumnWidth;
             text-align: left;
             white-space: nowrap;
@@ -36,7 +36,7 @@ $tableBoxSize: 40px;
         }
 
         td.separator {
-            height: 20px;
+            height: 60px;
         }
 
         td.slot-box {

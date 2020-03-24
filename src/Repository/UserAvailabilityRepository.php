@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\UserAvailability;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -24,6 +25,15 @@ class UserAvailabilityRepository extends ServiceEntityRepository implements Avai
         parent::__construct($registry, UserAvailability::class);
     }
 
+    public function loadRawDataForEntity(array $availabilitables, DateTimeInterface $from, DateTimeInterface $to): array
+    {
+        $qb = $this->createQueryBuilder('ua');
+        $qb->where($qb->expr()->in('ua.user', ':users'))
+            ->setParameter('users', $availabilitables);
+
+        return $this->getRawSlots($qb, $from, $to);
+    }
+
     public function findBetweenDates(User $user, \DateTimeInterface $start, \DateTimeInterface $end): array
     {
         return $this->createQueryBuilder('ua')
@@ -36,8 +46,7 @@ class UserAvailabilityRepository extends ServiceEntityRepository implements Avai
                 'end' => $end,
             ])
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function findByOwnerAndDates(array $owners, \DateTimeInterface $start, \DateTimeInterface $end): array
@@ -52,7 +61,6 @@ class UserAvailabilityRepository extends ServiceEntityRepository implements Avai
                 'end' => $end,
             ])
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }
