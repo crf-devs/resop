@@ -82,7 +82,6 @@ final class ApplicationFixtures extends Fixture
         $encoder = $this->encoders->getEncoder(Organization::class);
         $password = $encoder->encodePassword('covid19', null);
 
-        $this->addOrganization($this->makeOrganization('INACTIVE_ORG'));
         $this->addOrganization($this->makeOrganization('DT75', $password));
 
         foreach (self::ORGANIZATIONS as $name) {
@@ -104,10 +103,9 @@ final class ApplicationFixtures extends Fixture
         ];
 
         foreach ($this->organizations as $organization) {
-            if ('DT75' == $organization->name) {
-                $ulId = '99';
-            } else {
-                $ulId = substr(str_replace(' ', '', $organization->name), 1, 2);
+            $ulId = '99';
+            if (null !== $organization->parent) {
+                $ulId = substr(str_replace('UL ', '', $organization->name), 0, 2);
             }
 
             foreach ($combinations as list($type, $suffix)) {
@@ -130,7 +128,7 @@ final class ApplicationFixtures extends Fixture
     {
         $startIdNumber = 990000;
         $firstNames = ['Philippe', 'Bastien', 'Hugo', 'Michel', 'Mathias', 'Florian', 'Fabien', 'Nassim', 'Mathieu', 'Francis', 'Thomas'];
-        $lastNames = ['Skywalker', 'Merkel', 'Johnson', 'Trump', 'Macron', 'Musk', 'Jones', 'Diesel', 'Walker'];
+        $lastNames = ['Skywalker', 'Oneal', 'James', 'Bryant', 'Davis', 'Johnson', 'Curry', 'Pippen', 'Jordan', 'Parker', 'Grant', 'Thompson', 'Harden', 'Westbrook'];
         $occupations = ['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'];
         $lettersRange = range('A', 'Z');
         $yearsRange = range(1950, 2005);
