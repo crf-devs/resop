@@ -36,11 +36,11 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
     {
         $qb = $this->createQueryBuilder('a');
 
-        if (0 < count($formData['assetTypes'])) {
+        if (count($formData['assetTypes'] ?? []) > 0) {
             $qb->andWhere('a.type IN (:types)')->setParameter('types', $formData['assetTypes']);
         }
 
-        if (0 < $formData['organizations']->count()) {
+        if (count($formData['organizations'] ?? []) > 0) {
             $qb->andWhere('a.organization IN (:organisations)')->setParameter('organisations', $formData['organizations']);
         }
 

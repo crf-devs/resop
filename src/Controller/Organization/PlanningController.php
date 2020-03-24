@@ -38,28 +38,29 @@ class PlanningController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $data = [
-            'from' => new \DateTimeImmutable('monday'),
-            'to' => (new \DateTimeImmutable('monday'))->add(new \DateInterval('P1W')),
-            'volunteer' => true,
-            'volunteerEquipped' => true,
-            'volunteerHideVulnerable' => true,
-            'asset' => true,
-        ];
+        if (!$request->query->has('from')) {
+            $request->query->set('from', (new \DateTimeImmutable('monday this week'))->format('Y-m-d\T00:00:00'));
+        }
 
-        $form = $this->container->get('form.factory')->createNamed('', PlanningSearchType::class, $data, ['method' => 'GET', 'attr' => ['autocomplete' => 'off']]);
+        if (!$request->query->has('to')) {
+            $from = new \DateTimeImmutable($request->query->get('from', 'monday this week'));
+            $request->query->set('to', $from->add(new \DateInterval('P1W'))->format('Y-m-d\T00:00:00'));
+        }
+
+        $form = $this->container->get('form.factory')->createNamed('', PlanningSearchType::class, [], ['method' => 'GET', 'attr' => ['autocomplete' => 'off']]);
         $form->handleRequest($request);
 
-        $from = $form->get('from')->getData();
-        $to = $form->get('to')->getData();
-
-        $periodCalculator = DatePeriodCalculator::createRoundedToDay($from, new \DateInterval('PT2H'), $to);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            [$users, $assets] = $this->searchEntities($form->getData());
-            $usersAvailabilities = $this->prepareAvailabilities($this->userAvailabilityRepository, $users, $periodCalculator);
-            $assetsAvailabilities = $this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $periodCalculator);
+        $data = $form->getData();
+        if (!isset($data['from'], $data['to'])) {
+            // This may happen if the passed date is invalid. TODO check it before, the format must be 2020-03-30T00:00:00
+            throw $this->createNotFoundException();
         }
+
+        $periodCalculator = DatePeriodCalculator::createRoundedToDay($data['from'], new \DateInterval('PT2H'), $data['to']);
+
+        [$users, $assets] = $this->searchEntities($data);
+        $usersAvailabilities = $this->prepareAvailabilities($this->userAvailabilityRepository, $users, $periodCalculator);
+        $assetsAvailabilities = $this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $periodCalculator);
 
         return $this->render('organization/planning.html.twig', [
             'form' => $form->createView(),
@@ -71,8 +72,8 @@ class PlanningController extends AbstractController
 
     private function searchEntities(array $formData): array
     {
-        $users = $this->userRepository->findByFilters($formData);
-        $assets = $this->assetRepository->findByFilters($formData);
+        $users = $formData['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($formData);
+        $assets = $formData['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($formData);
 
         return [$users, $assets];
     }

@@ -12,10 +12,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PlanningSearchType extends AbstractType
 {
@@ -64,27 +62,27 @@ class PlanningSearchType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'selectpicker'],
             ])
-            ->add('volunteer', CheckboxType::class, [
-                'label' => 'Bénévoles',
+            ->add('hideUsers', CheckboxType::class, [
+                'label' => 'Cacher les bénévoles',
                 'required' => false,
             ])
-            ->add('volunteerSkills', ChoiceType::class, [
+            ->add('userSkills', ChoiceType::class, [
                 'label' => 'Compétences',
                 'choices' => array_flip($this->availableSkillSets),
                 'multiple' => true,
                 'required' => false,
                 'attr' => ['class' => 'selectpicker'],
             ])
-            ->add('volunteerEquipped', CheckboxType::class, [
+            ->add('onlyFullyEquiped', CheckboxType::class, [
                 'label' => 'Avec uniforme seulement',
                 'required' => false,
             ])
-            ->add('volunteerHideVulnerable', CheckboxType::class, [
-                'label' => 'Cacher les personnes signalées comme vulnérables',
+            ->add('displayVulnerables', CheckboxType::class, [
+                'label' => 'Afficher aussi les personnes signalées comme vulnérables',
                 'required' => false,
             ])
-            ->add('asset', CheckboxType::class, [
-                'label' => 'Véhicules',
+            ->add('hideAssets', CheckboxType::class, [
+                'label' => 'Cacher les véhicules',
                 'required' => false,
             ])
             ->add('assetTypes', ChoiceType::class, [
@@ -94,15 +92,13 @@ class PlanningSearchType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'selectpicker'],
             ])
-            ->add('submit', SubmitType::class, ['label' => 'Filtrer'])
         ;
+    }
 
-        // Cannot use contraint in upper types, because it's not bound to an entity (therefore PropertyAccessor cannot succeed)
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $event) {
-            $data = $event->getData() ?? [];
-            if (array_key_exists('from', $data) && array_key_exists('to', $data) && $data['from'] >= $data['to']) {
-                throw new \InvalidArgumentException('Invalid payload'); // TODO Put a better error
-            }
-        });
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'csrf_protection' => false,
+        ]);
     }
 }
