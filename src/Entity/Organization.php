@@ -88,7 +88,7 @@ class Organization implements UserInterface
 
     public function getParentName(): ?string
     {
-        if($this->parent === null) {
+        if (null === $this->parent) {
             return  null;
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Entity\Organization;
@@ -33,8 +35,8 @@ class LoadOrganizationsCommand extends Command
             'UL 17',
             'UL 18',
             'UL 19',
-            'UL 20'
-        ]
+            'UL 20',
+        ],
     ];
 
     private EntityManagerInterface $entityManager;
@@ -56,7 +58,6 @@ class LoadOrganizationsCommand extends Command
         $oldOrganizations = $this->getIndexedOrganizations();
 
         foreach (self::ORGANIZATIONS as $parentOrganizationName => $childrenOrganizations) {
-
             if ($this->isNewOrganization($oldOrganizations, $parentOrganizationName)) {
                 $parentOrganization = $this->createOrganization($parentOrganizationName);
             } else {
@@ -64,7 +65,6 @@ class LoadOrganizationsCommand extends Command
             }
 
             foreach ($childrenOrganizations as $childOrganizationName) {
-
                 if ($this->isNewOrganization($oldOrganizations, $childOrganizationName, $parentOrganizationName)) {
                     $this->createOrganization($childOrganizationName, $parentOrganization);
                 }
