@@ -19,6 +19,55 @@ function selectTableBox ($tableBox) {
   colorTableBox($tableBox);
 }
 
+function initDatesRange($picker, $from, $to, minDate, maxDate)
+{
+  function displayDate() {
+    $picker.val($picker.data('daterangepicker').startDate.format('DD/MM/YYYY hh:mm') + ' à ' + $picker.data('daterangepicker').endDate.format('DD/MM/YYYY hh:mm'));
+  }
+
+  $picker.daterangepicker({
+    autoUpdateInput: false,
+    showDropdowns: true,
+    timePicker: true,
+    timePicker24Hour: true,
+    timePickerIncrement: 30,
+    applyClass: 'btn-sm btn-primary',
+    cancelClass: 'btn-sm btn-default',
+    minDate: minDate,
+    maxDate: maxDate,
+    locale: {
+      cancelLabel: 'Supprimer',
+      format: 'DD/MM/YYYY hh:mm',
+      separator: ' - ',
+      applyLabel: 'Valider',
+      fromLabel: 'De',
+      toLabel: 'à',
+      customRangeLabel: 'Custom',
+      daysOfWeek: [ 'Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam' ],
+      monthNames: [ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ],
+      firstDay: 1
+    }
+  });
+
+  if($from.val() !== '' && $to.val() !== '') {
+    $picker.data('daterangepicker').setStartDate(new Date($from.val()));
+    $picker.data('daterangepicker').setEndDate(new Date($to.val()));
+    displayDate();
+  }
+
+  $picker.on('apply.daterangepicker', function (ev, picker) {
+    displayDate();
+    $from.val(picker.startDate.format('YYYY-MM-DDThh:mm'));
+    $to.val(picker.endDate.format('YYYY-MM-DDThh:mm'));
+  });
+
+  $picker.on('cancel.daterangepicker', function (ev, picker) {
+    $picker.val('');
+    $from.val('');
+    $to.val('');
+  });
+}
+
 function triggerUpdate(url, newStatus, $planning) {
   var payload = generatePayload($planning);
   $.ajax({
@@ -47,7 +96,7 @@ function updatePlanningFromPayload($planning, newStatus, payload) {
             .removeClass($td.data('status'))
             .addClass(newStatus)
             .data('status', newStatus);
-        });    
+        });
     });
   });
 }
@@ -86,8 +135,12 @@ $(document).ready(function () {
     selectTableBox($(this));
   });
 
-  $('.trigger-update').on('click', function () { 
+  $('.trigger-update').on('click', function () {
     triggerUpdate($(this).data('href'), $(this).data('status'), $planning);
   });
+
+  // Datepickers
+  initDatesRange($('#fromToRange'), $('#from'), $('#to'));
+  initDatesRange($('#availableRange'), $('#availableFrom'), $('#availableTo'), new Date($('#from').val()), new Date($('#to').val()));
 });
 

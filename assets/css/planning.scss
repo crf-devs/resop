@@ -1,6 +1,12 @@
 $leftColumnWidth: 300px;
 $tableBoxSize: 40px;
 
+.search {
+    .hidden {
+        display: none;
+    }
+}
+
 .planning-container {
     margin-left: $leftColumnWidth + 10;
     width: calc(100% - #{$leftColumnWidth} - 10px);

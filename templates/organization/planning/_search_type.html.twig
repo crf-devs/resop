@@ -1,12 +1,18 @@
-<div>
+<div class="search">
     {{ form_start(form) }}
     <div class="row">
-        {{ form_row(form.from) }}
-        {{ form_row(form.to) }}
+        <label for="fromToRange">Période affichée: </label><input type="text" id="fromToRange" class="form-control" autocomplete="osqfdsfsdfdsff">
+        <div class="hidden">
+            {{ form_row(form.from) }}
+            {{ form_row(form.to) }}
+        </div>
     </div>
     <div class="row">
-        {{ form_row(form.availableFrom) }}
-        {{ form_row(form.availableTo) }}
+        <label for="availableRange">Afficher seulement si disponible sur la période: </label><input type="text" id="availableRange" class="form-control" autocomplete="sdsqferz">
+        <div class="hidden">
+            {{ form_row(form.availableFrom) }}
+            {{ form_row(form.availableTo) }}
+        </div>
     </div>
     {{ form_end(form) }}
 </div>
