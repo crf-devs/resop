@@ -69,6 +69,8 @@ function initDatesRange($picker, $from, $to, minDate, maxDate)
 }
 
 function triggerUpdate(url, newStatus, $planning) {
+  $('.planning-actions-container .btn').prop('disabled', true);
+
   var payload = generatePayload($planning);
   $.ajax({
     contentType: 'application/json',
@@ -78,9 +80,11 @@ function triggerUpdate(url, newStatus, $planning) {
     data: JSON.stringify(payload),
     success: () => {
       updatePlanningFromPayload($planning, newStatus, payload);
+      $('.planning-actions-container .btn').prop('disabled', false);
     },
     error: function(data) {
       window.alert('Une erreur est survenue, merci de vérifier vos paramètres.');
+      $('.planning-actions-container .btn').prop('disabled', false);
     }
   });
 }
@@ -99,6 +103,8 @@ function updatePlanningFromPayload($planning, newStatus, payload) {
         });
     });
   });
+
+  $planning.find('.checked').removeClass('checked').find('input:checkbox').prop('checked', false);
 }
 
 function generatePayload($planning) {
