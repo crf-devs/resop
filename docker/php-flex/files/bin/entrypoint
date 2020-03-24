@@ -46,8 +46,13 @@ if [ "$1" == "php-fpm" ]; then
 	setfacl -dR -m u:www-data:rwX -m u:"$(stat -c "%u" .)":rwX var 2>/dev/null || true
 
   if [ -n "${INIT_DB}" ]; then
-    echo -e "\n===== Init db and fixtures\n"
-    bin/post-install-dev.sh || true
+    if [ -n "${DANGEROUSLY_LOAD_FIXTURES}" ]; then
+      echo -e "\n===== Init db and fixtures\n"
+      bin/post-install-dev.sh || true
+    else
+      echo -e "\n===== Run migrations\n"
+      bin/update-db.sh || true
+    fi
   fi
 
   echo -e "\n===== Running FPM only for localhost\n"
