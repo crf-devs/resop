@@ -1,10 +1,19 @@
-<div class="table-responsive planning-container">
-    <div class="planning-actions-container">
-        <button class="trigger-update booked" action="book" data-status="booked" data-href="{{ path('planning_update', { action: 'book' }) }}">Book</button>
-        <button class="trigger-update available" action="allow" data-status="available" data-href="{{ path('planning_update', { action: 'allow' }) }}">Allow</button>
-        <button class="trigger-update locked" action="lock" data-status="locked" data-href="{{ path('planning_update', { action: 'lock' }) }}">Lock</button>
-        <button class="trigger-update unknown" action="delete" data-status="unknown" data-href="{{ path('planning_update', { action: 'delete' }) }}">Delete</button>
+<div class="container planning-actions-container">
+    <div class="row">
+        <div class="col-md">
+        </div>
+        <div class="col-md">
+            <button class="btn btn-sm btn-block trigger-update booked" action="book" data-status="booked" data-href="{{ path('planning_update', { action: 'book' }) }}">Marquer comme réservé</button>
+            <button class="btn btn-sm btn-block trigger-update available" action="allow" data-status="available" data-href="{{ path('planning_update', { action: 'allow' }) }}">Marquer comme disponible</button>
+        </div>
+        <div class="col-md">
+            <button class="btn btn-sm btn-block trigger-update locked" action="lock" data-status="locked" data-href="{{ path('planning_update', { action: 'lock' }) }}">Marquer comme bloqué</button>
+            <button class="btn btn-sm btn-block trigger-update unknown" action="delete" data-status="unknown" data-href="{{ path('planning_update', { action: 'delete' }) }}">Marquer comme NON disponible</button>
+        </div>
     </div>
+</div>
+
+<div class="table-responsive planning-container">
     <table class="planning table table-sm table-bordered">
         <thead>
         <tr>

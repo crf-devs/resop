@@ -7,6 +7,10 @@ $tableBoxSize: 40px;
     }
 }
 
+.planning-actions-container {
+    margin-bottom: 20px;
+}
+
 .planning-container {
     margin-left: $leftColumnWidth + 10;
     width: calc(100% - #{$leftColumnWidth} - 10px);
@@ -60,29 +64,30 @@ $tableBoxSize: 40px;
             }
         }
     }
+}
 
-    .available {
-        background-color: #88d38b;
+.available {
+    background-color: #88d38b;
 
-        &:hover {
-            background-color: #72a870;
-        }
+    &:hover {
+        background-color: #72a870;
     }
+}
 
-    .booked {
-        background-color: #67a2d3;
+.booked {
+    background-color: #67a2d3;
 
-        &:hover {
-            background-color: #6090bf;
-        }
+    &:hover {
+        background-color: #6090bf;
     }
+}
 
-    .locked {
-        background-color: #7a7a7a;
+.locked {
+    background-color: #7a7a7a;
+    color: white;
 
-        &:hover {
-            background-color: #535353;
-        }
+    &:hover {
+        background-color: #535353;
     }
 }
 
