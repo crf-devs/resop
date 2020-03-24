@@ -1,6 +1,11 @@
 <div class="container planning-actions-container">
     <div class="row">
         <div class="col-md">
+            <div class="text-center" id="loader">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
         </div>
         <div class="col-md">
             <button class="btn btn-sm btn-block trigger-update booked" action="book" data-status="booked" data-href="{{ path('planning_update', { action: 'book' }) }}">Marquer comme réservé</button>

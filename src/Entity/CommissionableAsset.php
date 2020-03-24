@@ -9,6 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommissionableAssetRepository")
+ * @ORM\Table(indexes={
+ *   @ORM\Index(name="commissionable_asset_type_idx", columns={"type"}),
+ * })
  */
 class CommissionableAsset implements AvailabilitableInterface
 {
@@ -44,11 +47,6 @@ class CommissionableAsset implements AvailabilitableInterface
     public Organization $organization;
 
     /**
-     * @ORM\Column(type="datetimetz_immutable", nullable=true)
-     */
-    public ?\DateTimeImmutable $lastCommissionDate = null;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\CommissionableAssetAvailability", mappedBy="asset")
      */
     public iterable $availabilities = [];
@@ -63,11 +61,6 @@ class CommissionableAsset implements AvailabilitableInterface
         $this->organization = $organization;
         $this->type = $type;
         $this->name = $name;
-    }
-
-    public function commission(\DateTimeImmutable $date = null): void
-    {
-        $this->lastCommissionDate = $date ?: UserAvailability::createImmutableDateTime();
     }
 
     public function __toString(): string

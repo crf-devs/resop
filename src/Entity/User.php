@@ -95,7 +95,6 @@ class User implements UserInterface, AvailabilitableInterface
 
     /**
      * @ORM\Column(nullable=true)
-     * @Assert\NotBlank
      */
     public string $organizationOccupation = '';
 

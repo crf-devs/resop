@@ -60,7 +60,9 @@ final class UserType extends AbstractType
                 'expanded' => true,
                 'placeholder' => false,
             ])
-            ->add('organizationOccupation', TextType::class)
+            ->add('organizationOccupation', TextType::class, [
+                'required' => false,
+            ])
             ->add('vulnerable', ChoiceType::class, [
                 'choices' => [
                     'Je fais partie des personnes vulnérables' => 1,

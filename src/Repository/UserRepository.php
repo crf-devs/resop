@@ -59,7 +59,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             $qb->andWhere('u.fullyEquipped = TRUE');
         }
 
-        if ($formData['displayVulnerables'] ?? false) {
+        if (!($formData['displayVulnerables'] ?? false)) {
             $qb->andWhere('u.vulnerable = FALSE');
         }
 

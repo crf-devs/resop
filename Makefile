@@ -114,7 +114,7 @@ move-test-profiler:
 helpme:
 	@echo "Generating the helpme.log file..."
 	@$(MAKE) -s helpme-logs > helpme.log
-	@echo "Done, you can send the helpme.log file to your team :)"
+	@echo "Done, you can send the 'helpme.log' file to your team :)"
 
 helpme-logs:
 	$(MAKE) -s pre-configure || true

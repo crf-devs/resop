@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(
  *   uniqueConstraints={
  *     @ORM\UniqueConstraint(name="organisation_name_unique", columns={"name"})
+ *   }, indexes={
+ *     @ORM\Index(name="organization_name_idx", columns={"name"}),
  *   }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
