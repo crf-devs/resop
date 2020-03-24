@@ -1,3 +1,5 @@
+<button id="triggerToRemove">Trigger to remove</button>
+
 <div class="table-responsive planning-container">
     <table class="planning table table-sm table-bordered">
         <thead>
@@ -18,9 +20,9 @@
         </tr>
         </thead>
         <tbody>
-        {% for list in [assetsAvailabilities, usersAvailabilities] %}
+        {% for type, list in { assets: assetsAvailabilities,  users: usersAvailabilities} %}
             {% for item in list %}
-                <tr>
+                <tr data-type="{{ type }}" data-id="{{ item.entity.id }}">
                     <th class="item-detail">{{ item.entity }}</th>
                     {% for slot in item.availabilities %}
                         <td class="slot-box {{ slot.status }}" data-status="{{ slot.status }}" data-from="{{ slot.from|date("Y-m-d h:i") }}" data-to="{{ slot.to|date("Y-m-d h:i") }}">

@@ -53,7 +53,7 @@ class PlanningUpdateDomain
     ];
 
     public const PAYLOAD_USERS_KEY = 'users';
-    public const PAYLOAD_COMMISSIONABLE_ASSETS_KEY = 'commissionableAssets';
+    public const PAYLOAD_COMMISSIONABLE_ASSETS_KEY = 'assets';
 
     public const PAYLOAD_VALID_KEYS = [
         self::PAYLOAD_USERS_KEY,

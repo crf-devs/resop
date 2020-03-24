@@ -19,6 +19,28 @@ function selectTableBox ($tableBox) {
   colorTableBox($tableBox);
 }
 
+function generatePayload($planning) {
+  var payload = {
+    users: {},
+    assets: {}
+  };
+
+  $planning.find('input[type=checkbox]:checked').each(function () {
+    var $owner = $(this).closest('tr');
+    var ownerId = $owner.data('id');
+    var type = $owner.data('type');
+    var $parent = $(this).closest('td');
+
+    if(!payload[type][ownerId]) {
+      payload[type][ownerId] = [];
+    }
+    payload[type][ownerId].push([$parent.data('from'), $parent.data('to')]);
+
+  });
+
+  return payload;
+}
+
 $(document).ready(function () {
   var $planning = $('.planning');
 
@@ -30,4 +52,9 @@ $(document).ready(function () {
   $planning.on('click', '.slot-box', function () {
     selectTableBox($(this));
   });
+
+  $('#triggerToRemove').on('click', function () { 
+    console.log(JSON.stringify(generatePayload($planning)));
+  });
 });
+
