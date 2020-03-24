@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommissionableAssetRepository")
  * @ORM\Table(indexes={
+ *   @ORM\Index(name="commissionable_asset_name_idx", columns={"name"}),
  *   @ORM\Index(name="commissionable_asset_type_idx", columns={"type"}),
  * })
  */

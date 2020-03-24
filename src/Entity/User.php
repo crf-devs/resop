@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *   @ORM\UniqueConstraint(name="user_identification_number_unique", columns={"identification_number"}),
  *   @ORM\UniqueConstraint(name="user_email_address_unique", columns={"email_address"})
  * }, indexes={
+ *   @ORM\Index(name="user_firstname_idx", columns={"first_name"}),
+ *   @ORM\Index(name="user_lastname_idx", columns={"last_name"}),
  *   @ORM\Index(name="user_skill_set_idx", columns={"skill_set"}),
  *   @ORM\Index(name="user_vulnerable_idx", columns={"vulnerable"}),
  *   @ORM\Index(name="user_fully_equipped_idx", columns={"fully_equipped"}),

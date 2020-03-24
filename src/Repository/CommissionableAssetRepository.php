@@ -67,6 +67,8 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
             $qb->setParameter('searchEndEndTime', $formData['availableTo']);
         }
 
+        $qb->orderBy('a.name');
+
         return $qb->getQuery()->getResult();
     }
 }
