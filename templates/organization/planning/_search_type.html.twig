@@ -1,17 +1,61 @@
-<div class="search">
+<div class="search shadow-sm p-3 mb-5 bg-white rounded">
     {{ form_start(form) }}
     <div class="row">
-        <label for="fromToRange">Période affichée: </label><input type="text" id="fromToRange" class="form-control" autocomplete="osqfdsfsdfdsff">
-        <div class="hidden">
-            {{ form_row(form.from) }}
-            {{ form_row(form.to) }}
+        <div class="col-12 col-md-6">
+            <label for="fromToRange">Période affichée: </label><input type="text" id="fromToRange" class="form-control" autocomplete="osqfdsfsdfdsff">
+            <div class="hidden">
+                {{ form_row(form.from) }}
+                {{ form_row(form.to) }}
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <label for="availableRange">Afficher seulement si disponible sur la période: </label><input type="text" id="availableRange" class="form-control" autocomplete="sdsqferz">
+            <div class="hidden">
+                {{ form_row(form.availableFrom) }}
+                {{ form_row(form.availableTo) }}
+            </div>
         </div>
     </div>
-    <div class="row">
-        <label for="availableRange">Afficher seulement si disponible sur la période: </label><input type="text" id="availableRange" class="form-control" autocomplete="sdsqferz">
-        <div class="hidden">
-            {{ form_row(form.availableFrom) }}
-            {{ form_row(form.availableTo) }}
+
+    <div class="row mt-md-2">
+        <div class="col-12 col-md-6">
+            <div class="row">
+                {{ form_label(form.organizations, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
+                <div class="col-12 col-md-9">
+                    {{ form_widget(form.organizations) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            {{ form_row(form.volunteerHideVulnerable) }}
+        </div>
+    </div>
+
+    <div class="row mt-md-2">
+        <div class="col-12 col-md-2">
+            {{ form_row(form.volunteer) }}
+        </div>
+        <div class="col-12 col-md-6 row">
+            {{ form_label(form.volunteerSkills, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
+            <div class="col-12 col-md-9">
+                {{ form_widget(form.volunteerSkills) }}
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            {{ form_row(form.volunteerEquipped) }}
+        </div>
+    </div>
+
+    <div class="row mt-md-2">
+        <div class="col-12 col-md-2">
+            {{ form_row(form.asset) }}
+        </div>
+        <div class="col-12 col-md-6 row">
+            {{ form_label(form.assetTypes, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
+            <div class="col-12 col-md-9">
+                {{ form_widget(form.assetTypes) }}
+            </div>
         </div>
     </div>
     {{ form_end(form) }}
