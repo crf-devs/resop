@@ -4,6 +4,7 @@ import '../css/planning.scss';
 const $ = require('jquery');
 require('bootstrap');
 require('bootstrap-select');
+require('daterangepicker');
 
 $.fn.selectpicker.Constructor.DEFAULTS.noneSelectedText = '-';
 $.fn.selectpicker.Constructor.DEFAULTS.noneResultsText = 'Aucun résultat pour {0}';

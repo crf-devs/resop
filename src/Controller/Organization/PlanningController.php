@@ -41,8 +41,6 @@ class PlanningController extends AbstractController
         $data = [
             'from' => new \DateTimeImmutable('monday'),
             'to' => (new \DateTimeImmutable('monday'))->add(new \DateInterval('P1W')),
-            'availableFrom' => new \DateTimeImmutable('today'),
-            'availableTo' => (new \DateTimeImmutable('today'))->add(new \DateInterval('P1D')),
             'volunteer' => true,
             'volunteerEquipped' => true,
             'volunteerHideVulnerable' => true,

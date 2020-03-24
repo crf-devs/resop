@@ -30,11 +30,13 @@ class PlanningSearchType extends AbstractType
     {
         $builder
             ->add('from', DateTimeType::class, [
+                'widget' => 'single_text',
                 'input' => 'datetime_immutable',
                 'label' => 'Visualiser les jours de ',
                 'with_minutes' => false,
             ])
             ->add('to', DateTimeType::class, [
+                'widget' => 'single_text',
                 'input' => 'datetime_immutable',
                 'label' => 'à',
                 'with_minutes' => false,
@@ -44,6 +46,7 @@ class PlanningSearchType extends AbstractType
                 'input' => 'datetime_immutable',
                 'label' => 'Rechercher les disponibilités de ',
                 'with_minutes' => false,
+                'required' => false,
             ])
             ->add('availableTo', DateTimeType::class, [
                 'widget' => 'single_text',
@@ -51,6 +54,7 @@ class PlanningSearchType extends AbstractType
                 'label' => 'à',
                 'data' => (new DateTimeImmutable('today'))->add(new \DateInterval('P1D')),
                 'with_minutes' => false,
+                'required' => false,
             ])
             ->add('organizations', EntityType::class, [
                 'label' => 'Structures',
@@ -61,7 +65,8 @@ class PlanningSearchType extends AbstractType
                 'attr' => ['class' => 'selectpicker'],
             ])
             ->add('volunteer', CheckboxType::class, [
-                'label' => 'Bénévoles',
+                'label' => 'Afficher les bénévoles',
+                'required' => false,
             ])
             ->add('volunteerSkills', ChoiceType::class, [
                 'label' => 'Compétences',
@@ -72,12 +77,15 @@ class PlanningSearchType extends AbstractType
             ])
             ->add('volunteerEquipped', CheckboxType::class, [
                 'label' => 'Avec uniforme seulement',
+                'required' => false,
             ])
             ->add('volunteerHideVulnerable', CheckboxType::class, [
                 'label' => 'Cacher les personnes signalées comme vulnérables',
+                'required' => false,
             ])
             ->add('asset', CheckboxType::class, [
                 'label' => 'Afficher les véhicules',
+                'required' => false,
             ])
             ->add('assetTypes', ChoiceType::class, [
                 'label' => 'Type de véhicules',
