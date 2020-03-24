@@ -133,6 +133,11 @@ function generatePayload ($planning) {
   return payload;
 }
 
+function hideUselessFilters() {
+  $('.search [data-hide="users"]').css('visibility', $('#hideUsers').prop('checked') ? 'hidden' : 'visible');
+  $('.search [data-hide="assets"]').css('visibility', $('#hideAssets').prop('checked') ? 'hidden' : 'visible');
+}
+
 $(document).ready(function () {
   var $planning = $('.planning');
 
@@ -153,6 +158,12 @@ $(document).ready(function () {
   initDatesRange($('#fromToRange'), $('#from'), $('#to'));
   initDatesRange($('#availableRange'), $('#availableFrom'), $('#availableTo'), true);
 
+  hideUselessFilters();
+
+  $('#hideUsers').on('change', hideUselessFilters);
+  $('#hideAssets').on('change', hideUselessFilters);
+
   $planning.find('input[type=checkbox]:checked').closest('.slot-box').addClass('checked');
+  $('#loader').hide();
 });
 

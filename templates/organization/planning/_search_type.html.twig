@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6" data-hide="users">
             {{ form_row(form.displayVulnerables) }}
         </div>
     </div>
@@ -35,14 +35,14 @@
         <div class="col-12 col-md-2">
             {{ form_row(form.hideUsers) }}
         </div>
-        <div class="col-12 col-md-6 row">
+        <div class="col-12 col-md-6 row" data-hide="users">
             {{ form_label(form.userSkills, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
             <div class="col-12 col-md-9">
                 {{ form_widget(form.userSkills) }}
             </div>
         </div>
 
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-4" data-hide="users">
             {{ form_row(form.onlyFullyEquiped) }}
         </div>
     </div>
@@ -51,7 +51,7 @@
         <div class="col-12 col-md-2">
             {{ form_row(form.hideAssets) }}
         </div>
-        <div class="col-12 col-md-6 row">
+        <div class="col-12 col-md-6 row" data-hide="assets">
             {{ form_label(form.assetTypes, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
             <div class="col-12 col-md-9">
                 {{ form_widget(form.assetTypes) }}
