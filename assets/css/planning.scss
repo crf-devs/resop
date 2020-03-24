@@ -9,6 +9,10 @@ $tableBoxSize: 40px;
 
 .planning-actions-container {
     margin-bottom: 20px;
+
+    .btn:hover {
+        opacity: 0.8;
+    }
 }
 
 .planning-container {
@@ -57,37 +61,41 @@ $tableBoxSize: 40px;
 
             input[type=checkbox] {
                 cursor: pointer;
+                visibility: hidden;
             }
 
             &:hover {
-                background-color: #eee;
+                opacity: 0.8;
+            }
+
+            &.checked {
+                opacity: 0.3;
+
+                input[type=checkbox] {
+                    visibility: visible;
+                }
             }
         }
     }
 }
 
-.available {
-    background-color: #88d38b;
-
-    &:hover {
-        background-color: #72a870;
+.planning-container, .planning-actions-container {
+    .unknown {
+        background-color: #ff767f;
+        color: white;
     }
-}
 
-.booked {
-    background-color: #67a2d3;
-
-    &:hover {
-        background-color: #6090bf;
+    .available {
+        background-color: #76bd79;
     }
-}
 
-.locked {
-    background-color: #7a7a7a;
-    color: white;
+    .booked {
+        background-color: #67a2d3;
+    }
 
-    &:hover {
-        background-color: #535353;
+    .locked {
+        background-color: #7a7a7a;
+        color: white;
     }
 }
 

@@ -47,7 +47,7 @@ class PlanningController extends AbstractController
             'asset' => true,
         ];
 
-        $form = $this->container->get('form.factory')->createNamed('', PlanningSearchType::class, $data, ['method' => 'GET']);
+        $form = $this->container->get('form.factory')->createNamed('', PlanningSearchType::class, $data, ['method' => 'GET', 'attr' => ['autocomplete' => 'off']]);
         $form->handleRequest($request);
 
         $from = $form->get('from')->getData();
