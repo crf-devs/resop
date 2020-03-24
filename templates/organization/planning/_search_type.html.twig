@@ -2,14 +2,14 @@
     {{ form_start(form) }}
     <div class="row">
         <div class="col-12 col-md-6">
-            <label for="fromToRange">Période affichée: </label><input type="text" id="fromToRange" class="form-control" autocomplete="osqfdsfsdfdsff">
+            <label for="fromToRange">Période affichée: </label><input type="text" id="fromToRange" class="form-control" readonly>
             <div class="hidden">
                 {{ form_row(form.from) }}
                 {{ form_row(form.to) }}
             </div>
         </div>
         <div class="col-12 col-md-6">
-            <label for="availableRange">Afficher seulement si disponible sur la période: </label><input type="text" id="availableRange" class="form-control" autocomplete="sdsqferz">
+            <label for="availableRange">Afficher seulement si disponible sur la période: </label><input type="text" id="availableRange" class="form-control" readonly>
             <div class="hidden">
                 {{ form_row(form.availableFrom) }}
                 {{ form_row(form.availableTo) }}

@@ -19,22 +19,20 @@ function selectTableBox ($tableBox) {
   colorTableBox($tableBox);
 }
 
-function initDatesRange($picker, $from, $to, minDate, maxDate)
+function initDatesRange($picker, $from, $to, withTime)
 {
   function displayDate() {
-    $picker.val($picker.data('daterangepicker').startDate.format('DD/MM/YYYY hh:mm') + ' à ' + $picker.data('daterangepicker').endDate.format('DD/MM/YYYY hh:mm'));
+    $picker.val($picker.data('daterangepicker').startDate.format('DD/MM/YYYY HH:mm') + ' à ' + $picker.data('daterangepicker').endDate.format('DD/MM/YYYY HH:mm'));
   }
 
   $picker.daterangepicker({
     autoUpdateInput: false,
-    showDropdowns: true,
-    timePicker: true,
+    showDropdowns: false,
+    timePicker: !!withTime,
     timePicker24Hour: true,
     timePickerIncrement: 30,
     applyClass: 'btn-sm btn-primary',
     cancelClass: 'btn-sm btn-default',
-    minDate: minDate,
-    maxDate: maxDate,
     locale: {
       cancelLabel: 'Supprimer',
       format: 'DD/MM/YYYY hh:mm',
@@ -69,9 +67,12 @@ function initDatesRange($picker, $from, $to, minDate, maxDate)
 }
 
 function triggerUpdate(url, newStatus, $planning) {
-  $('.planning-actions-container .btn').prop('disabled', true);
-
   var payload = generatePayload($planning);
+  if(!Object.keys(payload.assets).length && !Object.keys(payload.users).length) {
+    return;
+  }
+
+  $('.planning-actions-container .btn').prop('disabled', true);
   $.ajax({
     contentType: 'application/json',
     method: 'POST',
@@ -145,8 +146,10 @@ $(document).ready(function () {
     triggerUpdate($(this).data('href'), $(this).data('status'), $planning);
   });
 
+  $planning.find('input[type=checkbox]:checked').closest('.slot-box').addClass('checked');
+
   // Datepickers
   initDatesRange($('#fromToRange'), $('#from'), $('#to'));
-  initDatesRange($('#availableRange'), $('#availableFrom'), $('#availableTo'), new Date($('#from').val()), new Date($('#to').val()));
+  initDatesRange($('#availableRange'), $('#availableFrom'), $('#availableTo'), true);
 });
 
