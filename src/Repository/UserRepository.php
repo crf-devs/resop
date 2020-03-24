@@ -51,21 +51,21 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     {
         $qb = $this->createQueryBuilder('u');
 
-        if (!empty($formData['organizations'])) {
+        if (count($formData['organizations'] ?? []) > 0) {
             $qb->andWhere('u.organization IN (:organisations)')->setParameter('organisations', $formData['organizations']);
         }
 
-        if ($formData['volunteerEquipped']) {
+        if ($formData['onlyFullyEquiped'] ?? false) {
             $qb->andWhere('u.fullyEquipped = TRUE');
         }
 
-        if ($formData['volunteerHideVulnerable']) {
+        if ($formData['displayVulnerables'] ?? false) {
             $qb->andWhere('u.vulnerable = FALSE');
         }
 
-        if (!empty($formData['volunteerSkills'])) {
+        if (count($formData['userSkills'] ?? []) > 0) {
             $skillsQueries = [];
-            foreach (array_values($formData['volunteerSkills']) as $key => $skill) {
+            foreach (array_values($formData['userSkills']) as $key => $skill) {
                 $skillsQueries[] = sprintf('CONTAINS(u.skillSet, ARRAY(:skill%d)) = TRUE', $key);
                 $qb->setParameter(sprintf('skill%d', $key), $skill);
             }

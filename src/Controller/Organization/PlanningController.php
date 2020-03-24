@@ -38,35 +38,27 @@ class PlanningController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $data = [];
-        if (!$request->query->get('from') instanceof \DateTimeImmutable) {
-            $data['from'] = new \DateTimeImmutable('monday');
+        if (!$request->query->has('from')) {
+            $request->query->set('from', (new \DateTimeImmutable('monday this week'))->format('Y-m-d\T00:00:00'));
         }
 
-        if (!$request->query->get('to') instanceof \DateTimeImmutable) {
-            $data['to'] = (new \DateTimeImmutable('monday'))->add(new \DateInterval('P1W'));
+        if (!$request->query->has('to')) {
+            $from = new \DateTimeImmutable($request->query->get('from', 'monday this week'));
+            $request->query->set('to', $from->add(new \DateInterval('P1W'))->format('Y-m-d\T00:00:00'));
         }
 
-        if (0 === $request->query->count()) {
-            $data = [
-                'from' => new \DateTimeImmutable('monday'),
-                'to' => (new \DateTimeImmutable('monday'))->add(new \DateInterval('P1W')),
-                'volunteer' => true,
-                'volunteerEquipped' => true,
-                'volunteerHideVulnerable' => true,
-                'asset' => true,
-            ];
-        }
-
-        $form = $this->container->get('form.factory')->createNamed('', PlanningSearchType::class, $data, ['method' => 'GET', 'action' => $this->generateUrl('planning'), 'attr' => ['autocomplete' => 'off']]);
+        $form = $this->container->get('form.factory')->createNamed('', PlanningSearchType::class, [], ['method' => 'GET', 'attr' => ['autocomplete' => 'off']]);
         $form->handleRequest($request);
 
-        $from = $form->get('from')->getData();
-        $to = $form->get('to')->getData();
+        $data = $form->getData();
+        if (!isset($data['from'], $data['to'])) {
+            // This may happen if the passed date is invalid. TODO check it before, the format must be 2020-03-30T00:00:00
+            throw $this->createNotFoundException();
+        }
 
-        $periodCalculator = DatePeriodCalculator::createRoundedToDay($from, new \DateInterval('PT2H'), $to);
+        $periodCalculator = DatePeriodCalculator::createRoundedToDay($data['from'], new \DateInterval('PT2H'), $data['to']);
 
-        [$users, $assets] = $this->searchEntities($form->getData());
+        [$users, $assets] = $this->searchEntities($data);
         $usersAvailabilities = $this->prepareAvailabilities($this->userAvailabilityRepository, $users, $periodCalculator);
         $assetsAvailabilities = $this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $periodCalculator);
 
@@ -80,8 +72,8 @@ class PlanningController extends AbstractController
 
     private function searchEntities(array $formData): array
     {
-        $users = $this->userRepository->findByFilters($formData);
-        $assets = $this->assetRepository->findByFilters($formData);
+        $users = $formData['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($formData);
+        $assets = $formData['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($formData);
 
         return [$users, $assets];
     }

@@ -27,29 +27,29 @@
             </div>
         </div>
         <div class="col-12 col-md-6">
-            {{ form_row(form.volunteerHideVulnerable) }}
+            {{ form_row(form.displayVulnerables) }}
         </div>
     </div>
 
     <div class="row mt-md-2">
         <div class="col-12 col-md-2">
-            {{ form_row(form.volunteer) }}
+            {{ form_row(form.hideUsers) }}
         </div>
         <div class="col-12 col-md-6 row">
-            {{ form_label(form.volunteerSkills, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
+            {{ form_label(form.userSkills, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
             <div class="col-12 col-md-9">
-                {{ form_widget(form.volunteerSkills) }}
+                {{ form_widget(form.userSkills) }}
             </div>
         </div>
 
         <div class="col-12 col-md-4">
-            {{ form_row(form.volunteerEquipped) }}
+            {{ form_row(form.onlyFullyEquiped) }}
         </div>
     </div>
 
     <div class="row mt-md-2">
         <div class="col-12 col-md-2">
-            {{ form_row(form.asset) }}
+            {{ form_row(form.hideAssets) }}
         </div>
         <div class="col-12 col-md-6 row">
             {{ form_label(form.assetTypes, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
@@ -57,8 +57,9 @@
                 {{ form_widget(form.assetTypes) }}
             </div>
         </div>
+        <div class="col-12 col-md-4 row">
+            <button class="btn btn-outline-primary btn-block" type="submit">Rechercher</button>
+        </div>
     </div>
     {{ form_end(form) }}
-    <button id="submit-search" class="btn btn-primary" type="submit">Filtrer</button>
-
 </div>

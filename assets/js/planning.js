@@ -19,10 +19,13 @@ function selectTableBox ($tableBox) {
   colorTableBox($tableBox);
 }
 
-function initDatesRange($picker, $from, $to, withTime)
-{
-  function displayDate() {
-    $picker.val($picker.data('daterangepicker').startDate.format('DD/MM/YYYY HH:mm') + ' à ' + $picker.data('daterangepicker').endDate.format('DD/MM/YYYY HH:mm'));
+function initDatesRange ($picker, $from, $to, withTime) {
+  function displayDate () {
+    if(withTime) {
+      $picker.val($picker.data('daterangepicker').startDate.format('DD/MM/YYYY HH:mm') + ' à ' + $picker.data('daterangepicker').endDate.format('DD/MM/YYYY HH:mm'));
+    } else {
+      $picker.val($picker.data('daterangepicker').startDate.format('DD/MM/YYYY') + ' au ' + $picker.data('daterangepicker').endDate.format('DD/MM/YYYY'));
+    }
   }
 
   $picker.daterangepicker({
@@ -41,13 +44,13 @@ function initDatesRange($picker, $from, $to, withTime)
       fromLabel: 'De',
       toLabel: 'à',
       customRangeLabel: 'Custom',
-      daysOfWeek: [ 'Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam' ],
-      monthNames: [ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ],
+      daysOfWeek: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+      monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
       firstDay: 1
     }
   });
 
-  if($from.val() !== '' && $to.val() !== '') {
+  if ($from.val() !== '' && $to.val() !== '') {
     $picker.data('daterangepicker').setStartDate(new Date($from.val()));
     $picker.data('daterangepicker').setEndDate(new Date($to.val()));
     displayDate();
@@ -66,9 +69,9 @@ function initDatesRange($picker, $from, $to, withTime)
   });
 }
 
-function triggerUpdate(url, newStatus, $planning) {
+function triggerUpdate (url, newStatus, $planning) {
   var payload = generatePayload($planning);
-  if(!Object.keys(payload.assets).length && !Object.keys(payload.users).length) {
+  if (!Object.keys(payload.assets).length && !Object.keys(payload.users).length) {
     return;
   }
 
@@ -83,32 +86,32 @@ function triggerUpdate(url, newStatus, $planning) {
       updatePlanningFromPayload($planning, newStatus, payload);
       $('.planning-actions-container .btn').prop('disabled', false);
     },
-    error: function(data) {
+    error: function (data) {
       window.alert('Une erreur est survenue, merci de vérifier vos paramètres.');
       $('.planning-actions-container .btn').prop('disabled', false);
     }
   });
 }
 
-function updatePlanningFromPayload($planning, newStatus, payload) {
+function updatePlanningFromPayload ($planning, newStatus, payload) {
   ['users', 'assets'].forEach(ownerType => {
     var currentObjects = payload[ownerType] || {};
     Object.keys(currentObjects).forEach(objectId => {
-        payload[ownerType][objectId].forEach(schedule => {
-          var [from,to] = schedule;
-          $td = $planning.find('tr[data-type="'+ownerType+'"][data-id="'+objectId+'"] td[data-from="'+from+'"][data-to="'+to+'"]');
-          $td
-            .removeClass($td.data('status'))
-            .addClass(newStatus)
-            .data('status', newStatus);
-        });
+      payload[ownerType][objectId].forEach(schedule => {
+        var [from, to] = schedule;
+        $td = $planning.find('tr[data-type="' + ownerType + '"][data-id="' + objectId + '"] td[data-from="' + from + '"][data-to="' + to + '"]');
+        $td
+          .removeClass($td.data('status'))
+          .addClass(newStatus)
+          .data('status', newStatus);
+      });
     });
   });
 
   $planning.find('.checked').removeClass('checked').find('input:checkbox').prop('checked', false);
 }
 
-function generatePayload($planning) {
+function generatePayload ($planning) {
   var payload = {
     users: {},
     assets: {}
@@ -120,7 +123,7 @@ function generatePayload($planning) {
     var type = $owner.data('type');
     var $parent = $(this).closest('td');
 
-    if(!payload[type][ownerId]) {
+    if (!payload[type][ownerId]) {
       payload[type][ownerId] = [];
     }
     payload[type][ownerId].push([$parent.data('from'), $parent.data('to')]);
@@ -146,16 +149,10 @@ $(document).ready(function () {
     triggerUpdate($(this).data('href'), $(this).data('status'), $planning);
   });
 
-  $planning.find('input[type=checkbox]:checked').closest('.slot-box').addClass('checked');
-
   // Datepickers
   initDatesRange($('#fromToRange'), $('#from'), $('#to'));
   initDatesRange($('#availableRange'), $('#availableFrom'), $('#availableTo'), true);
 
-  // Form submit
-  $('#submit-search').on('click', function () {
-    $("#planning-form").submit()
-  });
-
+  $planning.find('input[type=checkbox]:checked').closest('.slot-box').addClass('checked');
 });
 
