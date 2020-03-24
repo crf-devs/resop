@@ -80,4 +80,23 @@ class Organization implements UserInterface
     public function eraseCredentials(): void
     {
     }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getParentName(): ?string
+    {
+        if($this->parent === null) {
+            return  null;
+        }
+
+        return $this->parent->getName();
+    }
+
+    public function setPassword(?string $password): void
+    {
+        $this->password = $password;
+    }
 }

@@ -48,4 +48,13 @@ class OrganizationRepository extends ServiceEntityRepository
             ->orderBy($alias.'.name', 'ASC')
         ;
     }
+
+    public function findAllWithParent(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->addSelect('p')
+            ->leftJoin('o.parent', 'p')
+            ->getQuery()
+            ->getResult();
+    }
 }
