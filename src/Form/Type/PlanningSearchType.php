@@ -65,7 +65,7 @@ class PlanningSearchType extends AbstractType
                 'attr' => ['class' => 'selectpicker'],
             ])
             ->add('volunteer', CheckboxType::class, [
-                'label' => 'Afficher les bénévoles',
+                'label' => 'Bénévoles',
                 'required' => false,
             ])
             ->add('volunteerSkills', ChoiceType::class, [
@@ -84,11 +84,11 @@ class PlanningSearchType extends AbstractType
                 'required' => false,
             ])
             ->add('asset', CheckboxType::class, [
-                'label' => 'Afficher les véhicules',
+                'label' => 'Véhicules',
                 'required' => false,
             ])
             ->add('assetTypes', ChoiceType::class, [
-                'label' => 'Type de véhicules',
+                'label' => 'Type',
                 'choices' => CommissionableAsset::TYPES,
                 'multiple' => true,
                 'required' => false,
