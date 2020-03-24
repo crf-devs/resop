@@ -1,4 +1,5 @@
 const $ = require('jquery');
+require('bootstrap');
 
 function colorTableBox ($tableBox) {
   var isChecked = $tableBox.find('input:checkbox').prop('checked');
@@ -69,13 +70,30 @@ function initDatesRange ($picker, $from, $to, withTime) {
   });
 }
 
-function triggerUpdate (url, newStatus, $planning) {
+function triggerUpdate (url, newStatus, $planning, $modal) {
   var payload = generatePayload($planning);
-  if (!Object.keys(payload.assets).length && !Object.keys(payload.users).length) {
+
+  var nbAssets = Object.keys(payload.assets).length;
+  var nbUsers = Object.keys(payload.users).length;
+  if (!nbAssets && !nbUsers) {
     return;
   }
 
-  $('.planning-actions-container .btn').prop('disabled', true);
+  var updates = [];
+  if (nbAssets) {
+    updates.push(nbAssets + ' véhicule' + (nbAssets > 1 ? 's' : ''));
+  }
+  if (nbUsers) {
+    updates.push(nbUsers + ' utilisateur' + (nbUsers > 1 ? 's' : ''));
+  }
+
+  $modal.find('#nb-assets-users').text(updates.join(' et '));
+  $modal.find('#confirm-update').data('status', newStatus).data('url', url);
+  $modal.modal('show');
+}
+
+function doUpdate(url, newStatus, $planning) {
+  var payload = generatePayload($planning);
   $.ajax({
     contentType: 'application/json',
     method: 'POST',
@@ -84,14 +102,13 @@ function triggerUpdate (url, newStatus, $planning) {
     data: JSON.stringify(payload),
     success: () => {
       updatePlanningFromPayload($planning, newStatus, payload);
-      $('.planning-actions-container .btn').prop('disabled', false);
     },
     error: function (data) {
       window.alert('Une erreur est survenue, merci de vérifier vos paramètres.');
-      $('.planning-actions-container .btn').prop('disabled', false);
     }
   });
 }
+
 
 function updatePlanningFromPayload ($planning, newStatus, payload) {
   ['users', 'assets'].forEach(ownerType => {
@@ -150,8 +167,20 @@ $(document).ready(function () {
     selectTableBox($(this));
   });
 
+  var $modalUpdate = $('#modal-update');
   $('.trigger-update').on('click', function () {
-    triggerUpdate($(this).data('href'), $(this).data('status'), $planning);
+    var $this = $(this);
+    triggerUpdate($this.data('href'), $this.data('status'), $planning, $modalUpdate);
+  });
+  $modalUpdate.on('hide.bs.modal', function (e) {
+    $('.planning-actions-container .btn').prop('disabled', false);
+  }).on('show.bs.modal', function (e) {
+    $('.planning-actions-container .btn').prop('disabled', true);
+  }).find('#confirm-update').on('click', function () {
+    var $this = $(this);
+    doUpdate($this.data('url'), $this.data('status'), $planning);
+
+    $modalUpdate.modal('hide');
   });
 
   // Datepickers
