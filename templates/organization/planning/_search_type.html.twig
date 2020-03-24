@@ -1,17 +1,36 @@
 <div class="search">
     {{ form_start(form) }}
-    <div class="row">
+    <div class="form-group">
         <label for="fromToRange">Période affichée: </label><input type="text" id="fromToRange" class="form-control" autocomplete="osqfdsfsdfdsff">
         <div class="hidden">
             {{ form_row(form.from) }}
             {{ form_row(form.to) }}
         </div>
     </div>
-    <div class="row">
+    <div class="form-group">
         <label for="availableRange">Afficher seulement si disponible sur la période: </label><input type="text" id="availableRange" class="form-control" autocomplete="sdsqferz">
         <div class="hidden">
             {{ form_row(form.availableFrom) }}
             {{ form_row(form.availableTo) }}
+        </div>
+    </div>
+    {{ form_row(form.organizations) }}
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.volunteer) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.volunteerHideVulnerable) }}
+            {{ form_row(form.volunteerEquipped) }}
+            {{ form_row(form.volunteerSkills) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.asset) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.assetTypes) }}
         </div>
     </div>
     {{ form_end(form) }}
