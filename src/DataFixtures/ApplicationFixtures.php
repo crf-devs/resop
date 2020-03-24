@@ -130,10 +130,6 @@ final class ApplicationFixtures extends Fixture
         $firstNames = ['Philippe', 'Bastien', 'Hugo', 'Michel', 'Mathias', 'Florian', 'Fabien', 'Nassim', 'Mathieu', 'Francis', 'Thomas'];
         $lastNames = ['Skywalker', 'Oneal', 'James', 'Bryant', 'Davis', 'Johnson', 'Curry', 'Pippen', 'Jordan', 'Parker', 'Grant', 'Thompson', 'Harden', 'Westbrook'];
         $occupations = ['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'];
-        $lettersRange = range('A', 'Z');
-        $yearsRange = range(1950, 2005);
-        $monthsRange = range(1, 12);
-        $daysRange = range(1, 28);
 
         $x = 1;
         foreach ($this->organizations as $organization) {
@@ -143,14 +139,12 @@ final class ApplicationFixtures extends Fixture
                 $user->firstName = $firstNames[array_rand($firstNames)];
                 $user->lastName = $lastNames[array_rand($lastNames)];
                 $user->organization = $this->organizations[array_rand($this->organizations)];
-                $user->setIdentificationNumber(str_pad(''.++$startIdNumber.'', 10, '0', STR_PAD_LEFT).$lettersRange[array_rand($lettersRange)]);
-                $user->setEmailAddress($user->firstName.'.'.$user->lastName.$x.'@some-domain.tld');
+
+                // e.g. 990001A
+                $user->setIdentificationNumber(str_pad(''.++$startIdNumber.'', 10, '0', STR_PAD_LEFT).'A');
+                $user->setEmailAddress('user'.$x.'@some-domain.tld');
                 $user->phoneNumber = '0102030405';
-                $user->birthday = implode('-', [
-                    $yearsRange[array_rand($yearsRange)],
-                    str_pad($monthsRange[array_rand($monthsRange)].'', 2, '0', STR_PAD_LEFT),
-                    str_pad($daysRange[array_rand($daysRange)].'', 2, '0', STR_PAD_LEFT),
-                ]);
+                $user->birthday = '1900-01-01';
                 $user->occupation = $occupations[array_rand($occupations)];
                 $user->organizationOccupation = 'Secouriste';
                 $user->skillSet = (array) array_rand($this->availableSkillSets, random_int(2, 4));
