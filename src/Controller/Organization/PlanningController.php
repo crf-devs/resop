@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Organization;
 
 use App\Domain\DatePeriodCalculator;
-use App\Entity\AvailabilitableInterface;
 use App\Entity\AvailabilityInterface;
 use App\Form\Type\PlanningSearchType;
 use App\Repository\AvailabilityRepositoryInterface;
@@ -58,7 +57,8 @@ class PlanningController extends AbstractController
 
         $periodCalculator = DatePeriodCalculator::createRoundedToDay($data['from'], new \DateInterval('PT2H'), $data['to']);
 
-        [$users, $assets] = $this->searchEntities($data);
+        $users = $formData['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($data);
+        $assets = $formData['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($data);
         $usersAvailabilities = $this->prepareAvailabilities($this->userAvailabilityRepository, $users, $periodCalculator);
         $assetsAvailabilities = $this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $periodCalculator);
 
@@ -70,17 +70,6 @@ class PlanningController extends AbstractController
         ]);
     }
 
-    private function searchEntities(array $formData): array
-    {
-        $users = $formData['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($formData);
-        $assets = $formData['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($formData);
-
-        return [$users, $assets];
-    }
-
-    /**
-     * @param AvailabilitableInterface[] $availabilitables
-     */
     private function prepareAvailabilities(AvailabilityRepositoryInterface $repository, array $availabilitables, DatePeriodCalculator $periodCalculator): array
     {
         $slots = self::parseRawSlots($repository->loadRawDataForEntity($availabilitables, $periodCalculator->getFrom(), $periodCalculator->getTo()));
