@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/planning/update/{action}", name="planning_update", methods={"POST"})
@@ -37,8 +38,9 @@ class PlanningUpdateController extends AbstractController
 
     public function __invoke(Request $request, string $action): Response
     {
-        if (!$this->getUser() instanceof Organization) {
-            throw new BadRequestHttpException('Organization is required');
+        $organization = $this->getUser();
+        if (!($organization instanceof Organization) || !empty($organization->parent)) {
+            throw new AccessDeniedException('Organization is required and must not have a parent');
         }
 
         $json = json_decode($request->getContent(), true);
@@ -50,7 +52,7 @@ class PlanningUpdateController extends AbstractController
             $bulkUpdate = new PlanningUpdateDomain(
                 $action,
                 $json,
-                $this->getUser(),
+                $organization,
                 $this->getDoctrine()->getManager(),
                 $this->userRepository,
                 $this->assetRepository,
