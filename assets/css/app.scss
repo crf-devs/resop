@@ -1,54 +1,54 @@
-label.required:not(.form-check-label):before {
-    color: crimson;
-    content: "*";
-    padding-right: 4px;
+label.required:not(.form-check-label)::before {
+  color: crimson;
+  content: "*";
+  padding-right: 4px;
 }
 
-legend.required:before {
-    color: crimson;
-    content: "*";
-    padding-right: 4px;
+legend.required::before {
+  color: crimson;
+  content: "*";
+  padding-right: 4px;
 }
 
 table.availability-table {
-    text-align: center;
-    position: relative;
+  text-align: center;
+  position: relative;
 
-    label.day-title {
-        padding: 0;
-        margin: 0;
-        cursor: pointer;
+  label.day-title {
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  td.clickable-table-box {
+    cursor: pointer;
+
+    &:hover {
+      background-color: #eee;
     }
 
-    td.clickable-table-box {
-        cursor: pointer;
+    &.checked {
+      background-color: #88d38b;
 
-        &:hover {
-            background-color: #eee;
-        }
-
-        &.checked {
-            background-color: #88d38b;
-
-            &:hover {
-                background-color: #72a870;
-            }
-        }
-
-        &.disabled {
-            background-color: #67a2d3 !important;
-            cursor: default;
-        }
-
-        input[type=checkbox] {
-            cursor: pointer;
-        }
+      &:hover {
+        background-color: #72a870;
+      }
     }
 
-    button.select-all {
-        position: absolute;
-        right: 0;
+    &.disabled {
+      background-color: #67a2d3 !important;
+      cursor: default;
     }
+
+    input[type=checkbox] {
+      cursor: pointer;
+    }
+  }
+
+  button.select-all {
+    position: absolute;
+    right: 0;
+  }
 }
 
 @import "~bootstrap/scss/bootstrap";

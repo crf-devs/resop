@@ -1,7 +1,7 @@
 const $ = require('jquery');
 
-function initDatesRange ($picker, $from, $to, withTime) {
-  function displayDate () {
+function initDatesRange($picker, $from, $to, withTime) {
+  function displayDate() {
     if (withTime) {
       $picker.val($picker.data('daterangepicker').startDate.format('DD/MM/YYYY HH:mm') + ' à ' + $picker.data('daterangepicker').endDate.format('DD/MM/YYYY HH:mm'));
     } else {
@@ -27,8 +27,8 @@ function initDatesRange ($picker, $from, $to, withTime) {
       customRangeLabel: 'Custom',
       daysOfWeek: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
       monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-      firstDay: 1
-    }
+      firstDay: 1,
+    },
   });
 
   if ($from.val() !== '' && $to.val() !== '') {
@@ -43,19 +43,19 @@ function initDatesRange ($picker, $from, $to, withTime) {
     $to.val(picker.endDate.format('YYYY-MM-DDTHH:mm'));
   });
 
-  $picker.on('cancel.daterangepicker', function (ev, picker) {
+  $picker.on('cancel.daterangepicker', function () {
     $picker.val('');
     $from.val('');
     $to.val('');
   });
 }
 
-function hideUselessFilters () {
+function hideUselessFilters() {
   $('.search [data-hide="users"]').css('visibility', $('#hideUsers').prop('checked') ? 'hidden' : 'visible');
   $('.search [data-hide="assets"]').css('visibility', $('#hideAssets').prop('checked') ? 'hidden' : 'visible');
 }
 
-function toggleMoreInfos () {
+function toggleMoreInfos() {
   $('.planning').find('.item-data').toggle($('#display-more').prop('checked'));
 }
 
@@ -73,4 +73,3 @@ $(document).ready(function () {
 
   $('#loader').hide();
 });
-
