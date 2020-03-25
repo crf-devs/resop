@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\AvailabilityInterface;
 use App\Entity\User;
 use App\Entity\UserAvailability;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
@@ -20,6 +18,8 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements UserLoaderInterface, AvailabilitableRepositoryInterface
 {
+    use AvailabilityQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -45,9 +45,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     }
 
     /**
-     * @return ArrayCollection
+     * @return User[]|array
      */
-    public function findByFilters(array $formData)
+    public function findByFilters(array $formData): array
     {
         $qb = $this->createQueryBuilder('u')
         ->join('u.organization', 'o');
@@ -75,26 +75,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         }
 
         if (!empty($formData['availableFrom']) && !empty($formData['availableTo'])) {
-            $subQuery = $this->getEntityManager()->createQueryBuilder()
-                ->select('IDENTITY(a.user)')
-                ->from(UserAvailability::class, 'a')
-                ->andWhere('a.status = :status')
-                ->andWhere(':searchStartTime <= a.startTime')
-                ->andWhere('a.startTime < :searchEndTime')
-                ->andWhere(':searchStartEndTime < a.endTime')
-                ->andWhere('a.endTime <= :searchEndEndTime')
-                ->groupBy('a.user');
-
-            $qb->andWhere($qb->expr()->in(
-                'u.id',
-                $subQuery->getDQL()
-            ));
-
-            $qb->setParameter('status', AvailabilityInterface::STATUS_AVAILABLE);
-            $qb->setParameter('searchStartTime', $formData['availableFrom']);
-            $qb->setParameter('searchEndTime', $formData['availableTo']);
-            $qb->setParameter('searchStartEndTime', $formData['availableFrom']);
-            $qb->setParameter('searchEndEndTime', $formData['availableTo']);
+            $qb = $this->addAvailabilityBetween($qb, $formData['availableFrom'], $formData['availableTo'], UserAvailability::class, 'user');
         }
 
         $qb->orderBy('o.name');

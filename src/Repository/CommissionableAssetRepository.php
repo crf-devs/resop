@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\AvailabilityInterface;
 use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -19,6 +17,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class CommissionableAssetRepository extends ServiceEntityRepository implements AvailabilitableRepositoryInterface
 {
+    use AvailabilityQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CommissionableAsset::class);
@@ -30,9 +30,9 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
     }
 
     /**
-     * @return ArrayCollection
+     * @return CommissionableAsset[]|array
      */
-    public function findByFilters(array $formData)
+    public function findByFilters(array $formData): array
     {
         $qb = $this->createQueryBuilder('a');
 
@@ -45,26 +45,7 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
         }
 
         if (!empty($formData['availableFrom']) && !empty($formData['availableTo'])) {
-            $subQuery = $this->getEntityManager()->createQueryBuilder()
-                ->select('IDENTITY(at.asset)')
-                ->from(CommissionableAssetAvailability::class, 'at')
-                ->andWhere('at.status = :status')
-                ->andWhere(':searchStartTime <= at.startTime')
-                ->andWhere('at.startTime < :searchEndTime')
-                ->andWhere(':searchStartEndTime < at.endTime')
-                ->andWhere('at.endTime <= :searchEndEndTime')
-                ->groupBy('at.asset');
-
-            $qb->andWhere($qb->expr()->in(
-                'a.id',
-                $subQuery->getDQL()
-            ));
-
-            $qb->setParameter('status', AvailabilityInterface::STATUS_AVAILABLE);
-            $qb->setParameter('searchStartTime', $formData['availableFrom']);
-            $qb->setParameter('searchEndTime', $formData['availableTo']);
-            $qb->setParameter('searchStartEndTime', $formData['availableFrom']);
-            $qb->setParameter('searchEndEndTime', $formData['availableTo']);
+            $qb = $this->addAvailabilityBetween($qb, $formData['availableFrom'], $formData['availableTo'], CommissionableAssetAvailability::class, 'asset');
         }
 
         $qb->orderBy('a.name');
