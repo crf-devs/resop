@@ -16,9 +16,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CommissionableAsset implements AvailabilitableInterface
 {
+    // TODO Use a parameter
     public const TYPES = [
-        'Véhicule léger' => 'VL',
-        'Véhicule de premiers secours' => 'VPSP',
+        'VPSP' => 'Véhicule de premiers secours',
+        'VL' => 'Véhicule léger',
     ];
 
     /**
@@ -31,7 +32,7 @@ class CommissionableAsset implements AvailabilitableInterface
     /**
      * @ORM\Column
      * @Assert\NotBlank
-     * @Assert\Choice(choices=CommissionableAsset::TYPES)
+     * @Assert\Choice(callback={CommissionableAsset::class, "getTypesKeys"})
      */
     public string $type = '';
 
@@ -77,5 +78,10 @@ class CommissionableAsset implements AvailabilitableInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public static function getTypesKeys(): array
+    {
+        return array_keys(self::TYPES);
     }
 }

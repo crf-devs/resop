@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Organization;
 
 use App\Domain\DatePeriodCalculator;
+use App\Domain\SkillSetDomain;
 use App\Entity\AvailabilityInterface;
+use App\Entity\CommissionableAsset;
+use App\Entity\User;
 use App\Form\Type\PlanningSearchType;
 use App\Repository\AvailabilityRepositoryInterface;
 use App\Repository\CommissionableAssetAvailabilityRepository;
@@ -26,13 +29,20 @@ class PlanningController extends AbstractController
     private CommissionableAssetRepository $assetRepository;
     private UserAvailabilityRepository $userAvailabilityRepository;
     private CommissionableAssetAvailabilityRepository $assetAvailabilityRepository;
+    private SkillSetDomain $skillSetDomain;
 
-    public function __construct(UserRepository $userRepository, CommissionableAssetRepository $assetRepository, UserAvailabilityRepository $userAvailabilityRepository, CommissionableAssetAvailabilityRepository $assetAvailabilityRepository)
-    {
+    public function __construct(
+        UserRepository $userRepository,
+        CommissionableAssetRepository $assetRepository,
+        UserAvailabilityRepository $userAvailabilityRepository,
+        CommissionableAssetAvailabilityRepository $assetAvailabilityRepository,
+        SkillSetDomain $skillSetDomain
+    ) {
         $this->userRepository = $userRepository;
         $this->assetRepository = $assetRepository;
         $this->userAvailabilityRepository = $userAvailabilityRepository;
         $this->assetAvailabilityRepository = $assetAvailabilityRepository;
+        $this->skillSetDomain = $skillSetDomain;
     }
 
     public function __invoke(Request $request): Response
@@ -57,16 +67,19 @@ class PlanningController extends AbstractController
 
         $periodCalculator = DatePeriodCalculator::createRoundedToDay($data['from'], new \DateInterval('PT2H'), $data['to']);
 
-        $users = $formData['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($data);
-        $assets = $formData['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($data);
+        $users = $data['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($data);
+        $assets = $data['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($data);
         $usersAvailabilities = $this->prepareAvailabilities($this->userAvailabilityRepository, $users, $periodCalculator);
         $assetsAvailabilities = $this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $periodCalculator);
 
-        return $this->render('organization/planning.html.twig', [
+        return $this->render('organization/planning/planning.html.twig', [
             'form' => $form->createView(),
             'periodCalculator' => $periodCalculator,
-            'usersAvailabilities' => $usersAvailabilities ?? [],
-            'assetsAvailabilities' => $assetsAvailabilities ?? [],
+            'availabilities' => $this->splitAvailabilities($usersAvailabilities, $assetsAvailabilities),
+            'assetsTypes' => CommissionableAsset::TYPES,
+            'usersSkills' => $this->skillSetDomain->getSkillSet(),
+            'importantSkills' => $this->skillSetDomain->getImportantSkills(),
+            'importantSkillsToDisplay' => $this->skillSetDomain->getSkillsToDisplay(),
         ]);
     }
 
@@ -111,5 +124,40 @@ class PlanningController extends AbstractController
         }
 
         return $slots;
+    }
+
+    private function splitAvailabilities(array $usersAvailabilities, array $assetsAvailabilities): array
+    {
+        $result = []; // Ordered associative array
+
+        // Assets
+        foreach (CommissionableAsset::getTypesKeys() as $type) {
+            $result[$type] = [];
+        }
+
+        /** @var CommissionableAsset[] $item */
+        foreach ($assetsAvailabilities as $item) {
+            $result[$item['entity']->type][] = $item;
+        }
+
+        // Users
+        $importantSkills = $this->skillSetDomain->getImportantSkills();
+
+        foreach ($importantSkills as $skill) {
+            $result[$skill] = []; // Ordered associative array
+        }
+
+        /** @var User[] $item */
+        foreach ($usersAvailabilities as $item) {
+            foreach ($importantSkills as $skill) {
+                if (in_array($skill, $item['entity']->skillSet, true)) {
+                    $result[$skill][] = $item;
+                    continue 2;
+                }
+            }
+            $result['others'][] = $item;
+        }
+
+        return array_filter($result);
     }
 }

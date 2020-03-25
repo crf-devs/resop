@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
+use App\Domain\SkillSetDomain;
 use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
 use DateTimeImmutable;
@@ -17,11 +18,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PlanningSearchType extends AbstractType
 {
-    private array $availableSkillSets;
+    private SkillSetDomain $skillSetDomain;
 
-    public function __construct(array $availableSkillSets)
+    public function __construct(SkillSetDomain $skillSetDomain)
     {
-        $this->availableSkillSets = $availableSkillSets;
+        $this->skillSetDomain = $skillSetDomain;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -68,7 +69,7 @@ class PlanningSearchType extends AbstractType
             ])
             ->add('userSkills', ChoiceType::class, [
                 'label' => 'Compétences',
-                'choices' => array_flip($this->availableSkillSets),
+                'choices' => array_flip($this->skillSetDomain->getSkillSet()),
                 'multiple' => true,
                 'required' => false,
                 'attr' => ['class' => 'selectpicker'],
@@ -87,7 +88,7 @@ class PlanningSearchType extends AbstractType
             ])
             ->add('assetTypes', ChoiceType::class, [
                 'label' => 'Type',
-                'choices' => CommissionableAsset::TYPES,
+                'choices' => array_flip(CommissionableAsset::TYPES),
                 'multiple' => true,
                 'required' => false,
                 'attr' => ['class' => 'selectpicker'],

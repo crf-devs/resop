@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
+use App\Domain\SkillSetDomain;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -18,8 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class UserType extends AbstractType
 {
-    private array $availableSkillSets;
-
     private const DEFAULT_OCCUPATIONS = [
         'Compétences pédiatriques',
         'Infirmier.e',
@@ -35,9 +34,11 @@ final class UserType extends AbstractType
         'Logisticien',
     ];
 
-    public function __construct(array $availableSkillSets = [])
+    private SkillSetDomain $skillSetDomain;
+
+    public function __construct(SkillSetDomain $skillSetDomain)
     {
-        $this->availableSkillSets = $availableSkillSets;
+        $this->skillSetDomain = $skillSetDomain;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -81,7 +82,7 @@ final class UserType extends AbstractType
                 'placeholder' => false,
             ])
             ->add('skillSet', ChoiceType::class, [
-                'choices' => array_flip($this->availableSkillSets),
+                'choices' => array_flip($this->skillSetDomain->getSkillSet()),
                 'multiple' => true,
                 'expanded' => true,
             ])
