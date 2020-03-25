@@ -14,7 +14,6 @@
             </div>
         </div>
         {% if app.user.parent is empty %}
-            {{ dump(app.user.parent) }}
             <div class="col-md">
                 <button class="btn btn-sm btn-block trigger-update booked" action="book" data-status="booked" data-href="{{ path('planning_update', { action: 'book' }) }}">Marquer comme réservé</button>
                 <button class="btn btn-sm btn-block trigger-update available" action="allow" data-status="available" data-href="{{ path('planning_update', { action: 'allow' }) }}">Marquer comme disponible</button>
