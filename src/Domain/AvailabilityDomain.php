@@ -14,15 +14,31 @@ final class AvailabilityDomain
 
     public \DateTimeImmutable $date;
 
-    public function __construct(\DateTimeImmutable $date, ?AvailabilityInterface $availability)
+    private ?\DateInterval $disabledIntervalFromNow;
+
+    public function __construct(\DateTimeImmutable $date, ?AvailabilityInterface $availability, ?\DateInterval $disabledIntervalFromNow = null)
     {
         $this->date = $date;
         $this->availability = $availability;
         $this->tick = null !== $availability && AvailabilityInterface::STATUS_LOCKED !== $availability->getStatus();
+        $this->disabledIntervalFromNow = $disabledIntervalFromNow;
     }
 
     public function isEditable(): bool
     {
-        return null === $this->availability || AvailabilityInterface::STATUS_AVAILABLE === $this->availability->getStatus();
+        if (null !== $this->availability && AvailabilityInterface::STATUS_AVAILABLE !== $this->availability->getStatus()) {
+            return false;
+        }
+
+        // Dates are stored as UTC even if they are not on this UTC timezone
+        // TODO Set the timezone as a parameter
+        $trueNow = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        $fakeUTCnow = new \DateTimeImmutable($trueNow->format('Y-m-d H:i:s'));
+
+        if (null !== $this->disabledIntervalFromNow) {
+            return $this->date > $fakeUTCnow->add($this->disabledIntervalFromNow);
+        }
+
+        return $this->date > $fakeUTCnow;
     }
 }

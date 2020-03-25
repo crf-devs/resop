@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Type;
 
 use App\Domain\AvailabilityDomain;
+use App\Entity\AvailabilityInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,6 +19,7 @@ final class AvailabilityDomainType extends AbstractType
     {
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) {
+                /** @var AvailabilityDomain $data */
                 $data = $event->getData();
                 $form = $event->getForm();
 
@@ -25,6 +27,9 @@ final class AvailabilityDomainType extends AbstractType
                     'label' => false,
                     'required' => false,
                     'disabled' => !$data->isEditable(),
+                    'attr' => [
+                        'data-status' => $data->availability ? $data->availability->getStatus() : AvailabilityInterface::STATUS_UNKNOW,
+                    ],
                 ]);
             })
         ;

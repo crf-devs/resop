@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization;
 
+use App\Domain\AvailabilitiesDomain;
 use App\Domain\DatePeriodCalculator;
 use App\Domain\SkillSetDomain;
 use App\Entity\AvailabilityInterface;
@@ -65,7 +66,7 @@ class PlanningController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $periodCalculator = DatePeriodCalculator::createRoundedToDay($data['from'], new \DateInterval('PT2H'), $data['to']);
+        $periodCalculator = DatePeriodCalculator::createRoundedToDay($data['from'], new \DateInterval(AvailabilitiesDomain::SLOT_INTERVAL), $data['to']);
 
         $users = $data['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($data);
         $assets = $data['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($data);
