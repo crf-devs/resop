@@ -2,149 +2,148 @@ $leftColumnWidth: 300px;
 $tableBoxSize: 40px;
 
 .search {
-    .hidden {
-        display: none;
-    }
+  .hidden {
+    display: none;
+  }
 }
 
 .planning-actions-container {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 
-    .btn:hover {
-        opacity: 0.8;
-    }
+  .btn:hover {
+    opacity: 0.8;
+  }
 
-    .display-more-container {
-        position: absolute;
-        bottom: 0;
-    }
+  .display-more-container {
+    position: absolute;
+    bottom: 0;
+  }
 }
 
 .planning-container {
-    margin-left: $leftColumnWidth + 10;
-    width: calc(100% - #{$leftColumnWidth} - 10px);
-    padding-left: 10px;
-    padding-right: 10px;
+  margin-left: $leftColumnWidth + 10;
+  width: calc(100% - #{$leftColumnWidth} - 10px);
+  padding-left: 10px;
+  padding-right: 10px;
 
-    .planning {
-        text-align: center;
+  .planning {
+    text-align: center;
+    margin-bottom: 40px;
 
-        margin-bottom: 40px;
-
-        .badge {
-            margin-right: 2px;
-        }
-
-        thead th {
-            font-weight: 600;
-
-            &:first-child {
-                border: none;
-            }
-
-            &.slot-name {
-                font-weight: 400;
-                min-width: $tableBoxSize;
-            }
-        }
-
-        th.item-detail {
-            position: absolute;
-            left: 10px;
-            width: $leftColumnWidth;
-            text-align: left;
-            white-space: nowrap;
-            vertical-align: middle;
-            font-weight: 600;
-            overflow-x: auto;
-
-            &::-webkit-scrollbar {
-                display: none;
-            }
-        }
-
-        td.separator {
-            height: 60px;
-            text-align: left;
-            vertical-align: middle;
-            padding-left: 20px;
-            font-weight: 600;
-        }
-
-        td.item-data {
-            white-space: nowrap;
-        }
-
-        td.slot-box {
-            width: $tableBoxSize;
-            height: $tableBoxSize;
-            vertical-align: middle;
-            cursor: pointer;
-
-            input[type=checkbox] {
-                cursor: pointer;
-                visibility: hidden;
-            }
-
-            &:hover {
-                opacity: 0.8;
-            }
-
-            &.checked {
-                opacity: 0.3;
-
-                input[type=checkbox] {
-                    visibility: visible;
-                }
-            }
-        }
+    .badge {
+      margin-right: 2px;
     }
+
+    thead th {
+      font-weight: 600;
+
+      &:first-child {
+        border: none;
+      }
+
+      &.slot-name {
+        font-weight: 400;
+        min-width: $tableBoxSize;
+      }
+    }
+
+    th.item-detail {
+      position: absolute;
+      left: 10px;
+      width: $leftColumnWidth;
+      text-align: left;
+      white-space: nowrap;
+      vertical-align: middle;
+      font-weight: 600;
+      overflow-x: auto;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    td.separator {
+      height: 60px;
+      text-align: left;
+      vertical-align: middle;
+      padding-left: 20px;
+      font-weight: 600;
+    }
+
+    td.item-data {
+      white-space: nowrap;
+    }
+
+    td.slot-box {
+      width: $tableBoxSize;
+      height: $tableBoxSize;
+      vertical-align: middle;
+      cursor: pointer;
+
+      input[type=checkbox] {
+        cursor: pointer;
+        visibility: hidden;
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &.checked {
+        opacity: 0.3;
+
+        input[type=checkbox] {
+          visibility: visible;
+        }
+      }
+    }
+  }
 }
 
-.planning-container, .planning-actions-container {
-    .item-data {
-        display: none;
-    }
+.planning-container,
+.planning-actions-container {
+  .item-data {
+    display: none;
+  }
 
-    .unknown {
-        background-color: #ff767f;
-        color: white;
-    }
+  .unknown {
+    background-color: #ff767f;
+    color: white;
+  }
 
-    .available {
-        background-color: #76bd79;
-        color: white;
-    }
+  .available {
+    background-color: #76bd79;
+    color: white;
+  }
 
-    .booked {
-        background-color: #67a2d3;
-        color: white;
-    }
+  .booked {
+    background-color: #67a2d3;
+    color: white;
+  }
 
-    .locked {
-        background-color: #7a7a7a;
-        color: white;
-    }
+  .locked {
+    background-color: #7a7a7a;
+    color: white;
+  }
 }
 
 @media screen and (max-width: 1000px) {
-
-    .planning-actions-container {
-        .display-more-container {
-            position: initial;
-            margin-bottom: 10px;
-        }
+  .planning-actions-container {
+    .display-more-container {
+      position: initial;
+      margin-bottom: 10px;
     }
+  }
 
-    .planning-container {
-        margin-left: 0;
+  .planning-container {
+    margin-left: 0;
+    width: auto;
+
+    .planning {
+      th.item-detail {
+        position: relative;
         width: auto;
-
-        .planning {
-            th.item-detail {
-                position: relative;
-                width: auto
-            }
-        }
+      }
     }
+  }
 }

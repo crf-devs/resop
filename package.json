@@ -1,23 +1,35 @@
 {
-    "devDependencies": {
-        "@symfony/webpack-encore": "^0.28.3",
-        "bootstrap": "^4.4.1",
-        "bootstrap-select": "^1.13.12",
-        "core-js": "^3.0.0",
-        "daterangepicker": "^3.0.5",
-        "jquery": "^3.4.1",
-        "node-sass": "^4.13.1",
-        "popper.js": "^1.16.1",
-        "regenerator-runtime": "^0.13.2",
-        "sass-loader": "^7.0.1",
-        "webpack-notifier": "^1.6.0"
-    },
-    "license": "UNLICENSED",
-    "private": true,
-    "scripts": {
-        "dev-server": "encore dev-server",
-        "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "build": "encore production --progress"
-    }
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.28.3",
+    "babel-eslint": "^10.1.0",
+    "bootstrap": "^4.4.1",
+    "bootstrap-select": "^1.13.12",
+    "core-js": "^3.0.0",
+    "daterangepicker": "^3.0.5",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jquery": "^3.4.1",
+    "node-sass": "^4.13.1",
+    "popper.js": "^1.16.1",
+    "prettier": "^2.0.2",
+    "regenerator-runtime": "^0.13.2",
+    "sass-loader": "^7.0.1",
+    "stylelint": "^13.2.1",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "^3.16.0",
+    "webpack-notifier": "^1.6.0"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress",
+    "lint": "npx eslint 'assets/js/**/*.js' --cache --max-warnings=0",
+    "lint:fix": "npx eslint 'assets/js/**/*.js' --cache --max-warnings=0 --fix",
+    "lint:css": "npx stylelint 'assets/css/**/*.{css,scss}' --cache --max-warnings=0",
+    "lint:css:fix": "npx stylelint 'assets/css/**/*.{css,scss}' --cache --max-warnings=0 --fix"
+  }
 }

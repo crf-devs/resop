@@ -1,0 +1,44 @@
+# EditorConfig helps developers define and maintain consistent
+# coding styles between different editors and IDEs
+# editorconfig.org
+
+root = true
+
+[*]
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.neon]
+indent_style = tab
+
+[*.{js,css,scss,json}]
+indent_size = 2
+
+[*.{yaml,yml}]
+indent_size = 2
+trim_trailing_whitespace = false
+
+[config/**/*.{yaml,yml}]
+indent_size = 4
+
+[.gitmodules]
+indent_style = tab
+
+[.php_cs{,.dist}]
+indent_size = 4
+
+[behat.yml{,.dist}]
+indent_size = 4
+
+[phpstan.neon{,.dist}]
+indent_style = tab
+indent_size = 4
+
+[phpunit.xml{,.dist}]
+indent_size = 4
+
+[Makefile]
+indent_style = tab

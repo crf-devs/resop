@@ -3,6 +3,8 @@
 /.idea
 /.cache
 /.vscode
+/.eslintcache
+/.stylelintcache
 
 ###> symfony/framework-bundle ###
 /.env.local
