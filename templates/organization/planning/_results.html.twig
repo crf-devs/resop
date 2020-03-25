@@ -54,11 +54,28 @@
         </tr>
         </thead>
         <tbody>
-        {% for type, list in { assets: assetsAvailabilities,  users: usersAvailabilities} %}
+        {% for type, list in availabilities %}
+            {% set isAsset = type in (assetsTypes|keys) %}
+            {% set entityType = isAsset ? 'assets' : 'users' %}
+            <tr>
+                <td colspan="{{ 1 + itemDataRow + periodCalculator.slots|length }}" class="separator">
+                    {% if  isAsset %}
+                        {{ type }}
+                    {% else %}
+                        {{ usersSkills[type] | default('Bénévoles') }}
+                    {% endif %}
+                    ({{ list|length }})
+                </td>
+            </tr>
             {% for item in list %}
-                <tr data-type="{{ type }}" data-id="{{ item.entity.id }}">
-                    <th class="item-detail">{{ item.entity }}</th>
-                    {% if type == 'users' %}
+                <tr data-type="{{ entityType }}" data-id="{{ item.entity.id }}">
+                    <th class="item-detail">
+                        {{ item.entity }}
+                        {% if  not isAsset %}
+                            {{ item.entity.skillSet | filter(skill => skill != type) | filter(skill => skill in importantSkillsToDisplay) | map(skill => '<span class="badge badge-secondary">' ~skill~ '</span>') | join | raw }}
+                        {% endif %}
+                    </th>
+                    {% if not isAsset %}
                         <td class="item-data">{{ item.entity.identificationNumber }}</td>
                         <td class="item-data">{{ item.entity.phoneNumber }}</td>
                         <td class="item-data">{{ item.entity.emailAddress }}</td>
@@ -66,7 +83,7 @@
                         <td class="item-data">{{ item.entity.organizationOccupation }}</td>
                         <td class="item-data">
                             {% for skill in item.entity.skillSet -%}
-                                <span class="badge badge-secondary">{{ skill }}</span>
+                                <span class="badge badge-{{ skill in importantSkills ? 'primary' : 'secondary' }}">{{ skill }}</span>
                             {%- endfor %}
                         </td>
                         <td class="item-data">{{ item.entity.fullyEquipped ? 'Oui' : '-' }}</td>
@@ -81,29 +98,29 @@
                     {% endfor %}
                 </tr>
             {% endfor %}
-            <tr>
-                <td colspan="{{ 1 + itemDataRow + periodCalculator.slots|length }}" class="separator"></td>
-            </tr>
         {% endfor %}
+        <tr>
+            <td colspan="{{ 1 + itemDataRow + periodCalculator.slots|length }}" class="separator"></td>
+        </tr>
         </tbody>
     </table>
 </div>
 
 <div class="modal fade" id="modal-update" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Vous êtes sur le point de modifier la disponibilité de <span id="nb-assets-users"></span>.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-        <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">Modifier</button>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Vous êtes sur le point de modifier la disponibilité de <span id="nb-assets-users"></span>.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">Modifier</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

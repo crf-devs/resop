@@ -31,6 +31,10 @@ $tableBoxSize: 40px;
 
         margin-bottom: 40px;
 
+        .badge {
+            margin-right: 2px;
+        }
+
         thead th {
             font-weight: 600;
 
@@ -52,18 +56,23 @@ $tableBoxSize: 40px;
             white-space: nowrap;
             vertical-align: middle;
             font-weight: 600;
+            overflow-x: auto;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
         }
 
         td.separator {
             height: 60px;
+            text-align: left;
+            vertical-align: middle;
+            padding-left: 20px;
+            font-weight: 600;
         }
 
         td.item-data {
             white-space: nowrap;
-
-            .badge {
-                margin-right: 2px;
-            }
         }
 
         td.slot-box {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Domain\SkillSetDomain;
 use App\Entity\AvailabilityInterface;
 use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
@@ -52,16 +53,16 @@ final class ApplicationFixtures extends Fixture
     /** @var CommissionableAsset[] */
     private array $assets = [];
 
-    private array $availableSkillSets;
+    private SkillSetDomain $skillSetDomain;
 
     public function __construct(
         EncoderFactoryInterface $encoders,
         ValidatorInterface $validator,
-        array $availableSkillSets = []
+        SkillSetDomain $skillSetDomain
     ) {
         $this->encoders = $encoders;
         $this->validator = $validator;
-        $this->availableSkillSets = $availableSkillSets;
+        $this->skillSetDomain = $skillSetDomain;
     }
 
     public function load(ObjectManager $manager): void
@@ -108,14 +109,8 @@ final class ApplicationFixtures extends Fixture
                 $ulId = substr(str_replace('UL ', '', $organization->name), 0, 2);
             }
 
-            foreach ($combinations as list($type, $suffix)) {
-                $asset = new CommissionableAsset(
-                    null,
-                    $organization,
-                    'VPSP',
-                    '75'.$ulId.$suffix
-                );
-
+            foreach ($combinations as [$type, $suffix]) {
+                $asset = new CommissionableAsset(null, $organization, $type, '75'.$ulId.$suffix);
                 $this->validateAndPersist($manager, $asset);
                 $this->assets[] = $asset;
             }
@@ -132,13 +127,14 @@ final class ApplicationFixtures extends Fixture
         $occupations = ['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'];
 
         $x = 1;
+        $availableSkillSet = $this->skillSetDomain->getSkillSet();
         foreach ($this->organizations as $organization) {
             for ($i = 0; $i < $max = random_int(5, 15); ++$i) {
                 $user = new User();
                 $user->id = $i + 1;
                 $user->firstName = $firstNames[array_rand($firstNames)];
                 $user->lastName = $lastNames[array_rand($lastNames)];
-                $user->organization = $this->organizations[array_rand($this->organizations)];
+                $user->organization = $organization;
 
                 // e.g. 990001A
                 $user->setIdentificationNumber(str_pad(''.++$startIdNumber.'', 10, '0', STR_PAD_LEFT).'A');
@@ -147,7 +143,7 @@ final class ApplicationFixtures extends Fixture
                 $user->birthday = '1900-01-01';
                 $user->occupation = $occupations[array_rand($occupations)];
                 $user->organizationOccupation = 'Secouriste';
-                $user->skillSet = (array) array_rand($this->availableSkillSets, random_int(2, 4));
+                $user->skillSet = (array) array_rand($availableSkillSet, random_int(1, 3));
                 $user->vulnerable = (bool) random_int(0, 1);
                 $user->fullyEquipped = (bool) random_int(0, 1);
 
@@ -165,7 +161,7 @@ final class ApplicationFixtures extends Fixture
 
         $dateIntervals = [];
         for ($d = 0; $d <= 10; ++$d) {
-            for ($t = 0; $t < 24; $t = $t + 6) {
+            for ($t = 0; $t < 24; $t += 6) {
                 $dateIntervals[] = 'P'.$d.'DT'.$t.'H';
             }
         }
@@ -190,7 +186,7 @@ final class ApplicationFixtures extends Fixture
     private function makeIntervalAvailability(string $availabilityClass, array $data, ObjectManager $manager): void
     {
         $startTime = $data['startTime'];
-        for ($i = 0; $i < rand(2, 6); $i = $i + 2) {
+        for ($i = 0, $iMax = random_int(2, 6); $i < $iMax; $i += 2) {
             $availability = new $availabilityClass(
                 null,
                 $data['owner'],
@@ -199,7 +195,7 @@ final class ApplicationFixtures extends Fixture
                 $data['status']
             );
 
-            if (AvailabilityInterface::STATUS_BOOKED == $availability->status) {
+            if (AvailabilityInterface::STATUS_BOOKED === $availability->status) {
                 $availability->planningAgent = $this->organizations[array_rand($this->organizations)];
             }
 
