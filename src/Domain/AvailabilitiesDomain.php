@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class AvailabilitiesDomain
 {
-    private const SLOT_INTERVAL = 'PT2H';
+    public const SLOT_INTERVAL = 'PT2H';
 
     public array $availabilityDomains = [];
 
@@ -21,7 +21,7 @@ final class AvailabilitiesDomain
      *
      * @throws \Exception
      */
-    public static function generate(\DateTimeImmutable $start, \DateTimeImmutable $end, array $availabilities = []): self
+    public static function generate(\DateTimeImmutable $start, \DateTimeImmutable $end, array $availabilities = [], ?\DateInterval $disabledIntervalFromNow = null): self
     {
         $period = new \DatePeriod(
             $start,
@@ -41,7 +41,7 @@ final class AvailabilitiesDomain
                 }
             }
 
-            $availabilityDomains[] = new AvailabilityDomain($date, $availabilityEntity);
+            $availabilityDomains[] = new AvailabilityDomain($date, $availabilityEntity, $disabledIntervalFromNow);
         }
 
         return new self($availabilityDomains);

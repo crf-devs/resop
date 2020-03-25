@@ -67,7 +67,7 @@ class DatePeriodCalculator
     {
         return new self(
             $from->setTime(0, 0, 0, 0),
-            new \DateInterval('PT2H'),
+            new \DateInterval(AvailabilitiesDomain::SLOT_INTERVAL),
             $to->add(new \DateInterval('P1D'))->setTime(0, 0, 0, 0)
         );
     }

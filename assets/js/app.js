@@ -1,4 +1,5 @@
 import '../css/app.scss';
+import '../css/availability-form.scss';
 import '../css/planning.scss';
 
 const $ = require('jquery');

@@ -138,7 +138,7 @@ final class ApplicationFixtures extends Fixture
 
                 // e.g. 990001A
                 $user->setIdentificationNumber(str_pad(''.++$startIdNumber.'', 10, '0', STR_PAD_LEFT).'A');
-                $user->setEmailAddress('user'.$x.'@some-domain.tld');
+                $user->setEmailAddress('user'.$x.'@resop.com');
                 $user->phoneNumber = '0102030405';
                 $user->birthday = '1900-01-01';
                 $user->occupation = $occupations[array_rand($occupations)];

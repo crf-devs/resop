@@ -4,7 +4,9 @@ function colorTable() {
   let $table = $('.availability-table');
   $table.find('input:checkbox:checked').closest('.clickable-table-box').toggleClass('checked', true);
   $table.find('input:checkbox:not(:checked)').closest('.clickable-table-box').toggleClass('checked', false);
-  $table.find('input:checkbox:disabled').closest('.clickable-table-box').toggleClass('disabled', true);
+  $table.find('input:checkbox:disabled').hide().closest('.clickable-table-box').toggleClass('disabled', true);
+  $table.find('input:checkbox[data-status="booked"]').closest('.clickable-table-box').toggleClass('booked', true);
+  $table.find('input:checkbox[data-status="locked"]').closest('.clickable-table-box').toggleClass('locked', true);
 }
 
 function colorTableBox($tableBox) {
