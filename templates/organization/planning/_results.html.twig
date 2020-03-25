@@ -13,14 +13,17 @@
                 </label>
             </div>
         </div>
-        <div class="col-md">
-            <button class="btn btn-sm btn-block trigger-update booked" action="book" data-status="booked" data-href="{{ path('planning_update', { action: 'book' }) }}">Marquer comme réservé</button>
-            <button class="btn btn-sm btn-block trigger-update available" action="allow" data-status="available" data-href="{{ path('planning_update', { action: 'allow' }) }}">Marquer comme disponible</button>
-        </div>
-        <div class="col-md">
-            <button class="btn btn-sm btn-block trigger-update locked" action="lock" data-status="locked" data-href="{{ path('planning_update', { action: 'lock' }) }}">Marquer comme bloqué</button>
-            <button class="btn btn-sm btn-block trigger-update unknown" action="delete" data-status="unknown" data-href="{{ path('planning_update', { action: 'delete' }) }}">Marquer comme NON disponible</button>
-        </div>
+        {% if app.user.parent is empty %}
+            {{ dump(app.user.parent) }}
+            <div class="col-md">
+                <button class="btn btn-sm btn-block trigger-update booked" action="book" data-status="booked" data-href="{{ path('planning_update', { action: 'book' }) }}">Marquer comme réservé</button>
+                <button class="btn btn-sm btn-block trigger-update available" action="allow" data-status="available" data-href="{{ path('planning_update', { action: 'allow' }) }}">Marquer comme disponible</button>
+            </div>
+            <div class="col-md">
+                <button class="btn btn-sm btn-block trigger-update locked" action="lock" data-status="locked" data-href="{{ path('planning_update', { action: 'lock' }) }}">Marquer comme bloqué</button>
+                <button class="btn btn-sm btn-block trigger-update unknown" action="delete" data-status="unknown" data-href="{{ path('planning_update', { action: 'delete' }) }}">Marquer comme NON disponible</button>
+            </div>
+        {% endif %}
     </div>
 </div>
 
@@ -93,7 +96,9 @@
                     {% endif %}
                     {% for slot in item.availabilities %}
                         <td class="slot-box {{ slot.status }}" data-status="{{ slot.status }}" data-from="{{ slot.from|date("Y-m-d H:i") }}" data-to="{{ slot.to|date("Y-m-d H:i") }}">
-                            <input type="checkbox">
+                            {% if app.user.parent is empty %}
+                                <input type="checkbox">
+                            {% endif %}
                         </td>
                     {% endfor %}
                 </tr>
