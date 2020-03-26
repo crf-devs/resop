@@ -85,7 +85,6 @@ class User implements UserInterface, AvailabilitableInterface
 
     /**
      * @ORM\Column
-     * @Assert\NotBlank
      */
     public string $occupation = '';
 
@@ -98,7 +97,7 @@ class User implements UserInterface, AvailabilitableInterface
     /**
      * @ORM\Column(nullable=true)
      */
-    public string $organizationOccupation = '';
+    public ?string $organizationOccupation = null;
 
     /**
      * @ORM\Column(type="text[]", nullable=true)

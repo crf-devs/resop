@@ -44,6 +44,7 @@ $tableBoxSize: 40px;
       &.slot-name {
         font-weight: 400;
         min-width: $tableBoxSize;
+        text-align: left;
       }
     }
 
@@ -80,7 +81,7 @@ $tableBoxSize: 40px;
       vertical-align: middle;
       cursor: pointer;
 
-      input[type=checkbox] {
+      input[type='checkbox'] {
         cursor: pointer;
         visibility: hidden;
       }
@@ -92,7 +93,7 @@ $tableBoxSize: 40px;
       &.checked {
         opacity: 0.3;
 
-        input[type=checkbox] {
+        input[type='checkbox'] {
           visibility: visible;
         }
       }
