@@ -6,7 +6,7 @@
     <h1>Edition d'un véhicule</h1>
     {{ form_start(form) }}
     {{ form_errors(form) }}
-    {{ form_row(form.type, {label: 'Type'}) }}
-    {{ form_row(form.name, {label: 'Nom'}) }}
+    {{ form_row(form.type) }}
+    {{ form_row(form.name) }}
     {{ form_end(form) }}
 {% endblock %}

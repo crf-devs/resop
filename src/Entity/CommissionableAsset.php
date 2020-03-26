@@ -68,12 +68,12 @@ class CommissionableAsset implements AvailabilitableInterface
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    public ?string $parkingLocation = '';
+    public ?string $parkingLocation = null;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    public ?string $contact = '';
+    public ?string $contact = null;
 
     /**
      * @ORM\Column(type="integer")

@@ -38,7 +38,6 @@ final class Version20200326034332 extends AbstractMigration
     {
         $this->abortIf('postgresql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE commissionable_asset DROP has_mobile_radio');
         $this->addSql('ALTER TABLE commissionable_asset DROP has_first_aid_kit');
         $this->addSql('ALTER TABLE commissionable_asset DROP parking_location');
