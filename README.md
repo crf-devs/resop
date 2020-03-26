@@ -70,6 +70,8 @@ make fix-cs
 make test
 ```
 
+Hint: you can run `make fix-cs-php` instead of `make fix-cs` if you are one of those backend devs who don't touch any css or js file.
+
 ### Tests
 
 ```bash
@@ -77,7 +79,7 @@ make test # Run all tests except coverage
 make test-cs # php-cs-fixer
 make test-advanced # phpstan
 make test-unit # phpunit
-make test-unit-coverage # phpunit + phpdbg 
+make test-unit-coverage # phpunit + phpdbg
 ```
 
 ## PHP

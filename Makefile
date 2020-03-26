@@ -78,8 +78,10 @@ init-db: start-db
 	bin/tools rm -rf var/cache/*
 	bin/tools bin/post-install-dev.sh
 
-fix-cs:
+fix-cs-php:
 	bin/tools vendor/bin/php-cs-fixer fix --allow-risky yes --verbose
+
+fix-cs: fix-cs-php
 	bin/node-tools npm run lint:fix
 	bin/node-tools npm run lint:css:fix
 
