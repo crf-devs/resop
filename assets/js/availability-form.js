@@ -31,9 +31,9 @@ function selectDay($dayTitle) {
   colorTable();
 }
 
-function selectAll($button) {
-  $button.closest('.availability-table').find('.clickable-table-box input:checkbox:not(:disabled)').prop('checked', true);
-  $button.closest('.availability-table').find('.day-title input:checkbox').prop('checked', true);
+function selectAll($table) {
+  $table.find('.clickable-table-box input:checkbox:not(:disabled)').prop('checked', true);
+  $table.find('.day-title input:checkbox').prop('checked', true);
   colorTable();
 }
 
@@ -55,6 +55,8 @@ $(document).ready(function () {
   colorTable();
 
   let $table = $('.availability-table');
+  let $actions = $('.availability-actions');
+
   $table.on('click', '.day-title input:checkbox', function () {
     selectDay($(this).closest('.day-title'));
   });
@@ -68,7 +70,17 @@ $(document).ready(function () {
     selectTableBox($(this));
   });
 
-  $table.on('click', 'button.select-all', function () {
-    selectAll($(this));
+  $actions.on('click', 'button.select-all', function () {
+    selectAll($table);
+  });
+
+  $actions.on('click', '.pagination a', function () {
+    let uncheckedCount = $table.find('.clickable-table-box input:checkbox[data-status="available"]:not(:checked)').length;
+    let checkedCount = $table.find('.clickable-table-box input:checkbox[data-status="unknown"]:checked').length;
+
+    if (uncheckedCount + checkedCount > 0) {
+      $('#modal-confirm').modal('show');
+      return false;
+    }
   });
 });

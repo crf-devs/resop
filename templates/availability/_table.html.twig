@@ -1,38 +1,84 @@
+{% set nowIsCurrent = (form.vars.value.availabilityDomains[0].date|date('o-\\WW')) == ('now'|date('o-\\WW')) %}
+
+<div class="container mt-2 availability-actions">
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <button class="btn-secondary btn mt-3 select-all" type="button">Tout sélectionner</button>
+        </div>
+        <div class="col-12 col-md-8">
+            <nav class="mt-3">
+                <ul class="pagination pagination-sm">
+                    <li class="page-item{% if nowIsCurrent %} disabled{% endif %}">
+                        <a class="page-link" href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({week: 'now'|date('o-\\WW')})) }}">
+                            <span aria-hidden="true">&laquo;</span>
+                            Semaine courante
+                        </a>
+                    </li>
+                    <li class="page-item{% if not nowIsCurrent %} disabled{% endif %}">
+                        <a class="page-link" href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({week: 'next week'|date('o-\\WW')})) }}">
+                            Mes disponiblités pour la semaine du lundi {{ 'monday next week' | date('d/m/Y') }}
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
 {{ form_start(form) }}
-<table class="table availability-table">
-    {% set choices = form.availabilityDomains.vars.data %}
-    {% set nbChoicesPerDay = choices|length/7 %}
-    <thead>
-    <tr>
-        <th></th>
-        {% for i in 0..6 %}
-            <th>
-                <label class="day-title" data-day="{{ i }}">
-                    {{ choices[nbChoicesPerDay*i].date|format_date(pattern="eeee dd") }}
-                    <input type="checkbox" />
-                </label>
-            </th>
-        {% endfor %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for i in 0..nbChoicesPerDay-1 %}
+<div class="table-responsive">
+    <table class="table availability-table">
+        {% set choices = form.availabilityDomains.vars.data %}
+        {% set nbChoicesPerDay = choices|length/7 %}
+        <thead>
         <tr>
-            <td>{{ choices[i].date|date('H') }}-{{ choices[i+1].date|date('H') }}h</td>
-            {% for j in 0..6 %}
-                <td class="clickable-table-box" data-day="{{ j }}" data-status="{{ '' }}">
-                    {{ form_widget(form.availabilityDomains.children[j*nbChoicesPerDay+i].tick) }}
-                </td>
+            <th></th>
+            {% for i in 0..6 %}
+                <th>
+                    <label class="day-title" data-day="{{ i }}">
+                        {{ choices[nbChoicesPerDay*i].date|format_date(pattern="eeee dd") }}
+                        <input type="checkbox"/>
+                    </label>
+                </th>
             {% endfor %}
         </tr>
-    {% endfor %}
-    </tbody>
-    <tfoot>
-    <tr>
-        <td><button class="btn-secondary btn select-all" type="button">Tout sélectionner</button></td>
-    </tr>
-    </tfoot>
-</table>
+        </thead>
+        <tbody>
+        {% for i in 0..nbChoicesPerDay-1 %}
+            <tr>
+                <td>{{ choices[i].date|date('H') }}-{{ choices[i+1].date|date('H') }}h</td>
+                {% for j in 0..6 %}
+                    <td class="clickable-table-box" data-day="{{ j }}" data-status="{{ '' }}">
+                        {{ form_widget(form.availabilityDomains.children[j*nbChoicesPerDay+i].tick) }}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="float-right">{{ form_widget(form.submit) }}</div>
+<div class="clearfix"></div>
 
-{{ form_row(form.submit) }}
 {{ form_end(form) }}
+
+<div class="modal fade" id="modal-confirm" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Attention, certaines modifications de disponibilités n'ont pas été sauvegardées.
+                Vous devez les annuler ou enregistrer le formulaire avant de changer de page.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>
