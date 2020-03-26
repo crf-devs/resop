@@ -12,16 +12,24 @@
     <p>NIVOL : {{ identificationNumber }}</p>
     {{ form_start(form) }}
     {{ form_errors(form) }}
-    {{ form_row(form.firstName, {label: 'Prénom'}) }}
-    {{ form_row(form.lastName, {label: 'Nom'}) }}
-    {{ form_row(form.emailAddress, {label: 'Adresse e-mail'}) }}
-    {{ form_row(form.phoneNumber, {label: 'Numéro de téléphone portable'}) }}
-    {{ form_row(form.organization, {label: 'Votre structure de rattachement', help: 'À quelle unité locale êtes-vous rattaché.e ?'}) }}
-    {{ form_row(form.vulnerable, {label: false, help: '<ul><li>malade chronique</li><li>obésité morbide</li><li>syndrome grippal</li><li>immunodéprimé</li><li>personne mineure ou personne de plus de 70 ans</li><li>avis défavorable de votre unité locale ou du pole santé (local ou territorial)</li></ul>' }) }}
-    {{ form_row(form.organizationOccupation, {label: 'Fonctions de cadre au sein de votre UL / DT' }) }}
-    {{ form_row(form.skillSet, {label: 'Quelles sont vos compétences Croix-Rouge ?', help: 'Cochez toutes vos compétences'}) }}
-    {{ form_row(form.occupation, {label: 'Quelle est votre profession ?', attr: {'class': 'js-occupation'}}) }}
-    {{ form_row(form.fullyEquipped, {label: 'Avez-vous un uniforme en dotation chez vous ?'}) }}
-    {{ form_row(form.submit, {label: 'Valider'}) }}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.emailAddress) }}
+    {{ form_row(form.phoneNumber) }}
+    {{ form_row(form.organization) }}
+    {{ form_row(form.vulnerable) }}
+    {{ form_row(form.organizationOccupation) }}
+    <fieldset class="form-group">
+        {{ form_label(form.skillSet)}}
+        {{ form_help(form.skillSet)}}
+        {{ form_widget(form.skillSet)}}
+    <fieldset>
+    {{ form_row(form.occupation) }}
+    {{ form_row(form.fullyEquipped) }}
+
+    <div class="float-right">
+        {{ form_row(form.submit, {label: 'Valider'}) }}
+    </div>
+    <div class="clearfix"></div>
     {{ form_end(form) }}
 {% endblock %}

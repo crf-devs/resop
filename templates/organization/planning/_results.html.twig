@@ -50,7 +50,7 @@
             <th class="item-data">Vulnérable</th>
             {% for item in periodCalculator.slots %}
                 <th class="slot-name">
-                    {{ item|format_date(pattern="HH") }}<br>{{ item|date_modify(periodCalculator.interval.format('+ %h hours'))|format_date(pattern="HH") }}
+                    {{ item|format_date(pattern="HH") }}
                 </th>
             {% endfor %}
         </tr>
