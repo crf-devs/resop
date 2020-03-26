@@ -35,7 +35,7 @@ final class AvailabilityDomain
         $trueNow = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $fakeUTCnow = new \DateTimeImmutable($trueNow->format('Y-m-d H:i:s'));
 
-        if (null !== $this->disabledIntervalFromNow) {
+        if (null !== $this->availability && null !== $this->disabledIntervalFromNow && AvailabilityInterface::STATUS_UNKNOW !== $this->availability->getStatus()) {
             return $this->date > $fakeUTCnow->add($this->disabledIntervalFromNow);
         }
 
