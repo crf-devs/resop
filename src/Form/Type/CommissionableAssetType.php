@@ -25,10 +25,10 @@ final class CommissionableAssetType extends AbstractType
         $builder
             ->add('type', ChoiceType::class, [
                 'choices' => self::TYPES,
-                'label' => 'Type'
+                'label' => 'Type',
             ])
             ->add('name', TextType::class, [
-                'label' => 'Identifiant'
+                'label' => 'Identifiant',
             ])
             ->add('hasMobileRadio', ChoiceType::class, [
                 'choices' => [
@@ -37,7 +37,7 @@ final class CommissionableAssetType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => false,
-                'label' => 'Présence d\'un mobile radio ?'
+                'label' => 'Présence d\'un mobile radio ?',
             ])
             ->add('hasFirstAidKit', ChoiceType::class, [
                 'choices' => [
@@ -46,18 +46,18 @@ final class CommissionableAssetType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => false,
-                'label' => 'Présence d\'un lot de secours ?'
+                'label' => 'Présence d\'un lot de secours ?',
             ])
             ->add('parkingLocation', TextType::class, [
                 'required' => false,
-                'label' => 'Lieu de stationnement'
+                'label' => 'Lieu de stationnement',
             ])
             ->add('contact', TextType::class, [
                 'required' => false,
-                'label' => 'Qui contacter ?'
+                'label' => 'Qui contacter ?',
             ])
             ->add('seatingCapacity', IntegerType::class, [
-                'label' => 'Combien de places ?'
+                'label' => 'Combien de places ?',
             ])
             ->add('submit', SubmitType::class)
         ;
