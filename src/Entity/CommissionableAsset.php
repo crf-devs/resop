@@ -53,6 +53,35 @@ class CommissionableAsset implements AvailabilitableInterface
      */
     public iterable $availabilities = [];
 
+    /**
+     * @ORM\Column(type="boolean")
+     * @Assert\Type("bool")
+     */
+    public bool $hasMobileRadio = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Assert\Type("bool")
+     */
+    public bool $hasFirstAidKit = false;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    public ?string $parkingLocation = '';
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    public ?string $contact = '';
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\Positive
+     */
+    public int $seatingCapacity = 1;
+
+
     public function __construct(
         ?int $id,
         Organization $organization,

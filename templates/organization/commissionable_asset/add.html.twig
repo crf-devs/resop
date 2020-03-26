@@ -7,6 +7,11 @@
     {{ form_start(form) }}
     {{ form_errors(form) }}
     {{ form_row(form.type, {label: 'Type'}) }}
-    {{ form_row(form.name, {label: 'Nom'}) }}
+    {{ form_row(form.name, {label: 'Identifiant'}) }}
+    {{ form_row(form.hasMobileRadio, {label: 'Présence d\'un mobile radio ?'}) }}
+    {{ form_row(form.hasFirstAidKit, {label: 'Présence d\'un lot de secours ?'}) }}
+    {{ form_row(form.parkingLocation, {label: 'Lieu de stationnement'}) }}
+    {{ form_row(form.contact, {label: 'Qui contacter ?'}) }}
+    {{ form_row(form.seatingCapacity, {label: 'Combien de places ?'}) }}
     {{ form_end(form) }}
 {% endblock %}
