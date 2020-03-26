@@ -12,14 +12,14 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20200326034332 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Add Vehicle attributes';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
+        $this->abortIf('postgresql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('ALTER TABLE commissionable_asset ADD has_mobile_radio BOOLEAN DEFAULT FALSE');
         $this->addSql('ALTER TABLE commissionable_asset ALTER COLUMN has_mobile_radio DROP DEFAULT');
@@ -34,9 +34,9 @@ final class Version20200326034332 extends AbstractMigration
         $this->addSql('ALTER TABLE commissionable_asset ALTER COLUMN seating_capacity DROP DEFAULT');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
+        $this->abortIf('postgresql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE commissionable_asset DROP has_mobile_radio');

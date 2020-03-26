@@ -81,7 +81,6 @@ class CommissionableAsset implements AvailabilitableInterface
      */
     public int $seatingCapacity = 1;
 
-
     public function __construct(
         ?int $id,
         Organization $organization,
