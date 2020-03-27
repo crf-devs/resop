@@ -36,6 +36,9 @@
         <div class="container my-4">
             {% block body %}{% endblock %}
         </div>
+
+        {% include '_footer.html.twig' %}
+
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
