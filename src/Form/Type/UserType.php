@@ -81,8 +81,8 @@ final class UserType extends AbstractType
             ])
             ->add('vulnerable', ChoiceType::class, [
                 'choices' => [
-                    'Je fais partie des personnes vulnérables' => 1,
                     'Je ne fais PAS partie des personnes vulnérables' => 0,
+                    'Je fais partie des personnes vulnérables' => 1,
                 ],
                 'data' => 1,
                 'expanded' => true,
@@ -97,7 +97,7 @@ final class UserType extends AbstractType
                 'required' => true,
                 'expanded' => true,
                 'placeholder' => false,
-                'help' => 'Avez-vous un uniforme en dotation chez vous ?',
+                'label' => 'Avez-vous un uniforme en dotation chez vous ?',
             ])
             ->add('skillSet', ChoiceType::class, [
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),
