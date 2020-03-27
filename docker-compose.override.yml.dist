@@ -19,6 +19,10 @@ services:
 #    volumes:
 #      - ./:/srv:cached # Uncomment for MacOS
 
+#  node:
+#    volumes:
+#      - ./:/srv:cached # Uncomment for MacOS
+
   postgres:
     volumes:
       - postgres-data:/var/lib/postgresql/data:rw

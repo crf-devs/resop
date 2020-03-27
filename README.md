@@ -18,24 +18,36 @@
 
 ### Install
 
+#### Linux
+
+```bash
+git clone git@github.com:crf-devs/resop.git && cd resop
+make
+```
+
+#### OS X
+
 ```bash
 git clone git@github.com:crf-devs/resop.git && cd resop
 
-# If you are on linux, just run:
-make
-
-# On MacOS, run:
 make pre-configure
 make configure
-# Now, update the docker-compose.override.yml file to match with your host
+
+# Caution: you need to uncomment all `:cached` lines in the `the docker-compose.override.yml` file
+
 make all
 ```
 
-Then, go to [http://resop.vcap.me:7500/](http://resop.vcap.me:7500/), or [https://resop.vcap.me:7583/](https://resop.vcap.me:7583/) for https.
+### Run
+
+After the `make` command, go to [http://resop.vcap.me:7500/](http://resop.vcap.me:7500/),
+or [https://resop.vcap.me:7583/](https://resop.vcap.me:7583/) for https (self signed certificate).
 
 If you want to run a symfony or a php command: `bin/tools <command>`, example: `bin/tools bin/console`
 
 ### Run : after a first install
+
+You don't need to buld all the stack every time. If there is no new vendor, you can simply run:
 
 ```bash
 make start
