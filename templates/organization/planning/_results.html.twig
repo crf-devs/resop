@@ -27,10 +27,10 @@
 </div>
 
 {% set itemDataRow = 8 %}
-<div class="table-responsive planning-container">
+<div class="planning-container">
     <table class="planning table table-sm table-bordered">
         <thead>
-        <tr>
+        <tr class="days">
             <th rowspan="2"></th>
             <th colspan="{{ itemDataRow }}" class="item-data">Informations</th>
             {% for item in periodCalculator.days %}
@@ -39,7 +39,7 @@
                 </th>
             {% endfor %}
         </tr>
-        <tr>
+        <tr class="hours">
             <th class="item-data">NIVOL</th>
             <th class="item-data">Tel</th>
             <th class="item-data">Email</th>
@@ -60,14 +60,15 @@
             {% set entityType = isAsset ? 'assets' : 'users' %}
             <tbody>
                 <tr>
-                    <td colspan="{{ 1 + itemDataRow + periodCalculator.slots|length }}" class="separator">
+                    <th class="separator bg-dark">
                         {% if  isAsset %}
                             {{ type }}
                         {% else %}
                             {{ usersSkills[type] | default('Bénévoles') }}
                         {% endif %}
                         ({{ list|length }})
-                    </td>
+                    </th>
+                    <td colspan="{{ itemDataRow + periodCalculator.slots|length }}"></td>
                 </tr>
             </tbody>
 
@@ -77,7 +78,7 @@
                         <th class="item-detail">
                             {{ item.entity }}
                             {% if  not isAsset %}
-                                {{ item.entity.skillSet | filter(skill => skill != type) | filter(skill => skill in importantSkillsToDisplay) | map(skill => '<span class="badge badge-secondary">' ~skill~ '</span>') | join | raw }}
+                                {{ item.entity.skillSet | filter(skill => skill != type and skill in importantSkillsToDisplay) | map(skill => '<span class="badge badge-secondary">' ~skill~ '</span>') | join | raw }}
                             {% endif %}
                         </th>
                         {% if not isAsset %}
@@ -96,13 +97,13 @@
                         {% else %}
                             <td class="item-data" colspan="{{ itemDataRow }}"></td>
                         {% endif %}
-                        {% for slot in item.availabilities %}
+                        {% for slot in item.availabilities -%}
                             <td class="slot-box {{ slot.status }}" data-status="{{ slot.status }}" data-day="{{ slot.from|date("Y-m-d") }}" data-from="{{ slot.from|date("Y-m-d H:i") }}" data-to="{{ slot.to|date("Y-m-d H:i") }}">
                                 {% if app.user.parent is empty %}
                                     <input type="checkbox">
                                 {% endif %}
                             </td>
-                        {% endfor %}
+                        {%- endfor %}
                     </tr>
                 {% endfor %}
             </tbody>
