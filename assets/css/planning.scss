@@ -37,6 +37,10 @@ $tableBoxSize: 40px;
     thead th {
       font-weight: 600;
 
+      &[data-day] {
+        cursor: pointer;
+      }
+
       &:first-child {
         border: none;
       }
@@ -46,6 +50,10 @@ $tableBoxSize: 40px;
         min-width: $tableBoxSize;
         text-align: left;
       }
+    }
+
+    tbody.item-row {
+      border: 0;
     }
 
     th.item-detail {
