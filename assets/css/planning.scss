@@ -38,6 +38,22 @@ $tableBoxSize: 40px;
 
         &[data-day] {
           cursor: pointer;
+
+          &::after {
+            content: "▼";
+          }
+
+          &.loading {
+            background-color: #eee;
+          }
+
+          &.loading::after {
+            content: "●";
+          }
+
+          &.sorted::after {
+            content: "";
+          }
         }
 
         &.slot-name {
