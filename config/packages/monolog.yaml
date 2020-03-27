@@ -1,0 +1,7 @@
+monolog:
+    channels: ["php_error"]
+    handlers:
+        main:
+            type: service
+            id: App\Monolog\Handler\DockerHandler
+            channels: ["!event", "!doctrine"]
