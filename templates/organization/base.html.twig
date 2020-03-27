@@ -40,14 +40,7 @@
             </div>
         {% endblock %}
 
-        <footer class="page-footer font-small pt-4 mt-5">
-            <div class="footer-copyright text-center py-3">
-                <p class="font-italic text-secondary">
-                    Réserve Opérationnelle - Croix-Rouge Française de Paris -
-                    Contribuez au projet: <a href="https://github.com/crf-devs/resop/" target="_blank" class="text-body">github.com/crf-devs/resop</a>
-                </p>
-            </div>
-        </footer>
+        {% include '_footer.html.twig' %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
