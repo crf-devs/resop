@@ -13,7 +13,6 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -36,7 +35,7 @@ class PlanningUpdateController extends AbstractController
         $this->assetAvailabilityRepository = $assetAvailabilityRepository;
     }
 
-    public function __invoke(Request $request, string $action): Response
+    public function __invoke(Request $request, string $action): JsonResponse
     {
         $organization = $this->getUser();
         if (!($organization instanceof Organization) || !empty($organization->parent)) {
@@ -64,6 +63,6 @@ class PlanningUpdateController extends AbstractController
             throw new BadRequestHttpException($e->getMessage());
         }
 
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse(['success' => true, 'lastUpdate' => (int) (new \DateTime('now'))->format('U')]);
     }
 }

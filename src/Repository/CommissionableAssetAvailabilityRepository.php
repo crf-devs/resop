@@ -46,8 +46,7 @@ class CommissionableAssetAvailabilityRepository extends ServiceEntityRepository 
                 'end' => $end,
             ])
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function findByOwnerAndDates(array $owners, \DateTimeInterface $start, \DateTimeInterface $end): array
@@ -62,7 +61,20 @@ class CommissionableAssetAvailabilityRepository extends ServiceEntityRepository 
                 'end' => $end,
             ])
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+    }
+
+    public function findLastUpdatedForEntities(array $availabilitables): string
+    {
+        $qb = $this->createQueryBuilder('ca');
+
+        return $qb
+            ->select('ca.updatedAt')
+            ->where($qb->expr()->in('ca.asset', ':owners'))
+            ->setParameter('owners', $availabilitables)
+            ->setMaxResults(1)
+            ->addOrderBy('ca.updatedAt', 'DESC')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

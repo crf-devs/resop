@@ -43,14 +43,15 @@ function triggerUpdate(url, newStatus, $planning, $modal) {
 }
 
 function doUpdate(url, newStatus, $planning) {
-  var payload = generatePayload($planning);
+  let payload = generatePayload($planning);
   $.ajax({
     contentType: 'application/json',
     method: 'POST',
     dataType: 'json',
     url: url,
     data: JSON.stringify(payload),
-    success: () => {
+    success: ({ lastUpdate }) => {
+      $('#planning-form').data('loading-timestamp', lastUpdate);
       updatePlanningFromPayload($planning, newStatus, payload);
     },
     error: function () {
@@ -75,7 +76,7 @@ function updatePlanningFromPayload($planning, newStatus, payload) {
 }
 
 function generatePayload($planning) {
-  var payload = {
+  let payload = {
     users: {},
     assets: {},
   };
@@ -95,8 +96,31 @@ function generatePayload($planning) {
   return payload;
 }
 
+function checkLastUpdate() {
+  if (document.hidden || !$('#alert-last-update').hasClass('d-none')) {
+    return;
+  }
+
+  $.ajax({
+    contentType: 'application/json',
+    method: 'GET',
+    dataType: 'json',
+    url: $('#planning-form').data('last-update-href') + window.location.search,
+    success: ({ lastUpdate }) => {
+      if (lastUpdate > $('#planning-form').data('loading-timestamp')) {
+        $('#alert-last-update').removeClass('d-none');
+      }
+    },
+  });
+}
+
 $(document).ready(function () {
   var $planning = $('.planning');
+
+  let urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('scrollTop')) {
+    $(window).scrollTop(urlParams.get('scrollTop'));
+  }
 
   $planning.on('click', '.slot-box input:checkbox', function (e) {
     e.stopImmediatePropagation();
@@ -130,4 +154,15 @@ $(document).ready(function () {
   });
 
   $planning.find('input[type=checkbox]:checked').closest('.slot-box').addClass('checked');
+
+  $('#alert-last-update a').on('click', function (e) {
+    e.preventDefault();
+
+    let newUrlParams = new URLSearchParams(window.location.search);
+    newUrlParams.set('scrollTop', $(document).scrollTop());
+
+    window.location = window.location.origin + window.location.pathname + '?' + newUrlParams.toString();
+  });
+
+  setInterval(checkLastUpdate, 5000);
 });
