@@ -36,6 +36,9 @@ final class RequestLoggerListener implements EventSubscriberInterface, LoggerAwa
     public function onRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
+        if (self::isHealthCheck($request)) {
+            return;
+        }
 
         $this->logger->info(
             'Handle request',
@@ -51,13 +54,18 @@ final class RequestLoggerListener implements EventSubscriberInterface, LoggerAwa
         );
     }
 
-    public function logUser(): void
+    public function logUser(RequestEvent $event): void
     {
-        if (null === $this->tokenStorage->getToken()) {
+        if (null === $this->tokenStorage->getToken() || self::isHealthCheck($event->getRequest())) {
             return;
         }
 
         $this->logger->info('User logged in', ['username' => (string) $this->tokenStorage->getToken()->getUser()]);
+    }
+
+    private static function isHealthCheck(Request $request): bool
+    {
+        return false !== strpos((string) $request->headers->get('user-agent'), 'ELB-HealthChecker');
     }
 
     private static function getCleanHeaders(Request $request): array
