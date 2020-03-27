@@ -59,7 +59,38 @@ function toggleMoreInfos() {
   $('.planning').find('.item-data').toggle($('#display-more').prop('checked'));
 }
 
+function dateSortPlanning($clickedTh, $planning) {
+  let day = $clickedTh.data('day');
+
+  $clickedTh.siblings('th[data-day]').removeClass('loading').removeClass('sorted');
+  $clickedTh.removeClass('sorted').addClass('loading');
+
+  // We need to wait for the adding of loading class before doing this udge operation
+  setTimeout(function () {
+    $planning.find('tbody.item-rows').each(function () {
+      var $tbody = $(this);
+
+      $tbody
+        .find('tr')
+        .sort(function (a, b) {
+          var $a = $(a);
+          var $b = $(b);
+
+          var aCount = $a.find('td[data-status="available"][data-day="' + day + '"]').length;
+          var bCount = $b.find('td[data-status="available"][data-day="' + day + '"]').length;
+
+          return aCount > bCount ? -1 : 1;
+        })
+        .appendTo($tbody);
+
+      $clickedTh.removeClass('loading').addClass('sorted');
+    });
+  });
+}
+
 $(document).ready(function () {
+  var $planning = $('.planning');
+
   // Datepickers
   initDatesRange($('#fromToRange'), $('#from'), $('#to'));
   initDatesRange($('#availableRange'), $('#availableFrom'), $('#availableTo'), true);
@@ -70,6 +101,10 @@ $(document).ready(function () {
   $('#hideAssets').on('change', hideUselessFilters);
 
   $('#display-more').on('change', toggleMoreInfos);
+
+  $planning.on('click', 'thead tr.days th[data-day]', function () {
+    dateSortPlanning($(this), $planning);
+  });
 
   $('#loader').hide();
 });

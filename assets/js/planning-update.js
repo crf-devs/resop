@@ -95,31 +95,8 @@ function generatePayload($planning) {
   return payload;
 }
 
-function dateSortPlanning(day, $planning) {
-  $planning.find('tbody.item-rows').each(function () {
-    var $tbody = $(this);
-
-    $tbody
-      .find('tr')
-      .sort(function (a, b) {
-        var $a = $(a);
-        var $b = $(b);
-
-        var aCount = $a.find('td[data-status="available"][data-day="' + day + '"]').length;
-        var bCount = $b.find('td[data-status="available"][data-day="' + day + '"]').length;
-
-        return aCount > bCount ? -1 : 1;
-      })
-      .appendTo($tbody);
-  });
-}
-
 $(document).ready(function () {
   var $planning = $('.planning');
-
-  $planning.on('click', 'thead th', function () {
-    dateSortPlanning($(this).data('day'), $planning);
-  });
 
   $planning.on('click', '.slot-box input:checkbox', function (e) {
     e.stopImmediatePropagation();

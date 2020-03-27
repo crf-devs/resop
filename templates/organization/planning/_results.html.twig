@@ -34,8 +34,8 @@
             <th rowspan="2"></th>
             <th colspan="{{ itemDataRow }}" class="item-data">Informations</th>
             {% for item in periodCalculator.days %}
-                <th colspan="{{ item.slots }}" data-day="{{ item.date|date("Y-m-d") }}">
-                    {{ item.date|format_date(pattern="eeee dd MMMM") }} &#9660;
+                <th colspan="{{ item.slots }}" data-day="{{ item.date|date("Y-m-d") }}" title="Trier par nombre de disponibilités sur le jour">
+                    {{ item.date|format_date(pattern="eeee dd MMMM") }}
                 </th>
             {% endfor %}
         </tr>
