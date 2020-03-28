@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\SecurityEvents;
 
 final class RequestLoggerListener implements EventSubscriberInterface, LoggerAwareInterface
 {
@@ -29,6 +32,9 @@ final class RequestLoggerListener implements EventSubscriberInterface, LoggerAwa
             KernelEvents::REQUEST => [
                 ['onRequest', 255],
                 ['logUser'],
+            ],
+            SecurityEvents::INTERACTIVE_LOGIN => [
+                ['onLogin'],
             ],
         ];
     }
@@ -60,7 +66,30 @@ final class RequestLoggerListener implements EventSubscriberInterface, LoggerAwa
             return;
         }
 
-        $this->logger->info('User logged in', ['username' => (string) $this->tokenStorage->getToken()->getUser()]);
+        $user = $this->tokenStorage->getToken()->getUser();
+        if (!$user instanceof UserInterface) {
+            return;
+        }
+
+        $this->logLogIn($user);
+    }
+
+    public function onLogin(InteractiveLoginEvent $event): void
+    {
+        $user = $event->getAuthenticationToken()->getUser();
+        if (!$user instanceof UserInterface) {
+            return;
+        }
+
+        $this->logLogIn($user);
+    }
+
+    private function logLogIn(UserInterface $user): void
+    {
+        if (!$user instanceof \JsonSerializable) {
+            return;
+        }
+        $this->logger->info('User logged in', $user->jsonSerialize());
     }
 
     private static function isHealthCheck(Request $request): bool
