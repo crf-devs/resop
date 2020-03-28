@@ -88,6 +88,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
 
     /**
      * @param Organization[] $organizations
+     *
      * @return User[]
      */
     public function findByOrganizations(iterable $organizations): array

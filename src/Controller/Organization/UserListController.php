@@ -42,7 +42,7 @@ class UserListController extends AbstractController
 
         return $this->render('organization/user-list.html.twig', [
             'organization' => $organization,
-            'users' => $this->userRepository->findByOrganizations(array_merge([$organization], $childOrganizations))
+            'users' => $this->userRepository->findByOrganizations(array_merge([$organization], $childOrganizations)),
         ]);
     }
 }

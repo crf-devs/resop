@@ -68,7 +68,7 @@ class UserType extends AbstractType
                 'attr' => ['class' => 'js-occupation'],
             ])
             ->add('organizationOccupation', TextType::class, [
-                'required' => false
+                'required' => false,
             ])
             ->add('fullyEquipped', ChoiceType::class, [
                 'choices' => [
@@ -82,7 +82,7 @@ class UserType extends AbstractType
             ->add('skillSet', ChoiceType::class, [
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),
                 'multiple' => true,
-                'expanded' => true
+                'expanded' => true,
             ])
             ->add('submit', SubmitType::class);
 
@@ -97,7 +97,7 @@ class UserType extends AbstractType
                     ],
                     'expanded' => true,
                     'help' => $vulnerableHelp,
-                    'help_html' => true
+                    'help_html' => true,
                 ]);
             } else {
                 $form->add('vulnerable', ChoiceType::class, [
@@ -128,7 +128,7 @@ class UserType extends AbstractType
             ->addAllowedValues('display_type', [self::DISPLAY_NEW, self::DISPLAY_EDIT, self::DISPLAY_ORGANIZATION])
             ->setDefaults([
                 'data_class' => User::class,
-                'display_type' => self::DISPLAY_NEW
+                'display_type' => self::DISPLAY_NEW,
             ]);
     }
 }

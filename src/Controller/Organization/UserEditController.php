@@ -6,10 +6,7 @@ namespace App\Controller\Organization;
 
 use App\Entity\Organization;
 use App\Entity\User;
-use App\Event\UserChangeVulnerabilityEvent;
-use App\Form\Type\OrganizationUserType;
 use App\Form\Type\UserType;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +23,7 @@ class UserEditController extends AbstractController
 
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;;
+        $this->entityManager = $entityManager;
     }
 
     public function __invoke(Request $request, User $user): Response
@@ -50,7 +47,7 @@ class UserEditController extends AbstractController
 
         return $this->render('organization/user-edit.html.twig', [
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 }

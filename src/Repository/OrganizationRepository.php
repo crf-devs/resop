@@ -59,7 +59,6 @@ class OrganizationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Organization $organization
      * @return Organization[]
      */
     public function findByParent(Organization $organization): iterable
