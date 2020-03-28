@@ -41,6 +41,8 @@ $tableBoxSize: 40px;
 
           &::after {
             content: "▼";
+            width: 20px;
+            display: inline-block;
           }
 
           &.loading {
