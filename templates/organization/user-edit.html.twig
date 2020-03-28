@@ -1,0 +1,24 @@
+{% extends 'organization/base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('user-form') }}
+{% endblock %}
+
+{% block body %}
+    <h1>Modifier un profil</h1>
+    {%
+        set labels = {
+        'fullyEquipped': 'Uniforme en dotation ?',
+        'occupation': 'Profession ?',
+        'organizationOccupation': 'Fonction de cadre au sein de la structure d\'emploi',
+        'skillSet': 'Compétences Croix-Rouge ?'
+    } %}
+    {% set helps = {
+        'skillSet': null,
+        'occupation': null,
+        'organization': null
+    } %}
+
+    {% include '/user/_user_form.html.twig' with { 'labels': labels, 'helps': helps } %}
+{% endblock %}

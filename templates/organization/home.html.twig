@@ -15,7 +15,7 @@
 
     <hr>
 
-    <p><button class="btn btn-primary" role="button" disabled>Afficher la liste de mes bénévoles inscrits</button></p>
+    <p><a class="btn btn-primary" role="button" href="{{ path('organization_user_list') }}">Afficher la liste de mes bénévoles inscrits</a></p>
     <p><a class="btn btn-primary" href="{{ path('app_organization_commissionable_assets') }}" role="button">Afficher la liste de mes véhicules</a></p>
 
     {% if app.user.parent == null %}

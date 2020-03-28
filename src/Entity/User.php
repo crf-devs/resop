@@ -128,6 +128,7 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
     public static function bootstrap(string $identifier = null): self
     {
         $user = new self();
+        $user->birthday = '1990-01-01';
 
         if (empty($identifier)) {
             return $user;

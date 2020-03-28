@@ -19,6 +19,7 @@ final class UserLoginType extends AbstractType
             ->add('birthday', BirthdayType::class, [
                 'format' => 'dd-MMMM-yyyy',
                 'input' => 'string',
+                'empty_data' => '01-01-1990'
             ])
         ;
     }

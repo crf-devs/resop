@@ -17,9 +17,13 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class UserType extends AbstractType
+class UserType extends AbstractType
 {
-    private const DEFAULT_OCCUPATIONS = [
+    public const DISPLAY_NEW = 'new';
+    public const DISPLAY_EDIT = 'edit';
+    public const DISPLAY_ORGANIZATION = 'organization';
+
+    protected const DEFAULT_OCCUPATIONS = [
         'Compétences pédiatriques',
         'Infirmier.e',
         'Médecin',
@@ -34,7 +38,7 @@ final class UserType extends AbstractType
         'Logisticien',
     ];
 
-    private SkillSetDomain $skillSetDomain;
+    protected SkillSetDomain $skillSetDomain;
 
     public function __construct(SkillSetDomain $skillSetDomain)
     {
@@ -44,50 +48,27 @@ final class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $occupationChoices = (array) array_combine(self::DEFAULT_OCCUPATIONS, self::DEFAULT_OCCUPATIONS);
-        $occupationChoices += ['Autre :' => '-'];
+        $occupationChoices += ['Autre' => '-'];
         $builder
-            ->add('organization', OrganizationEntityType::class, [
-                'label' => 'Votre structure de rattachement',
-                'help' => 'À quelle unité locale êtes-vous rattaché.e ?',
-            ])
-            ->add('firstName', TextType::class, [
-                'label' => 'Prénom',
-            ])
-            ->add('lastName', TextType::class, [
-                'label' => 'Nom',
-            ])
-            ->add('phoneNumber', TextType::class, [
-                'label' => 'Numéro de téléphone portable',
-            ])
-            ->add('emailAddress', EmailType::class, [
-                'label' => 'Adresse e-mail',
-            ])
+            ->add('identificationNumber', TextType::class)
+            ->add('organization', OrganizationEntityType::class)
+            ->add('firstName', TextType::class)
+            ->add('lastName', TextType::class)
+            ->add('phoneNumber', TextType::class)
+            ->add('emailAddress', EmailType::class)
             ->add('birthday', BirthdayType::class, [
                 'format' => 'dd-MMMM-yyyy',
                 'input' => 'string',
-                'label' => 'Date de naissance',
             ])
             ->add('occupation', ChoiceWithOtherType::class, [
                 'choices' => $occupationChoices,
                 'expanded' => true,
                 'placeholder' => false,
                 'required' => false,
-                'label' => 'Quelle est votre profession ?',
                 'attr' => ['class' => 'js-occupation'],
             ])
             ->add('organizationOccupation', TextType::class, [
-                'required' => false,
-                'label' => 'Fonction de cadre au sein de votre structure d\'emploi',
-            ])
-            ->add('vulnerable', ChoiceType::class, [
-                'choices' => [
-                    'Je ne fais PAS partie des personnes vulnérables' => 0,
-                    'Je fais partie des personnes vulnérables' => 1,
-                ],
-                'data' => 1,
-                'expanded' => true,
-                'help' => '<ul><li>malade chronique</li><li>obésité morbide</li><li>syndrome grippal</li><li>immunodéprimé</li><li>personne mineure ou personne de plus de 70 ans</li><li>avis défavorable de votre unité locale ou du pole santé (local ou territorial)</li></ul>',
-                'help_html' => true,
+                'required' => false
             ])
             ->add('fullyEquipped', ChoiceType::class, [
                 'choices' => [
@@ -97,37 +78,57 @@ final class UserType extends AbstractType
                 'required' => true,
                 'expanded' => true,
                 'placeholder' => false,
-                'label' => 'Avez-vous un uniforme en dotation chez vous ?',
             ])
             ->add('skillSet', ChoiceType::class, [
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),
                 'multiple' => true,
-                'expanded' => true,
-                'label' => 'Quelles sont vos compétences Croix-Rouge ?',
-                'help' => 'Cochez toutes vos compétences',
+                'expanded' => true
             ])
-            ->add('submit', SubmitType::class)
-        ;
+            ->add('submit', SubmitType::class);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            /** @var User $user */
-            $user = $event->getData();
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
             $form = $event->getForm();
-
-            if (null === $user->getId()) {
-                $form->add('identificationNumber', TextType::class, [
-                    'label' => 'NIVOL',
+            $vulnerableHelp = '<ul><li>malade chronique</li><li>obésité morbide</li><li>syndrome grippal</li><li>immunodéprimé</li><li>personne mineure ou personne de plus de 70 ans</li><li>avis défavorable de votre unité locale ou du pole santé (local ou territorial)</li></ul>';
+            if (self::DISPLAY_ORGANIZATION === $options['display_type']) {
+                $form->add('vulnerable', ChoiceType::class, [
+                    'choices' => [
+                        'fait PAS partie des personnes vulnérables' => 0,
+                        'fait partie des personnes vulnérables' => 1,
+                    ],
+                    'expanded' => true,
+                    'help' => $vulnerableHelp,
+                    'help_html' => true
                 ]);
             } else {
-                $form->remove('birthday');
+                $form->add('vulnerable', ChoiceType::class, [
+                    'choices' => [
+                        'Je ne fais PAS partie des personnes vulnérables' => 0,
+                        'Je fais partie des personnes vulnérables' => 1,
+                    ],
+                    'data' => 1,
+                    'expanded' => true,
+                    'help' => $vulnerableHelp,
+                    'help_html' => true,
+                ]);
+
+                if (self::DISPLAY_EDIT === $options['display_type']) {
+                    $form
+                        ->remove('birthday')
+                        ->remove('identificationNumber');
+                }
             }
         });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-        ]);
+        $resolver
+            ->setDefined('display_type')
+            ->setRequired('display_type')
+            ->addAllowedValues('display_type', [self::DISPLAY_NEW, self::DISPLAY_EDIT, self::DISPLAY_ORGANIZATION])
+            ->setDefaults([
+                'data_class' => User::class,
+                'display_type' => self::DISPLAY_NEW
+            ]);
     }
 }
