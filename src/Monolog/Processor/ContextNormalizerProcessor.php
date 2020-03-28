@@ -24,7 +24,15 @@ class ContextNormalizerProcessor implements ProcessorInterface
 
         foreach ($record['context'] as $key => $value) {
             if ($this->normalizer->supportsNormalization($value, 'json')) {
-                $record['context'][$key] = $this->normalizer->normalize($value, 'json');
+                try {
+                    $record['context'][$key] = $this->normalizer->normalize($value, 'json', [
+                        'circular_reference_handler' => static function ($object) {
+                            return (string) $object;
+                        },
+                    ]);
+                } catch (\Throwable $e) {
+                    $record['context'][$key] = $e->getMessage();
+                }
             }
         }
 
