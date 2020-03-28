@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
  */
-class Organization implements UserInterface
+class Organization implements UserInterface, \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -57,6 +57,14 @@ class Organization implements UserInterface
         }
 
         return $this->name;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->__toString(),
+        ];
     }
 
     public function getRoles(): array

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function Symfony\Component\String\u;
@@ -25,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("emailAddress")
  * @UniqueEntity("identificationNumber")
  */
-class User implements UserInterface, AvailabilitableInterface
+class User implements UserInterface, AvailabilitableInterface, JsonSerializable
 {
     const NIVOL_FORMAT = '#^\d+[A-Z]$#';
 
@@ -160,6 +161,14 @@ class User implements UserInterface, AvailabilitableInterface
         }
 
         return $this->organization->name.' / '.$this->getFullName();
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'identificationNumber' => $this->identificationNumber,
+        ];
     }
 
     public function getId(): ?int

@@ -12,6 +12,7 @@ class ChangeLevelProcessor implements ProcessorInterface
     private static array $debugMessages = [
         'Matched route',
         'Populated the TokenStorage with an anonymous Token',
+        'Guard authentication successful',
     ];
 
     public function __invoke(array $record): array
