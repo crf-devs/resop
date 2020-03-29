@@ -32,7 +32,7 @@ final class LoginController extends AbstractController
 
         $loginForm = $this->createForm(UserLoginType::class, [
             'identifier' => $this->authenticationUtils->getLastUsername(),
-            'birthday' => $session->get('_security.last_birthday') ?: '1990-01-01',
+            'birthday' => $session->get('_security.last_birthday', '1990-01-01'),
         ]);
 
         return $this->render('user/login.html.twig', [
