@@ -52,25 +52,39 @@ test:
   except:
     - tags
 
-build:
+.build:
   stage: build
   script:
+    - apk add --no-cache git
+    - export BUILD_TAG=$(git describe --tags)
+    - echo "Building image ${BUILD_TAG}"
     - docker pull ${CI_REGISTRY_IMAGE}/php-flex-dev:latest || true
     - docker pull ${CI_REGISTRY_IMAGE}/fpm:latest || true
     - docker pull ${CI_REGISTRY_IMAGE}/nginx:latest || true
-    - docker build -t ${CI_REGISTRY_IMAGE}/fpm:${CI_COMMIT_REF_SLUG} -t ${CI_REGISTRY_IMAGE}/fpm:latest --cache-from ${CI_REGISTRY_IMAGE}/php-flex-dev:latest --cache-from ${CI_REGISTRY_IMAGE}/fpm:latest -f docker/php-flex/Dockerfile --target withsources-fpm .
+    - docker build -t ${CI_REGISTRY_IMAGE}/fpm:${CI_COMMIT_REF_SLUG} -t ${CI_REGISTRY_IMAGE}/fpm:latest --cache-from ${CI_REGISTRY_IMAGE}/php-flex-dev:latest --cache-from ${CI_REGISTRY_IMAGE}/fpm:latest -f docker/php-flex/Dockerfile --target withsources-fpm --build-arg BUILD_TAG=${BUILD_TAG} .
     - docker run --rm -v $(pwd):/host ${CI_REGISTRY_IMAGE}/fpm:latest mv -f /srv/public/build /host/public
     - docker build -t ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG} -t ${CI_REGISTRY_IMAGE}/nginx:latest --cache-from ${CI_REGISTRY_IMAGE}/nginx:latest -f docker/nginx/Dockerfile --target withsources .
     - docker push ${CI_REGISTRY_IMAGE}/fpm:${CI_COMMIT_REF_SLUG}
     - docker push ${CI_REGISTRY_IMAGE}/fpm:latest
     - docker push ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG}
     - docker push ${CI_REGISTRY_IMAGE}/nginx:latest
-    - echo "Tag => $CI_COMMIT_TAG"
-    - (test -n "$CI_COMMIT_TAG" && docker tag ${CI_REGISTRY_IMAGE}/fpm:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}/fpm:release-latest && docker push ${CI_REGISTRY_IMAGE}/fpm:release-latest) || true
-    - (test -n "$CI_COMMIT_TAG" && docker tag ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}/nginx:release-latest && docker push ${CI_REGISTRY_IMAGE}/nginx:release-latest) || true
+
+build:master:
+  extends: .build
   only:
     - master
-    - tags
+
+build:tag:
+  extends: .build
+  after_script:
+    - test -z "$CI_COMMIT_TAG" && echo "This is not a tag pipeline" && exit 0
+    - echo "Tag => $CI_COMMIT_TAG"
+    - docker tag ${CI_REGISTRY_IMAGE}/fpm:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}/fpm:release-latest && docker push ${CI_REGISTRY_IMAGE}/fpm:release-latest
+    - docker tag ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}/nginx:release-latest && docker push ${CI_REGISTRY_IMAGE}/nginx:release-latest
+  only:
+    - /^\d+\.\d+(?:\.\d+)?$/
+  except:
+    - branches
 
 deploy:snapshot:
   stage: deploy

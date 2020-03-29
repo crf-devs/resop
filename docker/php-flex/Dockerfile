@@ -6,7 +6,6 @@ ENV APP_DEBUG '0'
 ENV COMPOSER_MEMORY_LIMIT -1
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /.composer
-ARG APCU_VERSION=5.1.18
 
 RUN apk add --update --no-cache \
     openssl \
@@ -35,7 +34,7 @@ RUN set -eux; \
     sockets \
   ; \
   pecl install \
-    apcu-${APCU_VERSION} \
+    apcu-5.1.18 \
   ; \
   pecl clear-cache; \
   docker-php-ext-enable \
@@ -134,5 +133,8 @@ ENTRYPOINT ["/bin/entrypoint"]
 CMD ["php-fpm"]
 HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=3 CMD REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/ping.php REQUEST_URI=/ REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9001
 STOPSIGNAL SIGQUIT
+
+ARG BUILD_TAG=dev
+ENV IMAGE_BUILD_TAG=$BUILD_TAG
 
 # ================================================
