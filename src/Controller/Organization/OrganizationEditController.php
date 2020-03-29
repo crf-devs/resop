@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Organization;
 
 use App\Entity\Organization;
-use App\Form\Type\OrganizationEntityType;
+use App\Form\Type\OrganizationType;
 use App\Repository\OrganizationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -40,7 +40,7 @@ class OrganizationEditController extends AbstractController
             $organization = new Organization(null, '', $currentOrganization);
         }
 
-        $form = $this->formFactory->create(OrganizationEntityType::class, $organization)->handleRequest($request);
+        $form = $this->formFactory->create(OrganizationType::class, $organization)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $flashMessage = 'La structure a été mise à jour avec succès.';
             if (null === $organization->id) {

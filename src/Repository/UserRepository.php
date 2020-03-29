@@ -95,16 +95,15 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     }
 
     /**
-     * @param Organization[] $organizations
-     *
      * @return User[]
      */
-    public function findByOrganizations(iterable $organizations): array
+    public function findByOrganization(Organization $organizations): array
     {
         return $this->createQueryBuilder('u')
             ->where('u.organization IN (:organizations)')
             ->setParameter('organizations', $organizations)
-            ->addOrderBy('u.lastName', 'desc')
+            ->addOrderBy('u.lastName', 'ASC')
+            ->addOrderBy('u.firstName', 'ASC')
             ->getQuery()
             ->getResult();
     }

@@ -3,6 +3,8 @@
 {% block title %}Liste des structures{% endblock %}
 
 {% block body %}
+    <h1>{{ app.user }}</h1>
+
     <div class="row">
         <div class="col-12 text-right mb-2">
             <a href="{{ path('app_organization_new') }}" class="btn btn-success">Ajouter une structure</a>
@@ -20,7 +22,11 @@
             {% for organization in organizations %}
                 <tr>
                     <td>{{ organization.name }}</td>
-                    <td><a href="{{ path('app_organization_edit', { id: organization.id }) }}">Modifier</a> </td>
+                    <td>
+                        <a href="{{ path('app_organization_edit', { id: organization.id }) }}" class="btn btn-outline-secondary">Modifier</a>
+                        <a class="btn btn-outline-primary" role="button" href="{{ path('app_organization_user_list', {'id': organization.id}) }}">Liste des bénévoles</a>
+                        <a class="btn btn-outline-primary" role="button" href="{{ path('planning', {'organizations[]': organization.id}) }}">Disponibilité des bénévoles</a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

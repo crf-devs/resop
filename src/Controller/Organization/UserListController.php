@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/users", name="organization_user_list", methods={"GET"})
+ * @Route("/{id}/users", name="app_organization_user_list", methods={"GET"})
  */
 class UserListController extends AbstractController
 {
@@ -27,22 +27,20 @@ class UserListController extends AbstractController
         $this->organizationRepository = $organizationRepository;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, Organization $organization): Response
     {
-        $organization = $this->getUser();
-
-        if (!$organization instanceof Organization) {
+        $currentOrganization = $this->getUser();
+        if (!$currentOrganization instanceof Organization) {
             throw new AccessDeniedException();
         }
 
-        $childOrganizations = [];
-        if (null === $organization->parent) {
-            $childOrganizations = $this->organizationRepository->findByParent($organization);
+        if ($currentOrganization !== $organization && $organization->parent !== $currentOrganization) {
+            throw new AccessDeniedException('You cannot manage this organization');
         }
 
-        return $this->render('organization/user-list.html.twig', [
+        return $this->render('organization/user/user-list.html.twig', [
             'organization' => $organization,
-            'users' => $this->userRepository->findByOrganizations(array_merge([$organization], $childOrganizations)),
+            'users' => $this->userRepository->findByOrganization($organization),
         ]);
     }
 }

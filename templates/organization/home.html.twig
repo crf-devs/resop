@@ -8,23 +8,23 @@
     <h1>{{ app.user }}</h1>
 
     <p>Semaine actuelle : du {{ 'this week' | date('d/m/Y') }} au {{ 'sunday this week' | date('d/m/Y') }}</p>
-    <p><a class="btn btn-primary" role="button" href="{{ path('planning', {'organizations[]': app.user.id}) }}">Afficher les disponibilités de mes bénévoles pour la semaine actuelle</a></p>
+    <p><a class="btn btn-outline-primary" role="button" href="{{ path('planning', {'organizations[]': app.user.id}) }}">Afficher les disponibilités de mes bénévoles pour la semaine actuelle</a></p>
 
     <p>Semaine prochaine : du {{ 'next week' | date('d/m/Y') }} au {{ 'sunday next week' | date('d/m/Y') }}</p>
-    <p><a class="btn btn-primary" role="button" href="{{ path('planning', {'organizations[]': app.user.id, 'from': 'monday next week' | date('Y-m-d\\T00:00:00')}) }}">Afficher les disponibilités de mes bénévoles pour la semaine prochaine</a></p>
+    <p><a class="btn btn-outline-primary" role="button" href="{{ path('planning', {'organizations[]': app.user.id, 'from': 'monday next week' | date('Y-m-d\\T00:00:00')}) }}">Afficher les disponibilités de mes bénévoles pour la semaine prochaine</a></p>
 
     <hr>
 
-    <p><a class="btn btn-primary" role="button" href="{{ path('organization_user_list') }}">Afficher la liste de mes bénévoles inscrits</a></p>
-    <p><a class="btn btn-primary" href="{{ path('app_organization_commissionable_assets') }}" role="button">Afficher la liste de mes véhicules</a></p>
+    <p><a class="btn btn-secondary" role="button" href="{{ path('app_organization_user_list', {'id': app.user.id}) }}">Afficher la liste de mes bénévoles inscrits</a></p>
+    <p><a class="btn btn-secondary" href="{{ path('app_organization_commissionable_assets') }}" role="button">Afficher la liste de mes véhicules</a></p>
 
     {% if app.user.parent == null %}
         <hr>
 
         <p>
-            <a href="{{ path('app_organization_list') }}" class="btn btn-primary">Afficher la liste de mes structures</a>
+            <a href="{{ path('app_organization_list') }}" class="btn btn-info">Afficher la liste de mes structures</a>
         </p>
 
-        <p><a class="btn btn-primary" href="{{ path('planning') }}" role="button">Afficher les disponibilités de tous les bénévoles</a></p>
+        <p><a class="btn btn-info" href="{{ path('planning') }}" role="button">Afficher les disponibilités de tous les bénévoles</a></p>
     {% endif %}
 {% endblock %}

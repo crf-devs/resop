@@ -8,7 +8,7 @@
 </div>
 <div class="row">
     <div class="col-6">
-        {{ form_row(form.organization, { 'help': helps.organization }) }}
+        {{ form_row(form.organization, { 'label': labels.organization | default('Structure de rattachement'), 'help': helps.organization }) }}
     </div>
 </div>
 

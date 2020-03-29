@@ -15,7 +15,7 @@ final class UserLoginType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $birthdayOptions = [
-            'format' => 'dd-MMMM-yyyy',
+            'format' => 'dd MMMM yyyy',
             'input' => 'string',
         ];
         if (false === $builder->getForm()->isSubmitted()) {

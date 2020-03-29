@@ -96,6 +96,11 @@ class Organization implements UserInterface, \JsonSerializable
         return $this->name;
     }
 
+    public function isParent(): bool
+    {
+        return null === $this->parent;
+    }
+
     public function getParentName(): ?string
     {
         if (null === $this->parent) {

@@ -57,7 +57,7 @@ class UserType extends AbstractType
             ->add('phoneNumber', TextType::class)
             ->add('emailAddress', EmailType::class)
             ->add('birthday', BirthdayType::class, [
-                'format' => 'dd-MMMM-yyyy',
+                'format' => 'dd MMMM yyyy',
                 'input' => 'string',
             ])
             ->add('occupation', ChoiceWithOtherType::class, [
