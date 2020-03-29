@@ -64,17 +64,13 @@ class CommissionableAssetAvailabilityRepository extends ServiceEntityRepository 
             ->getResult();
     }
 
-    public function findLastUpdatedForEntities(array $availabilitables): string
+    public function findLastUpdatedForEntities(array $availabilitables): ?array
     {
         $qb = $this->createQueryBuilder('ca');
-
-        return $qb
-            ->select('ca.updatedAt')
+        $qb
             ->where($qb->expr()->in('ca.asset', ':owners'))
-            ->setParameter('owners', $availabilitables)
-            ->setMaxResults(1)
-            ->addOrderBy('ca.updatedAt', 'DESC')
-            ->getQuery()
-            ->getSingleScalarResult();
+            ->setParameter('owners', $availabilitables);
+
+        return $this->findLastUpdatesForEntities($qb);
     }
 }

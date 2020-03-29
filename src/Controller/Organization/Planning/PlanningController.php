@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Organization;
+namespace App\Controller\Organization\Planning;
 
 use App\Domain\AvailabilitiesDomain;
 use App\Domain\DatePeriodCalculator;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/planning", name="planning", methods={"GET"})
+ * @Route("/", name="planning", methods={"GET"})
  */
 class PlanningController extends AbstractController
 {

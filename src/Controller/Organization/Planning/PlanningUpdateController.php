@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Organization;
+namespace App\Controller\Organization\Planning;
 
 use App\Domain\PlanningUpdateDomain;
 use App\Entity\Organization;
@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/planning/update/{action}", name="planning_update", methods={"POST"})
+ * @Route("/update/{action}", name="planning_update", methods={"POST"})
  */
 class PlanningUpdateController extends AbstractController
 {
@@ -42,9 +42,10 @@ class PlanningUpdateController extends AbstractController
             throw new AccessDeniedException('Organization is required and must not have a parent');
         }
 
-        $json = json_decode($request->getContent(), true);
-        if (!$json) {
-            throw new BadRequestHttpException('Invalid JSON Payload format');
+        try {
+            $json = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException('Invalid JSON Payload format', $e);
         }
 
         try {
@@ -59,10 +60,10 @@ class PlanningUpdateController extends AbstractController
                 $this->assetAvailabilityRepository
             );
             $bulkUpdate->compute();
-        } catch (\InvalidArgumentException | \LogicException $e) {
-            throw new BadRequestHttpException($e->getMessage());
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException($e->getMessage(), $e);
         }
 
-        return new JsonResponse(['success' => true, 'lastUpdate' => (int) (new \DateTime('now'))->format('U')]);
+        return new JsonResponse(['success' => true]);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Organization;
+namespace App\Controller\Organization\Planning;
 
 use App\Domain\PlanningUtils;
 use App\Repository\CommissionableAssetAvailabilityRepository;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/planning/lastUpdate", name="planning_last_update", methods={"GET"})
+ * @Route("/last-update", name="planning_last_update", methods={"GET"})
  */
 class PlanningCheckLastUpdateController
 {
@@ -47,11 +47,23 @@ class PlanningCheckLastUpdateController
         $users = $data['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($data, true);
         $assets = $data['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($data, true);
 
-        $userLastUpdate = $this->userAvailabilityRepository->findLastUpdatedForEntities($users);
-        $assetLastUpdate = $this->assetAvailabilityRepository->findLastUpdatedForEntities($assets);
+        // TODO Handle deleted availabities
 
-        $lastUpdate = max((new \DateTime($userLastUpdate))->format('U'), (new \DateTime($assetLastUpdate))->format('U'));
+        $availabilitiesCount = 0;
+        $userLastUpdateData = $this->userAvailabilityRepository->findLastUpdatedForEntities($users);
+        if (null !== $userLastUpdateData) {
+            $userLastUpdate = (int) (new \DateTimeImmutable($userLastUpdateData['last_update']))->format('U');
+            $availabilitiesCount += (int) $userLastUpdateData['total_count'];
+        }
 
-        return new JsonResponse(['lastUpdate' => (int) $lastUpdate]);
+        $assetLastUpdateData = $this->assetAvailabilityRepository->findLastUpdatedForEntities($assets);
+        if (null !== $assetLastUpdateData) {
+            $assetLastUpdate = (int) (new \DateTimeImmutable($assetLastUpdateData['last_update']))->format('U');
+            $availabilitiesCount += (int) $assetLastUpdateData['total_count'];
+        }
+
+        $lastUpdate = max($userLastUpdate ?? 0, $assetLastUpdate ?? 0);
+
+        return new JsonResponse(['lastUpdate' => (int) $lastUpdate, 'totalCount' => $availabilitiesCount]);
     }
 }
