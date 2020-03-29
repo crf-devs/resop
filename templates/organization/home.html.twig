@@ -21,7 +21,9 @@
     {% if app.user.parent == null %}
         <hr>
 
-        <p><button class="btn btn-primary" role="button" disabled>Afficher la liste de mes structures</button></p>
+        <p>
+            <a href="{{ path('app_organization_list') }}" class="btn btn-primary">Afficher la liste de mes structures</a>
+        </p>
 
         <p><a class="btn btn-primary" href="{{ path('planning') }}" role="button">Afficher les disponibilités de tous les bénévoles</a></p>
     {% endif %}

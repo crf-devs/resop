@@ -1,0 +1,30 @@
+{% extends 'organization/base.html.twig' %}
+
+{% block title %}Liste des structures{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 text-right mb-2">
+            <a href="{{ path('app_organization_new') }}" class="btn btn-success">Ajouter une structure</a>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+            <thead class="thead-light">
+            <tr>
+                <th>Nom</th>
+                <th class="actions">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for organization in organizations %}
+                <tr>
+                    <td>{{ organization.name }}</td>
+                    <td><a href="{{ path('app_organization_edit', { id: organization.id }) }}">Modifier</a> </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
