@@ -8,8 +8,13 @@ table.availability-table {
     cursor: pointer;
   }
 
+  td.hour-title {
+    min-width: 80px;
+  }
+
   td.clickable-table-box {
     cursor: pointer;
+    min-width: 85px;
 
     &:hover {
       background-color: #eee;
