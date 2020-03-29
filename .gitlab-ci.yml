@@ -79,7 +79,8 @@ build:tag:
   after_script:
     - test -z "$CI_COMMIT_TAG" && echo "This is not a tag pipeline" && exit 1
     - echo "Tag => $CI_COMMIT_TAG"
-    - git branch --contains $(git rev-list -n 1 ${CI_COMMIT_TAG}) --format "%(refname:short)" | grep '^master$' || (echo "The tag is not present on master" && exit 1)
+    - git fetch -a
+    - git branch --contains $(git rev-list -n 1 ${CI_COMMIT_TAG}) --format "%(refname:short)" | grep '^origin/master$' || (echo "The tag is not present on master" && exit 1)
     - docker tag ${CI_REGISTRY_IMAGE}/fpm:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}/fpm:release-latest && docker push ${CI_REGISTRY_IMAGE}/fpm:release-latest
     - docker tag ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}/nginx:release-latest && docker push ${CI_REGISTRY_IMAGE}/nginx:release-latest
   only:
