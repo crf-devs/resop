@@ -1,11 +1,34 @@
 # Projet ResOp - Réserve Opérationnelle
 
+# Présentation
+
+*ResOp* est un outil de gestion, planification et projection de moyens humains et opérationnels dans un cadre de crise.
+
+Ce projet a été lancé par la Cellule Ressources & Anticipation de la Croix-Rouge Française à Paris dans le cadre du dispositif COVID-75.
+Son but est de recenser les disponibilités des bénévoles afin de connaître le plus précisément possible les ressources sollicitables
+et d'avoir de la visibilité sur les engagements à réaliser.
+
 ![Planning mockup](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/planning-mockup.png)
+
+# Roadmap
+
+La première version du projet a été développée en 48 heures par une équipe de bénévoles pour les besoins précis du dispositif COVID-75.
+
+Dans une seconde version, il serait intéressant d'adapter ResOp aux autres opérations et structures de la Croix-Rouge Française,
+puis aux autres associations de réponse à l'urgence.
+
+# Disclaimer
+
+This project has been developped in a few days, and many things can be improved. If you want to contribute, feel free to join the Discord server,
+or to have a look to open issues.
 
 # Contributing
 
-[![pipeline status](https://gitlab.com/mRoca/resop/badges/master/pipeline.svg)](https://gitlab.com/mRoca/resop/commits/master)
-[![coverage report](https://gitlab.com/mRoca/resop/badges/master/coverage.svg)](https://gitlab.com/mRoca/resop/commits/master)
+[![Discord](https://discordapp.com/api/guilds/690879735957553152/widget.png)](https://discord.gg/ZyzeSq5)
+
+You can join the [ResOp Discord server](https://discord.gg/ZyzeSq5) if you want more information, or if you want to contribute to the project.
+
+If you want to contribute, you can easily start with any [`good first issue` tagged issue](https://github.com/crf-devs/resop/labels/good%20first%20issue)!
 
 ## Install
 
