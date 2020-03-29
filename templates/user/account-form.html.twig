@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{%  set actionName = (user is defined and user.id is not null) ? 'Modification' : 'Création' %}
+{% block title %}{{ actionName }} de compte{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('user-form') }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ actionName }} de compte</h1>
+
+    {% set labels = {
+        'fullyEquipped': 'Avez-vous un uniforme en dotation chez vous ?',
+        'occupation': 'Quelle est votre profession ?',
+        'organizationOccupation': 'Fonction de cadre au sein de votre structure d\'emploi',
+        'skillSet': 'Quelles sont vos compétences Croix-Rouge ?'
+    } %}
+    {% set helps = {
+        'skillSet': 'Cochez toutes vos compétences',
+        'occupation': null,
+        'organization': null
+    } %}
+
+    {% if user is not defined or user.id is not defined or user.id is null %}
+        {% include '/user/_introduction.html.twig' %}
+    {% endif %}
+
+    {% include '/user/_user_form.html.twig' with { 'form': form, 'labels': labels, 'helps': helps } %}
+{% endblock %}

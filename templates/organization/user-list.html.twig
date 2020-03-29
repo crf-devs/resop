@@ -1,0 +1,34 @@
+{% extends 'organization/base.html.twig' %}
+
+{% block body %}
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>NIVOL</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>E-mail</th>
+                {% if organization.parent is null %}
+                <th>Structure</th>
+                {% endif %}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.identificationNumber }}</td>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.lastName }}</td>
+                    <td>{{ user.emailAddress }}</td>
+                    {% if organization.parent is null %}
+                    <td>{{ user.organization.name }}</td>
+                    {% endif %}
+                    <td><a href="{{ path('organization_user_edit', { 'id': user.id }) }}">Modifier</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

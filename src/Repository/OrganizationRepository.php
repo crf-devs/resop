@@ -57,4 +57,17 @@ class OrganizationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return Organization[]
+     */
+    public function findByParent(Organization $organization): iterable
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->where('o.parent = :organization')
+            ->setParameter('organization', $organization)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -45,6 +45,7 @@ final class CreateAccountController extends AbstractController
         $user = User::bootstrap($this->authenticationUtils->getLastUsername());
         $bdate = $request->getSession()->get(UserLoginFormAuthenticator::SECURITY_LAST_BIRTHDAY);
         if (!empty($bdate)) {
+            $request->getSession()->remove(UserLoginFormAuthenticator::SECURITY_LAST_BIRTHDAY);
             $user->setBirthday($bdate);
         }
 
@@ -59,7 +60,7 @@ final class CreateAccountController extends AbstractController
             return $this->automaticLoginHandler->handleAuthentication($request, $user);
         }
 
-        return $this->render('user/create-account.html.twig', [
+        return $this->render('user/account-form.html.twig', [
             'form' => $form->createView(),
         ]);
     }

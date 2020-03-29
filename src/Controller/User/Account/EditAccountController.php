@@ -55,8 +55,9 @@ final class EditAccountController extends AbstractController
             return $this->redirectToRoute('user_home');
         }
 
-        return $this->render('user/edit-account.html.twig', [
+        return $this->render('user/account-form.html.twig', [
             'form' => $form->createView(),
+            'user' => $user,
             'identificationNumber' => $user->getIdentificationNumber(),
         ]);
     }

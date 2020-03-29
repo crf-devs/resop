@@ -1,0 +1,55 @@
+{{ form_start(form) }}
+{{ form_errors(form) }}
+
+<div class="row">
+    <div class="col-6">
+        {{ form_row(form.identificationNumber, { 'label': 'NIVOL'}) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        {{ form_row(form.organization, { 'help': helps.organization }) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        {{ form_row(form.firstName, { 'label': 'Prénom'}) }}
+    </div>
+    <div class="col-12 col-md-6">
+        {{ form_row(form.lastName, { 'label': 'Nom'}) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        {{ form_row(form.emailAddress, { 'label' : 'Adresse e-mail'}) }}
+    </div>
+    <div class="col-12 col-md-6">
+        {{ form_row(form.phoneNumber, { 'label' : 'Numéro de téléphone portable'}) }}
+    </div>
+</div>
+
+{% if form.birthday is defined %}
+    {{ form_row(form.birthday, { 'label': 'Date de naissance'}) }}
+{% endif %}
+
+{{ form_row(form.vulnerable, { 'label': 'Vulnérable'}) }}
+{{ form_row(form.organizationOccupation, { 'label': labels.organizationOccupation }) }}
+
+<div class="row">
+    <div class="col-12 col-xl-6">
+        {{ form_row(form.skillSet, { 'label': labels.skillSet, 'help': helps.skillSet}) }}
+    </div>
+    <div class="col-12 col-xl-6">
+        {{ form_row(form.occupation, { 'label': labels.occupation, 'help': helps.occupation}) }}
+    </div>
+</div>
+
+{{ form_row(form.fullyEquipped, {'label': labels.fullyEquipped}) }}
+
+<div class="float-right">
+    {{ form_row(form.submit, {label: 'Valider'}) }}
+</div>
+<div class="clearfix"></div>
+{{ form_end(form) }}

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Organization;
 use App\Entity\User;
 use App\Entity\UserAvailability;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -83,5 +84,20 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $qb->addOrderBy('u.lastName');
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param Organization[] $organizations
+     *
+     * @return User[]
+     */
+    public function findByOrganizations(iterable $organizations): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.organization IN (:organizations)')
+            ->setParameter('organizations', $organizations)
+            ->addOrderBy('u.lastName', 'desc')
+            ->getQuery()
+            ->getResult();
     }
 }
