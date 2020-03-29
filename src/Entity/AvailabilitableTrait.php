@@ -70,6 +70,7 @@ trait AvailabilitableTrait
         $this->endTime = $endTime;
         $this->status = $status;
         $this->createdAt = self::createImmutableDateTime();
+        $this->updatedAt = self::createImmutableDateTime();
     }
 
     public function book(Organization $planningAgent, \DateTimeImmutable $bookedAt = null): void

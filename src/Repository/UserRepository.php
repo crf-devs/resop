@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Entity\UserAvailability;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\AbstractQuery;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 /**
@@ -46,12 +47,17 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     }
 
     /**
-     * @return User[]|array
+     * @return User[]|int[]
      */
-    public function findByFilters(array $formData): array
+    public function findByFilters(array $formData, bool $onlyIds = false): array
     {
-        $qb = $this->createQueryBuilder('u')
-        ->join('u.organization', 'o');
+        $qb = $this
+            ->createQueryBuilder('u')
+            ->join('u.organization', 'o');
+
+        if ($onlyIds) {
+            $qb->select('u.id');
+        }
 
         if (count($formData['organizations'] ?? []) > 0) {
             $qb->andWhere('u.organization IN (:organisations)')->setParameter('organisations', $formData['organizations']);
@@ -83,7 +89,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $qb->addOrderBy('u.firstName');
         $qb->addOrderBy('u.lastName');
 
-        return $qb->getQuery()->getResult();
+        return $qb
+            ->getQuery()
+            ->getResult($onlyIds ? AbstractQuery::HYDRATE_SCALAR : AbstractQuery::HYDRATE_OBJECT);
     }
 
     /**

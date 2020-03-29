@@ -63,4 +63,14 @@ class UserAvailabilityRepository extends ServiceEntityRepository implements Avai
             ->getQuery()
             ->getResult();
     }
+
+    public function findLastUpdatedForEntities(array $availabilitables): ?array
+    {
+        $qb = $this->createQueryBuilder('ua');
+        $qb
+            ->where($qb->expr()->in('ua.user', ':owners'))
+            ->setParameter('owners', $availabilitables);
+
+        return $this->findLastUpdatesForEntities($qb);
+    }
 }

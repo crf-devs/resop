@@ -19,4 +19,15 @@ trait AvailabilityRepositoryTrait
             ->setHint(Query::HINT_INCLUDE_META_COLUMNS, true)
             ->getArrayResult();
     }
+
+    private function findLastUpdatesForEntities(QueryBuilder $qb): ?array
+    {
+        $rootAlias = $qb->getRootAliases()[0];
+
+        return $qb
+            ->select(sprintf('MAX(COALESCE(%s.updatedAt, %s.createdAt)) as last_update, COUNT(%s) as total_count', $rootAlias, $rootAlias, $rootAlias))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

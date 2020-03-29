@@ -11,7 +11,7 @@ trait AvailabilityQueryTrait
 {
     private function isEven(int $number): bool
     {
-        return 0 == $number % 2;
+        return 0 === $number % 2;
     }
 
     private function addAvailabilityBetween(QueryBuilder $qb, \DateTimeImmutable $start, \DateTimeImmutable $end, string $availabilityClass, string $groupByField): QueryBuilder

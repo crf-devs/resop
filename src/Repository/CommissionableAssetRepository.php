@@ -8,6 +8,7 @@ use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\AbstractQuery;
 
 /**
  * @method CommissionableAsset|null find($id, $lockMode = null, $lockVersion = null)
@@ -30,11 +31,15 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
     }
 
     /**
-     * @return CommissionableAsset[]|array
+     * @return CommissionableAsset[]|int[]
      */
-    public function findByFilters(array $formData): array
+    public function findByFilters(array $formData, bool $onlyIds = false): array
     {
         $qb = $this->createQueryBuilder('a');
+
+        if ($onlyIds) {
+            $qb->select('a.id');
+        }
 
         if (count($formData['assetTypes'] ?? []) > 0) {
             $qb->andWhere('a.type IN (:types)')->setParameter('types', $formData['assetTypes']);
@@ -50,6 +55,8 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
 
         $qb->orderBy('a.name');
 
-        return $qb->getQuery()->getResult();
+        return $qb
+            ->getQuery()
+            ->getResult($onlyIds ? AbstractQuery::HYDRATE_SCALAR : AbstractQuery::HYDRATE_OBJECT);
     }
 }

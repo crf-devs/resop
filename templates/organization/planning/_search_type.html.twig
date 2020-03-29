@@ -1,5 +1,5 @@
 <div class="search shadow-sm p-3 mb-5 bg-white rounded">
-    {{ form_start(form, {'attr': {'id': 'planning-form'}}) }}
+    {{ form_start(form, {'attr': { 'id': 'planning-form', 'data-last-update-href': url('planning_last_update', [], true) }}) }}
     <div class="row">
         <div class="col-12 col-md-6">
             <label for="fromToRange">Période affichée: </label><input type="text" id="fromToRange" class="form-control" readonly>
