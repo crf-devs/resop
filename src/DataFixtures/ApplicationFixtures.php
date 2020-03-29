@@ -105,7 +105,7 @@ final class ApplicationFixtures extends Fixture
 
         foreach ($this->organizations as $organization) {
             $ulId = '99';
-            if (null !== $organization->parent) {
+            if (!$organization->isParent()) {
                 $ulId = substr(str_replace('UL ', '', $organization->name), 0, 2);
             }
 

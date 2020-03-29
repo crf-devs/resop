@@ -37,10 +37,10 @@ class UserEditController extends AbstractController
 
             $this->addFlash('success', 'Les informations ont été mises à jour avec succès.');
 
-            return $this->redirectToRoute('organization_user_list');
+            return $this->redirectToRoute('app_organization_user_list', ['id' => ($user->organization ?: $organization)->id]);
         }
 
-        return $this->render('organization/user-edit.html.twig', [
+        return $this->render('organization/user/user-edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);

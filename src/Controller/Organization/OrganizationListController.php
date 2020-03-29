@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/", name="app_organization_list", methods={"GET"})
+ * @Route("/children", name="app_organization_list", methods={"GET"})
  */
 class OrganizationListController extends AbstractController
 {
@@ -26,11 +26,11 @@ class OrganizationListController extends AbstractController
     public function __invoke(): Response
     {
         $organization = $this->getUser();
-        if (!($organization instanceof Organization) || null !== $organization->parent) {
+        if (!$organization instanceof Organization || !$organization->isParent()) {
             throw new AccessDeniedException();
         }
 
-        $organizations = $this->organizationRepository->findBy(['parent' => $organization]);
+        $organizations = $this->organizationRepository->findBy(['parent' => $organization], ['name' => 'ASC']);
 
         return $this->render('organization/list.html.twig', [
             'organizations' => $organizations,
