@@ -129,6 +129,7 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
     {
         $user = new self();
         $user->birthday = '1990-01-01';
+        $user->vulnerable = true;
 
         if (empty($identifier)) {
             return $user;

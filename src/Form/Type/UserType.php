@@ -105,7 +105,6 @@ class UserType extends AbstractType
                         'Je ne fais PAS partie des personnes vulnérables' => 0,
                         'Je fais partie des personnes vulnérables' => 1,
                     ],
-                    'data' => 1,
                     'expanded' => true,
                     'help' => $vulnerableHelp,
                     'help_html' => true,
