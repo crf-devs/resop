@@ -1,0 +1,20 @@
+{% extends 'organization/base.html.twig' %}
+
+{% if organization.id is null %}
+    {% set formAction = path('app_organization_create') %}
+    {% set formTitle = 'Ajouter une structure' %}
+{% else %}
+    {% set formAction = path('app_organization_update', { id: organization.id }) %}
+    {% set formTitle = 'Editer une structure' %}
+{% endif %}
+
+{% block title %}{{formTitle}}{% endblock %}
+
+{% block body %}
+
+    <h1>{{formTitle}}</h1>
+    {{ form_start(form, { method: 'POST', action: formAction }) }}
+    {{ form_row(form.name, { label: 'Nom'}) }}
+    {{ form_row(form.submit, { label: 'Valider'}) }}
+    {{ form_end(form) }}
+{% endblock %}
