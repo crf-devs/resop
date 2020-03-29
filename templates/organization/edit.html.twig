@@ -1,10 +1,10 @@
 {% extends 'organization/base.html.twig' %}
 
 {% if organization.id is null %}
-    {% set formAction = path('app_organization_create') %}
+    {% set formAction = path('app_organization_new') %}
     {% set formTitle = 'Ajouter une structure' %}
 {% else %}
-    {% set formAction = path('app_organization_update', { id: organization.id }) %}
+    {% set formAction = path('app_organization_edit', { id: organization.id }) %}
     {% set formTitle = 'Editer une structure' %}
 {% endif %}
 

@@ -15,10 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/new", name="app_organization_new", methods={"GET"})
- * @Route("/", name="app_organization_create", methods={"POST"})
- * @Route("/edit/{id}", name="app_organization_edit", methods={"GET"})
- * @Route("/edit/{id}", name="app_organization_update", methods={"POST"})
+ * @Route("/new", name="app_organization_new", methods={"GET", "POST"})
+ * @Route("/edit/{id}", name="app_organization_edit", methods={"GET", "POST"})
  */
 class OrganizationEditController extends AbstractController
 {
