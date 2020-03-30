@@ -79,7 +79,7 @@ init-db: start-db
 	bin/tools bin/post-install-dev.sh
 
 fix-cs-php:
-	bin/tools vendor/bin/php-cs-fixer fix --allow-risky yes --verbose
+	bin/tools bin/php-cs-fixer fix --allow-risky yes --verbose
 
 fix-cs: fix-cs-php
 	bin/node-tools npm run lint:fix
@@ -92,22 +92,22 @@ fix-cs: fix-cs-php
 test: test-cs test-advanced test-unit
 
 test-cs:
-	bin/tools vendor/bin/php-cs-fixer fix --allow-risky yes --dry-run --verbose --diff
+	bin/tools bin/php-cs-fixer fix --allow-risky yes --dry-run --verbose --diff
 	bin/tools bin/console --env=test lint:twig templates
 	bin/node-tools npm run lint
 	bin/node-tools npm run lint:css
 
 test-advanced:
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/console c:w"
-	bin/tools vendor/bin/phpstan analyse --configuration phpstan.neon --level max --no-progress .
+	bin/tools bin/phpstan.phar analyse --configuration phpstan.neon --level max --no-progress .
 
 test-unit:
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/post-install-dev.sh"
-	bin/tools vendor/bin/phpunit
+	bin/tools bin/phpunit
 
 test-unit-coverage:
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/post-install-dev.sh"
-	bin/tools sh -c "APP_DEBUG=0 phpdbg -qrr -d memory_limit=2048M vendor/bin/phpunit --coverage-text"
+	bin/tools sh -c "APP_DEBUG=0 phpdbg -qrr -d memory_limit=2048M bin/phpunit --coverage-text"
 
 move-test-profiler:
 	bin/tools sh -c "rm -rf var/cache/dev/profiler && mkdir -p var/cache/dev && cp -R var/cache/test/profiler var/cache/dev/profiler"

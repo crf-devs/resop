@@ -1,6 +1,8 @@
 {
   "type": "project",
   "license": "proprietary",
+  "name": "crf-devs/resop",
+  "description": "resop Croix Rouge Française",
   "require": {
     "php": "^7.4",
     "ext-ctype": "*",
@@ -32,6 +34,7 @@
   "require-dev": {
     "dama/doctrine-test-bundle": "^6.3",
     "friendsofphp/php-cs-fixer": "^2.16",
+    "mheap/phpunit-github-actions-printer": "^1.2",
     "phpstan/phpstan-doctrine": "^0.12.8",
     "phpstan/phpstan-symfony": "^0.12.2",
     "phpunit/phpunit": "^7.5",
@@ -44,7 +47,8 @@
     "preferred-install": {
       "*": "dist"
     },
-    "sort-packages": true
+    "sort-packages": true,
+    "bin-dir": "bin/"
   },
   "autoload": {
     "psr-4": {

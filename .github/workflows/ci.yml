@@ -1,0 +1,124 @@
+name: CI
+
+on:
+    pull_request:
+        types: [opened, synchronize, reopened, ready_for_review]
+
+env:
+    CI: true
+    TZ: Europe/Paris
+    PHP_VERSION: 7.4
+    NODE_VERSION: 10.x
+    COMPOSER_ALLOW_SUPERUSER: '1' # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
+
+    # Application
+    APP_ENV: test
+    DATABASE_SERVER_VERSION: 11 # update service "postgresql" if this value change
+
+jobs:
+    php:
+        runs-on: ubuntu-latest
+        services:
+            postgres:
+                image: postgres:11 # update env variable "DATABASE_SERVER_VERSION" if the version change
+                env:
+                    POSTGRES_PASSWORD: password
+                ports:
+                    - 5432:5432
+                # needed because the postgres container does not provide a healthcheck
+                options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+        steps:
+            - name: set DATABASE_URL environment variable
+              run: echo "::set-env name=DATABASE_URL::pgsql://postgres:password@127.0.0.1:${{ job.services.postgres.ports[5432] }}/postgres"
+
+            - name: Install PHP
+              uses: shivammathur/setup-php@v1
+              with:
+                  php-version: ${{ env.PHP_VERSION }}
+                  coverage: none
+                  extensions: ctype, iconv, intl
+                  ini-values: date.timezone=Europe/Paris, memory_limit=-1, session.gc_probability=0, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=20000, opcache.validate_timestamps=0, realpath_cache_size=4096K, realpath_cache_ttl=600
+                  tools: cs2pr
+
+            - name: Install Node.js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+
+            - uses: actions/checkout@v2
+
+            - name: Get Composer cache directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            - name: Cache Composer dependencies
+              uses: actions/cache@v1
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: ${{ runner.os }}-composer-
+
+            - run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+            - name: Cache node_modules
+              uses: actions/cache@v1
+              with:
+                  path: ${{ github.workspace }}/node_modules
+                  key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-modules-
+
+            - run: yarn install --frozen-lockfile
+
+            - run: yarn encore production
+
+            - name: Bootstrap database
+              run: |
+                  bin/post-install-dev.sh
+
+            - run: composer validate
+              if: always()
+
+            - run: php bin/console lint:twig templates
+              if: always()
+
+            - run: php bin/console lint:yaml config --parse-tags
+              if: always()
+
+            - run: php bin/php-cs-fixer fix --verbose --diff --dry-run --format=checkstyle src/ | cs2pr
+              if: always()
+
+            - run: php bin/console doctrine:schema:validate
+              if: always()
+
+            - name: Run PHPStan
+              run: php bin/phpstan.phar analyse --configuration phpstan.neon --level max --no-progress . --error-format=checkstyle | cs2pr
+              if: always()
+
+            - run: bin/phpunit --printer mheap\\GithubActionsReporter\\Printer
+              if: always()
+
+    javascript:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Install Node.js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+
+            - uses: actions/checkout@v2
+
+            - name: Cache node_modules
+              uses: actions/cache@v1
+              with:
+                  path: ${{ github.workspace }}/node_modules
+                  key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-modules-
+
+            - run: yarn install --frozen-lockfile
+
+            - run: yarn lint --no-fix
+
+            - run: yarn lint:css --no-fix

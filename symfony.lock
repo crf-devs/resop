@@ -138,6 +138,9 @@
     "martin-georgiev/postgresql-for-doctrine": {
         "version": "v1.3.0"
     },
+    "mheap/phpunit-github-actions-printer": {
+        "version": "v1.2.0"
+    },
     "monolog/monolog": {
         "version": "2.0.2"
     },
