@@ -42,12 +42,11 @@ make all
 
 * Install [WSL2](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install)
 * Enable [Docker support  for WSL2](https://docs.docker.com/docker-for-windows/wsl-tech-preview/)
-* Checkout project directly within WSL, ( Using a project directory from windows directly will cause massive performances issues and watchers ( i.e : yarn encore ) to not work at all.
-* Run Linux steps
-
-_Depending on Linux distribution used by WSL you will have to install some packages like make, npm etc._
+* Checkout project directly within WSL, using a native windows directory as a project root will cause massive performances issues and issues with watchers ( i.e : yarn encore ).
+* Run Linux build steps from WSL
 
 Note : PHPStorm do not currently provide a good native integration, with WSL2, you will mainly need to open the directory from WSL directory, usually the name is \\wsl$\ located at same level at c/. See : [IDEABKL-7908](https://youtrack.jetbrains.com/issue/IDEABKL-7908) and [IDEA-171510](https://youtrack.jetbrains.com/issue/IDEA-171510)
+
 
 ### Run
 
