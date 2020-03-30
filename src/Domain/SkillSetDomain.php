@@ -14,8 +14,8 @@ class SkillSetDomain
     {
         // TODO Use objects instead of arrays
         $this->availableSkillSets = $availableSkillSets;
-        $this->importantSkillsLimit = (int) $importantSkillsLimit;
-        $this->importantSkillsToDisplayLimit = (int) $importantSkillsToDisplayLimit;
+        $this->importantSkillsLimit = $importantSkillsLimit;
+        $this->importantSkillsToDisplayLimit = $importantSkillsToDisplayLimit;
     }
 
     /**
@@ -33,11 +33,11 @@ class SkillSetDomain
 
     public function getImportantSkills(): array
     {
-        return array_slice($this->getSkillSetKeys(), 0, $this->importantSkillsLimit);
+        return \array_slice($this->getSkillSetKeys(), 0, $this->importantSkillsLimit);
     }
 
     public function getSkillsToDisplay(): array
     {
-        return array_slice($this->getSkillSetKeys(), 0, $this->importantSkillsToDisplayLimit);
+        return \array_slice($this->getSkillSetKeys(), 0, $this->importantSkillsToDisplayLimit);
     }
 }

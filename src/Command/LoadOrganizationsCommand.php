@@ -94,10 +94,11 @@ class LoadOrganizationsCommand extends Command
     /**
      * @param Organization[] $oldOrganizations
      */
-    private function isNewOrganization(array $oldOrganizations,
-                                       string $newOrganizationName,
-                                       string $newOrganizationParentName = null): bool
-    {
+    private function isNewOrganization(
+        array $oldOrganizations,
+        string $newOrganizationName,
+        string $newOrganizationParentName = null
+    ): bool {
         foreach ($oldOrganizations as $oldOrganization) {
             if ($oldOrganization->getName() === $newOrganizationName
              && $oldOrganization->getParentName() === $newOrganizationParentName) {

@@ -89,6 +89,10 @@ jobs:
             - run: php bin/php-cs-fixer fix --verbose --diff --dry-run --format=checkstyle src/ | cs2pr
               if: always()
 
+            - run: bin/phpcs --warning-severity=0 --report=checkstyle | cs2pr
+              working-directory: ${{ matrix.working_directory }}
+              if: always()
+
             - run: php bin/console doctrine:schema:validate
               if: always()
 

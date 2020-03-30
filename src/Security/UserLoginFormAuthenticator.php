@@ -25,14 +25,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
-    const SECURITY_LAST_BIRTHDAY = '_security.last_birthday';
+    public const SECURITY_LAST_BIRTHDAY = '_security.last_birthday';
 
     private UserRepository $userRepository;
-
     private RouterInterface $router;
-
     private CsrfTokenManagerInterface $csrfTokenManager;
-
     private ValidatorInterface $validator;
 
     public function __construct(UserRepository $userRepository, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, ValidatorInterface $validator)
@@ -62,15 +59,6 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $request->getSession()->set(self::SECURITY_LAST_BIRTHDAY, $credentials['birthday']);
 
         return $credentials;
-    }
-
-    private function formatBirthday(array $birthdayArray): string
-    {
-        $day = sprintf('%02d', $birthdayArray['day']);
-        $month = sprintf('%02d', $birthdayArray['month']);
-        $year = $birthdayArray['year'];
-
-        return $year.'-'.$month.'-'.$day;
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
@@ -116,5 +104,14 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
     protected function getLoginUrl()
     {
         return $this->router->generate('app_login');
+    }
+
+    private function formatBirthday(array $birthdayArray): string
+    {
+        $day = sprintf('%02d', $birthdayArray['day']);
+        $month = sprintf('%02d', $birthdayArray['month']);
+        $year = $birthdayArray['year'];
+
+        return $year.'-'.$month.'-'.$day;
     }
 }

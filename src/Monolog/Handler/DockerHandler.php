@@ -39,19 +39,9 @@ class DockerHandler extends AbstractProcessingHandler
         parent::__construct($level);
     }
 
-    private function isCommandWithoutVerbose(): bool
+    public function getFormatter(): FormatterInterface
     {
-        return $this->isCommand() && (null === $this->commandProcessor->getInput() || !$this->commandProcessor->getInput()->hasParameterOption(['-vvv']));
-    }
-
-    private function isCommand(): bool
-    {
-        return \in_array(\PHP_SAPI, ['cli', 'phpdbg'], true);
-    }
-
-    private function isDeprecatedLog(array $record): bool
-    {
-        return 0 === \strpos($record['message'] ?? '', 'User Deprecated');
+        return $this->logsNormalizer;
     }
 
     protected function write(array $record): void
@@ -65,7 +55,7 @@ class DockerHandler extends AbstractProcessingHandler
             return;
         }
 
-        if (!is_string($record['formatted'])) {
+        if (!\is_string($record['formatted'])) {
             // TODO Create a custom formatted doing NormalizerFormatter::format and JsonFormatter::format
             $record['formatted'] = $this->logsFormater->format($record['formatted']);
         }
@@ -73,8 +63,18 @@ class DockerHandler extends AbstractProcessingHandler
         $this->stderrHandler->write($record);
     }
 
-    public function getFormatter(): FormatterInterface
+    private function isCommandWithoutVerbose(): bool
     {
-        return $this->logsNormalizer;
+        return $this->isCommand() && (null === $this->commandProcessor->getInput() || !$this->commandProcessor->getInput()->hasParameterOption(['-vvv']));
+    }
+
+    private function isCommand(): bool
+    {
+        return \in_array(\PHP_SAPI, ['cli', 'phpdbg'], true);
+    }
+
+    private function isDeprecatedLog(array $record): bool
+    {
+        return 0 === \strpos($record['message'] ?? '', 'User Deprecated');
     }
 }

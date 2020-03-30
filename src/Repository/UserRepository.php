@@ -59,7 +59,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             $qb->select('u.id');
         }
 
-        if (count($formData['organizations'] ?? []) > 0) {
+        if (\count($formData['organizations'] ?? []) > 0) {
             $qb->andWhere('u.organization IN (:organisations)')->setParameter('organisations', $formData['organizations']);
         }
 
@@ -71,7 +71,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             $qb->andWhere('u.vulnerable = FALSE');
         }
 
-        if (count($formData['userSkills'] ?? []) > 0) {
+        if (\count($formData['userSkills'] ?? []) > 0) {
             $skillsQueries = [];
             foreach (array_values($formData['userSkills']) as $key => $skill) {
                 $skillsQueries[] = sprintf('CONTAINS(u.skillSet, ARRAY(:skill%d)) = TRUE', $key);

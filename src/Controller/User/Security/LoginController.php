@@ -26,7 +26,7 @@ final class LoginController extends AbstractController
 
     public function __invoke(Session $session): Response
     {
-        if (is_object($this->getUser())) {
+        if (\is_object($this->getUser())) {
             return $this->redirectToRoute($this->getUser() instanceof User ? 'user_home' : 'app_organization_index');
         }
 

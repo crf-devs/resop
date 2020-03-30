@@ -18,7 +18,7 @@ class ContextNormalizerProcessor implements ProcessorInterface
 
     public function __invoke(array $record): array
     {
-        if (!is_array($record['context'])) {
+        if (!\is_array($record['context'])) {
             return $record;
         }
 

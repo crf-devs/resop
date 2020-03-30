@@ -19,25 +19,26 @@ use App\Repository\UserAvailabilityRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 
-// Payload example
-// {
-//     "users": {
-//         "1": [
-//             ["2020-03-20 12:00", "2020-03-20 14:00"]
-//         ],
-//         "2": [
-//             ["2020-03-21 12:00", "2020-03-20 14:00"]
-//         ]
-//     },
-//     "commissionableAssets": {
-//         "1": [
-//             ["2020-03-24 12:00", "2020-03-20 14:00"]
-//         ],
-//         "2": [
-//             ["2020-03-22 12:00", "2020-03-20 14:00"]
-//         ]
-//     }
-// }
+/** Payload example
+ * {
+ *     "users": {
+ *         "1": [
+ *             ["2020-03-20 12:00", "2020-03-20 14:00"]
+ *         ],
+ *         "2": [
+ *             ["2020-03-21 12:00", "2020-03-20 14:00"]
+ *         ]
+ *     },
+ *     "commissionableAssets": {
+ *         "1": [
+ *             ["2020-03-24 12:00", "2020-03-20 14:00"]
+ *         ],
+ *         "2": [
+ *             ["2020-03-22 12:00", "2020-03-20 14:00"]
+ *         ]
+ *     }
+ * }
+ */
 class PlanningUpdateDomain
 {
     public const ACTION_BOOK = 'book'; // blue button
@@ -116,23 +117,23 @@ class PlanningUpdateDomain
         $availabilities = $availabilityRepository->findByOwnerAndDates($entities, new \DateTimeImmutable($startSearch), new \DateTimeImmutable($endSearch));
 
         foreach ($data as $entityId => $schedules) {
-            $search = array_filter($entities, fn (AvailabilitableInterface $entity) => $entityId == $entity->getId());
+            $search = array_filter($entities, fn (AvailabilitableInterface $entity) => (int) $entityId === $entity->getId());
 
             if (empty($search)) {
                 throw new \InvalidArgumentException('Invalid entity');
             }
 
-            /** @var AvailabilityInterface */
+            /* * @var AvailabilityInterface */
             $currentEntity = end($search);
 
             foreach ($schedules as $schedule) {
                 list($scheduleStart, $scheduleEnd) = $schedule;
                 $searchAvailabilities = array_filter($availabilities, function (AvailabilityInterface $availability) use ($entityId, $scheduleStart, $scheduleEnd) {
-                    return $availability->getOwner()->getId() == $entityId && $availability->getStartTime() == new \DateTimeImmutable($scheduleStart) && $availability->getEndTime() == new \DateTimeImmutable($scheduleEnd);
+                    return $availability->getOwner()->getId() === (int) $entityId && $availability->getStartTime() === new \DateTimeImmutable($scheduleStart) && $availability->getEndTime() === new \DateTimeImmutable($scheduleEnd);
                 });
                 $availability = end($searchAvailabilities);
 
-                if (self::ACTION_DELETE == $this->action) {
+                if (self::ACTION_DELETE === $this->action) {
                     if (!$availability) {
                         continue;
                     }
@@ -147,13 +148,13 @@ class PlanningUpdateDomain
                     switch ($status) {
                         case AvailabilityInterface::STATUS_BOOKED:
                             $availability->book($this->planningAgent);
-                        break;
+                            break;
                         case AvailabilityInterface::STATUS_AVAILABLE:
                             $availability->declareAvailable();
-                        break;
+                            break;
                         case AvailabilityInterface::STATUS_LOCKED:
                             $availability->lock();
-                        break;
+                            break;
                     }
                 }
             }
@@ -193,17 +194,17 @@ class PlanningUpdateDomain
 
     protected function validateAction(): void
     {
-        if (!in_array($this->action, self::ACTIONS)) {
-            throw new \InvalidArgumentException('Invalid action : '.$this->action);
+        if (!\in_array($this->action, self::ACTIONS)) {
+            throw new \InvalidArgumentException(sprintf('Invalid action : %s', $this->action));
         }
     }
 
     protected function validatePayload(): void
     {
         $keys = array_keys($this->payload);
-        for ($i = 0; $i < count($keys); ++$i) {
-            if (!in_array($keys[$i], self::PAYLOAD_VALID_KEYS)) {
-                throw new \InvalidArgumentException('Invalid key : '.$keys[$i]);
+        for ($i = 0; $i < \count($keys); ++$i) {
+            if (!\in_array($keys[$i], self::PAYLOAD_VALID_KEYS)) {
+                throw new \InvalidArgumentException(sprintf('Invalid key : %s', $keys[$i]));
             }
         }
 
@@ -213,13 +214,13 @@ class PlanningUpdateDomain
                     try {
                         $start = new \DateTimeImmutable($start);
                     } catch (\Exception $e) {
-                        throw new \InvalidArgumentException('Invalid date : '.$start);
+                        throw new \InvalidArgumentException(sprintf('Invalid date : %s', $start));
                     }
 
                     try {
                         $end = new \DateTimeImmutable($end);
                     } catch (\Exception $e) {
-                        throw new \InvalidArgumentException('Invalid date : '.$end);
+                        throw new \InvalidArgumentException(sprintf('Invalid date : %s', $end));
                     }
 
                     if ($end <= $start) {
@@ -232,17 +233,11 @@ class PlanningUpdateDomain
 
     private function getOwnerRepository(string $class): ?AvailabilitableRepositoryInterface
     {
-        return [
-                User::class => $this->userRepository,
-                CommissionableAsset::class => $this->assetRepository,
-            ][$class] ?? null;
+        return [User::class => $this->userRepository, CommissionableAsset::class => $this->assetRepository][$class] ?? null;
     }
 
     private function getAvailabilityRepository(string $class): ?AvailabilityRepositoryInterface
     {
-        return [
-                User::class => $this->userAvailabilityRepository,
-                CommissionableAsset::class => $this->assetAvailabilityRepository,
-            ][$class] ?? null;
+        return [User::class => $this->userAvailabilityRepository, CommissionableAsset::class => $this->assetAvailabilityRepository][$class] ?? null;
     }
 }

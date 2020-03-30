@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\Planning;
 
+use App\Domain\AbstractPlanningUtils;
 use App\Domain\AvailabilitiesDomain;
 use App\Domain\DatePeriodCalculator;
-use App\Domain\PlanningUtils;
 use App\Domain\SkillSetDomain;
 use App\Entity\CommissionableAsset;
 use App\Repository\CommissionableAssetAvailabilityRepository;
@@ -45,7 +45,7 @@ class PlanningController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $form = PlanningUtils::getFormFromRequest($this->container->get('form.factory'), $request);
+        $form = AbstractPlanningUtils::getFormFromRequest($this->container->get('form.factory'), $request);
         $data = $form->getData();
 
         if (!isset($data['from'], $data['to'])) {
@@ -57,13 +57,13 @@ class PlanningController extends AbstractController
 
         $users = $data['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($data);
         $assets = $data['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($data);
-        $usersAvailabilities = PlanningUtils::prepareAvailabilities($this->userAvailabilityRepository, $users, $periodCalculator);
-        $assetsAvailabilities = PlanningUtils::prepareAvailabilities($this->assetAvailabilityRepository, $assets, $periodCalculator);
+        $usersAvailabilities = AbstractPlanningUtils::prepareAvailabilities($this->userAvailabilityRepository, $users, $periodCalculator);
+        $assetsAvailabilities = AbstractPlanningUtils::prepareAvailabilities($this->assetAvailabilityRepository, $assets, $periodCalculator);
 
         return $this->render('organization/planning/planning.html.twig', [
             'form' => $form->createView(),
             'periodCalculator' => $periodCalculator,
-            'availabilities' => PlanningUtils::splitAvailabilities($this->skillSetDomain, $usersAvailabilities, $assetsAvailabilities),
+            'availabilities' => AbstractPlanningUtils::splitAvailabilities($this->skillSetDomain, $usersAvailabilities, $assetsAvailabilities),
             'assetsTypes' => CommissionableAsset::TYPES,
             'usersSkills' => $this->skillSetDomain->getSkillSet(),
             'importantSkills' => $this->skillSetDomain->getImportantSkills(),

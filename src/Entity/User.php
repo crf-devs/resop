@@ -135,7 +135,7 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
             return $user;
         }
 
-        if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+        if (filter_var($identifier, \FILTER_VALIDATE_EMAIL)) {
             $user->setEmailAddress($identifier);
 
             return $user;
