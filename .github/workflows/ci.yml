@@ -86,7 +86,7 @@ jobs:
             - run: php bin/console lint:yaml config --parse-tags
               if: always()
 
-            - run: php bin/php-cs-fixer fix --verbose --diff --dry-run --format=checkstyle src/ | cs2pr
+            - run: php bin/php-cs-fixer fix --verbose --diff --dry-run --format=checkstyle | cs2pr
               if: always()
 
             - run: bin/phpcs --warning-severity=0 --report=checkstyle | cs2pr
