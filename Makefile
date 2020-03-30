@@ -80,6 +80,7 @@ init-db: start-db
 
 fix-cs-php:
 	bin/tools bin/php-cs-fixer fix --allow-risky yes --verbose
+	bin/tools bin/phpcbf
 
 fix-cs: fix-cs-php
 	bin/node-tools npm run lint:fix
