@@ -1,6 +1,6 @@
 # Projet ResOp - Réserve Opérationnelle
 
-# Présentation
+# Présentation du projet
 
 *ResOp* est un outil de gestion, planification et projection de moyens humains et opérationnels dans un cadre de crise.
 
@@ -10,17 +10,35 @@ et d'avoir de la visibilité sur les engagements à réaliser.
 
 ![Planning mockup](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/planning-mockup.png)
 
-# Roadmap
+[En savoir plus sur les fonctionnalités](doc/features-fr.md)
+
+## Roadmap
 
 La première version du projet a été développée en 48 heures par une équipe de bénévoles pour les besoins précis du dispositif COVID-75.
 
 Dans une seconde version, il serait intéressant d'adapter ResOp aux autres opérations et structures de la Croix-Rouge Française,
 puis aux autres associations de réponse à l'urgence.
 
-# Disclaimer
+-----
 
-This project has been developped in a few days, and many things can be improved. If you want to contribute, feel free to join the Discord server,
-or to have a look to open issues.
+# Project presentation
+
+*ResOp* is a management, planning and projection tool for human and operational resources in a crisis context.
+
+This project was launched by the Resources & Anticipation Unit of the French Red Cross in Paris as part of the COVID-75 system.
+Its purpose is to identify the availability of volunteers in order to know as precisely as possible the resources that can be called upon,
+and to have visibility on the commitments to be made.
+
+[Features list (french)](doc/features-fr.md)
+
+## Roadmap
+
+The first version of the project was developed in 48 hours by a team of volunteers for the specific needs of the COVID-75 operation.
+
+In a second version, it could be interesting to adapt ResOp to other operations and structures of the French Red Cross,
+then to other emergency response associations.
+
+-----
 
 # Contributing
 
@@ -29,9 +47,9 @@ or to have a look to open issues.
 [![CI Status](https://github.com/crf-devs/resop/workflows/CI/badge.svg?branch=master)](https://github.com/crf-devs/resop/actions?query=branch%3Amaster)
 [![Code Coverage](https://codecov.io/gh/crf-devs/resop/branch/master/graph/badge.svg)](https://codecov.io/gh/crf-devs/resop)
 
-You can join the [ResOp Discord server](https://discord.gg/ZyzeSq5) if you want more information, or if you want to contribute to the project.
+You should join the [ResOp Discord server](https://discord.gg/ZyzeSq5) if you want more information, or if you want to contribute to the project.
 
-If you want to contribute, you can easily start with any [`good first issue` tagged issue](https://github.com/crf-devs/resop/labels/good%20first%20issue)!
+See [How to contribute](doc/contributing.md) for more information!
 
 # Install
 
