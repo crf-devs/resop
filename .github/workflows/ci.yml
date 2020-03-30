@@ -38,7 +38,7 @@ jobs:
                   php-version: ${{ env.PHP_VERSION }}
                   coverage: none
                   extensions: ctype, iconv, intl
-                  ini-values: date.timezone=Europe/Paris, memory_limit=-1, session.gc_probability=0, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=20000, opcache.validate_timestamps=0, realpath_cache_size=4096K, realpath_cache_ttl=600
+                  ini-values: date.timezone=UTC, memory_limit=-1, session.gc_probability=0, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=20000, opcache.validate_timestamps=0, realpath_cache_size=4096K, realpath_cache_ttl=600
                   tools: cs2pr
 
             - name: Install Node.js

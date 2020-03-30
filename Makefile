@@ -95,7 +95,7 @@ test-cs:
 	bin/tools bin/php-cs-fixer fix --allow-risky yes --dry-run --verbose --diff
 	bin/tools bin/phpcs
 	bin/tools bin/console lint:twig templates --env=test
-	bin/tools php bin/console lint:yaml config --parse-tags --env=test
+	bin/tools bin/console lint:yaml config --parse-tags --env=test
 	bin/node-tools npm run lint
 	bin/node-tools npm run lint:css
 
