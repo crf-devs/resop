@@ -114,6 +114,44 @@ move-test-profiler:
 	@echo "Done : http://resop.vcap.me:7500/_profiler/search?limit=10"
 
 #
+# VM alternative stack commands
+#
+
+setup:
+	vagrant up --no-provision
+	vagrant provision
+
+## Update environment
+update: export ANSIBLE_TAGS = manala.update
+update:
+	vagrant provision
+
+## Update ansible
+update-ansible: export ANSIBLE_TAGS = manala.update
+update-ansible:
+	vagrant provision --provision-with ansible
+
+## Provision environment
+provision: export ANSIBLE_EXTRA_VARS = {"manala":{"update":false}}
+provision:
+	vagrant provision --provision-with app
+
+## Provision nginx
+provision-nginx: export ANSIBLE_TAGS = manala_nginx
+provision-nginx: provision
+
+## Provision php
+provision-php: export ANSIBLE_TAGS = manala_php
+provision-php: provision
+
+install-app:
+	composer install --verbose --no-interaction
+	bin/console cache:clear
+	bin/post-install-dev.sh
+	yarn install --pure-lockfile
+	yarn encore dev
+
+#
 # Help commands
 #
 

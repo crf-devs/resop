@@ -9,6 +9,9 @@
 
 ## Install
 
+This stack is powered with Docker;
+If you prefer to use a virtual machine, you can follow those steps
+
 ### Requirements
 
 * git
@@ -125,3 +128,53 @@ bin/node-tools yarn encore dev
 webpack-build-dev
 make webpack-watch-dev
 ```
+
+## Alternative Developpement stack based on a VM
+
+If you prefer using a virtual machine using VirtualBox, follow the following procedure. It relies on Ansible roles to provision the VM under the [Manala](http://www.manala.io/) organization.
+
+⚠️ Windows environment is untested for this stack (main concerns are the NFS sharing);
+
+The VM will be provisionned with
+- PHP 7.4
+- PostgreSQL 11.x
+- Nginx
+- Node 10
+- ...
+
+You can find essential configuration inside the (app.yml)[ansible/group_vars/app.yml] file.
+
+### Requirements
+
+- make
+- [VirtualBox 5.2.4+](https://www.virtualbox.org/wiki/Downloads)
+- [Vagrant 2.2.5+](https://www.vagrantup.com/downloads.html)
+- [Vagrant Landrush 1.2.0+](https://github.com/vagrant-landrush/landrush)
+
+### Installation
+
+    $ make setup
+    $ vagrant ssh
+    # uncomment the alternative DATABASE_URL inside the .env file (L39) and comment the default one;
+    $ make install-app
+
+### Boot the VM
+
+    # execute outside the VM
+    $ vagrant up
+
+### Access the VM
+
+    # execute outside the VM
+    $ vagrant ssh
+
+### Shutdown the VM
+
+    # execute outside the VM
+    $ vagrant halt
+
+### Access the project
+
+- Local : http://resop.vcap.vm
+
+

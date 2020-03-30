@@ -6,6 +6,18 @@
 /.eslintcache
 /.stylelintcache
 
+# Vagrant
+/.vagrant/
+
+# Ansible
+/ansible/*.retry
+/ansible/group_vars/*_local.yml
+/ansible/roles/manala.*
+/ansible/roles/.downloads
+!ansible/roles/.gitkeep
+
+!var/.gitkeep
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php

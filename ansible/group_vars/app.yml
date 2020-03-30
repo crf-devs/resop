@@ -1,0 +1,117 @@
+---
+# PostgreSQL (ANXS.postgresql)
+postgresql_version: 11
+postgresql_locale: fr_FR.UTF-8
+postgresql_ctype: fr_FR.UTF-8
+
+postgresql_users:
+    - name: resop
+      pass: postgrespwd
+      encrypted: yes # if password should be encrypted, postgresql >= 10 does only accepts encrypted passwords
+
+# List of user privileges to be applied (optional)
+postgresql_user_privileges:
+    - name: resop # user name
+      role_attr_flags: 'SUPERUSER' # role attribute flags
+
+app_options:
+    apt_preferences:
+        - php@sury_php
+    php_version: '7.4'
+    nodejs: true
+    nodejs_version: '10'
+    mysql: false
+    mongodb: false
+    mariadb: false
+    postgresql: false
+    elasticsearch: false
+    redis: true
+    influxdb: false
+    java: false
+    sqlite: false
+
+    #app:
+    #  env_vars:
+    #    FOO: bar
+
+app_patterns:
+    ############
+    # Timezone #
+    ############
+
+    timezone_default: Europe/Paris
+
+    #########
+    # Files #
+    #########
+
+    files_attributes:
+        - path: '{{ app.dir }}{{ app.dir_release }}/var/log'
+          src: '{{ app.log_dir }}'
+          state: link_directory
+        - path: '{{ app.dir }}{{ app.dir_release }}/var/cache'
+          src: '{{ app.cache_dir }}'
+          state: link_directory
+
+    #######
+    # Php #
+    #######
+
+    php_extensions:
+        # Symfony
+        - intl
+        - curl
+        - mbstring
+        - xml
+        # App
+        - pgsql
+        - gd
+
+    php_configs:
+        - file: app_opcache.ini
+          template: configs/app_opcache.{{ env }}.j2
+        - file: app.ini
+          template: configs/app.{{ env }}.j2
+          config:
+              - date.timezone: Europe/Paris
+
+    php_cli_configs:
+        - file: app_cli.ini
+          config:
+              - memory_limit: -1 # Composer tends to become greedy...
+
+    #########
+    # Nginx #
+    #########
+
+    nginx_configs:
+        # Php fpm
+        - file: app_php_fpm
+          template: configs/app_php_fpm.{{ env }}.j2
+        # Gzip
+        - file: app_gzip
+          template: configs/app_gzip.{{ env }}.j2
+        # App
+        - file: app.conf
+          config:
+              - server:
+                    - listen: 80
+                    - listen: 8000
+                    - listen: 8001
+                    - server_name: '{{ app.host }}'
+                    #- server_name: "*.ngrok.io"
+                    - root: '{{ app.dir }}{{ app.dir_release }}/public'
+                    - access_log: '{{ app.log_dir }}/nginx.access.log'
+                    - error_log: '{{ app.log_dir }}/nginx.error.log'
+                    - include: conf.d/app_gzip
+                    - location /:
+                          - try_files: $uri /index.php$is_args$args
+                    - location ~ ^/index\.php(/|$):
+                          - include: conf.d/app_php_fpm
+                          - set: $APP_ENV dev
+                          - if ( $server_port = 8000 ):
+                                - set: $APP_ENV test
+                          - if ( $server_port = 8001 ):
+                                - set: $APP_ENV prod
+                          - fastcgi_param: APP_ENV $APP_ENV
+                          - internal;

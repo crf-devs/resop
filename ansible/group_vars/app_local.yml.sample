@@ -1,0 +1,41 @@
+---
+
+app_local_options:
+
+  #app:
+  #  env_vars:
+  #    XDEBUG_CONFIG:  remote_host={{ ansible_eth1.ipv4.address|regex_replace('^(.*)\.\d+$', '\1') }}.1 idekey=app
+  #    PHP_IDE_CONFIG: serverName={{ ansible_fqdn }}
+
+app_local_patterns:
+
+  #######
+  # Apt #
+  #######
+
+  #apt_repositories:
+  #  - blackfire
+
+  ###################
+  # Php - Blackfire #
+  ###################
+
+  #php_blackfire: false
+
+  #php_blackfire_agent_config:
+  #  - server-id:    ...
+  #  - server-token: ...
+
+  #php_blackfire_client_config:
+  #  - client-id:    ...
+  #  - client-token: ...
+
+  #######
+  # Php #
+  #######
+
+  #php_configs:
+  #  - file: app_local.ini
+  #    config:
+  #      # Symfony ide integration, see: http://symfony.com/doc/current/reference/configuration/framework.html#ide
+  #      - xdebug.file_link_format: "'phpstorm://open?file=%f&line=%l&/srv/app/>/Users/manala/workspace/vendor/app/'"
