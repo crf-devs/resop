@@ -63,7 +63,7 @@ class PlanningSearchType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'class' => 'selectpicker',
-                    'data-actions-box' => 'true'
+                    'data-actions-box' => 'true',
                 ],
             ])
             ->add('hideUsers', CheckboxType::class, [

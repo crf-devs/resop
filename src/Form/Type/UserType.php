@@ -52,7 +52,7 @@ class UserType extends AbstractType
         $builder
             ->add('identificationNumber', TextType::class)
             ->add('organization', OrganizationEntityType::class, [
-                'placeholder' => ''
+                'placeholder' => '',
             ])
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
