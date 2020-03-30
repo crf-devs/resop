@@ -123,7 +123,7 @@ class PlanningUpdateDomain
                 throw new \InvalidArgumentException('Invalid entity');
             }
 
-            /* * @var AvailabilityInterface */
+            /** @var AvailabilityInterface */
             $currentEntity = end($search);
 
             foreach ($schedules as $schedule) {

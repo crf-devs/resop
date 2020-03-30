@@ -6,7 +6,7 @@ on:
 
 env:
     CI: true
-    TZ: Europe/Paris
+    TZ: UTC
     PHP_VERSION: 7.4
     NODE_VERSION: 10.x
     COMPOSER_ALLOW_SUPERUSER: '1' # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser

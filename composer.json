@@ -2,7 +2,7 @@
   "type": "project",
   "license": "proprietary",
   "name": "crf-devs/resop",
-  "description": "resop Croix Rouge Française",
+  "description": "ResOp",
   "require": {
     "php": "^7.4",
     "ext-ctype": "*",
