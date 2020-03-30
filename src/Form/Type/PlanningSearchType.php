@@ -61,7 +61,10 @@ class PlanningSearchType extends AbstractType
                 'multiple' => true,
                 'choice_label' => 'name',
                 'required' => false,
-                'attr' => ['class' => 'selectpicker'],
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-actions-box' => 'true'
+                ],
             ])
             ->add('hideUsers', CheckboxType::class, [
                 'label' => 'Cacher les bénévoles',
