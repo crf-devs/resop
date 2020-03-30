@@ -17,7 +17,7 @@ parameters:
         container_xml_path: %rootDir%/../../../var/cache/test/App_KernelTestDebugContainer.xml
     doctrine:
         repositoryClass: Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository
-        objectManagerLoader: tests/object-manager.php
+        objectManagerLoader: tests/ObjectManager.php
     inferPrivatePropertyTypeFromConstructor: true
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
