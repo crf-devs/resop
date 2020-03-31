@@ -50,19 +50,26 @@ class PlanningCheckLastUpdateController
         // TODO Handle deleted availabities
 
         $availabilitiesCount = 0;
+        $userLastUpdate = 0;
+        $assetLastUpdate = 0;
+
         $userLastUpdateData = $this->userAvailabilityRepository->findLastUpdatedForEntities($users);
         if (null !== $userLastUpdateData) {
-            $userLastUpdate = (int) (new \DateTimeImmutable($userLastUpdateData['last_update']))->format('U');
+            if (null !== $userLastUpdateData['last_update']) {
+                $userLastUpdate = (int) (new \DateTimeImmutable($userLastUpdateData['last_update']))->format('U');
+            }
             $availabilitiesCount += (int) $userLastUpdateData['total_count'];
         }
 
         $assetLastUpdateData = $this->assetAvailabilityRepository->findLastUpdatedForEntities($assets);
         if (null !== $assetLastUpdateData) {
-            $assetLastUpdate = (int) (new \DateTimeImmutable($assetLastUpdateData['last_update']))->format('U');
+            if (null !== $assetLastUpdateData['last_update']) {
+                $assetLastUpdate = (int) (new \DateTimeImmutable($assetLastUpdateData['last_update']))->format('U');
+            }
             $availabilitiesCount += (int) $assetLastUpdateData['total_count'];
         }
 
-        $lastUpdate = max($userLastUpdate ?? 0, $assetLastUpdate ?? 0);
+        $lastUpdate = max($userLastUpdate, $assetLastUpdate);
 
         return new JsonResponse(['lastUpdate' => (int) $lastUpdate, 'totalCount' => $availabilitiesCount]);
     }
