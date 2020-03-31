@@ -51,7 +51,9 @@ class UserType extends AbstractType
         $occupationChoices += ['Autre' => '-'];
         $builder
             ->add('identificationNumber', TextType::class)
-            ->add('organization', OrganizationEntityType::class)
+            ->add('organization', OrganizationEntityType::class, [
+                'placeholder' => '',
+            ])
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
             ->add('phoneNumber', TextType::class)
