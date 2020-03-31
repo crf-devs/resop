@@ -25,6 +25,9 @@ or to have a look to open issues.
 # Contributing
 
 [![Discord](https://discordapp.com/api/guilds/690879735957553152/widget.png)](https://discord.gg/ZyzeSq5)
+![Latest version)](https://img.shields.io/github/v/tag/crf-devs/resop)
+[![CI Status](https://github.com/crf-devs/resop/workflows/CI/badge.svg?branch=master)](https://github.com/crf-devs/resop/actions?query=branch%3Amaster)
+[![Code Coverage](https://codecov.io/gh/crf-devs/resop/branch/master/graph/badge.svg)](https://codecov.io/gh/crf-devs/resop)
 
 You can join the [ResOp Discord server](https://discord.gg/ZyzeSq5) if you want more information, or if you want to contribute to the project.
 

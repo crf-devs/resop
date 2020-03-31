@@ -13,6 +13,7 @@ env:
 
     # Application
     APP_ENV: test
+    APP_DEBUG: 0
     DATABASE_SERVER_VERSION: 11 # update service "postgresql" if this value change
 
 jobs:
@@ -33,10 +34,10 @@ jobs:
               run: echo "::set-env name=DATABASE_URL::pgsql://postgres:password@127.0.0.1:${{ job.services.postgres.ports[5432] }}/postgres"
 
             - name: Install PHP
-              uses: shivammathur/setup-php@v1
+              uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ env.PHP_VERSION }}
-                  coverage: none
+                  coverage: pcov
                   extensions: ctype, iconv, intl
                   ini-values: date.timezone=UTC, memory_limit=-1, session.gc_probability=0, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=20000, opcache.validate_timestamps=0, realpath_cache_size=4096K, realpath_cache_ttl=600
                   tools: cs2pr
@@ -73,36 +74,49 @@ jobs:
 
             - run: yarn encore production
 
-            - name: Bootstrap database
-              run: |
-                  bin/post-install-dev.sh
-
             - run: composer validate
               if: always()
 
-            - run: php bin/console lint:twig templates
+            # PHPStan needs the var/cache/test/App_KernelTestContainer.xml file to exist
+            - run: APP_DEBUG=1 bin/console cache:warmup
               if: always()
 
-            - run: php bin/console lint:yaml config --parse-tags
+            - run: bin/console lint:twig templates
               if: always()
 
-            - run: php vendor/bin/php-cs-fixer fix --verbose --diff --dry-run --format=checkstyle | cs2pr
+            - run: bin/console lint:yaml config --parse-tags
+              if: always()
+
+            - run: vendor/bin/php-cs-fixer fix --verbose --diff --dry-run --format=checkstyle | cs2pr
               if: always()
 
             - run: vendor/bin/phpcs --warning-severity=0 --report=checkstyle | cs2pr
               working-directory: ${{ matrix.working_directory }}
               if: always()
 
-            - run: php bin/console doctrine:schema:validate
-              if: always()
-
             - name: Run PHPStan
-              run: php vendor/bin/phpstan analyse --configuration phpstan.neon --level max --no-progress . --error-format=checkstyle | cs2pr
+              run: vendor/bin/phpstan analyse --configuration phpstan.neon --level max --no-progress . --error-format=checkstyle | cs2pr
               if: always()
 
-            - run: vendor/bin/phpunit --printer mheap\\GithubActionsReporter\\Printer
+            - name: Bootstrap database
+              run: |
+                  bin/console doctrine:database:create -n --if-not-exists
+                  bin/console doctrine:migrations:migrate -n
+                  bin/console doctrine:fixtures:load -n
+
+            - name: Validate schema
+              run: |
+                  bin/console doctrine:schema:validate
+                  bin/console doctrine:mapping:info
               if: always()
 
+            - run: vendor/bin/phpunit --printer mheap\\GithubActionsReporter\\Printer --coverage-clover=coverage.xml
+              if: always()
+
+            - uses: codecov/codecov-action@v1
+              with:
+                token: ${{ secrets.CODECOV_TOKEN }}
+                
     javascript:
         runs-on: ubuntu-latest
         steps:
