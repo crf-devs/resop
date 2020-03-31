@@ -86,10 +86,10 @@ jobs:
             - run: php bin/console lint:yaml config --parse-tags
               if: always()
 
-            - run: php bin/php-cs-fixer fix --verbose --diff --dry-run --format=checkstyle | cs2pr
+            - run: php vendor/bin/php-cs-fixer fix --verbose --diff --dry-run --format=checkstyle | cs2pr
               if: always()
 
-            - run: bin/phpcs --warning-severity=0 --report=checkstyle | cs2pr
+            - run: vendor/bin/phpcs --warning-severity=0 --report=checkstyle | cs2pr
               working-directory: ${{ matrix.working_directory }}
               if: always()
 
@@ -97,10 +97,10 @@ jobs:
               if: always()
 
             - name: Run PHPStan
-              run: php bin/phpstan.phar analyse --configuration phpstan.neon --level max --no-progress . --error-format=checkstyle | cs2pr
+              run: php vendor/bin/phpstan analyse --configuration phpstan.neon --level max --no-progress . --error-format=checkstyle | cs2pr
               if: always()
 
-            - run: bin/phpunit --printer mheap\\GithubActionsReporter\\Printer
+            - run: vendor/bin/phpunit --printer mheap\\GithubActionsReporter\\Printer
               if: always()
 
     javascript:
