@@ -111,6 +111,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "escapestudios/symfony2-coding-standard": {
+        "version": "3.11.0"
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {
@@ -137,6 +140,9 @@
     },
     "martin-georgiev/postgresql-for-doctrine": {
         "version": "v1.3.0"
+    },
+    "mheap/phpunit-github-actions-printer": {
+        "version": "v1.2.0"
     },
     "monolog/monolog": {
         "version": "2.0.2"
@@ -274,6 +280,18 @@
         },
         "files": [
             "config/packages/sensio_framework_extra.yaml"
+        ]
+    },
+    "squizlabs/php_codesniffer": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "0dc9cceda799fd3a08b96987e176a261028a3709"
+        },
+        "files": [
+            "phpcs.xml.dist"
         ]
     },
     "symfony/asset": {

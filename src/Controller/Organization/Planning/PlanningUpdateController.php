@@ -43,7 +43,7 @@ class PlanningUpdateController extends AbstractController
         }
 
         try {
-            $json = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+            $json = json_decode($request->getContent(), true, 512, \JSON_THROW_ON_ERROR);
         } catch (\Exception $e) {
             throw new BadRequestHttpException('Invalid JSON Payload format', $e);
         }

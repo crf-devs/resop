@@ -9,11 +9,8 @@ use App\Entity\AvailabilityInterface;
 final class AvailabilityDomain
 {
     public bool $tick = false;
-
     public ?AvailabilityInterface $availability;
-
     public \DateTimeImmutable $date;
-
     private ?\DateInterval $disabledIntervalFromNow;
 
     public function __construct(\DateTimeImmutable $date, ?AvailabilityInterface $availability, ?\DateInterval $disabledIntervalFromNow = null)
@@ -31,7 +28,7 @@ final class AvailabilityDomain
         }
 
         // Dates are stored as UTC even if they are not on this UTC timezone
-        // TODO Set the timezone as a parameter
+        // @todo Set the timezone as a parameter
         $trueNow = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $fakeUTCnow = new \DateTimeImmutable($trueNow->format('Y-m-d H:i:s'));
 

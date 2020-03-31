@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\Planning;
 
-use App\Domain\PlanningUtils;
+use App\Domain\AbstractPlanningUtils;
 use App\Repository\CommissionableAssetAvailabilityRepository;
 use App\Repository\CommissionableAssetRepository;
 use App\Repository\UserAvailabilityRepository;
@@ -41,7 +41,7 @@ class PlanningCheckLastUpdateController
 
     public function __invoke(Request $request): JsonResponse
     {
-        $form = PlanningUtils::getFormFromRequest($this->formFactory, $request);
+        $form = AbstractPlanningUtils::getFormFromRequest($this->formFactory, $request);
         $data = $form->getData();
 
         $users = $data['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($data, true);

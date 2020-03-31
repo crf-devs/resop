@@ -23,7 +23,7 @@ final class ChoiceWithOtherType extends AbstractType
 
         $builder->addModelTransformer(new CallbackTransformer(
             static function ($transformed) use ($options) {
-                if (in_array($transformed, $options['choices'], true)) {
+                if (\in_array($transformed, $options['choices'], true)) {
                     return [
                         'choice' => $transformed,
                         'other' => null,

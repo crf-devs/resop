@@ -15,8 +15,8 @@ class ExceptionProcessor implements ProcessorInterface
             $jsonFormatter = new JsonFormatter();
             $jsonFormatter->includeStacktraces();
 
-            $formatedException = json_decode($jsonFormatter->format(['e' => $e]), true, 512, JSON_THROW_ON_ERROR);
-            $formatedException['e']['trace_string'] = json_encode($formatedException['e']['trace'] ?? [], JSON_UNESCAPED_SLASHES + JSON_THROW_ON_ERROR);
+            $formatedException = json_decode($jsonFormatter->format(['e' => $e]), true, 512, \JSON_THROW_ON_ERROR);
+            $formatedException['e']['trace_string'] = json_encode($formatedException['e']['trace'] ?? [], \JSON_UNESCAPED_SLASHES + \JSON_THROW_ON_ERROR);
             unset($formatedException['e']['trace']); // The default trace format is not compliant with kibana
 
             $record['context']['exception'] = $formatedException['e'];

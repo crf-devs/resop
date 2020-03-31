@@ -80,6 +80,7 @@ init-db: start-db
 
 fix-cs-php:
 	bin/tools vendor/bin/php-cs-fixer fix --allow-risky yes --verbose
+	bin/tools vendor/bin/phpcbf
 
 fix-cs: fix-cs-php
 	bin/node-tools npm run lint:fix
@@ -93,7 +94,9 @@ test: test-cs test-advanced test-unit
 
 test-cs:
 	bin/tools vendor/bin/php-cs-fixer fix --allow-risky yes --dry-run --verbose --diff
-	bin/tools bin/console --env=test lint:twig templates
+	bin/tools vendor/bin/phpcs
+	bin/tools bin/console lint:twig templates --env=test
+	bin/tools bin/console lint:yaml config --parse-tags --env=test
 	bin/node-tools npm run lint
 	bin/node-tools npm run lint:css
 
