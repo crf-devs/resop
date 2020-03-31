@@ -14,12 +14,6 @@
 /public/bundles/
 /var/
 /vendor/
-/bin/*
-!/bin/console
-!/bin/node-tools
-!/bin/post-install-dev.sh
-!/bin/tools
-!/bin/update-db.sh
 ###< symfony/framework-bundle ###
 
 ###> friendsofphp/php-cs-fixer ###
