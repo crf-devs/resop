@@ -50,7 +50,7 @@
             <tr>
                 <td class="hour-title">{{ choices[i].date|date('H') }}-{{ choices[i+1].date|date('H') }}h</td>
                 {% for j in 0..6 %}
-                    <td class="clickable-table-box" data-day="{{ j }}" data-status="{{ '' }}">
+                    <td class="clickable-table-box" data-day="{{ j }}" data-from="{{ choices[i+1].date|date('U') }}" data-to="{{ choices[i+1].date|date('U') }}" data-status="{{ '' }}">
                         {{ form_widget(form.availabilityDomains.children[j*nbChoicesPerDay+i].tick) }}
                     </td>
                 {% endfor %}

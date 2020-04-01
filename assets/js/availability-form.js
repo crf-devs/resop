@@ -51,11 +51,34 @@ function selectTableBox($tableBox) {
   colorTableBox($tableBox);
 }
 
+function handleShiftClick($table, $currentClickedTd, $prevClickedTd) {
+  window.getSelection().removeAllRanges();
+
+  const dayStart = Math.min($currentClickedTd.data('day'), $prevClickedTd.data('day'));
+  const dayEnd = Math.max($currentClickedTd.data('day'), $prevClickedTd.data('day'));
+  const hourStart = Math.min($currentClickedTd.data('from'), $prevClickedTd.data('from'));
+  const hourEnd = Math.max($currentClickedTd.data('to'), $prevClickedTd.data('to'));
+
+  $table
+    .find('td.clickable-table-box')
+    .filter((i, td) => {
+      let $td = $(td);
+
+      return $td.data('day') >= dayStart && $td.data('day') <= dayEnd && $td.data('from') >= hourStart && $td.data('to') <= hourEnd;
+    })
+    .each((i, td) => {
+      if ($(td).hasClass('checked') !== $currentClickedTd.hasClass('checked')) {
+        selectTableBox($(td));
+      }
+    });
+}
+
 $(document).ready(function () {
   colorTable();
 
   let $table = $('.availability-table');
   let $actions = $('.availability-actions');
+  let $prevClickedTd = null;
 
   $table.on('click', '.day-title input:checkbox', function () {
     selectDay($(this).closest('.day-title'));
@@ -63,11 +86,23 @@ $(document).ready(function () {
 
   $table.on('click', '.clickable-table-box input:checkbox', function (e) {
     e.stopImmediatePropagation();
+
     colorTableBox($(this).closest('.clickable-table-box'));
+    if (e.shiftKey && $prevClickedTd !== null) {
+      handleShiftClick($table, $(this).closest('td'), $prevClickedTd);
+    }
+
+    $prevClickedTd = $(this).closest('td');
   });
 
-  $table.on('click', '.clickable-table-box', function () {
+  $table.on('click', '.clickable-table-box', function (e) {
     selectTableBox($(this));
+
+    if (e.shiftKey && $prevClickedTd !== null) {
+      handleShiftClick($table, $(this), $prevClickedTd);
+    }
+
+    $prevClickedTd = $(this);
   });
 
   $actions.on('click', 'button.select-all', function () {

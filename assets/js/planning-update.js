@@ -122,8 +122,59 @@ function checkLastUpdate(forceUpdate) {
   });
 }
 
+function handleShiftClick($planning, $currentClickedTd, $lastClickedTd) {
+  window.getSelection().removeAllRanges();
+  const isChecked = $currentClickedTd.hasClass('checked');
+
+  const minTbodyIndex = Math.min($lastClickedTd.closest('tbody').index(), $currentClickedTd.closest('tbody').index());
+  const maxTbodyIndex = Math.max($lastClickedTd.closest('tbody').index(), $currentClickedTd.closest('tbody').index());
+  const minTrIndex = Math.min($lastClickedTd.closest('tr').index(), $currentClickedTd.closest('tr').index());
+  const maxTrIndex = Math.max($lastClickedTd.closest('tr').index(), $currentClickedTd.closest('tr').index());
+  const tdFrom = Math.min(Date.parse($lastClickedTd.data('from')), Date.parse($currentClickedTd.data('from')));
+  const tdTo = Math.max(Date.parse($lastClickedTd.data('to')), Date.parse($currentClickedTd.data('to')));
+
+  const handleTbody = function (i, tbody) {
+    const currentTbodyIndex = $(tbody).index();
+
+    $(tbody)
+      .find('tr')
+      .filter((i, tr) => {
+        const trIndex = $(tr).index();
+        if (minTbodyIndex !== maxTbodyIndex) {
+          if (currentTbodyIndex === minTbodyIndex) {
+            return trIndex >= minTrIndex;
+          } else if (currentTbodyIndex === maxTbodyIndex) {
+            return trIndex <= maxTrIndex;
+          }
+
+          return true;
+        }
+
+        return trIndex >= minTrIndex && trIndex <= maxTrIndex;
+      })
+      .each(handleTr);
+  };
+
+  const handleTr = function (i, tr) {
+    $(tr)
+      .find('td')
+      .filter((i, td) => Date.parse($(td).data('from')) >= tdFrom && Date.parse($(td).data('to')) <= tdTo)
+      .each(function () {
+        if (isChecked !== $(this).hasClass('checked')) {
+          selectTableBox($(this));
+        }
+      });
+  };
+
+  $planning
+    .find('tbody.item-rows')
+    .filter((index, currentTbody) => $(currentTbody).index() >= minTbodyIndex && $(currentTbody).index() <= maxTbodyIndex)
+    .each(handleTbody);
+}
+
 $(document).ready(function () {
   const $planning = $('.planning');
+  let $lastClickedTd = null;
 
   let urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('scrollTop')) {
@@ -132,11 +183,22 @@ $(document).ready(function () {
 
   $planning.on('click', '.slot-box input:checkbox', function (e) {
     e.stopImmediatePropagation();
+
     colorTableBox($(this).closest('.slot-box'));
+    if (e.shiftKey && null !== $lastClickedTd) {
+      handleShiftClick($planning, $(this).closest('td'), $lastClickedTd);
+    }
+    $lastClickedTd = $(this).closest('td');
   });
 
-  $planning.on('click', '.slot-box', function () {
+  $planning.on('click', '.slot-box', function (e) {
+    e.stopImmediatePropagation();
     selectTableBox($(this));
+
+    if (e.shiftKey && null !== $lastClickedTd) {
+      handleShiftClick($planning, $(this), $lastClickedTd);
+    }
+    $lastClickedTd = $(this);
   });
 
   const $modalUpdate = $('#modal-update');
