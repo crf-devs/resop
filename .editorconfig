@@ -21,7 +21,7 @@ indent_size = 2
 indent_size = 2
 trim_trailing_whitespace = false
 
-[config/**/*.{yaml,yml}]
+[{.github,config}/**/*.{yaml,yml}]
 indent_size = 4
 
 [.gitmodules]
