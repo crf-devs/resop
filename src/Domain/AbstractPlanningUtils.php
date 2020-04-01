@@ -18,12 +18,12 @@ abstract class AbstractPlanningUtils
     public static function getFormFromRequest(FormFactoryInterface $formFactory, Request $request): FormInterface
     {
         if (!$request->query->has('from')) {
-            $request->query->set('from', (new \DateTimeImmutable('monday this week'))->format('Y-m-d\T00:00:00'));
+            $request->query->set('from', (new \DateTimeImmutable('now'))->format('Y-m-d\T00:00:00'));
         }
 
         if (!$request->query->has('to')) {
-            $from = new \DateTimeImmutable($request->query->get('from', 'monday this week'));
-            $request->query->set('to', $from->add(new \DateInterval('P1W'))->format('Y-m-d\T00:00:00'));
+            $from = new \DateTimeImmutable($request->query->get('from', 'now'));
+            $request->query->set('to', $from->add(new \DateInterval('P3D'))->format('Y-m-d\T00:00:00'));
         }
 
         $form = $formFactory->createNamed('', PlanningSearchType::class, [], ['method' => 'GET', 'attr' => ['autocomplete' => 'off']]);
