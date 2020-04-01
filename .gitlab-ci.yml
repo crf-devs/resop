@@ -29,28 +29,8 @@ prepare:
     - docker build --pull -t ${CI_REGISTRY_IMAGE}/php-flex-dev:latest --cache-from ${CI_REGISTRY_IMAGE}/php-flex-dev:latest -f docker/php-flex/Dockerfile --target withoutsources .
     - docker push ${CI_REGISTRY_IMAGE}/php-flex-dev:latest
   when: manual
-
-test:
-  stage: test
-  variables:
-    ENV_PREFIX: test_${CI_COMMIT_REF_SLUG}
-  before_script:
-    - command -v docker > /dev/null 2>&1 && docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - test -f docker-compose.override.ci.yml.dist && cp docker-compose.override.ci.yml.dist docker-compose.override.yml
-    - apk add --no-cache make
-    - docker pull ${CI_REGISTRY_IMAGE}/php-flex-dev:latest || true
-    - bin/tools composer install -q -n --profile --ignore-platform-reqs --no-scripts --no-suggest --prefer-dist --apcu-autoloader
-    - bin/node-tools yarn install --pure-lockfile
-  script:
-    # Compiled assets files are required for functional tests. TODO Make it optional
-    - make webpack-build-prod
-    - make test-cs
-    - make test-advanced
-    - docker-compose up -d postgres
-    - bin/tools bin/post-install-dev.sh
-    - make test-unit-coverage
-  except:
-    - tags
+  only:
+    - master
 
 .build:
   stage: build
