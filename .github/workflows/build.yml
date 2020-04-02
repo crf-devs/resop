@@ -1,0 +1,61 @@
+name: build
+
+on:
+    push:
+        branches: [master]
+    release:
+        types: [published]
+
+env:
+    CI: true
+    CI_REGISTRY_IMAGE: crfdevs/resop
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v1
+
+            -   name: Login to DockerHub Registry
+                run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+            -   name: Get the version
+                id: vars
+                run: |
+                    echo ::set-output name=BUILD_TAG::$(git describe --tags)
+                    echo ::set-output name=CI_COMMIT_REF_SLUG::${GITHUB_REF#refs/*/}
+
+            -   name: Pull existing Docker image
+                run: |
+                    docker pull ${CI_REGISTRY_IMAGE}:fpm-master || true
+                    docker pull ${CI_REGISTRY_IMAGE}:nginx-master || true
+
+            -   name: Build the Docker images
+                run: |
+                    docker build --pull -t ${CI_REGISTRY_IMAGE}:fpm-${CI_COMMIT_REF_SLUG} --cache-from ${CI_REGISTRY_IMAGE}:fpm-master -f docker/php-flex/Dockerfile --target withsources-fpm --build-arg BUILD_TAG=${BUILD_TAG} .
+                    docker run --rm -v $(pwd):/host ${CI_REGISTRY_IMAGE}:fpm-${CI_COMMIT_REF_SLUG} mv -f /srv/public/build /host/public
+                    docker build --pull -t ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} --cache-from ${CI_REGISTRY_IMAGE}:nginx-master -f docker/nginx/Dockerfile --target withsources .
+                env:
+                    BUILD_TAG: ${{ steps.vars.outputs.BUILD_TAG }}
+                    CI_COMMIT_REF_SLUG: ${{ steps.vars.outputs.CI_COMMIT_REF_SLUG }}
+
+            -   name: Push the latest Docker image
+                run: |
+                    docker push ${CI_REGISTRY_IMAGE}:fpm-${CI_COMMIT_REF_SLUG}
+                    docker push ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
+                env:
+                    CI_COMMIT_REF_SLUG: ${{ steps.vars.outputs.CI_COMMIT_REF_SLUG }}
+
+            -   name: Deploy snapshot on master
+                if: github.ref == 'refs/heads/master'
+                run: curl --request POST --form "token=${{ secrets.SNAPSHOT_DEPLOY_TOKEN }}" --form ref=master "${{ secrets.SNAPSHOT_DEPLOY_URL }}" 1>/dev/null
+
+            -   name: Push the latest Docker release image
+                if: github.event_name == 'release'
+                run: |
+                    docker tag ${CI_REGISTRY_IMAGE}:fpm-${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}:fpm-release-latest
+                    docker push ${CI_REGISTRY_IMAGE}:fpm-release-latest
+                    docker tag ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}:nginx-release-latest
+                    docker push ${CI_REGISTRY_IMAGE}:nginx-release-latest
+                env:
+                    CI_COMMIT_REF_SLUG: ${{ steps.vars.outputs.CI_COMMIT_REF_SLUG }}
