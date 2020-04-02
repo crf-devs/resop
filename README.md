@@ -161,3 +161,44 @@ bin/node-tools yarn encore dev
 webpack-build-dev
 make webpack-watch-dev
 ```
+
+## Built docker images
+
+Every time a new commit is pushed onto master, the following Docker images are built:
+
+- [crfdevs/resop:fpm-master](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=fpm)
+- [crfdevs/resop:nginx-master](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=nginx)
+
+Every time a new release is created, the following Docker images are built:
+
+- [crfdevs/resop:fpm-1.1.1](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=fpm-)
+- [crfdevs/resop:fpm-release-latest](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=fpm-release-latest)
+- [crfdevs/resop:nginx-1.1.1](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=nginx-)
+- [crfdevs/resop:nginx-release-latest](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=nginx-release-latest)
+
+## Usage in production
+
+This is an example of docker-compose.yml file with parameters you should use for production:
+
+```yaml
+services:
+  nginx:
+    image: crfdevs/resop:nginx-release-latest
+    depends_on:
+      - fpm
+    environment:
+      - "FPM_ENDPOINT=fpm:9001"
+
+  fpm:
+    image: crfdevs/resop:npm-release-latest
+    environment:
+      - INIT_DB=true # Run migrations on start
+      - DANGEROUSLY_LOAD_FIXTURES=false # Reset DB and load fixtures on start
+      - "DATABASE_URL=postgresql://<USER>:<PASSWORD>@<URL>/<DB>?serverVersion=11&charset=utf8"
+```
+
+If you want to initialize the DB with production data, run the following command in the fpm container:
+
+```bash
+bin/console app:load-organizations
+```
