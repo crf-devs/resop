@@ -81,7 +81,7 @@
                 </tr>
             </tbody>
 
-            <tbody class="item-rows">
+            <tbody class="item-rows" data-index="{{ loop.index }}">
                 {% for item in list %}
                     <tr data-type="{{ entityType }}" data-id="{{ item.entity.id }}">
                         <th class="item-detail">

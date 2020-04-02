@@ -124,11 +124,20 @@ $tableBoxSize: 40px;
         opacity: 0.8;
       }
 
+      &.highlight {
+        opacity: 1;
+        box-shadow: inset 0 0 6px 1px black;
+      }
+
       &.checked {
         opacity: 0.3;
 
         input[type='checkbox'] {
           visibility: visible;
+        }
+
+        &.highlight {
+          opacity: 1;
         }
       }
     }

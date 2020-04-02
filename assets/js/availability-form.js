@@ -95,6 +95,17 @@ $(document).ready(function () {
     $prevClickedTd = $(this).closest('td');
   });
 
+  $(document).on('keydown', function (e) {
+    if (e.shiftKey && $prevClickedTd && !$prevClickedTd.hasClass('highlight')) {
+      $table.find('.highlight').removeClass('highlight');
+      $prevClickedTd.addClass('highlight');
+    }
+  });
+
+  $(document).on('keyup', function () {
+    $table.find('.highlight').removeClass('highlight');
+  });
+
   $table.on('click', '.clickable-table-box', function (e) {
     selectTableBox($(this));
 

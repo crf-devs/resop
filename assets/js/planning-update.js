@@ -128,10 +128,25 @@ function handleShiftClick($planning, $currentClickedTd, $lastClickedTd) {
 
   const minTbodyIndex = Math.min($lastClickedTd.closest('tbody').index(), $currentClickedTd.closest('tbody').index());
   const maxTbodyIndex = Math.max($lastClickedTd.closest('tbody').index(), $currentClickedTd.closest('tbody').index());
-  const minTrIndex = Math.min($lastClickedTd.closest('tr').index(), $currentClickedTd.closest('tr').index());
-  const maxTrIndex = Math.max($lastClickedTd.closest('tr').index(), $currentClickedTd.closest('tr').index());
   const tdFrom = Math.min(Date.parse($lastClickedTd.data('from')), Date.parse($currentClickedTd.data('from')));
   const tdTo = Math.max(Date.parse($lastClickedTd.data('to')), Date.parse($currentClickedTd.data('to')));
+
+  // default case : maxTbodyIndex === minTbodyIndex
+  let minTrIndex = Math.min($lastClickedTd.closest('tr').index(), $currentClickedTd.closest('tr').index());
+  let maxTrIndex = Math.max($lastClickedTd.closest('tr').index(), $currentClickedTd.closest('tr').index());
+  if (maxTbodyIndex !== minTbodyIndex) {
+    if ($lastClickedTd.closest('tbody').index() === minTbodyIndex) {
+      minTrIndex = $lastClickedTd.closest('tr').index();
+    } else if ($currentClickedTd.closest('tbody').index() === minTbodyIndex) {
+      minTrIndex = $currentClickedTd.closest('tr').index();
+    }
+
+    if ($lastClickedTd.closest('tbody').index() === maxTbodyIndex) {
+      maxTrIndex = $lastClickedTd.closest('tr').index();
+    } else if ($currentClickedTd.closest('tbody').index() === maxTbodyIndex) {
+      maxTrIndex = $currentClickedTd.closest('tr').index();
+    }
+  }
 
   const handleTbody = function (i, tbody) {
     const currentTbodyIndex = $(tbody).index();
@@ -175,6 +190,17 @@ function handleShiftClick($planning, $currentClickedTd, $lastClickedTd) {
 $(document).ready(function () {
   const $planning = $('.planning');
   let $lastClickedTd = null;
+
+  $(document).on('keydown', function (e) {
+    if (e.shiftKey && $lastClickedTd && !$lastClickedTd.hasClass('highlight')) {
+      $planning.find('.highlight').removeClass('highlight');
+      $lastClickedTd.addClass('highlight');
+    }
+  });
+
+  $(document).on('keyup', function () {
+    $planning.find('.highlight').removeClass('highlight');
+  });
 
   let urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('scrollTop')) {
