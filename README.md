@@ -145,10 +145,12 @@ bin/tools # to open a shell on the tools container
 ### Blackfire
 
 In order to profile the php app with [Blackfire](https://blackfire.io/), you need to have a Blackfire account, then:
-- Add your [credentials](https://blackfire.io/my/settings/credentials) in the `.env` file
+
+- Uncomment the `blackfire` part of the `docker/php-flex/Dockerfile` file (but don't commit it after)
 - Uncomment the `blackfire` service in the `docker-compose.override.yml` file
-- Uncomment the blackfire env var for the `backend_php` service in the `docker-compose.override.yml` file
-- `docker-compose up -d --force-recreate backend_php blackfire`
+- Uncomment the blackfire env var for the `fpm` service in the `docker-compose.override.yml` file
+- Add your [credentials](https://blackfire.io/my/settings/credentials) in the `docker-compose.override.yml` file
+- `docker-compose up -d --build --force-recreate fpm blackfire`
 - That's it, you can [profile](https://blackfire.io/docs/cookbooks/profiling-http) the app!
 
 ## Node
