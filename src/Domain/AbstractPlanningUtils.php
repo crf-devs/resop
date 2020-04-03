@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractPlanningUtils
 {
+    private const DEFAULT_DISPLAYED_INTERVAL = 'P2D';
+
     public static function getFormFromRequest(FormFactoryInterface $formFactory, Request $request): FormInterface
     {
         if (!$request->query->has('from')) {
@@ -23,7 +25,7 @@ abstract class AbstractPlanningUtils
 
         if (!$request->query->has('to')) {
             $from = new \DateTimeImmutable($request->query->get('from', 'now'));
-            $request->query->set('to', $from->add(new \DateInterval('P3D'))->format('Y-m-d\T00:00:00'));
+            $request->query->set('to', $from->add(new \DateInterval(self::DEFAULT_DISPLAYED_INTERVAL))->format('Y-m-d\T00:00:00'));
         }
 
         $form = $formFactory->createNamed('', PlanningSearchType::class, [], ['method' => 'GET', 'attr' => ['autocomplete' => 'off']]);
@@ -49,6 +51,10 @@ abstract class AbstractPlanningUtils
                     'from' => $from,
                     'to' => $to,
                     'status' => $existingSlot['status'] ?? AvailabilityInterface::STATUS_UNKNOW,
+                    // We format the date here in order to avoid many twig date filter call
+                    'fromDay' => $from->format('Y-m-d'),
+                    'fromDate' => $from->format('Y-m-d H:i'),
+                    'toDate' => $to->format('Y-m-d H:i'),
                 ];
             }
 
