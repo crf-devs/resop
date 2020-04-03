@@ -33,25 +33,23 @@ You can join the [ResOp Discord server](https://discord.gg/ZyzeSq5) if you want 
 
 If you want to contribute, you can easily start with any [`good first issue` tagged issue](https://github.com/crf-devs/resop/labels/good%20first%20issue)!
 
-## Install
+# Install
 
-### Requirements
+## Requirements
 
 * git
 * make
 * docker >= 18.06
 * docker-compose >= 1.23
 
-### Install
-
-#### Linux
+### Linux
 
 ```bash
 git clone git@github.com:crf-devs/resop.git && cd resop
 make
 ```
 
-#### OS X
+### OS X
 
 ```bash
 git clone git@github.com:crf-devs/resop.git && cd resop
@@ -64,7 +62,7 @@ make configure
 make all
 ```
 
-#### Windows
+### Windows
 
 * Install [WSL2](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install)
 * Enable [Docker support  for WSL2](https://docs.docker.com/docker-for-windows/wsl-tech-preview/)
@@ -73,8 +71,52 @@ make all
 
 Note : PHPStorm do not currently provide a good native integration, with WSL2, you will mainly need to open the directory from WSL directory, usually the name is \\wsl$\ located at same level at c/. See : [IDEABKL-7908](https://youtrack.jetbrains.com/issue/IDEABKL-7908) and [IDEA-171510](https://youtrack.jetbrains.com/issue/IDEA-171510)
 
+### Without Docker
 
-### Run
+*Disclaimer: This method is not recommended, please prefer the Docker way if you can.*
+
+If you don't want to use the provided Docker stack (such a weird idea, but why not), you can easily run the stack as in old times, with you own php & node & prostgres services
+
+**Requirements**
+
+- PHP 7.4
+- Node >= 13, Yarn >= 1.22
+- PostgreSQL 11
+- [Symfony CLI](https://symfony.com/download)
+
+**Install**
+
+Create a `.env.local` file and set the database url:
+
+```
+DATABASE_URL=postgresql://<USER>:<PASSWORD>@<HOST>/<DB>?serverVersion=11&charset=utf8
+```
+
+From the `Makefile`, copy & run the following tasks commands manualy (you must remove the `bin/tools` or `bin/node-tools` prefix):
+
+- vendors
+- webpack-build-dev
+- init-db
+
+Then, you can serve the project:
+
+```bash
+symfony server:start
+```
+
+If you want to watch JS & CSS changes, run:
+
+```bash
+yarn encore dev --watch
+```
+
+That's it :) If you need any other command, you can look for it in the `Makefile`.
+
+### With Vagrant + VirtualBox
+
+If you want to run the stack with Vagrant, you can have a look to [this PR](https://github.com/crf-devs/resop/pull/186) in order to find a working config.
+
+## Run
 
 After the `make` command, go to [http://resop.vcap.me:7500/](http://resop.vcap.me:7500/),
 or [https://resop.vcap.me:7583/](https://resop.vcap.me:7583/) for https (self signed certificate).
@@ -89,7 +131,7 @@ You don't need to build all the stack every time. If there is no new vendor, you
 make start
 ```
 
-### Access
+## Access
 
 The project is using a Traefik proxy in order to allow access to all the HTTP services of the project. This service is listening on the 7500 port of the host.
 The `*.vcap.me` domain names are binded on localhost. In order to use them offline, you only have to add a
