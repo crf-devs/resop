@@ -106,5 +106,7 @@ $(document).ready(function () {
     dateSortPlanning($(this), $planning);
   });
 
+  // The table is hidden by default for performances reason
+  $planning.css('display', 'table');
   $('#loader').hide();
 });
