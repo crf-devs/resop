@@ -20,24 +20,43 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class ApplicationFixtures extends Fixture
 {
     private const ORGANIZATIONS = [
-        'UL 01-02',
-        'UL 03-10',
-        'UL 04',
-        'UL 05',
-        'UL 06',
-        'UL 07',
-        'UL 08',
-        'UL 09',
-        'UL 11',
-        'UL 12',
-        'UL 13',
-        'UL 14',
-        'UL 15',
-        'UL 16',
-        'UL 17',
-        'UL 18',
-        'UL 19',
-        'UL 20',
+        'UL 01-02' => 'DT75',
+        'UL 03-10' => 'DT75',
+        'UL 04' => 'DT75',
+        'UL 05' => 'DT75',
+        'UL 06' => 'DT75',
+        'UL 07' => 'DT75',
+        'UL 08' => 'DT75',
+        'UL 09' => 'DT75',
+        'UL 11' => 'DT75',
+        'UL 12' => 'DT75',
+        'UL 13' => 'DT75',
+        'UL 14' => 'DT75',
+        'UL 15' => 'DT75',
+        'UL 16' => 'DT75',
+        'UL 17' => 'DT75',
+        'UL 18' => 'DT75',
+        'UL 19' => 'DT75',
+        'UL 20' => 'DT75',
+        'UL DE BRIE ET CHANTEREINE' => 'DT77',
+        'UL DE BRIE SENART' => 'DT77',
+        'UL DE CENTRE BRIE' => 'DT77',
+        'UL DE CHATEAU LANDON' => 'DT77',
+        'UL DE COULOMMIERS' => 'DT77',
+        'UL DE DONNEMARIE-DONTILLY' => 'DT77',
+        'UL DE FONTAINEBLEAU' => 'DT77',
+        'UL DE L\'EST FRANCILIEN' => 'DT77',
+        'UL DE LA MARNE ET LES DEUX MORINS' => 'DT77',
+        'UL DE LAGNY SUR MARNE' => 'DT77',
+        'UL DE LIZY SUR OURCQ' => 'DT77',
+        'UL DE MEAUX' => 'DT77',
+        'UL DE MELUN' => 'DT77',
+        'UL DE MITRY-MORY - VILLEPARISIS' => 'DT77',
+        'UL DE MONTEREAU' => 'DT77',
+        'UL DE MORET LOING ET ORVANNE' => 'DT77',
+        'UL DE NANGIS' => 'DT77',
+        'UL DE PROVINS' => 'DT77',
+        'UL DES PORTES DE ROISSY CDG' => 'DT77',
     ];
 
     private ValidatorInterface $validator;
@@ -84,9 +103,10 @@ final class ApplicationFixtures extends Fixture
         $password = $encoder->encodePassword('covid19', null);
 
         $this->addOrganization($this->makeOrganization('DT75', $password));
+        $this->addOrganization($this->makeOrganization('DT77', $password));
 
-        foreach (self::ORGANIZATIONS as $name) {
-            $this->addOrganization($this->makeOrganization($name, $password, $this->organizations['DT75']));
+        foreach (self::ORGANIZATIONS as $name => $dt) {
+            $this->addOrganization($this->makeOrganization($name, $password, $this->organizations[$dt]));
         }
 
         // Persist all organizations
@@ -101,16 +121,24 @@ final class ApplicationFixtures extends Fixture
             ['VPSP', '2'],
             ['VPSP', '4'],
             ['VL', '6'],
+            ['VL', '8'],
         ];
 
+        $incUlId = 10;
         foreach ($this->organizations as $organization) {
             $ulId = '99';
             if (!$organization->isParent()) {
-                $ulId = substr(str_replace('UL ', '', $organization->name), 0, 2);
+                if ('DT75' == $organization->getParentName()) {
+                    $ulId = substr(str_replace('UL ', '', $organization->name), 0, 2);
+                } else {
+                    $ulId = $incUlId++;
+                }
             }
 
+            $nameToSearch = $organization->isParent() ? $organization->name : $organization->getParentName();
+            $prefix = str_replace('DT', '', $nameToSearch ?? '');
             foreach ($combinations as [$type, $suffix]) {
-                $asset = new CommissionableAsset(null, $organization, $type, '75'.$ulId.$suffix);
+                $asset = new CommissionableAsset(null, $organization, $type, $prefix.$ulId.$suffix);
                 $this->validateAndPersist($manager, $asset);
                 $this->assets[] = $asset;
             }
@@ -122,14 +150,14 @@ final class ApplicationFixtures extends Fixture
     private function loadUsers(ObjectManager $manager): void
     {
         $startIdNumber = 990000;
-        $firstNames = ['Philippe', 'Bastien', 'Hugo', 'Michel', 'Mathias', 'Florian', 'Fabien', 'Nassim', 'Mathieu', 'Francis', 'Thomas'];
-        $lastNames = ['Skywalker', 'Oneal', 'James', 'Bryant', 'Davis', 'Johnson', 'Curry', 'Pippen', 'Jordan', 'Parker', 'Grant', 'Thompson', 'Harden', 'Westbrook'];
+        $firstNames = ['Audrey', 'Arnaud', 'Bastien', 'Beatrice', 'Benoit', 'Camille', 'Claire', 'Hugo', 'Fabien', 'Florian', 'Francis', 'Lilia', 'Lisa', 'Marie', 'Marine', 'Mathias', 'Mathieu', 'Michel', 'Nassim', 'Nathalie', 'Olivier', 'Pierre', 'Philippe', 'Sybille', 'Thomas', 'Tristan'];
+        $lastNames = ['Bryant', 'Butler', 'Curry', 'Davis', 'Doncic', 'Durant', 'Embiid', 'Fournier', 'Grant', 'Gobert', 'Harden', 'Irving', 'James',  'Johnson',  'Jordan', 'Lilliard', 'Morant', 'Noah', 'Oneal', 'Parker', 'Pippen', 'Skywalker', 'Thompson',  'Westbrook'];
         $occupations = ['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'];
 
         $x = 1;
         $availableSkillSet = $this->skillSetDomain->getSkillSet();
         foreach ($this->organizations as $organization) {
-            for ($i = 0; $i < $max = random_int(5, 15); ++$i) {
+            for ($i = 0; $i < $max = random_int(20, 40); ++$i) {
                 $user = new User();
                 $user->id = $i + 1;
                 $user->firstName = $firstNames[array_rand($firstNames)];

@@ -70,4 +70,26 @@ class OrganizationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByIdOrParentIdQueryBuilder(int $organizationId, QueryBuilder $qb = null): QueryBuilder
+    {
+        $alias = 'o';
+        if (null === $qb) {
+            $qb = $this->createQueryBuilder('o');
+        } else {
+            $alias = $qb->getRootAliases()[0];
+            $qb->orderBy($alias.'.name', 'desc');
+        }
+
+        $qb
+            ->where($qb->expr()->orX($alias.'.id = :orgId', $alias.'.parent = :orgId'))
+            ->setParameter('orgId', $organizationId);
+
+        return $qb;
+    }
+
+    public function findByIdOrParentId(int $organizationId): iterable
+    {
+        return $this->findByIdOrParentIdQueryBuilder($organizationId)->getQuery()->getResult();
+    }
 }
