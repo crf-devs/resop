@@ -126,10 +126,16 @@ class PlanningUpdateDomain
             /** @var AvailabilityInterface */
             $currentEntity = end($search);
 
-            foreach ($schedules as $schedule) {
-                list($scheduleStart, $scheduleEnd) = $schedule;
-                $searchAvailabilities = array_filter($availabilities, function (AvailabilityInterface $availability) use ($entityId, $scheduleStart, $scheduleEnd) {
-                    return $availability->getOwner()->getId() === (int) $entityId && $availability->getStartTime() === new \DateTimeImmutable($scheduleStart) && $availability->getEndTime() === new \DateTimeImmutable($scheduleEnd);
+            foreach ($schedules as [$scheduleStart, $scheduleEnd]) {
+                $scheduleStartDate = new \DateTimeImmutable($scheduleStart);
+                $scheduleEndDate = new \DateTimeImmutable($scheduleEnd);
+
+                $searchAvailabilities = array_filter($availabilities, function (AvailabilityInterface $availability) use ($entityId, $scheduleStartDate, $scheduleEndDate) {
+                    // Caution: it's not possible to compare DateTimeImmutable with ====
+                    return
+                        $availability->getOwner()->getId() === (int) $entityId
+                        && 0 === $availability->getStartTime()->getTimestamp() - $scheduleStartDate->getTimestamp()
+                        && 0 === $availability->getEndTime()->getTimestamp() - $scheduleEndDate->getTimestamp();
                 });
                 $availability = end($searchAvailabilities);
 
