@@ -12,12 +12,15 @@ services:
 #  blackfire:
 #    image: blackfire/blackfire
 #    environment:
-#      - BLACKFIRE_SERVER_ID
-#      - BLACKFIRE_SERVER_TOKEN
+#      - BLACKFIRE_SERVER_ID=none
+#      - BLACKFIRE_SERVER_TOKEN=none
 
 #  fpm:
 #    volumes:
 #      - ./:/srv:cached # Uncomment for MacOS
+#    environment:
+#        - BLACKFIRE_CLIENT_ID=none
+#        - BLACKFIRE_CLIENT_TOKEN=none
 
 #  node:
 #    volumes:
