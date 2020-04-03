@@ -49,11 +49,6 @@ prepare:
     - docker push ${CI_REGISTRY_IMAGE}/nginx:${CI_COMMIT_REF_SLUG}
     - docker push ${CI_REGISTRY_IMAGE}/nginx:latest
 
-build:master:
-  extends: .build
-  only:
-    - master
-
 build:tag:
   extends: .build
   after_script:
@@ -67,14 +62,3 @@ build:tag:
     - /^\d+\.\d+(?:\.\d+)?$/
   except:
     - branches
-
-deploy:snapshot:
-  stage: deploy
-  variables:
-    GIT_STRATEGY: fetch
-  dependencies: []
-  script:
-    - apk add --no-cache curl
-    - curl --request POST --form "token=$CI_JOB_TOKEN" --form ref=master https://gitlab.com/api/v4/projects/7280731/trigger/pipeline
-  only:
-    - master
