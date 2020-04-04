@@ -12,3 +12,4 @@ $.fn.selectpicker.Constructor.DEFAULTS.noneResultsText = 'Aucun résultat pour {
 $.fn.selectpicker.Constructor.DEFAULTS.selectAllText = 'Tout sélectionner';
 $.fn.selectpicker.Constructor.DEFAULTS.deselectAllText = 'Tout déselectionner';
 $.fn.selectpicker.Constructor.DEFAULTS.doneButtonText = 'Fermer';
+$.fn.selectpicker.Constructor.DEFAULTS.mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
