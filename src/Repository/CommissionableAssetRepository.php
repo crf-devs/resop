@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
+use App\Entity\Organization;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\AbstractQuery;
@@ -28,6 +29,17 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
     public function findByIds(array $ids): array
     {
         return $this->findBy(['id' => $ids]);
+    }
+
+    public function findByOrganization(Organization $organization): iterable
+    {
+        return $this
+            ->createQueryBuilder('ca')
+            ->where('ca.organization = :organization')
+            ->setParameter('organization', $organization)
+            ->orderBy('ca.name', 'asc')
+            ->getQuery()
+            ->getResult();
     }
 
     /**

@@ -1,10 +1,16 @@
 {% extends 'organization/base.html.twig' %}
 
-{% block body %}
-    <h1>Utilisateurs - {{ organization }}</h1>
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('availabilitable-list') }}
+{% endblock %}
 
-    <table class="table table-striped mt-5">
-        <thead>
+{% block body %}
+    <h1>Bénévoles - {{ organization }}</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped mt-5">
+            <thead  class="thead-light">
             <tr>
                 <th>NIVOL</th>
                 <th>Prénom</th>
@@ -15,8 +21,8 @@
                 {% endif %}
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             {% for user in users %}
                 <tr>
                     <td>{{ user.identificationNumber }}</td>
@@ -26,10 +32,34 @@
                     {% if organization.parent is null %}
                         <td>{{ user.organization.name }}</td>
                     {% endif %}
-                    <td><a href="{{ path('organization_user_edit', { 'id': user.id }) }}">Modifier</a></td>
+                    <td>
+                        <a class="btn btn-outline-primary" href="{{ path('organization_user_edit', { 'id': user.id }) }}">Modifier</a>
+                        <a class="btn btn-danger trigger-delete" data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )" href="#" data-href="{{ path('app_user_delete', { 'id': user.id }) }}">Supprimer</a>
+                    </td>
                 </tr>
             {% endfor %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Vous êtes sur le point de supprimer le bénévole : <span id="to-delete-name"></span> et toutes ses disponibilités.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

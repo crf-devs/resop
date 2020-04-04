@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Organization;
+namespace App\Controller\Organization\User;
 
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
