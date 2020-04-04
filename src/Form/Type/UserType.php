@@ -58,7 +58,7 @@ class UserType extends AbstractType
             ->add('identificationNumber', TextType::class)
             ->add('organization', OrganizationEntityType::class, [
                 'placeholder' => '',
-                'query_builder' => function (OrganizationRepository $repository) use ($organization) {
+                'query_builder' => static function (OrganizationRepository $repository) use ($organization) {
                     $qb = $repository
                         ->createQueryBuilder('o')
                         ->orderBy('o.parent', 'ASC')

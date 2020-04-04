@@ -73,12 +73,12 @@ class PlanningDomain
     {
         $organization = $this->security->getUser();
         if (!$organization instanceof Organization) {
-            throw new \LogicException();
+            throw new \LogicException('Bad user type');
         }
 
         $filters = $form->getData();
         if (!\array_key_exists('organizations', $filters) || !(\count($filters['organizations']) > 0)) {
-            $filters['organizations'] = $this->organizationRepository->findByIdOrParentId($organization->getId());
+            $filters['organizations'] = $this->organizationRepository->findByParent($organization);
         }
 
         return $filters;

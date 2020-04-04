@@ -66,8 +66,9 @@ class PlanningSearchType extends AbstractType
             ->add('organizations', EntityType::class, [
                 'label' => 'Structures',
                 'class' => Organization::class,
-                'query_builder' => function (OrganizationRepository $repository) use ($organization) {
-                    return $repository->findByIdOrParentIdQueryBuilder($organization->getId());
+                'group_by' => 'parentName',
+                'query_builder' => static function (OrganizationRepository $repository) use ($organization) {
+                    return $repository->findByParentQueryBuilder($organization);
                 },
                 'multiple' => true,
                 'choice_label' => 'name',

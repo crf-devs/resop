@@ -18,6 +18,12 @@ final class OrganizationEntityType extends AbstractType
         $resolver->setDefaults([
             'class' => Organization::class,
             'choice_label' => 'name',
+            'attr' => [
+                'class' => 'selectpicker show-tick',
+                'data-live-search' => 'true',
+                'title' => 'Choisissez votre structure',
+            ],
+            'group_by' => 'parentName',
             'query_builder' => static function (OrganizationRepository $repository): QueryBuilder {
                 return $repository->createActiveOrganizationQueryBuilder();
             },
