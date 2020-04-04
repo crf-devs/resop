@@ -16,12 +16,18 @@
 
                 <div class="form-row mb-4">
                     <label for="inputIdentifier">Structure</label>
-                    <select name="identifier" id="inputIdentifier" class="form-control" required>
-                        {% for organization in organizations %}
-                            <option
-                                value="{{ organization.name }}" {{ last_username == organization.name ? 'selected' : '' }}>
-                                {{- organization.name -}}
-                            </option>
+                    <select name="identifier" id="inputIdentifier" class="form-control selectpicker show-tick" required data-live-search="true" title="Choisissez votre structure">
+                        {% for parentName, children in organizations %}
+                            <optgroup label="{{ parentName }}">
+                                {% for organization in children -%}
+                                    <option
+                                        value="{{ organization.name }}" {{ last_username == organization.name ? 'selected' : '' }}
+                                        title="{{ (organization.isParent ? '' : parentName~' - ')~ organization.name}}"
+                                    >
+                                        {{ organization.name }}
+                                    </option>
+                                {%- endfor %}
+                            </optgroup>
                         {% endfor %}
                     </select>
                 </div>

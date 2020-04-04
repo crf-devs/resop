@@ -54,9 +54,10 @@ class CommissionableAssetsController extends AbstractController
             return $this->redirectToRoute('app_organization_commissionable_assets');
         }
 
-        return $this->render('organization/commissionable_asset/add.html.twig', [
+        return $this->render('organization/commissionable_asset/form.html.twig', [
             'organization' => $organization,
             'form' => $form->createView(),
+            'asset' => $asset,
         ]);
     }
 
@@ -77,8 +78,9 @@ class CommissionableAssetsController extends AbstractController
             return $this->redirectToRoute('app_organization_commissionable_assets');
         }
 
-        return $this->render('organization/commissionable_asset/add.html.twig', [
+        return $this->render('organization/commissionable_asset/form.html.twig', [
             'form' => $form->createView(),
+            'asset' => $asset,
         ]);
     }
 }

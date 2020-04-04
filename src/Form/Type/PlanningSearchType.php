@@ -7,6 +7,7 @@ namespace App\Form\Type;
 use App\Domain\SkillSetDomain;
 use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
+use App\Repository\OrganizationRepository;
 use DateTimeImmutable;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -14,6 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PlanningSearchType extends AbstractType
@@ -27,6 +30,11 @@ class PlanningSearchType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $organization = $builder->getData()['organization'];
+        if (!$organization instanceof Organization || null === $organization->id) {
+            throw new \InvalidArgumentException('PlanningSearchType must be initialized with an already persisted organization');
+        }
+
         $builder
             ->add('from', DateTimeType::class, [
                 'widget' => 'single_text',
@@ -58,6 +66,10 @@ class PlanningSearchType extends AbstractType
             ->add('organizations', EntityType::class, [
                 'label' => 'Structures',
                 'class' => Organization::class,
+                'group_by' => 'parentName',
+                'query_builder' => static function (OrganizationRepository $repository) use ($organization) {
+                    return $repository->findByParentQueryBuilder($organization);
+                },
                 'multiple' => true,
                 'choice_label' => 'name',
                 'required' => false,
@@ -97,6 +109,20 @@ class PlanningSearchType extends AbstractType
                 'attr' => ['class' => 'selectpicker'],
             ])
         ;
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $data = $event->getData();
+
+            if (!isset($data['from'])) {
+                $data['from'] = new \DateTimeImmutable('today');
+            }
+
+            if (!isset($data['to'])) {
+                $data['to'] = (clone $data['from'])->add(new \DateInterval('P2D'));
+            }
+
+            $event->setData($data);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

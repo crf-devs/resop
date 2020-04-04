@@ -67,6 +67,15 @@ class Organization implements UserInterface, \JsonSerializable
         ];
     }
 
+    public function getId(): int
+    {
+        if (null === $this->id) {
+            throw new \LogicException('Id must be defined');
+        }
+
+        return $this->id;
+    }
+
     public function getRoles(): array
     {
         return ['ROLE_ORGANIZATION'];
@@ -104,7 +113,7 @@ class Organization implements UserInterface, \JsonSerializable
     public function getParentName(): ?string
     {
         if (null === $this->parent) {
-            return  null;
+            return null;
         }
 
         return $this->parent->getName();

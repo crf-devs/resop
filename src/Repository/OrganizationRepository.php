@@ -28,24 +28,35 @@ class OrganizationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Organization[]
+     * @return Organization[][]
      */
     public function loadActiveOrganizations(): array
     {
-        return $this
+        /** @var Organization[] $items */
+        $items = $this
             ->createActiveOrganizationQueryBuilder()
             ->getQuery()
             ->getResult()
         ;
+
+        $result = [];
+        // Return all organizations separated by parent
+        foreach ($items as $item) {
+            $result[$item->isParent() ? $item->name : $item->getParentName()][] = $item;
+        }
+
+        return $result;
     }
 
-    public function createActiveOrganizationQueryBuilder(string $alias = 'o'): QueryBuilder
+    public function createActiveOrganizationQueryBuilder(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder($alias);
+        $qb = $this->createQueryBuilder('o');
 
         return $qb
-            ->where($qb->expr()->isNotNull($alias.'.password'))
-            ->orderBy($alias.'.name', 'ASC')
+            ->leftJoin('o.parent', 'p')
+            ->where($qb->expr()->isNotNull('o.password'))
+            ->addOrderBy('p.name', 'ASC')
+            ->addOrderBy('o.name', 'ASC')
         ;
     }
 
@@ -64,10 +75,42 @@ class OrganizationRepository extends ServiceEntityRepository
     public function findByParent(Organization $organization): iterable
     {
         return $this
-            ->createQueryBuilder('o')
-            ->where('o.parent = :organization')
-            ->setParameter('organization', $organization)
+            ->findByParentQueryBuilder($organization)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findByParentQueryBuilder(Organization $organization): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb
+            ->where($qb->expr()->orX('o.id = :orga', 'o.parent = :orga'))
+            ->setParameter('orga', $organization->parent ?: $organization)
+            ->addOrderBy('o.name', 'ASC');
+
+        return $qb;
+    }
+
+    public function findByIdOrParentIdQueryBuilder(int $organizationId, QueryBuilder $qb = null): QueryBuilder
+    {
+        $alias = 'o';
+        if (null === $qb) {
+            $qb = $this->createQueryBuilder('o');
+        } else {
+            $alias = $qb->getRootAliases()[0];
+            $qb->orderBy($alias.'.name', 'desc');
+        }
+
+        $qb
+            ->where($qb->expr()->orX($alias.'.id = :orgId', $alias.'.parent = :orgId'))
+            ->setParameter('orgId', $organizationId);
+
+        return $qb;
+    }
+
+    public function findByIdOrParentId(int $organizationId): iterable
+    {
+        return $this->findByIdOrParentIdQueryBuilder($organizationId)->getQuery()->getResult();
     }
 }

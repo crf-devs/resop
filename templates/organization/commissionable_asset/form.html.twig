@@ -1,0 +1,16 @@
+{% extends 'organization/base.html.twig' %}
+
+{% set actionName = asset.id is defined ? 'Modification' : 'Création' %}
+
+{% block title %}{{ actionName}} d'un véhicule{% endblock %}
+
+{% block body %}
+    <h1>{{actionName}} d'un véhicule</h1>
+
+    {{ form_start(form) }}
+    {% if form.organization is defined %}
+        {{ form_row(form.organization) }}
+    {% endif %}
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

@@ -5,6 +5,13 @@
 {% block body %}
     <h1>{{ app.user }} - Véhicules</h1>
 
+
+    <div class="row">
+        <div class="col-12 text-right mb-2">
+            <a class="btn btn-success" href="{{ path('app_organization_commissionable_add_asset') }}" role="button">Ajouter un nouveau véhicule</a>
+        </div>
+    </div>
+
     <ul class="list-group list-group-flush mb-4 mt-4">
         {% for asset in assets %}
         <li class="list-group-item list-group-item-action">
@@ -19,6 +26,4 @@
         </li>
         {% endfor %}
     </ul>
-
-    <p><a class="btn btn-primary" href="{{ path('app_organization_commissionable_add_asset') }}" role="button">Ajouter un nouveau véhicule</a></p>
 {% endblock %}

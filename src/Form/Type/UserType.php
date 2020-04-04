@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Form\Type;
 
 use App\Domain\SkillSetDomain;
+use App\Entity\Organization;
 use App\Entity\User;
+use App\Repository\OrganizationRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -47,12 +49,27 @@ class UserType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var Organization|null $organization */
+        $organization = $builder->getData()->organization;
+
         $occupationChoices = (array) array_combine(self::DEFAULT_OCCUPATIONS, self::DEFAULT_OCCUPATIONS);
         $occupationChoices += ['Autre' => '-'];
         $builder
             ->add('identificationNumber', TextType::class)
             ->add('organization', OrganizationEntityType::class, [
                 'placeholder' => '',
+                'query_builder' => static function (OrganizationRepository $repository) use ($organization) {
+                    $qb = $repository
+                        ->createQueryBuilder('o')
+                        ->orderBy('o.parent', 'ASC')
+                        ->addOrderBy('o.name', 'ASC');
+
+                    if ($organization instanceof Organization) {
+                        $qb = $repository->findByIdOrParentIdQueryBuilder($organization->getId(), $qb);
+                    }
+
+                    return $qb;
+                },
             ])
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
