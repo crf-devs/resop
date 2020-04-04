@@ -22,11 +22,6 @@ class OrganizationRepository extends ServiceEntityRepository
         parent::__construct($registry, Organization::class);
     }
 
-    public function loadUserByUsername(string $name): ?Organization
-    {
-        return $this->findOneBy(['name' => $name]);
-    }
-
     /**
      * @return Organization[][]
      */

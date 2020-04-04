@@ -70,8 +70,8 @@ final class OrganizationLoginFormAuthenticator extends AbstractFormLoginAuthenti
             throw new InvalidCsrfTokenException();
         }
 
-        if (!$user = $this->organizationRepository->loadUserByUsername($credentials['identifier'])) {
-            throw new CustomUserMessageAuthenticationException('Organization name could not be found.');
+        if (!$user = $this->organizationRepository->find($credentials['identifier'])) {
+            throw new CustomUserMessageAuthenticationException('Organization could not be found.');
         }
 
         return $user;
