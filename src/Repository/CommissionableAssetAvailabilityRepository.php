@@ -73,4 +73,15 @@ class CommissionableAssetAvailabilityRepository extends ServiceEntityRepository 
 
         return $this->findLastUpdatesForEntities($qb);
     }
+
+    public function deleteByOwner(CommissionableAsset $commissionableAsset): int
+    {
+        return $this
+            ->createQueryBuilder('caa')
+            ->delete()
+            ->where('caa.asset = :owner')
+            ->setParameter('owner', $commissionableAsset)
+            ->getQuery()
+            ->execute();
+    }
 }

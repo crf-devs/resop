@@ -28,6 +28,7 @@ Encore
     .addEntry('availability-form', './assets/js/availability-form.js')
     .addEntry('planning', './assets/js/planning.js')
     .addEntry('planning-update', './assets/js/planning-update.js')
+    .addEntry('availabilitable-list', './assets/js/availabilitable-list.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

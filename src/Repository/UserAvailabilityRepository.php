@@ -73,4 +73,15 @@ class UserAvailabilityRepository extends ServiceEntityRepository implements Avai
 
         return $this->findLastUpdatesForEntities($qb);
     }
+
+    public function deleteByOwner(User $user): int
+    {
+        return $this
+            ->createQueryBuilder('ua')
+            ->delete()
+            ->where('ua.user = :owner')
+            ->setParameter('owner', $user)
+            ->getQuery()
+            ->execute();
+    }
 }

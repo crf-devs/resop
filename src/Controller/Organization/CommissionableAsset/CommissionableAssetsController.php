@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CommissionableAssetsController extends AbstractController
 {
@@ -27,8 +28,13 @@ class CommissionableAssetsController extends AbstractController
      */
     public function assets(): Response
     {
+        $organization = $this->getUser();
+        if (!$organization instanceof Organization) {
+            throw new AccessDeniedException();
+        }
+
         return $this->render('organization/commissionable_asset/list.html.twig', [
-            'assets' => $this->assetRepository->findBy(['organization' => $this->getUser()]),
+            'assets' => $this->assetRepository->findByOrganization($organization),
         ]);
     }
 
