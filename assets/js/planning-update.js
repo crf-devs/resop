@@ -20,6 +20,32 @@ function selectTableBox($tableBox) {
   colorTableBox($tableBox);
 }
 
+function handleSlotBoxClick(event) {
+  event.stopImmediatePropagation();
+
+  const $slotBox = event.target === 'input' ? $(this).closest('.slot-box') : $(this);
+  selectTableBox($slotBox);
+
+  const $planning = $('.planning');
+  const $lastClickedTd = $planning.find('.prev-clicked');
+
+  if ($lastClickedTd && event.shiftKey) {
+    handleShiftClick($planning, $slotBox, $lastClickedTd);
+    $lastClickedTd.removeClass('prev-clicked');
+    $lastClickedTd.removeClass('highlight');
+  }
+
+  $slotBox.addClass('prev-clicked');
+}
+
+function handleShiftInput(event) {
+  if (!event.repeat) {
+    $('.planning')
+      .find('.prev-clicked')
+      .toggleClass('highlight', event.type === 'keydown');
+  }
+}
+
 function triggerUpdate(url, newStatus, $planning, $modal) {
   const payload = generatePayload($planning);
 
@@ -189,49 +215,14 @@ function handleShiftClick($planning, $currentClickedTd, $lastClickedTd) {
 
 $(document).ready(function () {
   const $planning = $('.planning');
-  let $lastClickedTd = null;
 
-  $(document).on('keydown', function (e) {
-    if (e.shiftKey && !e.repeat && $lastClickedTd && !$lastClickedTd.hasClass('highlight')) {
-      $planning.find('.highlight').removeClass('highlight');
-      $lastClickedTd.addClass('highlight');
-    }
-  });
-
-  $(document).on('keyup', function (e) {
-    if (e.keyCode === 16) {
-      $planning.find('.highlight').removeClass('highlight');
-    }
-  });
+  $planning.on('click', '.slot-box', handleSlotBoxClick);
+  $(document).on('keydown keyup', handleShiftInput);
 
   let urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('scrollTop')) {
     $(window).scrollTop(urlParams.get('scrollTop'));
   }
-
-  $planning.on('click', '.slot-box input:checkbox', function (e) {
-    e.stopImmediatePropagation();
-
-    colorTableBox($(this).closest('.slot-box'));
-    if (e.shiftKey && null !== $lastClickedTd) {
-      handleShiftClick($planning, $(this).closest('td'), $lastClickedTd);
-    }
-    if ($lastClickedTd && $lastClickedTd.hasClass('.highlight')) {
-      $lastClickedTd.removeClass('.highlight');
-    }
-    $lastClickedTd = $(this).closest('td');
-    $lastClickedTd.addClass('.highlight');
-  });
-
-  $planning.on('click', '.slot-box', function (e) {
-    e.stopImmediatePropagation();
-    selectTableBox($(this));
-
-    if (e.shiftKey && null !== $lastClickedTd) {
-      handleShiftClick($planning, $(this), $lastClickedTd);
-    }
-    $lastClickedTd = $(this);
-  });
 
   const $modalUpdate = $('#modal-update');
 
