@@ -102,8 +102,10 @@ $(document).ready(function () {
     }
   });
 
-  $(document).on('keyup', function () {
-    $table.find('.highlight').removeClass('highlight');
+  $(document).on('keyup', function (e) {
+    if (e.keyCode === 16) {
+      $table.find('.highlight').removeClass('highlight');
+    }
   });
 
   $table.on('click', '.clickable-table-box', function (e) {

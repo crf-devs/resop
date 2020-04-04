@@ -198,8 +198,10 @@ $(document).ready(function () {
     }
   });
 
-  $(document).on('keyup', function () {
-    $planning.find('.highlight').removeClass('highlight');
+  $(document).on('keyup', function (e) {
+    if (e.keyCode === 16) {
+      $planning.find('.highlight').removeClass('highlight');
+    }
   });
 
   let urlParams = new URLSearchParams(window.location.search);
