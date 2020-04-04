@@ -192,7 +192,7 @@ $(document).ready(function () {
   let $lastClickedTd = null;
 
   $(document).on('keydown', function (e) {
-    if (e.shiftKey && $lastClickedTd && !$lastClickedTd.hasClass('highlight')) {
+    if (e.shiftKey && !e.repeat && $lastClickedTd && !$lastClickedTd.hasClass('highlight')) {
       $planning.find('.highlight').removeClass('highlight');
       $lastClickedTd.addClass('highlight');
     }
@@ -216,7 +216,11 @@ $(document).ready(function () {
     if (e.shiftKey && null !== $lastClickedTd) {
       handleShiftClick($planning, $(this).closest('td'), $lastClickedTd);
     }
+    if ($lastClickedTd && $lastClickedTd.hasClass('.highlight')) {
+      $lastClickedTd.removeClass('.highlight');
+    }
     $lastClickedTd = $(this).closest('td');
+    $lastClickedTd.addClass('.highlight');
   });
 
   $planning.on('click', '.slot-box', function (e) {

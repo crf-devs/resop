@@ -96,7 +96,7 @@ $(document).ready(function () {
   });
 
   $(document).on('keydown', function (e) {
-    if (e.shiftKey && $prevClickedTd && !$prevClickedTd.hasClass('highlight')) {
+    if (e.shiftKey && !e.repeat && $prevClickedTd && !$prevClickedTd.hasClass('highlight')) {
       $table.find('.highlight').removeClass('highlight');
       $prevClickedTd.addClass('highlight');
     }
@@ -115,7 +115,11 @@ $(document).ready(function () {
       handleShiftClick($table, $(this), $prevClickedTd);
     }
 
+    if ($prevClickedTd && $prevClickedTd.hasClass('highlight')) {
+      $prevClickedTd.removeClass('highlight');
+    }
     $prevClickedTd = $(this);
+    $prevClickedTd.addClass('highlight');
   });
 
   $actions.on('click', 'button.select-all', function () {
