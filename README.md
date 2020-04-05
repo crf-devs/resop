@@ -51,6 +51,6 @@ You should join the [ResOp Discord server](https://discord.gg/ZyzeSq5) if you wa
 
 See [How to contribute](doc/contributing.md) for more information!
 
-# Techical information
+# Technical information
 
 [How to install, to run the project, to use it?](doc/technical.md)

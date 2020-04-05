@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ApplicationFixtures extends Fixture
 {
+    private const SLOT_SIZE = 2; // 2 hours for one slot
     private const ORGANIZATIONS = [
         'DT75' => [
             'UL 01-02',
@@ -205,11 +206,14 @@ final class ApplicationFixtures extends Fixture
     private function loadAvailabilities(ObjectManager $manager, array $owners, string $availabilityClass): void
     {
         /** @var EntityManagerInterface $manager */
-        $thisWeek = (new \DateTimeImmutable('monday this week'));
+        $today = (new \DateTimeImmutable('today'));
 
         $dateIntervals = [];
-        for ($d = 0; $d <= 10; ++$d) {
-            for ($t = 0; $t < 24; $t += 6) {
+        $daysCount = $this->nbAvailabilities;
+        $hoursForOneEvent = 6;
+
+        for ($d = 0; $d <= $daysCount; ++$d) {
+            for ($t = 0; $t < 24; $t += $hoursForOneEvent) {
                 $dateIntervals[] = 'P'.$d.'DT'.$t.'H';
             }
         }
@@ -222,7 +226,8 @@ final class ApplicationFixtures extends Fixture
                 $key = array_rand($currentIntervals);
                 $data = [
                     'owner' => $owner,
-                    'startTime' => $thisWeek->add(new \DateInterval($currentIntervals[$key])),
+                    'startTime' => $today->add(new \DateInterval($currentIntervals[$key])),
+                    'hoursForOneEvent' => $hoursForOneEvent,
                     'status' => AvailabilityInterface::STATUSES[array_rand(AvailabilityInterface::STATUSES)],
                 ];
 
@@ -240,21 +245,25 @@ final class ApplicationFixtures extends Fixture
                 break;
             }
 
-            $manager->getConnection()->exec(sprintf(<<<SQL
-INSERT INTO %s (id, %s, start_time, end_time, status, created_at, updated_at, planning_agent_id) VALUES (%s)
-SQL
-            , $manager->getClassMetadata($availabilityClass)->getTableName(), UserAvailability::class === $availabilityClass ? 'user_id' : 'asset_id', implode('), (', $data)));
+            $manager->getConnection()->exec(sprintf(
+                'INSERT INTO %s (id, %s, start_time, end_time, status, created_at, updated_at, planning_agent_id) VALUES (%s)',
+                $manager->getClassMetadata($availabilityClass)->getTableName(),
+                UserAvailability::class === $availabilityClass ? 'user_id' : 'asset_id',
+                implode('), (', $data)
+            ));
         }
     }
 
     private function makeIntervalAvailability(array $data): iterable
     {
         $startTime = $data['startTime'];
-        for ($i = 0; $i < $this->nbAvailabilities; $i += 2) {
+        $slotsCount = random_int(1, $data['hoursForOneEvent'] / self::SLOT_SIZE); // Same color for many successive slots
+
+        for ($i = 0; $i < $slotsCount; ++$i) {
             $availability = [
                 $data['owner']->getId(),
-                "'".$startTime->add(new \DateInterval(sprintf('PT%sH', $i)))->format('Y-m-d H:i:s')."'",
-                "'".$startTime->add(new \DateInterval(sprintf('PT%sH', ($i + 2))))->format('Y-m-d H:i:s')."'",
+                "'".$startTime->add(new \DateInterval(sprintf('PT%sH', $i * self::SLOT_SIZE)))->format('Y-m-d H:i:s')."'",
+                "'".$startTime->add(new \DateInterval(sprintf('PT%sH', ($i + 1) * self::SLOT_SIZE)))->format('Y-m-d H:i:s')."'",
                 "'".$data['status']."'",
                 "'".date('Y-m-d H:i:s')."'",
                 "'".date('Y-m-d H:i:s')."'",
