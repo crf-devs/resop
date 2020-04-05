@@ -20,43 +20,47 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class ApplicationFixtures extends Fixture
 {
     private const ORGANIZATIONS = [
-        'UL 01-02' => 'DT75',
-        'UL 03-10' => 'DT75',
-        'UL 04' => 'DT75',
-        'UL 05' => 'DT75',
-        'UL 06' => 'DT75',
-        'UL 07' => 'DT75',
-        'UL 08' => 'DT75',
-        'UL 09' => 'DT75',
-        'UL 11' => 'DT75',
-        'UL 12' => 'DT75',
-        'UL 13' => 'DT75',
-        'UL 14' => 'DT75',
-        'UL 15' => 'DT75',
-        'UL 16' => 'DT75',
-        'UL 17' => 'DT75',
-        'UL 18' => 'DT75',
-        'UL 19' => 'DT75',
-        'UL 20' => 'DT75',
-        'UL DE BRIE ET CHANTEREINE' => 'DT77',
-        'UL DE BRIE SENART' => 'DT77',
-        'UL DE CENTRE BRIE' => 'DT77',
-        'UL DE CHATEAU LANDON' => 'DT77',
-        'UL DE COULOMMIERS' => 'DT77',
-        'UL DE DONNEMARIE-DONTILLY' => 'DT77',
-        'UL DE FONTAINEBLEAU' => 'DT77',
-        'UL DE L\'EST FRANCILIEN' => 'DT77',
-        'UL DE LA MARNE ET LES DEUX MORINS' => 'DT77',
-        'UL DE LAGNY SUR MARNE' => 'DT77',
-        'UL DE LIZY SUR OURCQ' => 'DT77',
-        'UL DE MEAUX' => 'DT77',
-        'UL DE MELUN' => 'DT77',
-        'UL DE MITRY-MORY - VILLEPARISIS' => 'DT77',
-        'UL DE MONTEREAU' => 'DT77',
-        'UL DE MORET LOING ET ORVANNE' => 'DT77',
-        'UL DE NANGIS' => 'DT77',
-        'UL DE PROVINS' => 'DT77',
-        'UL DES PORTES DE ROISSY CDG' => 'DT77',
+        'DT75' => [
+            'UL 01-02',
+            'UL 03-10',
+            'UL 04',
+            'UL 05',
+            'UL 06',
+            'UL 07',
+            'UL 08',
+            'UL 09',
+            'UL 11',
+            'UL 12',
+            'UL 13',
+            'UL 14',
+            'UL 15',
+            'UL 16',
+            'UL 17',
+            'UL 18',
+            'UL 19',
+            'UL 20',
+        ],
+        'DT77' => [
+            'UL DE BRIE ET CHANTEREINE',
+            'UL DE BRIE SENART',
+            'UL DE CENTRE BRIE',
+            'UL DE CHATEAU LANDON',
+            'UL DE COULOMMIERS',
+            'UL DE DONNEMARIE-DONTILLY',
+            'UL DE FONTAINEBLEAU',
+            'UL DE L\'EST FRANCILIEN',
+            'UL DE LA MARNE ET LES DEUX MORINS',
+            'UL DE LAGNY SUR MARNE',
+            'UL DE LIZY SUR OURCQ',
+            'UL DE MEAUX',
+            'UL DE MELUN',
+            'UL DE MITRY-MORY - VILLEPARISIS',
+            'UL DE MONTEREAU',
+            'UL DE MORET LOING ET ORVANNE',
+            'UL DE NANGIS',
+            'UL DE PROVINS',
+            'UL DES PORTES DE ROISSY CDG',
+        ],
     ];
 
     private ValidatorInterface $validator;
@@ -102,11 +106,12 @@ final class ApplicationFixtures extends Fixture
         $encoder = $this->encoders->getEncoder(Organization::class);
         $password = $encoder->encodePassword('covid19', null);
 
-        $this->addOrganization($this->makeOrganization('DT75', $password));
-        $this->addOrganization($this->makeOrganization('DT77', $password));
+        foreach (self::ORGANIZATIONS as $parentName => $organizations) {
+            $this->addOrganization($this->makeOrganization($parentName, $password));
 
-        foreach (self::ORGANIZATIONS as $name => $dt) {
-            $this->addOrganization($this->makeOrganization($name, $password, $this->organizations[$dt]));
+            foreach ($organizations as $name) {
+                $this->addOrganization($this->makeOrganization($name, $password, $this->organizations[$parentName]));
+            }
         }
 
         // Persist all organizations
@@ -128,7 +133,7 @@ final class ApplicationFixtures extends Fixture
         foreach ($this->organizations as $organization) {
             $ulId = '99';
             if (!$organization->isParent()) {
-                if ('DT75' == $organization->getParentName()) {
+                if ('DT75' === $organization->getParentName()) {
                     $ulId = substr(str_replace('UL ', '', $organization->name), 0, 2);
                 } else {
                     $ulId = $incUlId++;

@@ -37,7 +37,13 @@ class OrganizationRepository extends ServiceEntityRepository
         $result = [];
         // Return all organizations separated by parent
         foreach ($items as $item) {
-            $result[$item->isParent() ? $item->name : $item->getParentName()][] = $item;
+            if ($item->isParent()) {
+                // Insert parent structure at the beginning
+                $result[$item->name] = $result[$item->name] ?? [];
+                array_unshift($result[$item->name], $item);
+            } else {
+                $result[$item->getParentName()][] = $item;
+            }
         }
 
         return $result;
