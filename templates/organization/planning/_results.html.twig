@@ -107,13 +107,8 @@
                             <td class="item-data" colspan="{{ itemDataRow }}"></td>
                         {% endif %}
                         {% autoescape false %}
-                        {% for slot in item.availabilities -%}
-                            <td class="slot-box {{ slot.status }}" data-status="{{ slot.status }}" data-day="{{ slot.fromDay }}" data-from="{{ slot.fromDate }}" data-to="{{ slot.toDate }}">
-                                {% if displayActions %}
-                                    <input type="checkbox">
-                                {% endif %}
-                            </td>
-                        {% endfor %}
+                            {# Table td are rendered in php in order to avoid twig performance issue #}
+                            {{ renderPlanningTable(item.availabilities, displayActions) }}
                         {% endautoescape %}
                     </tr>
                 {% endfor %}
