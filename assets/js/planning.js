@@ -14,7 +14,7 @@ function initDatesRange($picker, $from, $to, withTime) {
     showDropdowns: false,
     timePicker: !!withTime,
     timePicker24Hour: true,
-    timePickerIncrement: 30,
+    timePickerIncrement: 60,
     applyClass: 'btn-sm btn-primary',
     cancelClass: 'btn-sm btn-default',
     locale: {
@@ -43,10 +43,25 @@ function initDatesRange($picker, $from, $to, withTime) {
     $to.val(picker.endDate.format('YYYY-MM-DDTHH:mm'));
   });
 
+  $picker.on('showCalendar.daterangepicker', function () {
+    hourselectOnlyEvenHour();
+  });
+
   $picker.on('cancel.daterangepicker', function () {
     $picker.val('');
     $from.val('');
     $to.val('');
+  });
+}
+
+function hourselectOnlyEvenHour() {
+  let allSelectHours = document.getElementsByClassName('hourselect');
+  console.log(allSelectHours);
+  allSelectHours.forEach((selectHours) => {
+    selectHours.options.length = 0;
+    for (let i = 0; i <= 11; i++) {
+      selectHours.options[i] = new Option((i * 2).toString(), (i * 2).toString());
+    }
   });
 }
 
