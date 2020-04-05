@@ -29,7 +29,6 @@ $(document).ready(function () {
 
   let $table = $('.availability-table');
   let $actions = $('.availability-actions');
-  // let $prevClickedTd = null;
 
   $table.on('click', '.day-title input:checkbox', function () {
     selectDay($(this).closest('.day-title'));
