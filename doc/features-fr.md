@@ -16,12 +16,19 @@ Chaque bénévole peut :
 - Renseigner ses disponibilités pour la semaine courante
 - Renseigner ses disponibilités pour la semaine prochaine
 
+### Connexion
+
 ![Login](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/login.png)
+
+### Mon compte bénévole
 
 ![Account](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/edit-account.png)
 
+### Mes disponibilités
+
 ![Disponibilités](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/define-availability.png)
 
+----
 
 # Espace structure
 
@@ -39,13 +46,15 @@ Identifiants de démo :
 * structure: `UL09`
 * mot de passe: `covid19`
 
+### Planning
+
 ![Disponibilité des bénévoles](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/planning.png)
 
-**Liste des bénévoles**
+### Liste des bénévoles
 
 ![Liste des bénévoles](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/users-list.png)
 
-**Liste des véhicules**
+### Liste des véhicules
 
 ![Liste des véhicules](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/assets-list.png)
 
