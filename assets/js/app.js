@@ -1,6 +1,7 @@
 import '../css/app.scss';
 import '../css/availability-form.scss';
 import '../css/planning.scss';
+import '../css/availability-table.scss';
 
 const $ = require('jquery');
 require('bootstrap');
