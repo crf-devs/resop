@@ -11,7 +11,7 @@ if [ $# -eq 0 ]; then
 fi
 
 if [ -t 1 -a 1 -ne "${DISABLE_TTY}" ]; then
-    ${DOCKER_COMPOSE} run --rm tools "$@"
+    ${DOCKER_COMPOSE} run --rm -u $(id -u):$(id -g) tools "$@"
 else
     # CI and other runners
     ${DOCKER_COMPOSE} run --rm -u www-data:www-data -T tools "$@"
