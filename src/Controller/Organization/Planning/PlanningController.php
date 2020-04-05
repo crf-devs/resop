@@ -9,10 +9,13 @@ use App\Domain\DatePeriodCalculator;
 use App\Domain\PlanningDomain;
 use App\Domain\SkillSetDomain;
 use App\Entity\CommissionableAsset;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\CacheItem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\CacheExtension\CacheStrategyInterface;
 
 /**
  * @Route("/", name="planning", methods={"GET"})
@@ -30,7 +33,7 @@ class PlanningController extends AbstractController
         $this->planningDomain = $planningDomain;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, CacheStrategyInterface $cacheStrategy, CacheItemPoolInterface $cacheTwig): Response
     {
         $form = $this->planningDomain->generateForm();
         $filters = $this->planningDomain->generateFilters($form);
@@ -45,6 +48,18 @@ class PlanningController extends AbstractController
             new \DateInterval(AvailabilitiesDomain::SLOT_INTERVAL),
             $filters['to']
         );
+
+        $lastUpdate = $this->planningDomain->generateLastUpdateAndCount($filters)['lastUpdate'];
+        $cacheKey = $cacheStrategy->generateKey('organization_planning', $filters);
+        /** @var CacheItem $item */
+        $item = $cacheTwig->getItem($cacheKey);
+        if ($item->isHit()
+            && isset($item->getMetadata()[CacheItem::METADATA_CTIME])
+            && $item->getMetadata()[CacheItem::METADATA_CTIME] < ceil($lastUpdate / 100)
+        ) {
+            // New availabilities in planning: invalidate planning cache
+            $cacheTwig->deleteItem($cacheKey);
+        }
 
         return $this->render('organization/planning/planning.html.twig', [
             'filters' => $filters,

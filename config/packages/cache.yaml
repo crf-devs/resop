@@ -1,3 +1,8 @@
+services:
+    cache.adapter.planning:
+        class: App\Twig\Cache\PlanningFilesystemAdapter
+        parent: cache.adapter.filesystem
+
 framework:
     cache:
         # Unique name of your app: used to compute stable namespaces for cache keys.
@@ -17,4 +22,4 @@ framework:
         # Namespaced pools use the above "app" backend by default
         pools:
             cache.twig:
-                adapter: cache.adapter.filesystem
+                adapter: cache.adapter.planning

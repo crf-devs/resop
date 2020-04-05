@@ -100,7 +100,7 @@ class PlanningDomain
         $users = $filters['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($filters, true);
         $assets = $filters['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($filters, true);
 
-        // TODO Handle deleted availabities
+        // TODO Handle deleted availabilities
 
         $availabilitiesCount = 0;
         $userLastUpdate = 0;

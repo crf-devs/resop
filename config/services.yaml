@@ -71,6 +71,7 @@ services:
             $cache: '@Twig\CacheExtension\CacheProvider\PsrCacheAdapter'
             $keyGenerator: '@App\Twig\Cache\RequestGenerator'
             $lifetime: 3600 # 1 day
+    Twig\CacheExtension\CacheStrategyInterface: '@Twig\CacheExtension\CacheStrategy\GenerationalCacheStrategy'
     Twig\CacheExtension\Extension:
         arguments:
             $cacheStrategy: '@Twig\CacheExtension\CacheStrategy\GenerationalCacheStrategy'
