@@ -61,6 +61,19 @@
 </div>
 
 <div class="row">
+    <div class='legend'>
+        <div class='legend-scale'>
+            <ul class='legend-labels'>
+                <li><span class="unavailable"></span>Indisponible</li>
+                <li><span class="available"></span>Disponible</li>
+                <li><span class="mobilise"></span>En mission</li>
+                <li><span class="unavailable-for-mobilization"></span>Bloqué</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-12 col-md-8">
         {% if blockedSlotsInterval is defined %}
             <p class="font-italic">Vous ne pouvez pas modifier les disponibilités saisies pour les prochaines {{ blockedSlotsInterval.format('%h heures') }}</p>
