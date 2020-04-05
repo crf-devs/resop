@@ -9,7 +9,7 @@ table.availability-table {
       cursor: pointer;
     }
 
-    &:hover:not(.disabled) {
+    &:hover:not(.disabled):not(.checked) {
       opacity: 0.8;
     }
 
