@@ -1,5 +1,4 @@
-table.availability-table {
-  text-align: center;
+table.availability-form-table {
   position: relative;
 
   label.day-title {
@@ -12,11 +11,10 @@ table.availability-table {
     min-width: 80px;
   }
 
-  td.clickable-table-box {
-    cursor: pointer;
+  td.slot-box {
     min-width: 85px;
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: #eee;
     }
 
@@ -28,20 +26,8 @@ table.availability-table {
       }
     }
 
-    &.disabled {
-      cursor: default;
-    }
-
     &.booked {
       background-color: #67a2d3 !important;
-    }
-
-    &.locked {
-      background-color: #7a7a7a !important;
-    }
-
-    input[type=checkbox] {
-      cursor: pointer;
     }
   }
 
