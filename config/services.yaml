@@ -61,3 +61,16 @@ services:
              - !service { class: PDO, factory: ['@database_connection', 'getWrappedConnection'] }
             # If you get transaction issues (e.g. after login) uncomment the line below
              - { lock_mode: 1 }
+
+    # twig/cache-extension
+    Twig\CacheExtension\CacheProvider\PsrCacheAdapter:
+        arguments:
+            $cache: '@cache.twig'
+    Twig\CacheExtension\CacheStrategy\GenerationalCacheStrategy:
+        arguments:
+            $cache: '@Twig\CacheExtension\CacheProvider\PsrCacheAdapter'
+            $keyGenerator: '@App\Twig\Cache\RequestGenerator'
+            $lifetime: 3600 # 1 day
+    Twig\CacheExtension\Extension:
+        arguments:
+            $cacheStrategy: '@Twig\CacheExtension\CacheStrategy\GenerationalCacheStrategy'

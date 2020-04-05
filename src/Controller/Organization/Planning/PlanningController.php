@@ -46,12 +46,10 @@ class PlanningController extends AbstractController
             $filters['to']
         );
 
-        $availabilities = $this->planningDomain->generateAvailabilities($filters, $periodCalculator->getPeriod());
-
         return $this->render('organization/planning/planning.html.twig', [
+            'filters' => $filters,
             'form' => $form->createView(),
             'periodCalculator' => $periodCalculator,
-            'availabilities' => $availabilities,
             'assetsTypes' => CommissionableAsset::TYPES,
             'usersSkills' => $this->skillSetDomain->getSkillSet(),
             'importantSkills' => $this->skillSetDomain->getImportantSkills(),
