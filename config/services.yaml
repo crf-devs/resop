@@ -25,6 +25,8 @@ parameters:
         anim_fle: Animateur.rice de cours de FLE
         psc1: PSC1
         nouveau: Nouveau bénévole
+    env(APP_NB_USERS): ~
+    env(APP_NB_AVAILABILITIES): ~
 
 services:
     # default configuration for services in *this* file
@@ -50,6 +52,11 @@ services:
         tags: ["controller.service_arguments"]
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\DataFixtures\ApplicationFixtures:
+        arguments:
+            $nbUsers: '%env(int:APP_NB_USERS)%'
+            $nbAvailabilities: '%env(int:APP_NB_AVAILABILITIES)%'
 
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
         arguments:
