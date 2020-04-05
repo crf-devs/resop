@@ -20,6 +20,10 @@ function selectTableBox($tableBox) {
 }
 
 function handleSlotBoxClick(event) {
+  if ($(this).hasClass('disabled')) {
+    return;
+  }
+
   const $slotBox = event.target.type === 'checkbox' ? $(this).closest('.slot-box') : $(this);
   if (event.target.type === 'checkbox') {
     event.stopImmediatePropagation();
@@ -64,7 +68,7 @@ function handleDefaultShiftClick($table, $currentClickedTd, $prevClickedTd) {
     .filter((i, td) => {
       let $td = $(td);
 
-      return $td.data('day') >= dayStart && $td.data('day') <= dayEnd && $td.data('from') >= hourStart && $td.data('to') <= hourEnd;
+      return !$td.hasClass('disabled') && $td.data('day') >= dayStart && $td.data('day') <= dayEnd && $td.data('from') >= hourStart && $td.data('to') <= hourEnd;
     })
     .each((i, td) => {
       if ($(td).hasClass('checked') !== $currentClickedTd.hasClass('checked')) {
@@ -124,7 +128,7 @@ function handlePlanningShiftClick($planning, $currentClickedTd, $lastClickedTd) 
   const handleTr = function (i, tr) {
     $(tr)
       .find('td')
-      .filter((i, td) => Date.parse($(td).data('from')) >= tdFrom && Date.parse($(td).data('to')) <= tdTo)
+      .filter((i, td) => !$(td).hasClass('disabled') && Date.parse($(td).data('from')) >= tdFrom && Date.parse($(td).data('to')) <= tdTo)
       .each(function () {
         if (isChecked !== $(this).hasClass('checked')) {
           selectTableBox($(this));

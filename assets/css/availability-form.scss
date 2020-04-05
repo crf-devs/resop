@@ -29,6 +29,10 @@ table.availability-form-table {
     &.booked {
       background-color: #67a2d3 !important;
     }
+
+    &.locked {
+      background-color: #7a7a7a !important;
+    }
   }
 
   button.select-all {
