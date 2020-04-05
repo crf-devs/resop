@@ -174,7 +174,7 @@ final class ApplicationFixtures extends Fixture
         $x = 1;
         $availableSkillSet = $this->skillSetDomain->getSkillSet();
         foreach ($this->organizations as $organization) {
-            for ($i = 0; $i < $max = $this->nbUsers; ++$i) {
+            for ($i = 0; $i < $this->nbUsers; ++$i) {
                 $user = new User();
                 $user->id = $i + 1;
                 $user->firstName = $firstNames[array_rand($firstNames)];
@@ -218,7 +218,7 @@ final class ApplicationFixtures extends Fixture
         $x = 0;
         foreach ($owners as $owner) {
             $currentIntervals = $dateIntervals;
-            for ($i = 0; $i < \count($dateIntervals); ++$i) {
+            for ($i = 0, $count = \count($dateIntervals); $i < $count; ++$i) {
                 $key = array_rand($currentIntervals);
                 $data = [
                     'owner' => $owner,
@@ -235,7 +235,7 @@ final class ApplicationFixtures extends Fixture
             }
         }
 
-        for ($offset = 0; $offset <= \count($values); $offset += 100) {
+        for ($offset = 0, $count = \count($values); $offset <= $count; $offset += 100) {
             if (empty($data = \array_slice($values, $offset, 100))) {
                 break;
             }
