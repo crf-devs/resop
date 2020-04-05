@@ -25,8 +25,6 @@ parameters:
         anim_fle: Animateur.rice de cours de FLE
         psc1: PSC1
         nouveau: Nouveau bénévole
-    env(APP_NB_USERS): ~
-    env(APP_NB_AVAILABILITIES): ~
 
 services:
     # default configuration for services in *this* file
