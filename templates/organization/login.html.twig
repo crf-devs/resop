@@ -21,7 +21,7 @@
                             <optgroup label="{{ parentName }}">
                                 {% for organization in children -%}
                                     <option
-                                        value="{{ organization.name }}" {{ last_username == organization.name ? 'selected' : '' }}
+                                        value="{{ organization.id }}" {{ last_username == organization.id ? 'selected' : '' }}
                                         title="{{ (organization.isParent ? '' : parentName~' - ')~ organization.name}}"
                                     >
                                         {{ organization.name }}
