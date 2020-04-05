@@ -26,8 +26,8 @@ table.availability-table {
   }
 }
 
-table.availability-table,
-.planning-actions-container {
+.planning-actions-container,
+table.availability-table {
   .unknown {
     background-color: #ff767f;
     color: white;
