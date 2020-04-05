@@ -14,7 +14,7 @@ table.availability-form-table {
   td.slot-box {
     min-width: 85px;
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: #eee;
     }
 
@@ -28,10 +28,6 @@ table.availability-form-table {
 
     &.booked {
       background-color: #67a2d3 !important;
-    }
-
-    &.locked {
-      background-color: #7a7a7a !important;
     }
   }
 
