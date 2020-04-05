@@ -18,6 +18,7 @@ final class Version20200403195104 extends AbstractMigration
     {
         $this->abortIf('postgresql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'postgresql\'.');
 
+        $this->addSql('DROP TABLE IF EXISTS sessions'); // The "bin/console doctrine:schema:drop --full-database" command does not drop this table
         $this->addSql('CREATE TABLE sessions ( sess_id VARCHAR(128) NOT NULL PRIMARY KEY, sess_data BYTEA NOT NULL, sess_time INTEGER NOT NULL, sess_lifetime INTEGER NOT NULL );');
     }
 

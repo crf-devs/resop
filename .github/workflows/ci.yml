@@ -105,6 +105,7 @@ jobs:
                   bin/console doctrine:database:create -n --if-not-exists
                   bin/console doctrine:migrations:migrate -n
                   bin/console doctrine:fixtures:load -n
+              if: always()
 
             - name: Validate schema
               run: |
