@@ -51,6 +51,11 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    App\DataFixtures\ApplicationFixtures:
+        arguments:
+            $nbUsers: '%env(int:APP_NB_USERS)%'
+            $nbAvailabilities: '%env(int:APP_NB_AVAILABILITIES)%'
+
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
         arguments:
              - !service { class: PDO, factory: ['@database_connection', 'getWrappedConnection'] }

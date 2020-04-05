@@ -54,3 +54,12 @@ See [How to contribute](doc/contributing.md) for more information!
 # Techical information
 
 [How to install, to run the project, to use it?](doc/technical.md)
+
+If you want to load huge amount of data, for example to test the performances, run the following command in the fpm container:
+
+```bash
+bin/tools sh -c "APP_NB_USERS=15 APP_NB_AVAILABILITIES=6 bin/console doctrine:fixtures:load --purge-with-truncate --no-interaction"
+```
+
+- APP_NB_USERS: number of users per organization (default: 10)
+- APP_NB_AVAILABILITIES: number of availabilities per user (must be between 2 to 6; default: 2)

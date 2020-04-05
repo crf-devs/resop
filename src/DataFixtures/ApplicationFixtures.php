@@ -13,6 +13,7 @@ use App\Entity\User;
 use App\Entity\UserAvailability;
 use App\Exception\ConstraintViolationListException;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -77,17 +78,26 @@ final class ApplicationFixtures extends Fixture
     private array $assets = [];
 
     private SkillSetDomain $skillSetDomain;
+    private int $nbUsers;
+    private int $nbAvailabilities;
 
     public function __construct(
         EncoderFactoryInterface $encoders,
         ValidatorInterface $validator,
-        SkillSetDomain $skillSetDomain
+        SkillSetDomain $skillSetDomain,
+        int $nbUsers = null,
+        int $nbAvailabilities = null
     ) {
         $this->encoders = $encoders;
         $this->validator = $validator;
         $this->skillSetDomain = $skillSetDomain;
+        $this->nbUsers = $nbUsers ?: random_int(10, 20);
+        $this->nbAvailabilities = $nbAvailabilities ?: random_int(2, 6);
     }
 
+    /**
+     * @param ObjectManager|EntityManagerInterface $manager
+     */
     public function load(ObjectManager $manager): void
     {
         $this->loadOrganizations($manager);
@@ -118,6 +128,8 @@ final class ApplicationFixtures extends Fixture
         foreach ($this->organizations as $organization) {
             $this->validateAndPersist($manager, $organization);
         }
+
+        $manager->flush();
     }
 
     private function loadCommissionableAssets(ObjectManager $manager): void
@@ -162,7 +174,7 @@ final class ApplicationFixtures extends Fixture
         $x = 1;
         $availableSkillSet = $this->skillSetDomain->getSkillSet();
         foreach ($this->organizations as $organization) {
-            for ($i = 0; $i < $max = random_int(20, 40); ++$i) {
+            for ($i = 0; $i < $this->nbUsers; ++$i) {
                 $user = new User();
                 $user->id = $i + 1;
                 $user->firstName = $firstNames[array_rand($firstNames)];
@@ -186,10 +198,13 @@ final class ApplicationFixtures extends Fixture
                 ++$x;
             }
         }
+
+        $manager->flush();
     }
 
     private function loadAvailabilities(ObjectManager $manager, array $owners, string $availabilityClass): void
     {
+        /** @var EntityManagerInterface $manager */
         $thisWeek = (new \DateTimeImmutable('monday this week'));
 
         $dateIntervals = [];
@@ -199,9 +214,11 @@ final class ApplicationFixtures extends Fixture
             }
         }
 
+        $values = [];
+        $x = 0;
         foreach ($owners as $owner) {
             $currentIntervals = $dateIntervals;
-            for ($i = 0; $i < 40; ++$i) {
+            for ($i = 0, $count = \count($dateIntervals); $i < $count; ++$i) {
                 $key = array_rand($currentIntervals);
                 $data = [
                     'owner' => $owner,
@@ -209,30 +226,46 @@ final class ApplicationFixtures extends Fixture
                     'status' => AvailabilityInterface::STATUSES[array_rand(AvailabilityInterface::STATUSES)],
                 ];
 
-                $this->makeIntervalAvailability($availabilityClass, $data, $manager);
+                foreach ($this->makeIntervalAvailability($data) as $sqlData) {
+                    array_unshift($sqlData, ++$x);
+                    $values[] = implode(', ', $sqlData);
+                }
 
                 unset($currentIntervals[$key]);
             }
         }
-    }
 
-    private function makeIntervalAvailability(string $availabilityClass, array $data, ObjectManager $manager): void
-    {
-        $startTime = $data['startTime'];
-        for ($i = 0, $iMax = random_int(2, 6); $i < $iMax; $i += 2) {
-            $availability = new $availabilityClass(
-                null,
-                $data['owner'],
-                $startTime->add(new \DateInterval(sprintf('PT%sH', $i))),
-                $startTime->add(new \DateInterval(sprintf('PT%sH', ($i + 2)))),
-                $data['status']
-            );
-
-            if (AvailabilityInterface::STATUS_BOOKED === $availability->status) {
-                $availability->planningAgent = $this->organizations[array_rand($this->organizations)];
+        for ($offset = 0, $count = \count($values); $offset <= $count; $offset += 100) {
+            if (empty($data = \array_slice($values, $offset, 100))) {
+                break;
             }
 
-            $manager->persist($availability);
+            $manager->getConnection()->exec(sprintf(<<<SQL
+INSERT INTO %s (id, %s, start_time, end_time, status, created_at, updated_at, planning_agent_id) VALUES (%s)
+SQL
+            , $manager->getClassMetadata($availabilityClass)->getTableName(), UserAvailability::class === $availabilityClass ? 'user_id' : 'asset_id', implode('), (', $data)));
+        }
+    }
+
+    private function makeIntervalAvailability(array $data): iterable
+    {
+        $startTime = $data['startTime'];
+        for ($i = 0; $i < $this->nbAvailabilities; $i += 2) {
+            $availability = [
+                $data['owner']->getId(),
+                "'".$startTime->add(new \DateInterval(sprintf('PT%sH', $i)))->format('Y-m-d H:i:s')."'",
+                "'".$startTime->add(new \DateInterval(sprintf('PT%sH', ($i + 2))))->format('Y-m-d H:i:s')."'",
+                "'".$data['status']."'",
+                "'".date('Y-m-d H:i:s')."'",
+                "'".date('Y-m-d H:i:s')."'",
+                'NULL',
+            ];
+
+            if (AvailabilityInterface::STATUS_BOOKED === $data['status']) {
+                $availability[\count($availability) - 1] = $this->organizations[array_rand($this->organizations)]->getId();
+            }
+
+            yield $availability;
         }
     }
 
