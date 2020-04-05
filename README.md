@@ -145,6 +145,37 @@ The `*.vcap.me` domain names are binded on localhost. In order to use them offli
 
 Caution: the traefik proxy will only serve healthy containers. The api container can be unaccessible before the first healthcheck (5s).
 
+### Database
+
+A PostgreSQL server is provided by the docker-compose file, as well as an `adminer` web interface.
+
+```yaml
+  postgres:
+    environment:
+      - POSTGRES_DB=resop
+      - POSTGRES_USER=resop
+      - POSTGRES_PASSWORD=postgrespwd
+```
+
+**Web interface**
+
+If you want to access the data, the easiest way is to use the [adminer](http://adminer.vcap.me:7500) service from your browser.
+
+**Host port binding**
+
+If you need to access the DB from your host, you must uncomment the following lines in your `docker-compose.override.yml` file:
+
+```yaml
+services:
+  # ...
+  postgres:
+    # ...
+    ports:
+      - '5432:5432'
+```
+
+Then, run `docker-compose up -d postgres`. The DB is now available on the `localhost:5432` port!
+
 ### HTTPS
 
 The nginx container is available over HTTPS. This url must be used in order to use Facebook, Gmaps, camera...
