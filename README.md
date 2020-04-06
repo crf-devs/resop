@@ -11,6 +11,7 @@ et d'avoir de la visibilité sur les engagements à réaliser.
 ![Planning mockup](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/planning-mockup.png)
 
 [En savoir plus sur les fonctionnalités](doc/features-fr.md)
+[Tester la version de démonstration](doc/features-fr.md)
 
 ## Roadmap
 
@@ -30,6 +31,7 @@ Its purpose is to identify the availability of volunteers in order to know as pr
 and to have visibility on the commitments to be made.
 
 [Features list (french)](doc/features-fr.md)
+[Demo version](doc/features-fr.md)
 
 ## Roadmap
 
