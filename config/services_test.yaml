@@ -5,5 +5,3 @@ services:
 
     App\Tests\Behat\:
         resource: '../tests/Behat/*'
-
-    Symfony\Component\BrowserKit\CookieJar: '@test.client.cookiejar'

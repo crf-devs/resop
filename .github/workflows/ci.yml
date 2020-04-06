@@ -122,7 +122,7 @@ jobs:
 
             - run: vendor/bin/behat
               if: always()
-                
+
     javascript:
         runs-on: ubuntu-latest
         steps:

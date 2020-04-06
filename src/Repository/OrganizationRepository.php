@@ -9,7 +9,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Organization|null find($id, $lockMode = null, $lockVersion = null)

@@ -41,17 +41,17 @@ final class SecurityContext implements Context
     /**
      * @Given I am authenticated as a user
      */
-    public function loginUser(string $username = 'user1@resop.com'): void
+    public function loginUser(): void
     {
-        $this->login($username, $this->userRepository);
+        $this->login('user1@resop.com', $this->userRepository);
     }
 
     /**
      * @Given I am authenticated as an organization
      */
-    public function loginOrganization(string $username = 'UL 05'): void
+    public function loginOrganization(): void
     {
-        $this->login($username, $this->organizationRepository);
+        $this->login('UL 05', $this->organizationRepository);
     }
 
     /**
@@ -66,7 +66,7 @@ final class SecurityContext implements Context
         }
 
         if (!$user) {
-            throw new UsernameNotFoundException(\sprintf('User %s is not valid.', $username));
+            throw new UsernameNotFoundException(\sprintf('%s is not a valid User or Organization.', $username));
         }
 
         $firewall = $user instanceof Organization ? 'organizations' : 'main';
