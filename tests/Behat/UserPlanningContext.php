@@ -36,12 +36,11 @@ final class UserPlanningContext implements Context
         /** @var int $time */
         $time = strtotime($day);
         $day = (int) date('w', $time) - 1;
-        if (-1 === $day) {
-            $day = 6;
-        }
+        $day = $day < 0 ? 7 + $day : $day; // Table => Monday = 0. date('w') => Sunday = 0.
+
         $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]', $day));
         if (0 === \count($elements)) {
-            throw new ElementNotFoundException($this->minkContext->getSession()->getDriver(), 'form field', 'id|name|label|value', $day);
+            throw new ElementNotFoundException($this->minkContext->getSession()->getDriver(), 'form field', 'data-day', (string) $day);
         }
 
         foreach ($elements as $element) {
@@ -62,9 +61,8 @@ final class UserPlanningContext implements Context
         /** @var int $time */
         $time = strtotime($day);
         $day = (int) date('w', $time) - 1;
-        if (-1 === $day) {
-            $day = 6;
-        }
+        $day = $day < 0 ? 7 + $day : $day; // Table => Monday = 0. date('w') => Sunday = 0.
+
         $locator = sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]', $day);
         $locator .= 'checked' === $state ? ':checked' : ':not(:checked)';
         $elements = $page->findAll('css', $locator);
