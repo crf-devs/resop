@@ -7,9 +7,6 @@ namespace App\Tests\Twig\Cache;
 use App\Twig\Cache\RequestGenerator;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @author Vincent Chalamon <vincent@les-tilleuls.coop>
- */
 final class RequestGeneratorTest extends TestCase
 {
     /**

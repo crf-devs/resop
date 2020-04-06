@@ -6,9 +6,6 @@ namespace App\Twig\Cache;
 
 use Twig\CacheExtension\CacheStrategy\KeyGeneratorInterface;
 
-/**
- * @author Vincent Chalamon <vincentchalamon@gmail.com>
- */
 final class RequestGenerator implements KeyGeneratorInterface
 {
     /**

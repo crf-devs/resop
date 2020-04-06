@@ -9,9 +9,6 @@ use App\Domain\PlanningDomain;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-/**
- * @author Vincent Chalamon <vincentchalamon@gmail.com>
- */
 final class PlanningExtension extends AbstractExtension
 {
     private PlanningDomain $planningDomain;

@@ -7,9 +7,6 @@ namespace App\Twig\Cache;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Marshaller\MarshallerInterface;
 
-/**
- * @author Vincent Chalamon <vincent@les-tilleuls.coop>
- */
 final class PlanningFilesystemAdapter extends FilesystemAdapter
 {
     private string $cacheDirectory;
