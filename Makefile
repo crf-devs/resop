@@ -90,7 +90,7 @@ fix-cs: fix-cs-php
 # TESTS
 #
 
-test: test-cs test-advanced test-unit
+test: test-cs test-advanced test-unit test-behat
 
 test-cs:
 	bin/tools vendor/bin/php-cs-fixer fix --allow-risky yes --dry-run --verbose --diff
@@ -103,6 +103,10 @@ test-cs:
 test-advanced:
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/console c:w"
 	bin/tools vendor/bin/phpstan analyse --configuration phpstan.neon --level max --no-progress .
+
+test-behat:
+	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/post-install-dev.sh"
+	bin/tools vendor/bin/behat
 
 test-unit:
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/post-install-dev.sh"

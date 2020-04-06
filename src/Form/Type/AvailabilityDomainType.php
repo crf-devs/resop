@@ -18,7 +18,7 @@ final class AvailabilityDomainType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event): void {
                 /** @var AvailabilityDomain $data */
                 $data = $event->getData();
                 $form = $event->getForm();

@@ -119,7 +119,10 @@ jobs:
             - uses: codecov/codecov-action@v1
               with:
                 token: ${{ secrets.CODECOV_TOKEN }}
-                
+
+            - run: vendor/bin/behat
+              if: always()
+
     javascript:
         runs-on: ubuntu-latest
         steps:

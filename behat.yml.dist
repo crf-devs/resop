@@ -1,0 +1,16 @@
+default:
+    suites:
+        default:
+            contexts:
+                - App\Tests\Behat\DatabaseContext
+                - App\Tests\Behat\SecurityContext
+                - Behat\MinkExtension\Context\MinkContext
+    extensions:
+        Behat\MinkExtension:
+            sessions:
+                symfony:
+                    symfony: ~
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                environment: test
+                debug: true
