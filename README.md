@@ -10,8 +10,8 @@ et d'avoir de la visibilité sur les engagements à réaliser.
 
 ![Planning mockup](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/planning-mockup.png)
 
-[En savoir plus sur les fonctionnalités](doc/features-fr.md)
-[Tester la version de démonstration](doc/features-fr.md)
+- [En savoir plus sur les fonctionnalités](docs/features-fr.md)
+- [Tester la version de démonstration](docs/features-fr.md)
 
 ## Roadmap
 
@@ -30,8 +30,8 @@ This project was launched by the Resources & Anticipation Unit of the French Red
 Its purpose is to identify the availability of volunteers in order to know as precisely as possible the resources that can be called upon,
 and to have visibility on the commitments to be made.
 
-[Features list (french)](doc/features-fr.md)
-[Demo version](doc/features-fr.md)
+- [Features list (french)](docs/features-fr.md)
+- [Demo version](docs/features-fr.md)
 
 ## Roadmap
 
@@ -45,14 +45,18 @@ then to other emergency response associations.
 # Contributing
 
 [![Discord](https://discordapp.com/api/guilds/690879735957553152/widget.png)](https://discord.gg/ZyzeSq5)
+[![GitHub contributors](https://img.shields.io/github/contributors-anon/crf-devs/resop)](https://github.com/crf-devs/resop/graphs/contributors)
 [![Latest version](https://img.shields.io/github/v/tag/crf-devs/resop)](https://github.com/crf-devs/resop/releases)
-[![CI Status](https://github.com/crf-devs/resop/workflows/CI/badge.svg?branch=master)](https://github.com/crf-devs/resop/actions?query=branch%3Amaster)
+[![Build status](https://github.com/crf-devs/resop/workflows/build/badge.svg)](https://github.com/crf-devs/resop/actions?query=workflow%3Abuild)
+[![CI status](https://github.com/crf-devs/resop/workflows/CI/badge.svg)](https://github.com/crf-devs/resop/actions?query=branch%3Amaster)
 [![Code Coverage](https://codecov.io/gh/crf-devs/resop/branch/master/graph/badge.svg)](https://codecov.io/gh/crf-devs/resop)
 
 You should join the [ResOp Discord server](https://discord.gg/ZyzeSq5) if you want more information, or if you want to contribute to the project.
 
-See [How to contribute](doc/contributing.md) for more information!
+See [How to contribute](docs/CONTRIBUTING.md) for more information!
 
 # Technical information
 
-[How to install, to run the project, to use it?](doc/technical.md)
+- [How to install the project (dev)](docs/technical.md)
+- [How to run the project (dev)](docs/technical.md#run)
+- [How to deploy the project (prod)](docs/technical.md#built-docker-images)

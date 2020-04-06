@@ -18,5 +18,3 @@ We are using a standard github workflow in this project:
 1. [Create your pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request),
     you can add `Closes #xxx` in its description in order to link it with an existing issue
 1. While you are still working on you PR, you can add a `WIP: ` prefix to its name
-
-*Hint: you can run `make fix-cs-php` instead of `make fix-cs` if you are one of those backend devs who don't touch any css or js file.*
