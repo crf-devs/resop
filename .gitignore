@@ -5,6 +5,7 @@
 /.vscode
 /.eslintcache
 /.stylelintcache
+/coverage.xml
 
 ###> symfony/framework-bundle ###
 /.env.local

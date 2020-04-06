@@ -8,6 +8,7 @@ on:
 
 env:
     CI: true
+    COVERAGE: true
     TZ: UTC
     PHP_VERSION: 7.4
     NODE_VERSION: 10.x
@@ -117,11 +118,20 @@ jobs:
               if: always()
 
             - uses: codecov/codecov-action@v1
+              if: always()
               with:
+                flags: unit
                 token: ${{ secrets.CODECOV_TOKEN }}
 
-            - run: vendor/bin/behat
+            - run: vendor/bin/behat --format=progress --out=std --format=junit --out=var/behat
               if: always()
+
+            - uses: codecov/codecov-action@v1
+              if: always()
+              with:
+                  file: ./var/behat/coverage.xml
+                  flags: behat
+                  token: ${{ secrets.CODECOV_TOKEN }}
 
     javascript:
         runs-on: ubuntu-latest

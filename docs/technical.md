@@ -174,10 +174,11 @@ Hint: you can run `make fix-cs-php` instead of `make fix-cs` if you are one of t
 
 ```bash
 make test # Run all tests except coverage
-make test-cs # php-cs-fixer
+make test-cs # php-cs-fixer + phpcs + twig & yaml & js & scss lint
 make test-advanced # phpstan
+make test-behat # behat
 make test-unit # phpunit
-make test-unit-coverage # phpunit + phpdbg
+make test-coverage # phpunit + behat
 ```
 
 ## PHP
@@ -196,7 +197,6 @@ bin/tools # to open a shell on the tools container
 
 In order to profile the php app with [Blackfire](https://blackfire.io/), you need to have a Blackfire account, then:
 
-- Uncomment the `blackfire` part of the `docker/php-flex/Dockerfile` file (but don't commit it after)
 - Uncomment the `blackfire` service in the `docker-compose.override.yml` file
 - Uncomment the blackfire env var for the `fpm` service in the `docker-compose.override.yml` file
 - Add your [credentials](https://blackfire.io/my/settings/credentials) in the `docker-compose.override.yml` file

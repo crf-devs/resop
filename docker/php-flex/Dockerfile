@@ -7,6 +7,8 @@ ENV COMPOSER_MEMORY_LIMIT -1
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /.composer
 
+ARG DEBUG_TOOLS
+
 RUN apk add --update --no-cache \
     openssl \
     ca-certificates \
@@ -63,19 +65,26 @@ RUN curl --insecure https://getcomposer.org/composer.phar -o /usr/bin/composer \
     && su-exec www-data composer global require "hirak/prestissimo" "jderusse/composer-warmup" --prefer-dist --no-progress --no-suggest --classmap-authoritative \
     && su-exec www-data composer clear-cache -n
 
-## Uncomment those lines in order to add the Blackfire probe into the fpm container
-## Caution: don't commit this file with uncommented lines, as we don't need Blackfire in production for now
-#RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
-#    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/alpine/amd64/$version \
-#    && mkdir -p /tmp/blackfire \
-#    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
-#    && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
-#    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /usr/local/etc/php/conf.d/blackfire.ini \
-#    && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
-#RUN mkdir -p /tmp/blackfire \
-#    && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp/blackfire \
-#    && mv /tmp/blackfire/blackfire /usr/bin/blackfire \
-#    && rm -Rf /tmp/blackfire
+RUN test -z "$DEBUG_TOOLS" || ( \
+        apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+        && pecl install pcov-1.0.6 \
+        && pecl clear-cache \
+        && docker-php-ext-enable pcov \
+        && apk del .build-deps \
+    )
+
+RUN test -z "$DEBUG_TOOLS" || ( \
+        version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
+        && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/alpine/amd64/$version \
+        && mkdir -p /tmp/blackfire \
+        && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
+        && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
+        && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /usr/local/etc/php/conf.d/blackfire.ini \
+        && rm -rf /tmp/blackfire-probe.tar.gz \
+        && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp/blackfire \
+        && mv /tmp/blackfire/blackfire /usr/bin/blackfire \
+        && rm -Rf /tmp/blackfire \
+    )
 
 COPY ./docker/php-flex/files/. /
 

@@ -2,6 +2,7 @@ default:
     suites:
         default:
             contexts:
+                - App\Tests\Behat\CoverageContext
                 - App\Tests\Behat\DatabaseContext
                 - App\Tests\Behat\SecurityContext
                 - App\Tests\Behat\UserPlanningContext

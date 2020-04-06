@@ -106,15 +106,16 @@ test-advanced:
 
 test-behat:
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/post-install-dev.sh"
-	bin/tools vendor/bin/behat
+	bin/tools vendor/bin/behat --format=progress
 
 test-unit:
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/post-install-dev.sh"
 	bin/tools vendor/bin/phpunit
 
-test-unit-coverage:
+test-coverage:
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/post-install-dev.sh"
-	bin/tools sh -c "APP_DEBUG=0 phpdbg -qrr -d memory_limit=2048M vendor/bin/phpunit --coverage-text"
+	bin/tools sh -c "APP_DEBUG=0 vendor/bin/phpunit --coverage-text"
+	bin/tools sh -c "APP_DEBUG=0 COVERAGE=true vendor/bin/behat --format=progress"
 
 move-test-profiler:
 	bin/tools sh -c "rm -rf var/cache/dev/profiler && mkdir -p var/cache/dev && cp -R var/cache/test/profiler var/cache/dev/profiler"
