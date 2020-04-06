@@ -219,7 +219,7 @@ final class ApplicationFixtures extends Fixture
         }
 
         $values = [];
-        $x = 0;
+        $availabilityId = 0;
         foreach ($owners as $owner) {
             $currentIntervals = $dateIntervals;
             for ($i = 0, $count = \count($dateIntervals); $i < $count; ++$i) {
@@ -232,7 +232,7 @@ final class ApplicationFixtures extends Fixture
                 ];
 
                 foreach ($this->makeIntervalAvailability($data) as $sqlData) {
-                    array_unshift($sqlData, ++$x);
+                    array_unshift($sqlData, ++$availabilityId);
                     $values[] = implode(', ', $sqlData);
                 }
 
@@ -252,6 +252,8 @@ final class ApplicationFixtures extends Fixture
                 implode('), (', $data)
             ));
         }
+
+        $manager->getConnection()->exec(sprintf('SELECT setval(\'user_availability_id_seq\', %d, true)', $availabilityId));
     }
 
     private function makeIntervalAvailability(array $data): iterable
