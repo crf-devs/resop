@@ -39,15 +39,11 @@ final class PlanningFilesystemAdapter extends FilesystemAdapter
         return $values;
     }
 
-    private function getFile(string $id, bool $mkdir = false, string $directory = null): string
+    private function getFile(string $id): string
     {
         // Use MD5 to favor speed over security, which is not an issue here
         $hash = str_replace('/', '-', base64_encode(hash('md5', static::class.$id, true)));
-        $dir = ($directory ?? $this->cacheDirectory).strtoupper($hash[0].\DIRECTORY_SEPARATOR.$hash[1].\DIRECTORY_SEPARATOR);
-
-        if ($mkdir && !file_exists($dir)) {
-            @mkdir($dir, 0777, true);
-        }
+        $dir = $this->cacheDirectory.strtoupper($hash[0].\DIRECTORY_SEPARATOR.$hash[1].\DIRECTORY_SEPARATOR);
 
         return $dir.substr($hash, 2, 20);
     }
