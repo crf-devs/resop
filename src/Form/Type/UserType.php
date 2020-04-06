@@ -105,7 +105,7 @@ class UserType extends AbstractType
             ])
             ->add('submit', SubmitType::class);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             $form = $event->getForm();
             $vulnerableHelp = '<ul><li>malade chronique</li><li>obésité morbide</li><li>syndrome grippal</li><li>immunodéprimé</li><li>personne mineure ou personne de plus de 70 ans</li><li>avis défavorable de votre unité locale ou du pole santé (local ou territorial)</li></ul>';
             if (self::DISPLAY_ORGANIZATION === $options['display_type']) {

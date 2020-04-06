@@ -12,7 +12,7 @@ final class DatabaseContext implements Context
     /**
      * @BeforeSuite
      */
-    public static function beforeSuite()
+    public static function beforeSuite(): void
     {
         StaticDriver::setKeepStaticConnections(true);
     }
@@ -20,7 +20,7 @@ final class DatabaseContext implements Context
     /**
      * @BeforeScenario
      */
-    public function beforeScenario()
+    public function beforeScenario(): void
     {
         StaticDriver::beginTransaction();
     }
@@ -28,7 +28,7 @@ final class DatabaseContext implements Context
     /**
      * @AfterScenario
      */
-    public function afterScenario()
+    public function afterScenario(): void
     {
         StaticDriver::rollBack();
     }
@@ -36,7 +36,7 @@ final class DatabaseContext implements Context
     /**
      * @AfterSuite
      */
-    public static function afterSuite()
+    public static function afterSuite(): void
     {
         StaticDriver::setKeepStaticConnections(false);
     }

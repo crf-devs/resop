@@ -200,7 +200,7 @@ class PlanningUpdateDomain
 
     protected function validateAction(): void
     {
-        if (!\in_array($this->action, self::ACTIONS)) {
+        if (!\in_array($this->action, self::ACTIONS, true)) {
             throw new \InvalidArgumentException(sprintf('Invalid action : %s', $this->action));
         }
     }
@@ -209,7 +209,7 @@ class PlanningUpdateDomain
     {
         $keys = array_keys($this->payload);
         for ($i = 0; $i < \count($keys); ++$i) {
-            if (!\in_array($keys[$i], self::PAYLOAD_VALID_KEYS)) {
+            if (!\in_array($keys[$i], self::PAYLOAD_VALID_KEYS, true)) {
                 throw new \InvalidArgumentException(sprintf('Invalid key : %s', $keys[$i]));
             }
         }

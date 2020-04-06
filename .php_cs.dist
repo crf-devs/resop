@@ -22,7 +22,12 @@ return PhpCsFixer\Config::create()
         'no_superfluous_phpdoc_tags'            => true,
         'general_phpdoc_annotation_remove'      => ['author'],
         'no_unreachable_default_argument_value' => true,
-        'no_unused_imports'                     => false
+        'no_unused_imports'                     => true,
+        'no_useless_else'                       => true,
+        'no_useless_return'                     => true,
+        'strict_comparison'                     => true,
+        'strict_param'                          => true,
+        'void_return'                           => true,
     ])
     ->setFinder($finder)
 ;

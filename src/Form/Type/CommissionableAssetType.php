@@ -6,9 +6,7 @@ namespace App\Form\Type;
 
 use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
-use App\Repository\CommissionableAssetRepository;
 use App\Repository\OrganizationRepository;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -71,7 +69,7 @@ final class CommissionableAssetType extends AbstractType
             ->add('submit', SubmitType::class)
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($organization) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($organization): void {
             $form = $event->getForm();
             if ($organization->isParent()) {
                 $form->add('organization', OrganizationEntityType::class, [

@@ -8,7 +8,9 @@ use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
 use App\Repository\UserRepository;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Context\Environment\InitializedContextEnvironment;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\MinkExtension\Context\MinkContext;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\BrowserKit\Cookie;
@@ -35,7 +37,11 @@ final class SecurityContext implements Context
      */
     public function gatherContext(BeforeScenarioScope $scope): void
     {
-        $this->minkContext = $scope->getEnvironment()->getContext(MinkContext::class);
+        /** @var InitializedContextEnvironment $environment */
+        $environment = $scope->getEnvironment();
+        /** @var MinkContext $minkContext */
+        $minkContext = $environment->getContext(MinkContext::class);
+        $this->minkContext = $minkContext;
     }
 
     /**
@@ -76,11 +82,8 @@ final class SecurityContext implements Context
         );
         $this->session->save();
 
-        $this->minkContext
-            ->getSession()
-            ->getDriver()
-            ->getClient()
-            ->getCookieJar()
-            ->set(new Cookie($this->session->getName(), $this->session->getId()));
+        /** @var BrowserKitDriver $driver */
+        $driver = $this->minkContext->getSession()->getDriver();
+        $driver->getClient()->getCookieJar()->set(new Cookie($this->session->getName(), $this->session->getId()));
     }
 }
