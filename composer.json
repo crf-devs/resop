@@ -29,6 +29,7 @@
     "symfony/validator": "5.*",
     "symfony/webpack-encore-bundle": "^1.7",
     "symfony/yaml": "5.*",
+    "twig/cache-extension": "^1.4",
     "twig/intl-extra": "^3.0"
   },
   "require-dev": {

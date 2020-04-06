@@ -36,6 +36,9 @@
     </button>
 </div>
 
+{# Store the following table in cache for performances (default TTL: 1 day) #}
+{% cache 'organization_planning' filters %}
+{% set availabilities = getAvailabilities(periodCalculator, filters) %}
 <div class="planning-container">
     <table class="planning table table-sm table-bordered availability-table" data-availability-mode="planning" style="display: none;">
         <thead>
@@ -121,6 +124,7 @@
         </tfoot>
     </table>
 </div>
+{% endcache %}
 
 <div class="modal fade" id="modal-update" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
