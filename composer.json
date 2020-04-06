@@ -33,8 +33,13 @@
     "twig/intl-extra": "^3.0"
   },
   "require-dev": {
+    "behat/behat": "^3.6",
     "dama/doctrine-test-bundle": "^6.3",
     "escapestudios/symfony2-coding-standard": "^3.11",
+    "friends-of-behat/mink": "^1.8",
+    "friends-of-behat/mink-browserkit-driver": "^1.4",
+    "friends-of-behat/mink-extension": "^2.4",
+    "friends-of-behat/symfony-extension": "^2.1",
     "friendsofphp/php-cs-fixer": "^2.16",
     "mheap/phpunit-github-actions-printer": "^1.2",
     "phpstan/phpstan-doctrine": "^0.12.8",

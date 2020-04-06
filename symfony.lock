@@ -2,11 +2,23 @@
     "beberlei/assert": {
         "version": "v3.2.7"
     },
+    "behat/behat": {
+        "version": "v3.6.1"
+    },
+    "behat/gherkin": {
+        "version": "v4.6.2"
+    },
+    "behat/transliterator": {
+        "version": "v1.3.0"
+    },
     "composer/semver": {
         "version": "1.5.0"
     },
     "composer/xdebug-handler": {
         "version": "1.4.0"
+    },
+    "container-interop/container-interop": {
+        "version": "1.2.0"
     },
     "dama/doctrine-test-bundle": {
         "version": "4.0",
@@ -113,6 +125,30 @@
     },
     "escapestudios/symfony2-coding-standard": {
         "version": "3.11.0"
+    },
+    "friends-of-behat/mink": {
+        "version": "v1.8.0"
+    },
+    "friends-of-behat/mink-browserkit-driver": {
+        "version": "v1.4.0"
+    },
+    "friends-of-behat/mink-extension": {
+        "version": "v2.4.0"
+    },
+    "friends-of-behat/symfony-extension": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "3d21344765fd3440a85bdd27d4cada186ec628bd"
+        },
+        "files": [
+            "behat.yml.dist",
+            "config/services_test.yaml",
+            "features/demo.feature",
+            "tests/Behat/DemoContext.php"
+        ]
     },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
@@ -480,6 +516,9 @@
     },
     "symfony/property-info": {
         "version": "v5.0.2"
+    },
+    "symfony/proxy-manager-bridge": {
+        "version": "v5.0.7"
     },
     "symfony/routing": {
         "version": "4.2",

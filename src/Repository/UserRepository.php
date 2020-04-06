@@ -27,6 +27,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function loadUserByUsername(string $identifier): ?User
     {
         $qb = $this->createQueryBuilder('u');
