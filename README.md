@@ -8,7 +8,7 @@ Ce projet a été lancé par la Cellule Ressources & Anticipation de la Croix-Ro
 Son but est de recenser les disponibilités des bénévoles afin de connaître le plus précisément possible les ressources sollicitables
 et d'avoir de la visibilité sur les engagements à réaliser.
 
-![Planning mockup](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/planning-mockup.png)
+![Planning mockup](https://raw.githubusercontent.com/crf-devs/resop/master/docs/img/planning-mockup.png)
 
 - [En savoir plus sur les fonctionnalités](docs/features-fr.md)
 - [Tester la version de démonstration](docs/features-fr.md)
