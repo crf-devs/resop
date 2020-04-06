@@ -18,15 +18,15 @@ Chaque bénévole peut :
 
 ### Connexion
 
-![Login](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/login.png)
+![Login](https://raw.githubusercontent.com/crf-devs/resop/master/docs/img/login.png)
 
 ### Mon compte bénévole
 
-![Account](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/edit-account.png)
+![Account](https://raw.githubusercontent.com/crf-devs/resop/master/docs/img/edit-account.png)
 
 ### Mes disponibilités
 
-![Disponibilités](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/define-availability.png)
+![Disponibilités](https://raw.githubusercontent.com/crf-devs/resop/master/docs/img/define-availability.png)
 
 ----
 
@@ -48,15 +48,15 @@ Identifiants de démo :
 
 ### Planning
 
-![Disponibilité des bénévoles](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/planning.png)
+![Disponibilité des bénévoles](https://raw.githubusercontent.com/crf-devs/resop/master/docs/img/planning.png)
 
 ### Liste des bénévoles
 
-![Liste des bénévoles](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/users-list.png)
+![Liste des bénévoles](https://raw.githubusercontent.com/crf-devs/resop/master/docs/img/users-list.png)
 
 ### Liste des véhicules
 
-![Liste des véhicules](https://raw.githubusercontent.com/crf-devs/resop/master/doc/img/assets-list.png)
+![Liste des véhicules](https://raw.githubusercontent.com/crf-devs/resop/master/docs/img/assets-list.png)
 
 
 ## Structure parente
