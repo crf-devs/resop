@@ -24,16 +24,22 @@ class PlanningController extends AbstractController
 {
     private SkillSetDomain $skillSetDomain;
     private PlanningDomain $planningDomain;
+    private CacheStrategyInterface $cacheStrategy;
+    private CacheItemPoolInterface $cacheTwig;
 
     public function __construct(
         SkillSetDomain $skillSetDomain,
-        PlanningDomain $planningDomain
+        PlanningDomain $planningDomain,
+        CacheStrategyInterface $cacheStrategy,
+        CacheItemPoolInterface $cacheTwig
     ) {
         $this->skillSetDomain = $skillSetDomain;
         $this->planningDomain = $planningDomain;
+        $this->cacheStrategy = $cacheStrategy;
+        $this->cacheTwig = $cacheTwig;
     }
 
-    public function __invoke(Request $request, CacheStrategyInterface $cacheStrategy, CacheItemPoolInterface $cacheTwig): Response
+    public function __invoke(Request $request): Response
     {
         $form = $this->planningDomain->generateForm();
         $filters = $this->planningDomain->generateFilters($form);
@@ -50,15 +56,15 @@ class PlanningController extends AbstractController
         );
 
         $lastUpdate = $this->planningDomain->generateLastUpdateAndCount($filters)['lastUpdate'];
-        $cacheKey = $cacheStrategy->generateKey('organization_planning', $filters);
+        $cacheKey = $this->cacheStrategy->generateKey('organization_planning', $filters);
         /** @var CacheItem $item */
-        $item = $cacheTwig->getItem($cacheKey);
+        $item = $this->cacheTwig->getItem($cacheKey);
         if ($item->isHit()
             && isset($item->getMetadata()[CacheItem::METADATA_CTIME])
             && $item->getMetadata()[CacheItem::METADATA_CTIME] < ceil($lastUpdate / 100)
         ) {
             // New availabilities in planning: invalidate planning cache
-            $cacheTwig->deleteItem($cacheKey);
+            $this->cacheTwig->deleteItem($cacheKey);
         }
 
         return $this->render('organization/planning/planning.html.twig', [
