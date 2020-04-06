@@ -35,7 +35,11 @@ final class UserPlanningContext implements Context
         $page = $this->minkContext->getSession()->getPage();
         /** @var int $time */
         $time = strtotime($day);
-        $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]', (int) date('w', $time) - 1));
+        $day = (int) date('w', $time) - 1;
+        if (-1 === $day) {
+            $day = 6;
+        }
+        $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]', $day));
         if (0 === \count($elements)) {
             throw new ElementNotFoundException($this->minkContext->getSession()->getDriver(), 'form field', 'id|name|label|value', $day);
         }
@@ -57,7 +61,11 @@ final class UserPlanningContext implements Context
         $page = $this->minkContext->getSession()->getPage();
         /** @var int $time */
         $time = strtotime($day);
-        $locator = sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]', (int) date('w', $time) - 1);
+        $day = (int) date('w', $time) - 1;
+        if (-1 === $day) {
+            $day = 6;
+        }
+        $locator = sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]', $day);
         $locator .= 'checked' === $state ? ':checked' : ':not(:checked)';
         $elements = $page->findAll('css', $locator);
         if (12 > \count($elements)) {
