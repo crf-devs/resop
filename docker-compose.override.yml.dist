@@ -8,6 +8,8 @@ services:
 #  traefik:
 #    ports:
 #      - '80:80' # Uncomment to use the 80 port on your host instead of the 7500 one.
+#    volumes:
+#      - /run/user/1000/docker.sock:/var/run/docker.sock # Uncomment for docker rootless
 
 #  blackfire:
 #    image: blackfire/blackfire
@@ -30,4 +32,4 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data:rw
 #    ports:
-#        - '5432:5432' # Uncomment if you need to access the DB from your hoste
+#        - '5432:5432' # Uncomment if you need to access the DB from your host
