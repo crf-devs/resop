@@ -22,6 +22,10 @@ services:
 #        - BLACKFIRE_CLIENT_ID=none
 #        - BLACKFIRE_CLIENT_TOKEN=none
 
+#  tools:
+#    volumes:
+#      - ./:/srv:cached # Uncomment for MacOS
+
 #  node:
 #    volumes:
 #      - ./:/srv:cached # Uncomment for MacOS

@@ -55,6 +55,8 @@ services:
       context: .
       dockerfile: docker/php-flex/Dockerfile
       target: withoutsources-fpm
+      args:
+        - DEBUG_TOOLS=true
     volumes:
       - ./:/srv
     environment:
@@ -66,6 +68,8 @@ services:
       context: .
       dockerfile: docker/php-flex/Dockerfile
       target: withoutsources
+      args:
+        - DEBUG_TOOLS=true
     init: true
     volumes:
       - ./:/srv
