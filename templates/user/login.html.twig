@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion{% endblock %}
+{% block title %}{{ 'Login' | trans }}{% endblock %}
 
 {% block body %}
 <form method="post">
@@ -10,24 +10,24 @@
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
 
-            <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+            <h1 class="h3 mb-3 font-weight-normal">{{ 'Login' | trans }}</h1>
 
             {{ form_start(loginForm) }}
-            {{ form_row(loginForm.identifier, {label: 'Numéro NIVOL ou Adresse e-mail'}) }}
-            {{ form_row(loginForm.birthday, {label: 'Date de naissance'}) }}
+            {{ form_row(loginForm.identifier, {label: 'UserLogin' | trans }) }}
+            {{ form_row(loginForm.birthday, {label: 'DoB' | trans }) }}
 
             <div class="mt-4 mb-2 d-flex">
                 <label>
-                    <input type="checkbox" name="_remember_me"> Se souvenir de moi
+                    <input type="checkbox" name="_remember_me"> {{ 'RememberMe' | trans }}
                 </label>
             </div>
 
-            <button class="btn btn-lg btn-primary w-100" type="submit">Je me connecte</button>
+            <button class="btn btn-lg btn-primary w-100" type="submit">{{ 'LoginSubmit' | trans }}</button>
 
             {{ form_end(loginForm) }}
 
             <p class="mt-1">
-                <a class="btn btn-lg btn-info w-100" href="{{ path('user_new') }}">Créer mon compte</a>
+                <a class="btn btn-lg btn-info w-100" href="{{ path('user_new') }}">{{ 'CreateMyAccount' | trans }}</a>
             </p>
         </div>
     </div>

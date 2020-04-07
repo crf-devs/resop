@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="/favicon.ico" />
-        <title>ResOP - {% block title %}Welcome!{% endblock %}</title>
+        <title>ResOP - {% block title %}{{ 'Welcome' | trans }}!{% endblock %}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -19,16 +19,16 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{ path('user_home')}}">Accueil</a>
+                        <a class="nav-link" href="{{ path('user_home')}}">{{ 'Home' | trans }}</a>
                     </li>
                 </ul>
                 <div class="my-2 my-lg-0 d-flex">
                     {% if not app.user %}
-                        <a class="nav-link" href="{{ path('app_login')}}">Espace bénévole</a>
-                        <a class="nav-link" href="{{ path('app_organization_login')}}">Espace structure</a>
+                        <a class="nav-link" href="{{ path('app_login')}}">{{ 'Section.Volunteer' | trans }}</a>
+                        <a class="nav-link" href="{{ path('app_organization_login')}}">{{ 'Section.Organization' | trans }}</a>
                     {% else %}
                         {{  app.user }}
-                        <a class="mx-4" href="{{ logout_path() }}">Déconnexion</a>
+                        <a class="mx-4" href="{{ logout_path() }}">{{ 'Logout' | trans }}</a>
                     {% endif %}
                 </div>
             </div>
