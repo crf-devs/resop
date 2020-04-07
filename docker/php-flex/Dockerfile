@@ -54,7 +54,7 @@ RUN set -eux; \
   \
   apk del .build-deps
 
-RUN curl --insecure https://getcomposer.org/composer.phar -o /usr/bin/composer \
+RUN curl --insecure https://getcomposer.org/composer-stable.phar -o /usr/bin/composer \
     && chmod +x /usr/bin/composer \
     && mkdir /.composer \
     \
