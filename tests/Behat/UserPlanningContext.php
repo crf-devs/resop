@@ -35,10 +35,8 @@ final class UserPlanningContext implements Context
         $page = $this->minkContext->getSession()->getPage();
         /** @var int $time */
         $time = strtotime($day);
-        $day = (int) date('w', $time) - 1;
-        $day = $day < 0 ? 7 + $day : $day; // Table => Monday = 0. date('w') => Sunday = 0.
 
-        $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]', $day));
+        $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]:not(:disabled)', (int) date('N', $time) - 1));
         if (0 === \count($elements)) {
             throw new ElementNotFoundException($this->minkContext->getSession()->getDriver(), 'form field', 'data-day', (string) $day);
         }
@@ -60,14 +58,13 @@ final class UserPlanningContext implements Context
         $page = $this->minkContext->getSession()->getPage();
         /** @var int $time */
         $time = strtotime($day);
-        $day = (int) date('w', $time) - 1;
-        $day = $day < 0 ? 7 + $day : $day; // Table => Monday = 0. date('w') => Sunday = 0.
 
-        $locator = sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]', $day);
-        $locator .= 'checked' === $state ? ':checked' : ':not(:checked)';
-        $elements = $page->findAll('css', $locator);
-        if (12 > \count($elements)) {
-            throw new ExpectationException(sprintf('Some checkboxes of column "%s" are not checked.', $day), $this->minkContext->getSession()->getDriver());
+        $locator = sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]:not(:disabled)', (int) date('N', $time) - 1);
+        // Reverse the state to ensure no element is checked/unchecked
+        $locator .= 'checked' === $state ? ':not(:checked)' : ':checked';
+        $count = \count($page->findAll('css', $locator));
+        if (0 < $count) {
+            throw new ExpectationException(sprintf('%d checkboxes of column "%s" are not %s.', (int) $count, (string) $day, (string) $state), $this->minkContext->getSession()->getDriver());
         }
     }
 }

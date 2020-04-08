@@ -21,6 +21,5 @@ Feature:
     Scenario: As a authenticated user, I can log out
         Given I am authenticated as a user
         And I am on "/"
-        Then print current URL
         When I follow "Déconnexion"
         Then I should be on "/login"

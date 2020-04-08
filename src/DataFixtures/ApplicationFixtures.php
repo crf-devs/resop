@@ -20,7 +20,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ApplicationFixtures extends Fixture
 {
-    private const SLOT_SIZE = 2; // 2 hours for one slot
+    // 168 = 12 (slot per day) * 7 (days in a week) * 2 (number of week available)
+    private const SLOT_NUMBER = 168;
+
+    // A slot is 2h long
+    private const SLOT_INTERVAL = 'PT2H';
+
+    private const PERCENT_USER_LOCKED = 0.10;
+    private const PERCENT_USER_AVAILABLE = 0.30;
+    private const PERCENT_USER_PARTIALLY_AVAILABLE = 0.40;
+
+    private const PERCENT_ASSET_LOCKED = 0.10;
+    private const PERCENT_ASSET_AVAILABLE = 0.30;
+    private const PERCENT_ASSET_PARTIALLY_AVAILABLE = 0.30;
+
     private const ORGANIZATIONS = [
         'DT75' => [
             'UL 01-02',
@@ -82,10 +95,17 @@ final class ApplicationFixtures extends Fixture
     private int $nbUsers;
     private int $nbAvailabilities;
 
+    private int $availabilitiesId = 1;
+
+    private SlotBookingGuesser $slotBookingGuesser;
+    private SlotAvailabilityGuesser $slotAvailabilityGuesser;
+
     public function __construct(
         EncoderFactoryInterface $encoders,
         ValidatorInterface $validator,
         SkillSetDomain $skillSetDomain,
+        SlotBookingGuesser $slotBookingGuesser,
+        SlotAvailabilityGuesser $slotAvailabilityGuesser,
         int $nbUsers = null,
         int $nbAvailabilities = null
     ) {
@@ -94,6 +114,8 @@ final class ApplicationFixtures extends Fixture
         $this->skillSetDomain = $skillSetDomain;
         $this->nbUsers = $nbUsers ?: random_int(10, 20);
         $this->nbAvailabilities = $nbAvailabilities ?: random_int(2, 6);
+        $this->slotBookingGuesser = $slotBookingGuesser;
+        $this->slotAvailabilityGuesser = $slotAvailabilityGuesser;
     }
 
     /**
@@ -103,9 +125,9 @@ final class ApplicationFixtures extends Fixture
     {
         $this->loadOrganizations($manager);
         $this->loadCommissionableAssets($manager);
-        $this->loadAvailabilities($manager, $this->assets, CommissionableAssetAvailability::class);
+        $this->loadResourcesAvailabilities($manager, $this->assets, CommissionableAssetAvailability::class);
         $this->loadUsers($manager);
-        $this->loadAvailabilities($manager, $this->users, UserAvailability::class);
+        $this->loadResourcesAvailabilities($manager, $this->users, UserAvailability::class);
 
         $manager->flush();
     }
@@ -203,81 +225,119 @@ final class ApplicationFixtures extends Fixture
         $manager->flush();
     }
 
-    private function loadAvailabilities(ObjectManager $manager, array $owners, string $availabilityClass): void
+    private function loadResourcesAvailabilities(ObjectManager $manager, array $resources, string $class): void
     {
         /** @var EntityManagerInterface $manager */
         $today = (new \DateTimeImmutable('today'));
+        $this->availabilitiesId = 1;
 
-        $dateIntervals = [];
-        $daysCount = $this->nbAvailabilities;
-        $hoursForOneEvent = 6;
+        // Mixing user
+        $resourcesRandom = $resources;
+        shuffle($resourcesRandom);
 
-        for ($d = 0; $d <= $daysCount; ++$d) {
-            for ($t = 0; $t < 24; $t += $hoursForOneEvent) {
-                $dateIntervals[] = 'P'.$d.'DT'.$t.'H';
-            }
+        $resourceCount = \count($resourcesRandom);
+
+        $index = 0;
+
+        $percentLocked = UserAvailability::class === $class ? self::PERCENT_USER_LOCKED : self::PERCENT_ASSET_LOCKED;
+        $resourceLocked = \array_slice($resourcesRandom, $index, (int) ($resourceCount * $percentLocked));
+        $index += \count($resourceLocked);
+
+        $percentAvailable = UserAvailability::class === $class ? self::PERCENT_USER_AVAILABLE : self::PERCENT_ASSET_AVAILABLE;
+        $resourceAvailable = \array_slice($resourcesRandom, $index, (int) ($resourceCount * $percentAvailable));
+        $index += \count($resourceAvailable);
+
+        $percentPartiallyAvailable = UserAvailability::class === $class ? self::PERCENT_USER_PARTIALLY_AVAILABLE : self::PERCENT_ASSET_PARTIALLY_AVAILABLE;
+        $resourcePartiallyAvailable = \array_slice($resourcesRandom, $index, (int) ($resourceCount * $percentPartiallyAvailable));
+
+        // Creating slots locked
+        $data = $this->createAvailabilities($resourceLocked, $today, AvailabilityInterface::STATUS_LOCKED);
+
+        // Creating slots available
+        $data = array_merge($data, $this->createAvailabilities($resourceAvailable, $today, AvailabilityInterface::STATUS_AVAILABLE));
+
+        // Creating slots partially available
+        $data = array_merge($data, $this->createAvailabilities($resourcePartiallyAvailable, $today, AvailabilityInterface::STATUS_AVAILABLE, true));
+
+        $insert = sprintf(
+            'INSERT INTO %s (id, %s, start_time, end_time, status, created_at, updated_at, planning_agent_id) VALUES %s',
+            $manager->getClassMetadata($class)->getTableName(),
+            UserAvailability::class === $class ? 'user_id' : 'asset_id',
+            implode(', ', $data)
+        );
+
+        $manager->getConnection()->exec(sprintf($insert));
+        if (CommissionableAssetAvailability::class === $class) {
+            $sequence = 'commissionable_asset_availability_id_seq';
+        } else {
+            $sequence = 'user_availability_id_seq';
         }
 
-        $values = [];
-        $availabilityId = 0;
-        foreach ($owners as $owner) {
-            $currentIntervals = $dateIntervals;
-            for ($i = 0, $count = \count($dateIntervals); $i < $count; ++$i) {
-                $key = array_rand($currentIntervals);
-                $data = [
-                    'owner' => $owner,
-                    'startTime' => $today->add(new \DateInterval($currentIntervals[$key])),
-                    'hoursForOneEvent' => $hoursForOneEvent,
-                    'status' => AvailabilityInterface::STATUSES[array_rand(AvailabilityInterface::STATUSES)],
-                ];
-
-                foreach ($this->makeIntervalAvailability($data) as $sqlData) {
-                    array_unshift($sqlData, ++$availabilityId);
-                    $values[] = implode(', ', $sqlData);
-                }
-
-                unset($currentIntervals[$key]);
-            }
-        }
-
-        for ($offset = 0, $count = \count($values); $offset <= $count; $offset += 100) {
-            if (empty($data = \array_slice($values, $offset, 100))) {
-                break;
-            }
-
-            $manager->getConnection()->exec(sprintf(
-                'INSERT INTO %s (id, %s, start_time, end_time, status, created_at, updated_at, planning_agent_id) VALUES (%s)',
-                $manager->getClassMetadata($availabilityClass)->getTableName(),
-                UserAvailability::class === $availabilityClass ? 'user_id' : 'asset_id',
-                implode('), (', $data)
-            ));
-        }
-
-        $manager->getConnection()->exec(sprintf('SELECT setval(\'user_availability_id_seq\', %d, true)', $availabilityId));
+        $manager->getConnection()->exec(sprintf('SELECT setval(\''.$sequence.'\', %d, true)', $this->availabilitiesId));
     }
 
-    private function makeIntervalAvailability(array $data): iterable
+    private function createAvailabilities(array $objects, \DateTimeInterface $thisWeek, string $globalStatus, bool $partiallyAvailable = false): array
     {
-        $startTime = $data['startTime'];
-        $slotsCount = random_int(1, $data['hoursForOneEvent'] / self::SLOT_SIZE); // Same color for many successive slots
+        $data = [];
 
-        for ($i = 0; $i < $slotsCount; ++$i) {
-            $availability = [
-                $data['owner']->getId(),
-                "'".$startTime->add(new \DateInterval(sprintf('PT%sH', $i * self::SLOT_SIZE)))->format('Y-m-d H:i:s')."'",
-                "'".$startTime->add(new \DateInterval(sprintf('PT%sH', ($i + 1) * self::SLOT_SIZE)))->format('Y-m-d H:i:s')."'",
-                "'".$data['status']."'",
-                "'".date('Y-m-d H:i:s')."'",
-                "'".date('Y-m-d H:i:s')."'",
-                'NULL',
-            ];
+        // Creating slots for locked user or asset
+        foreach ($objects as $object) {
+            $slot = $thisWeek;
+            for ($i = 0; $i < self::SLOT_NUMBER; ++$i) {
+                $status = $globalStatus;
+                $organizationId = null;
+                if (AvailabilityInterface::STATUS_LOCKED === $globalStatus) {
+                    $status = AvailabilityInterface::STATUS_LOCKED;
+                } elseif (AvailabilityInterface::STATUS_AVAILABLE === $globalStatus) {
+                    if ($partiallyAvailable) {
+                        // If partially available is active whe check if guesser will return an available slot otherwise we skip.
+                        if ($this->slotAvailabilityGuesser->guessAvailableSlot($slot)) {
+                            $status = $this->slotBookingGuesser->guessBookedSlot($slot) ? AvailabilityInterface::STATUS_BOOKED : AvailabilityInterface::STATUS_AVAILABLE;
+                        } else {
+                            $status = AvailabilityInterface::STATUS_UNKNOW;
+                        }
+                        // If not we the slot is available and we just check if it is booked
+                    } else {
+                        $status = $this->slotBookingGuesser->guessBookedSlot($slot) ? AvailabilityInterface::STATUS_BOOKED : AvailabilityInterface::STATUS_AVAILABLE;
+                    }
+                }
 
-            if (AvailabilityInterface::STATUS_BOOKED === $data['status']) {
-                $availability[\count($availability) - 1] = $this->organizations[array_rand($this->organizations)]->getId();
+                // Avoid inserting unavailable data
+                if (AvailabilityInterface::STATUS_UNKNOW !== $status) {
+                    // Linking an random organization when slot is booked
+                    if (AvailabilityInterface::STATUS_BOOKED === $status) {
+                        $organizationId = $this->getRandomOrganization();
+                    }
+
+                    $data[] = '('.$this->availabilitiesId++.','.
+                        $object->getId().','.
+                        "'".$slot->format('Y-m-d H:i:s')."',".
+                        "'".$this->closeInterval($slot)->format('Y-m-d H:i:s')."',".
+                        "'".$status."',".
+                        "'".date('Y-m-d H:i:s')."',".
+                        "'".date('Y-m-d H:i:s')."',".
+                        ($organizationId ?: 'NULL').')'
+                    ;
+                }
+
+                $slot = $slot->add(new \DateInterval(self::SLOT_INTERVAL));
             }
 
-            yield $availability;
+            $this->slotBookingGuesser->resetGuesser();
+            $this->slotAvailabilityGuesser->resetGuesser();
         }
+
+        return $data;
+    }
+
+    private function getRandomOrganization(): int
+    {
+        return $this->organizations[array_rand($this->organizations)]->getId();
+    }
+
+    private function closeInterval(\DateTimeImmutable $dateTime): \DateTimeInterface
+    {
+        return $dateTime->add(new \DateInterval('PT2H'));
     }
 
     private function makeOrganization(string $name, string $password = null, Organization $parent = null): Organization

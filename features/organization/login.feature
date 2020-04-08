@@ -18,6 +18,5 @@ Feature:
     Scenario: As a authenticated organization, I can log out
         Given I am authenticated as an organization
         And I am on "/organizations/"
-        Then print current URL
         When I follow "Déconnexion"
         Then I should be on "/organizations/login"
