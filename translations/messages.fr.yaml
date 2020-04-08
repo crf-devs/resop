@@ -1,1 +1,30 @@
-Submit: Enregistrer
+action:
+  login: Connexion
+  loginSubmit: Je me connecte
+  logout: Déconnexion
+  rememberMe: Se souvenir de moi
+  submit: Enregistrer
+calendar:
+  week:
+    current: Semaine actuelle
+    next: Semaine prochaine
+  period: du %from% au %to%
+nav:
+  home: Accueil
+  section:
+    volunteer: Espace bénévole
+    organization: Espace structure
+  welcome: Bienvenue
+project:
+  contribute: Contribuez au projet
+  description: Réserve opérationnelle - Croix-Rouge Française à Paris
+  name: ResOP
+user:
+  availabilityCurrentWeek: Mes disponibilités pour la semaine courante
+  availabilityNextWeek: Mes disponibilités pour la semaine prochaine
+  createMyAccount: Créer mon compte
+  dob: Date de naissance
+  editMyInfo: Modifier mes informations
+  login: Numéro NIVOL ou Adresse e-mail
+  identificationNumber: NIVOL
+  welcome: Bienvenue, %name%
