@@ -8,8 +8,7 @@ calendar:
   week:
     current: Semaine actuelle
     next: Semaine prochaine
-  from: du
-  to: au
+  period: du %from% au %to%
 nav:
   home: Accueil
   section:
