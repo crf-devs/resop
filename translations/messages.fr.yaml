@@ -1,25 +1,30 @@
-action.login: Connexion
-action.loginSubmit: Je me connecte
-action.logout: Déconnexion
-action.rememberMe: Se souvenir de moi
-action.submit: Enregistrer
-calendar.week:
-  current: Semaine actuelle
-  next: Semaine prochaine
-calendar.from: du
-calendar.to: au
-nav.home: Accueil
-nav.section:
-  volunteer: Espace bénévole
-  organization: Espace structure
-nav.welcome: Bienvenue
-project.contribute: Contribuez au projet
-project.description: Réserve opérationnelle - Croix-Rouge Française à Paris
-project.name: ResOP
-user.availabilityCurrentWeek: Mes disponibilités pour la semaine courante
-user.availabilityNextWeek: Mes disponibilités pour la semaine prochaine
-user.createMyAccount: Créer mon compte
-user.dob: Date de naissance
-user.editMyInfo: Modifier mes informations
-user.login: Numéro NIVOL ou Adresse e-mail
-user.identificationNumber: NIVOL
+action:
+  login: Connexion
+  loginSubmit: Je me connecte
+  logout: Déconnexion
+  rememberMe: Se souvenir de moi
+  submit: Enregistrer
+calendar:
+  week:
+    current: Semaine actuelle
+    next: Semaine prochaine
+  from: du
+  to: au
+nav:
+  home: Accueil
+  section:
+    volunteer: Espace bénévole
+    organization: Espace structure
+  welcome: Bienvenue
+project:
+  contribute: Contribuez au projet
+  description: Réserve opérationnelle - Croix-Rouge Française à Paris
+  name: ResOP
+user:
+  availabilityCurrentWeek: Mes disponibilités pour la semaine courante
+  availabilityNextWeek: Mes disponibilités pour la semaine prochaine
+  createMyAccount: Créer mon compte
+  dob: Date de naissance
+  editMyInfo: Modifier mes informations
+  login: Numéro NIVOL ou Adresse e-mail
+  identificationNumber: NIVOL
