@@ -28,3 +28,4 @@ user:
   editMyInfo: Modifier mes informations
   login: Numéro NIVOL ou Adresse e-mail
   identificationNumber: NIVOL
+  welcome: Bienvenue, %name%

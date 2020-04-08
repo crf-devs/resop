@@ -4,7 +4,7 @@
 
 {% block body %}
     {{ include('misc/flash-messages.html.twig') }}
-    <h1>{{ 'nav.welcome' | trans }}, {{ app.user.fullName }}</h1>
+    <h1>{{ 'user.welcome' | trans({'%name%': app.user.fullName}) }}</h1>
     <p>{{ 'user.identificationNumber' | trans }} : {{ app.user.identificationNumber }}</p>
     <p><a class="btn btn-primary" href="{{ path('user_edit') }}" role="button">{{ 'user.editMyInfo' | trans }}</a></p>
 
