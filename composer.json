@@ -1,6 +1,6 @@
 {
   "type": "project",
-  "license": "proprietary",
+  "license": "GPL-3.0-or-later",
   "name": "crf-devs/resop",
   "description": "ResOp",
   "require": {
