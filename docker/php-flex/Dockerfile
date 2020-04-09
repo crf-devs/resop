@@ -131,6 +131,7 @@ COPY --chown=www-data:www-data bin bin/
 COPY --chown=www-data:www-data config config/
 COPY --chown=www-data:www-data public public/
 COPY --chown=www-data:www-data templates templates/
+COPY --chown=www-data:www-data translations translations/
 COPY --chown=www-data:www-data src src/
 COPY --from=withsources-npm --chown=www-data:www-data /srv/public/build public/build/
 
