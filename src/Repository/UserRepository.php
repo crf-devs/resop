@@ -36,7 +36,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $qb = $this->createQueryBuilder('u');
         foreach ($words as $i => $word) {
             $qb
-                ->andWhere("u.firstName LIKE ?$i OR u.lastName LIKE ?$i OR u.emailAddress LIKE ?$i OR u.identificationNumber LIKE ?$i")
+                ->andWhere("LOWER(u.firstName) LIKE LOWER(?$i) OR LOWER(u.lastName) LIKE LOWER(?$i) OR LOWER(u.emailAddress) LIKE LOWER(?$i) OR LOWER(u.identificationNumber) LIKE LOWER(?$i)")
                 ->setParameter($i, "%$word%");
         }
 

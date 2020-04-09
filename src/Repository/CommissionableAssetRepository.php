@@ -34,7 +34,9 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
         $words = explode(' ', $query);
         $qb = $this->createQueryBuilder('ca')->innerJoin('ca.organization', 'o');
         foreach ($words as $i => $word) {
-            $qb->andWhere("ca.name LIKE ?$i OR ca.contact LIKE ?$i OR o.name LIKE ?$i")->setParameter($i, "%$word%");
+            $qb
+                ->andWhere("LOWER(ca.name) LIKE LOWER(?$i) OR LOWER(ca.contact) LIKE LOWER(?$i) OR LOWER(o.name) LIKE LOWER(?$i)")
+                ->setParameter($i, "%$word%");
         }
 
         return $qb->setMaxResults(10)->getQuery()->getResult();

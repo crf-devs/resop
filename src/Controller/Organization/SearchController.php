@@ -18,11 +18,14 @@ final class SearchController extends AbstractController
 {
     public function __invoke(Request $request, UserRepository $userRepository, CommissionableAssetRepository $commissionableAssetRepository): Response
     {
-        if (empty($query = $request->query->get('query'))) {
+        /** @var string $query */
+        $query = preg_replace('/\s+/', ' ', trim($request->query->get('query')));
+        if (empty($query)) {
             throw $this->createNotFoundException('Missing "query" query parameter');
         }
 
         return $this->render('organization/search.html.twig', [
+            'query' => $query,
             'users' => $userRepository->search($query),
             'assets' => $commissionableAssetRepository->search($query),
         ]);

@@ -10,7 +10,7 @@
 {% block body %}
     {{ include('misc/flash-messages.html.twig') }}
 
-    <h1>{{ 'action.search' | trans({'%query%': app.request.query.get('query')}) }}</h1>
+    <h1>{{ 'action.search' | trans({'%query%': query}) }}</h1>
 
     {{ include('organization/_search.html.twig') }}
 
