@@ -17,13 +17,29 @@ use Doctrine\ORM\AbstractQuery;
  * @method CommissionableAsset[]    findAll()
  * @method CommissionableAsset[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CommissionableAssetRepository extends ServiceEntityRepository implements AvailabilitableRepositoryInterface
+class CommissionableAssetRepository extends ServiceEntityRepository implements AvailabilitableRepositoryInterface, SearchableRepositoryInterface
 {
     use AvailabilityQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CommissionableAsset::class);
+    }
+
+    /**
+     * @return CommissionableAsset[]
+     */
+    public function search(string $query): array
+    {
+        $words = explode(' ', $query);
+        $qb = $this->createQueryBuilder('ca')->innerJoin('ca.organization', 'o');
+        foreach ($words as $i => $word) {
+            $qb
+                ->andWhere("LOWER(ca.name) LIKE LOWER(?$i) OR LOWER(ca.contact) LIKE LOWER(?$i) OR LOWER(o.name) LIKE LOWER(?$i)")
+                ->setParameter($i, "%$word%");
+        }
+
+        return $qb->setMaxResults(10)->getQuery()->getResult();
     }
 
     public function findByIds(array $ids): array

@@ -18,13 +18,29 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements UserLoaderInterface, AvailabilitableRepositoryInterface
+class UserRepository extends ServiceEntityRepository implements UserLoaderInterface, AvailabilitableRepositoryInterface, SearchableRepositoryInterface
 {
     use AvailabilityQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    /**
+     * @return User[]
+     */
+    public function search(string $query): array
+    {
+        $words = explode(' ', $query);
+        $qb = $this->createQueryBuilder('u');
+        foreach ($words as $i => $word) {
+            $qb
+                ->andWhere("LOWER(u.firstName) LIKE LOWER(?$i) OR LOWER(u.lastName) LIKE LOWER(?$i) OR LOWER(u.emailAddress) LIKE LOWER(?$i) OR LOWER(u.identificationNumber) LIKE LOWER(?$i)")
+                ->setParameter($i, "%$word%");
+        }
+
+        return $qb->setMaxResults(10)->getQuery()->getResult();
     }
 
     /**

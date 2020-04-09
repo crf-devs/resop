@@ -18,7 +18,7 @@ Feature:
         Then I should be on "/"
         And I should see "NIVOL : 990001A"
 
-    Scenario: As a authenticated user, I can log out
+    Scenario: As an authenticated user, I can log out
         Given I am authenticated as a user
         And I am on "/"
         When I follow "Déconnexion"

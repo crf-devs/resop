@@ -1,0 +1,34 @@
+{% extends 'organization/base.html.twig' %}
+
+{% block title %}Espace structure{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('availabilitable-list') }}
+{% endblock %}
+
+{% block body %}
+    {{ include('misc/flash-messages.html.twig') }}
+
+    <h1>{{ 'action.search' | trans({'%query%': query}) }}</h1>
+
+    {{ include('organization/_search.html.twig') }}
+
+    <hr/>
+    <h3>Bénévoles</h3>
+    {% if users|length %}
+        {% include 'organization/user/_list.html.twig' with {organization: app.user} %}
+    {% else %}
+        <p>{{ 'organization.search.no_users' | trans }}</p>
+    {% endif %}
+    <p><a class="btn btn-secondary" role="button" href="{{ path('app_organization_user_list', {'id': app.user.id}) }}">Afficher la liste de mes bénévoles inscrits</a></p>
+
+    <hr/>
+    <h3>Véhicules</h3>
+    {% if assets|length %}
+        {% include'organization/commissionable_asset/_list.html.twig' %}
+    {% else %}
+        <p>{{ 'organization.search.no_assets' | trans }}</p>
+    {% endif %}
+    <p><a class="btn btn-secondary" href="{{ path('app_organization_commissionable_assets') }}" role="button">Afficher la liste de mes véhicules</a></p>
+{% endblock %}

@@ -15,7 +15,7 @@ Feature:
         Then I should be on "/organizations/"
         And I should see "DT75 - UL 05"
 
-    Scenario: As a authenticated organization, I can log out
+    Scenario: As an authenticated organization, I can log out
         Given I am authenticated as an organization
         And I am on "/organizations/"
         When I follow "Déconnexion"
