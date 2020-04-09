@@ -1,5 +1,6 @@
 action:
   login: Connexion
+  search: Rechercher "%query%"
   loginSubmit: Je me connecte
   logout: Déconnexion
   rememberMe: Se souvenir de moi
@@ -28,3 +29,9 @@ user:
   login: Numéro NIVOL ou Adresse e-mail
   identificationNumber: NIVOL
   welcome: Bienvenue, %name%
+organization:
+  search:
+    query: Rechercher un bénévole ou un véhicule
+    submit: Rechercher
+    no_users: Aucun bénévole ne correspond à votre recherche.
+    no_assets: Aucun véhicule ne correspond à votre recherche.
