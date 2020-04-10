@@ -7,24 +7,11 @@
 * docker >= 18.06
 * docker-compose >= 1.23
 
-### Linux
+### Linux and OS X
 
 ```bash
 git clone git@github.com:crf-devs/resop.git && cd resop
 make
-```
-
-### OS X
-
-```bash
-git clone git@github.com:crf-devs/resop.git && cd resop
-
-make pre-configure
-make configure
-
-# Caution: you need to uncomment all `:cached` lines in the `the docker-compose.override.yml` file
-
-make all
 ```
 
 ### Windows
