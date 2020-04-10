@@ -17,19 +17,19 @@ services:
 #      - BLACKFIRE_SERVER_ID=none
 #      - BLACKFIRE_SERVER_TOKEN=none
 
-#  fpm:
-#    volumes:
+#  fpm: # Uncomment for MacOS
+#    volumes: # Uncomment for MacOS
 #      - ./:/srv:cached # Uncomment for MacOS
 #    environment:
 #        - BLACKFIRE_CLIENT_ID=none
 #        - BLACKFIRE_CLIENT_TOKEN=none
 
-#  tools:
-#    volumes:
+#  tools: # Uncomment for MacOS
+#    volumes: # Uncomment for MacOS
 #      - ./:/srv:cached # Uncomment for MacOS
 
-#  node:
-#    volumes:
+#  node: # Uncomment for MacOS
+#    volumes: # Uncomment for MacOS
 #      - ./:/srv:cached # Uncomment for MacOS
 
   postgres:
