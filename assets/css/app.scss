@@ -1,11 +1,16 @@
+@import "variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap-select/sass/bootstrap-select";
+@import "~daterangepicker/daterangepicker.css";
+
 label.required:not(.form-check-label)::before {
-  color: crimson;
+  color: $red;
   content: "*";
   padding-right: 4px;
 }
 
 legend.required::before {
-  color: crimson;
+  color: $red;
   content: "*";
   padding-right: 4px;
 }
@@ -17,7 +22,3 @@ footer {
   background-color: #f7f7f7;
   box-shadow: inset 0 3px 3px -1px rgba(227, 227, 227, 1);
 }
-
-@import "~bootstrap/scss/bootstrap";
-@import "~bootstrap-select/sass/bootstrap-select";
-@import "~daterangepicker/daterangepicker.css";

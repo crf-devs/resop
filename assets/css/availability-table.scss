@@ -1,3 +1,5 @@
+@import "variables";
+
 table.availability-table {
   text-align: center;
 
@@ -21,30 +23,50 @@ table.availability-table {
   &.shift-pressed {
     td.prev-clicked {
       opacity: 1;
-      box-shadow: inset 0 0 0 4px crimson;
+      box-shadow: inset 0 0 0 4px $red;
+    }
+  }
+}
+
+.availability-legend-container,
+.planning-legend-container {
+  margin-bottom: 0;
+
+  .availability-legend {
+    height: 15px;
+    width: 30px;
+    display: inline-block;
+    margin-right: 15px;
+  }
+
+  &.availability-legend-container {
+    .availability-legend.unknown {
+      background-color: white;
+      border: 1px solid #eee;
     }
   }
 }
 
 .planning-actions-container,
+.availability-legend-container,
 table.availability-table {
   .unknown {
-    background-color: #ff767f;
+    background-color: $colorUnknown;
     color: white;
   }
 
   .available {
-    background-color: #76bd79;
+    background-color: $colorAvailable;
     color: white;
   }
 
   .booked {
-    background-color: #67a2d3;
+    background-color: $colorBooked;
     color: white;
   }
 
   .locked {
-    background-color: #7a7a7a;
+    background-color: $colorLocked;
     color: white;
   }
 }

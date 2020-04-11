@@ -1,12 +1,10 @@
 <form action="{{ path('app_organization_search') }}" method="get">
     <div class="row">
-        <div class="col-5">
+        <div class="col-md-5">
             <input type="search" class="form-control" value="{{ query | default('') }}" required name="query" placeholder="{{ 'organization.search.query'|trans }}" />
         </div>
-        <div class="col-2">
-            <div class="float-right mt-2">
-                <button type="submit" class="btn-primary btn">{{ 'organization.search.submit'|trans }}</button>
-            </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn-primary btn">{{ 'organization.search.submit'|trans }}</button>
         </div>
     </div>
 </form>
