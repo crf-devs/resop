@@ -34,12 +34,7 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
         $words = explode(' ', $query);
         $qb = $this->createQueryBuilder('ca');
 
-        if ($organization->isParent()) {
-            $qb
-                ->andWhere($qb->expr()->in('ca.organization', 'SELECT o.id FROM App:Organization o WHERE o.id = :orgId OR o.parent = :orgId'));
-        } else {
-            $qb->andWhere('ca.organization = :orgId');
-        }
+        $qb->andWhere($qb->expr()->in('ca.organization', 'SELECT o.id FROM App:Organization o WHERE o.id = :orgId OR o.parent = :orgId'));
         $qb->setParameter('orgId', $organization);
 
         foreach ($words as $i => $word) {

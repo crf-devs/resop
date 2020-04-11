@@ -12,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/search", name="app_organization_search", methods={"GET"})
@@ -21,10 +20,8 @@ final class SearchController extends AbstractController
 {
     public function __invoke(Request $request, UserRepository $userRepository, CommissionableAssetRepository $commissionableAssetRepository, OrganizationRepository $organizationRepository): Response
     {
+        /** @var Organization $organization */
         $organization = $this->getUser();
-        if (!$organization instanceof Organization) {
-            throw new AccessDeniedException();
-        }
 
         /** @var string $query */
         $query = preg_replace('/\s+/', ' ', trim($request->query->get('query')));

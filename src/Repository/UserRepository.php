@@ -35,12 +35,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $words = explode(' ', $query);
         $qb = $this->createQueryBuilder('u');
 
-        if ($organization->isParent()) {
-            $qb
-                ->andWhere($qb->expr()->in('u.organization', 'SELECT o.id FROM App:Organization o WHERE o.id = :orgId OR o.parent = :orgId'));
-        } else {
-            $qb->andWhere('u.organization = :orgId');
-        }
+        $qb->andWhere($qb->expr()->in('u.organization', 'SELECT o.id FROM App:Organization o WHERE o.id = :orgId OR o.parent = :orgId'));
         $qb->setParameter('orgId', $organization);
 
         foreach ($words as $i => $word) {
