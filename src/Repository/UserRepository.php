@@ -30,10 +30,19 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     /**
      * @return User[]
      */
-    public function search(string $query): array
+    public function search(Organization $organization, string $query): array
     {
         $words = explode(' ', $query);
         $qb = $this->createQueryBuilder('u');
+
+        if ($organization->isParent()) {
+            $qb
+                ->andWhere($qb->expr()->in('u.organization', 'SELECT o.id FROM App:Organization o WHERE o.id = :orgId OR o.parent = :orgId'));
+        } else {
+            $qb->andWhere('u.organization = :orgId');
+        }
+        $qb->setParameter('orgId', $organization);
+
         foreach ($words as $i => $word) {
             $qb
                 ->andWhere("LOWER(u.firstName) LIKE LOWER(?$i) OR LOWER(u.lastName) LIKE LOWER(?$i) OR LOWER(u.emailAddress) LIKE LOWER(?$i) OR LOWER(u.identificationNumber) LIKE LOWER(?$i)")

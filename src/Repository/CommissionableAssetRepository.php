@@ -29,13 +29,22 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
     /**
      * @return CommissionableAsset[]
      */
-    public function search(string $query): array
+    public function search(Organization $organization, string $query): array
     {
         $words = explode(' ', $query);
-        $qb = $this->createQueryBuilder('ca')->innerJoin('ca.organization', 'o');
+        $qb = $this->createQueryBuilder('ca');
+
+        if ($organization->isParent()) {
+            $qb
+                ->andWhere($qb->expr()->in('ca.organization', 'SELECT o.id FROM App:Organization o WHERE o.id = :orgId OR o.parent = :orgId'));
+        } else {
+            $qb->andWhere('ca.organization = :orgId');
+        }
+        $qb->setParameter('orgId', $organization);
+
         foreach ($words as $i => $word) {
             $qb
-                ->andWhere("LOWER(ca.name) LIKE LOWER(?$i) OR LOWER(ca.contact) LIKE LOWER(?$i) OR LOWER(o.name) LIKE LOWER(?$i)")
+                ->andWhere("LOWER(CONCAT(ca.type, ca.name)) LIKE LOWER(?$i) OR LOWER(ca.contact) LIKE LOWER(?$i)")
                 ->setParameter($i, "%$word%");
         }
 
