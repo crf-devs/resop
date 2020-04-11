@@ -10,12 +10,12 @@ Feature:
     Scenario: As an authenticated organization, I can search for a user
         Given I am authenticated as an organization
         And I am on "/organizations/"
-        When I fill in "query" with " UsER1 reSOp "
+        When I fill in "query" with " UsER44 reSOp "
         And I press "Rechercher"
         Then I should be on "/organizations/search"
-        And I should see "Rechercher \"UsER1 reSOp\""
-        And I should see "990001A"
-        And I should see "user1@resop.com"
+        And I should see "Rechercher \"UsER44 reSOp\""
+        And I should see "990044A"
+        And I should see "user44@resop.com"
         And I should see "Aucun véhicule ne correspond à votre recherche."
 
     Scenario: As an authenticated organization, I can search for an asset
