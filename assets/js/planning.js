@@ -1,6 +1,10 @@
 const $ = require('jquery');
 
 function initDatesRange($picker, $from, $to, withTime) {
+  if (!$picker.length) {
+    return;
+  }
+
   function displayDate() {
     if (withTime) {
       $picker.val($picker.data('daterangepicker').startDate.format('DD/MM/YYYY HH:mm') + ' à ' + $picker.data('daterangepicker').endDate.format('DD/MM/YYYY HH:mm'));

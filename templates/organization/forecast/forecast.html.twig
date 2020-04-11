@@ -1,0 +1,25 @@
+{% extends 'organization/base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('planning') }}
+{% endblock %}
+
+{% block title %}Projections{% endblock %}
+
+{% block container %}
+    <div>
+        <div class="container my-4">
+            {{ include('misc/flash-messages.html.twig') }}
+            <h1>Projections</h1>
+            {% include 'organization/forecast/_search_type.html.twig' %}
+        </div>
+        <div class="container">
+            {% if filters.availableFrom is defined %}
+                {% include 'organization/forecast/_results.html.twig' %}
+            {% else %}
+                <p class="alert alert-warning">Choisissez une plage horaire pour calculer les équipages possibles.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

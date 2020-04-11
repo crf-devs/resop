@@ -128,6 +128,6 @@ class LoadOrganizationsCommand extends Command
 
     private function getPlainPassword(): string
     {
-        return $plainPassword = substr(sha1(random_bytes(6)), 0, 6);
+        return substr(sha1(random_bytes(6)), 0, 6);
     }
 }

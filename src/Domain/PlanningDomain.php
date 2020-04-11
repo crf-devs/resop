@@ -12,6 +12,7 @@ use App\Form\Type\PlanningSearchType;
 use App\Repository\AvailabilityRepositoryInterface;
 use App\Repository\CommissionableAssetAvailabilityRepository;
 use App\Repository\CommissionableAssetRepository;
+use App\Repository\MissionTypeRepository;
 use App\Repository\OrganizationRepository;
 use App\Repository\UserAvailabilityRepository;
 use App\Repository\UserRepository;
@@ -31,6 +32,7 @@ class PlanningDomain
     private RequestStack $requestStack;
     private Security $security;
     private SkillSetDomain $skillSetDomain;
+    private MissionTypeRepository $missionTypeRepository;
 
     public function __construct(
         UserRepository $userRepository,
@@ -38,6 +40,7 @@ class PlanningDomain
         UserAvailabilityRepository $userAvailabilityRepository,
         CommissionableAssetAvailabilityRepository $assetAvailabilityRepository,
         OrganizationRepository $organizationRepository,
+        MissionTypeRepository $missionTypeRepository,
         FormFactoryInterface $formFactory,
         RequestStack $requestStack,
         Security $security,
@@ -52,9 +55,10 @@ class PlanningDomain
         $this->requestStack = $requestStack;
         $this->security = $security;
         $this->skillSetDomain = $skillSetDomain;
+        $this->missionTypeRepository = $missionTypeRepository;
     }
 
-    public function generateForm(): FormInterface
+    public function generateForm(string $formType = PlanningSearchType::class): FormInterface
     {
         $organization = $this->security->getUser();
         $request = $this->requestStack->getCurrentRequest();
@@ -63,7 +67,7 @@ class PlanningDomain
             throw new \LogicException();
         }
 
-        $form = $this->formFactory->createNamed('', PlanningSearchType::class, ['organization' => $organization], ['method' => 'GET', 'attr' => ['autocomplete' => 'off']]);
+        $form = $this->formFactory->createNamed('', $formType, ['organization' => $organization], ['method' => 'GET', 'attr' => ['autocomplete' => 'off']]);
         $form->handleRequest($request);
 
         return $form;
@@ -77,8 +81,14 @@ class PlanningDomain
         }
 
         $filters = $form->getData();
+        // $filters['organizations'] is an ArrayCollection
         if (!\array_key_exists('organizations', $filters) || !(\count($filters['organizations']) > 0)) {
             $filters['organizations'] = $this->organizationRepository->findByParent($organization);
+        }
+
+        // $filters['missionTypes'] is an ArrayCollection
+        if (!\array_key_exists('missionTypes', $filters) || !(\count($filters['missionTypes']) > 0)) {
+            $filters['missionTypes'] = $this->missionTypeRepository->findByOrganization($organization);
         }
 
         return $filters;

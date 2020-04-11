@@ -9,6 +9,8 @@ use App\Entity\UserAvailability;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method UserAvailability|null find($id, $lockMode = null, $lockVersion = null)
@@ -83,5 +85,15 @@ class UserAvailabilityRepository extends ServiceEntityRepository implements Avai
             ->setParameter('owner', $user)
             ->getQuery()
             ->execute();
+    }
+
+    private function getRawSlots(QueryBuilder $qb, DateTimeInterface $from, DateTimeInterface $to): array
+    {
+        return $qb->andWhere('(ua.startTime >= :start and ua.endTime <= :end) or (ua.startTime <= :start and ua.endTime >= :start) or (ua.startTime <= :end and ua.endTime >= :end)')
+            ->setParameter('start', $from)
+            ->setParameter('end', $to)
+            ->getQuery()
+            ->setHint(Query::HINT_INCLUDE_META_COLUMNS, true)
+            ->getArrayResult();
     }
 }

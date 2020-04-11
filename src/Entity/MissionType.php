@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\MissionTypeRepository")
  */
 class MissionType
 {
@@ -35,7 +35,7 @@ class MissionType
     /**
      * @var array Skills and number of required users.
      *
-     * Example: [ [ 'skill' => 'ci_bspp', number => 1 ], [ 'skill' => 'ch_vpsp', number => 1 ], [ 'skill' => 'pse2', 'number' => 2 ] ]
+     * Example: [ [ 'skill' => 'ci_bspp', 'number' => 1 ], [ 'skill' => 'ch_vpsp', 'number' => 1 ], [ 'skill' => 'pse2', 'number' => 2 ] ]
      *
      * @ORM\Column(type="json")
      * @Assert\Type(type="array")

@@ -8,6 +8,7 @@ use App\Domain\SkillSetDomain;
 use App\Entity\AvailabilityInterface;
 use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
+use App\Entity\MissionType;
 use App\Entity\Organization;
 use App\Entity\User;
 use App\Entity\UserAvailability;
@@ -124,10 +125,52 @@ final class ApplicationFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $this->loadOrganizations($manager);
+        $this->loadMissionTypes($manager);
         $this->loadCommissionableAssets($manager);
         $this->loadResourcesAvailabilities($manager, $this->assets, CommissionableAssetAvailability::class);
         $this->loadUsers($manager);
         $this->loadResourcesAvailabilities($manager, $this->users, UserAvailability::class);
+
+        $manager->flush();
+    }
+
+    private function loadMissionTypes(ObjectManager $manager): void
+    {
+        foreach ($this->organizations as $organization) {
+            if (!$organization->isParent()) {
+                continue;
+            }
+
+            $alphaType = new MissionType();
+            $alphaType->name = 'Alpha';
+            $alphaType->organization = $organization;
+            $alphaType->userSkillsRequirement = [
+                ['skill' => 'ci_bspp', 'number' => 1],
+                ['skill' => 'ch_vpsp', 'number' => 1],
+                ['skill' => 'pse2', 'number' => 1],
+            ];
+
+            $alphaType->assetTypesRequirement = [
+                ['type' => 'VPSP', 'number' => 1],
+            ];
+
+            $this->validateAndPersist($manager, $alphaType);
+
+            $alphaType = new MissionType();
+            $alphaType->name = 'Maraude';
+            $alphaType->organization = $organization;
+            $alphaType->userSkillsRequirement = [
+                ['skill' => 'ce_maraude', 'number' => 1],
+                ['skill' => 'ch_vl', 'number' => 1],
+                ['skill' => 'maraudeur', 'number' => 2],
+            ];
+
+            $alphaType->assetTypesRequirement = [
+                ['type' => 'VL', 'number' => 1],
+            ];
+
+            $this->validateAndPersist($manager, $alphaType);
+        }
 
         $manager->flush();
     }
@@ -194,7 +237,7 @@ final class ApplicationFixtures extends Fixture
     {
         $startIdNumber = 990000;
         $firstNames = ['Audrey', 'Arnaud', 'Bastien', 'Beatrice', 'Benoit', 'Camille', 'Claire', 'Hugo', 'Fabien', 'Florian', 'Francis', 'Lilia', 'Lisa', 'Marie', 'Marine', 'Mathias', 'Mathieu', 'Michel', 'Nassim', 'Nathalie', 'Olivier', 'Pierre', 'Philippe', 'Sybille', 'Thomas', 'Tristan'];
-        $lastNames = ['Bryant', 'Butler', 'Curry', 'Davis', 'Doncic', 'Durant', 'Embiid', 'Fournier', 'Grant', 'Gobert', 'Harden', 'Irving', 'James',  'Johnson',  'Jordan', 'Lilliard', 'Morant', 'Noah', 'Oneal', 'Parker', 'Pippen', 'Skywalker', 'Thompson',  'Westbrook'];
+        $lastNames = ['Bryant', 'Butler', 'Curry', 'Davis', 'Doncic', 'Durant', 'Embiid', 'Fournier', 'Grant', 'Gobert', 'Harden', 'Irving', 'James', 'Johnson', 'Jordan', 'Lilliard', 'Morant', 'Noah', 'Oneal', 'Parker', 'Pippen', 'Skywalker', 'Thompson', 'Westbrook'];
         $occupations = ['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'];
 
         $x = 1;
@@ -319,8 +362,7 @@ final class ApplicationFixtures extends Fixture
                         "'".$status."',".
                         "'".date('Y-m-d H:i:s')."',".
                         "'".date('Y-m-d H:i:s')."',".
-                        ($organizationId ?: 'NULL').')'
-                    ;
+                        ($organizationId ?: 'NULL').')';
                 }
 
                 $slot = $slot->add(new \DateInterval(self::SLOT_INTERVAL));
