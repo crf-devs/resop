@@ -28,7 +28,7 @@ App\Entity\User:
   User.chuck_norris:
     firstName: Chuck
     lastName: NORRIS
-    organization: '@Organization.UL-DES-PORTES-DE-ROISSY-CDG'
+    organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
     identificationNumber: 990003A
     emailAddress (unique): chuck.norris@resop.com
     phoneNumber: '<fr_FR:phoneNumber()>'
