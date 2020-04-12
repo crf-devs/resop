@@ -5,3 +5,7 @@ services:
 
     App\Tests\Behat\:
         resource: '../tests/Behat/*'
+
+    App\Tests\Behat\FixturesContext:
+        arguments:
+            $loader: '@fidry_alice_data_fixtures.loader.doctrine'

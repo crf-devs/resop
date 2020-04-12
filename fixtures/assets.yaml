@@ -1,0 +1,313 @@
+App\Entity\CommissionableAsset:
+  Asset.DT75.VPSP.{2..4,2}:
+    organization: '@Organization.DT75'
+    type: VPSP
+    name: '7599<current()>'
+  Asset.DT75.VPSP.{6..8,2}:
+    organization: '@Organization.DT75'
+    type: VL
+    name: '7599<current()>'
+  Asset.DT77.VPSP.{2..4,2}:
+    organization: '@Organization.DT77'
+    type: VPSP
+    name: '7799<current()>'
+  Asset.DT77.VPSP.{6..8,2}:
+    organization: '@Organization.DT77'
+    type: VL
+    name: '7799<current()>'
+  Asset.UL-01-02.VPSP.{2..4,2}:
+    organization: '@Organization.UL-01-02'
+    type: VPSP
+    name: '7501<current()>'
+  Asset.UL-01-02.VPSP.{6..8,2}:
+    organization: '@Organization.UL-01-02'
+    type: VL
+    name: '7501<current()>'
+  Asset.UL-03-10.VPSP.{2..4,2}:
+    organization: '@Organization.UL-03-10'
+    type: VPSP
+    name: '7503<current()>'
+  Asset.UL-03-10.VPSP.{6..8,2}:
+    organization: '@Organization.UL-03-10'
+    type: VL
+    name: '7503<current()>'
+  Asset.UL-04.VPSP.{2..4,2}:
+    organization: '@Organization.UL-04'
+    type: VPSP
+    name: '7504<current()>'
+  Asset.UL-04.VPSP.{6..8,2}:
+    organization: '@Organization.UL-04'
+    type: VL
+    name: '7504<current()>'
+  Asset.UL-05.VPSP.{2..4,2}:
+    organization: '@Organization.UL-05'
+    type: VPSP
+    name: '7505<current()>'
+  Asset.UL-05.VPSP.{6..8,2}:
+    organization: '@Organization.UL-05'
+    type: VL
+    name: '7505<current()>'
+  Asset.UL-06.VPSP.{2..4,2}:
+    organization: '@Organization.UL-06'
+    type: VPSP
+    name: '7506<current()>'
+  Asset.UL-06.VPSP.{6..8,2}:
+    organization: '@Organization.UL-06'
+    type: VL
+    name: '7506<current()>'
+  Asset.UL-07.VPSP.{2..4,2}:
+    organization: '@Organization.UL-07'
+    type: VPSP
+    name: '7507<current()>'
+  Asset.UL-07.VPSP.{6..8,2}:
+    organization: '@Organization.UL-07'
+    type: VL
+    name: '7507<current()>'
+  Asset.UL-08.VPSP.{2..4,2}:
+    organization: '@Organization.UL-08'
+    type: VPSP
+    name: '7508<current()>'
+  Asset.UL-08.VPSP.{6..8,2}:
+    organization: '@Organization.UL-08'
+    type: VL
+    name: '7508<current()>'
+  Asset.UL-09.VPSP.{2..4,2}:
+    organization: '@Organization.UL-09'
+    type: VPSP
+    name: '7509<current()>'
+  Asset.UL-09.VPSP.{6..8,2}:
+    organization: '@Organization.UL-09'
+    type: VL
+    name: '7509<current()>'
+  Asset.UL-11.VPSP.{2..4,2}:
+    organization: '@Organization.UL-11'
+    type: VPSP
+    name: '7511<current()>'
+  Asset.UL-11.VPSP.{6..8,2}:
+    organization: '@Organization.UL-11'
+    type: VL
+    name: '7511<current()>'
+  Asset.UL-12.VPSP.{2..4,2}:
+    organization: '@Organization.UL-12'
+    type: VPSP
+    name: '7512<current()>'
+  Asset.UL-12.VPSP.{6..8,2}:
+    organization: '@Organization.UL-12'
+    type: VL
+    name: '7512<current()>'
+  Asset.UL-13.VPSP.{2..4,2}:
+    organization: '@Organization.UL-13'
+    type: VPSP
+    name: '7513<current()>'
+  Asset.UL-13.VPSP.{6..8,2}:
+    organization: '@Organization.UL-13'
+    type: VL
+    name: '7513<current()>'
+  Asset.UL-14.VPSP.{2..4,2}:
+    organization: '@Organization.UL-14'
+    type: VPSP
+    name: '7514<current()>'
+  Asset.UL-14.VPSP.{6..8,2}:
+    organization: '@Organization.UL-14'
+    type: VL
+    name: '7514<current()>'
+  Asset.UL-15.VPSP.{2..4,2}:
+    organization: '@Organization.UL-15'
+    type: VPSP
+    name: '7515<current()>'
+  Asset.UL-15.VPSP.{6..8,2}:
+    organization: '@Organization.UL-15'
+    type: VL
+    name: '7515<current()>'
+  Asset.UL-16.VPSP.{2..4,2}:
+    organization: '@Organization.UL-16'
+    type: VPSP
+    name: '7516<current()>'
+  Asset.UL-16.VPSP.{6..8,2}:
+    organization: '@Organization.UL-16'
+    type: VL
+    name: '7516<current()>'
+  Asset.UL-17.VPSP.{2..4,2}:
+    organization: '@Organization.UL-17'
+    type: VPSP
+    name: '7517<current()>'
+  Asset.UL-17.VPSP.{6..8,2}:
+    organization: '@Organization.UL-17'
+    type: VL
+    name: '7517<current()>'
+  Asset.UL-18.VPSP.{2..4,2}:
+    organization: '@Organization.UL-18'
+    type: VPSP
+    name: '7518<current()>'
+  Asset.UL-18.VPSP.{6..8,2}:
+    organization: '@Organization.UL-18'
+    type: VL
+    name: '7518<current()>'
+  Asset.UL-19.VPSP.{2..4,2}:
+    organization: '@Organization.UL-19'
+    type: VPSP
+    name: '7519<current()>'
+  Asset.UL-19.VPSP.{6..8,2}:
+    organization: '@Organization.UL-19'
+    type: VL
+    name: '7519<current()>'
+  Asset.UL-20.VPSP.{2..4,2}:
+    organization: '@Organization.UL-20'
+    type: VPSP
+    name: '7520<current()>'
+  Asset.UL-20.VPSP.{6..8,2}:
+    organization: '@Organization.UL-20'
+    type: VL
+    name: '7520<current()>'
+  Asset.UL-DE-BRIE-ET-CHANTEREINE.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
+    type: VPSP
+    name: '7710<current()>'
+  Asset.UL-DE-BRIE-ET-CHANTEREINE.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
+    type: VL
+    name: '7710<current()>'
+  Asset.UL-DE-BRIE-SENART.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-BRIE-SENART'
+    type: VPSP
+    name: '7711<current()>'
+  Asset.UL-DE-BRIE-SENART.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-BRIE-SENART'
+    type: VL
+    name: '7711<current()>'
+  Asset.UL-DE-CENTRE-BRIE.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-CENTRE-BRIE'
+    type: VPSP
+    name: '7712<current()>'
+  Asset.UL-DE-CENTRE-BRIE.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-CENTRE-BRIE'
+    type: VL
+    name: '7712<current()>'
+  Asset.UL-DE-CHATEAU-LANDON.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-CHATEAU-LANDON'
+    type: VPSP
+    name: '7713<current()>'
+  Asset.UL-DE-CHATEAU-LANDON.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-CHATEAU-LANDON'
+    type: VL
+    name: '7713<current()>'
+  Asset.UL-DE-COULOMMIERS.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-COULOMMIERS'
+    type: VPSP
+    name: '7714<current()>'
+  Asset.UL-DE-COULOMMIERS.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-COULOMMIERS'
+    type: VL
+    name: '7714<current()>'
+  Asset.UL-DE-DONNEMARIE-DONTILLY.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-DONNEMARIE-DONTILLY'
+    type: VPSP
+    name: '7715<current()>'
+  Asset.UL-DE-DONNEMARIE-DONTILLY.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-DONNEMARIE-DONTILLY'
+    type: VL
+    name: '7715<current()>'
+  Asset.UL-DE-FONTAINEBLEAU.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-FONTAINEBLEAU'
+    type: VPSP
+    name: '7716<current()>'
+  Asset.UL-DE-FONTAINEBLEAU.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-FONTAINEBLEAU'
+    type: VL
+    name: '7716<current()>'
+  Asset.UL-DE-L-EST-FRANCILIEN.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-L-EST-FRANCILIEN'
+    type: VPSP
+    name: '7717<current()>'
+  Asset.UL-DE-L-EST-FRANCILIEN.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-L-EST-FRANCILIEN'
+    type: VL
+    name: '7717<current()>'
+  Asset.UL-DE-LA-MARNE-ET-LES-DEUX-MORINS.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-LA-MARNE-ET-LES-DEUX-MORINS'
+    type: VPSP
+    name: '7718<current()>'
+  Asset.UL-DE-LA-MARNE-ET-LES-DEUX-MORINS.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-LA-MARNE-ET-LES-DEUX-MORINS'
+    type: VL
+    name: '7718<current()>'
+  Asset.UL-DE-LAGNY-SUR-MARNE.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-LAGNY-SUR-MARNE'
+    type: VPSP
+    name: '7719<current()>'
+  Asset.UL-DE-LAGNY-SUR-MARNE.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-LAGNY-SUR-MARNE'
+    type: VL
+    name: '7719<current()>'
+  Asset.UL-DE-LIZY-SUR-OURCQ.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-LIZY-SUR-OURCQ'
+    type: VPSP
+    name: '7720<current()>'
+  Asset.UL-DE-LIZY-SUR-OURCQ.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-LIZY-SUR-OURCQ'
+    type: VL
+    name: '7720<current()>'
+  Asset.UL-DE-MEAUX.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-MEAUX'
+    type: VPSP
+    name: '7721<current()>'
+  Asset.UL-DE-MEAUX.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-MEAUX'
+    type: VL
+    name: '7721<current()>'
+  Asset.UL-DE-MELUN.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-MELUN'
+    type: VPSP
+    name: '7722<current()>'
+  Asset.UL-DE-MELUN.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-MELUN'
+    type: VL
+    name: '7722<current()>'
+  Asset.UL-DE-MITRY-MORY-VILLEPARISIS.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-MITRY-MORY-VILLEPARISIS'
+    type: VPSP
+    name: '7723<current()>'
+  Asset.UL-DE-MITRY-MORY-VILLEPARISIS.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-MITRY-MORY-VILLEPARISIS'
+    type: VL
+    name: '7723<current()>'
+  Asset.UL-DE-MONTEREAU.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-MONTEREAU'
+    type: VPSP
+    name: '7724<current()>'
+  Asset.UL-DE-MONTEREAU.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-MONTEREAU'
+    type: VL
+    name: '7724<current()>'
+  Asset.UL-DE-MORET-LOING-ET-ORVANNE.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-MORET-LOING-ET-ORVANNE'
+    type: VPSP
+    name: '7725<current()>'
+  Asset.UL-DE-MORET-LOING-ET-ORVANNE.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-MORET-LOING-ET-ORVANNE'
+    type: VL
+    name: '7725<current()>'
+  Asset.UL-DE-NANGIS.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-NANGIS'
+    type: VPSP
+    name: '7726<current()>'
+  Asset.UL-DE-NANGIS.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-NANGIS'
+    type: VL
+    name: '7726<current()>'
+  Asset.UL-DE-PROVINS.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DE-PROVINS'
+    type: VPSP
+    name: '7727<current()>'
+  Asset.UL-DE-PROVINS.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DE-PROVINS'
+    type: VL
+    name: '7727<current()>'
+  Asset.UL-DES-PORTES-DE-ROISSY-CDG.VPSP.{2..4,2}:
+    organization: '@Organization.UL-DES-PORTES-DE-ROISSY-CDG'
+    type: VPSP
+    name: '7728<current()>'
+  Asset.UL-DES-PORTES-DE-ROISSY-CDG.VPSP.{6..8,2}:
+    organization: '@Organization.UL-DES-PORTES-DE-ROISSY-CDG'
+    type: VL
+    name: '7728<current()>'

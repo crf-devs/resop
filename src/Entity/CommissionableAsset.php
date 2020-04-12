@@ -81,18 +81,6 @@ class CommissionableAsset implements AvailabilitableInterface
      */
     public int $seatingCapacity = 1;
 
-    public function __construct(
-        ?int $id,
-        Organization $organization,
-        string $type,
-        string $name
-    ) {
-        $this->id = $id;
-        $this->organization = $organization;
-        $this->type = $type;
-        $this->name = $name;
-    }
-
     public function __toString(): string
     {
         return $this->type.' - '.$this->name;

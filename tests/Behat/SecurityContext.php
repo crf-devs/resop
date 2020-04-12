@@ -45,22 +45,6 @@ final class SecurityContext implements Context
     }
 
     /**
-     * @Given I am authenticated as a user
-     */
-    public function loginUser(): void
-    {
-        $this->login('user1@resop.com', $this->userRepository);
-    }
-
-    /**
-     * @Given I am authenticated as an organization
-     */
-    public function loginOrganization(): void
-    {
-        $this->login('UL 05', $this->organizationRepository);
-    }
-
-    /**
      * @Given I am authenticated as :username
      */
     public function login(string $username, UserLoaderInterface $repository = null): void

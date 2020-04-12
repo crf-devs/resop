@@ -41,6 +41,7 @@
     "friends-of-behat/mink-extension": "^2.4",
     "friends-of-behat/symfony-extension": "^2.1",
     "friendsofphp/php-cs-fixer": "^2.16",
+    "hautelook/alice-bundle": "^2.7",
     "mheap/phpunit-github-actions-printer": "^1.2",
     "phpstan/phpstan-doctrine": "^0.12.8",
     "phpstan/phpstan-symfony": "^0.12.2",
@@ -64,7 +65,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "App\\Tests\\": "tests/"
+      "App\\Tests\\": "tests/",
+      "App\\Fixtures\\": "fixtures/"
     }
   },
   "replace": {

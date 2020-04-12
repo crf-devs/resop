@@ -16,7 +16,9 @@ final class UserTest extends TestCase
         $user->id = 1;
         $user->firstName = 'Alain';
         $user->lastName = 'Proviste';
-        $user->organization = new Organization(1, 'DL7509');
+        $user->organization = new Organization();
+        $user->organization->id = 1;
+        $user->organization->name = 'DL7509';
         $user->setIdentificationNumber('00001752114V');
         $user->setEmailAddress('user+ALIAS@some-domain.tld');
         $user->phoneNumber = '+33102030405';

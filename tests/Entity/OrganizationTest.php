@@ -11,7 +11,9 @@ final class OrganizationTest extends TestCase
 {
     public function testCreateOrganizationWithoutParent(): void
     {
-        $organization = new Organization(1, 'DT75');
+        $organization = new Organization();
+        $organization->id = 1;
+        $organization->name = 'DT75';
 
         $this->assertSame(1, $organization->id);
         $this->assertSame('DT75', $organization->name);
@@ -21,8 +23,13 @@ final class OrganizationTest extends TestCase
 
     public function testCreateOrganizationWithParent(): void
     {
-        $parent = new Organization(1, 'DT75');
-        $child = new Organization(2, 'UL09', $parent);
+        $parent = new Organization();
+        $parent->id = 1;
+        $parent->name = 'DT75';
+        $child = new Organization();
+        $child->id = 2;
+        $child->name = 'UL09';
+        $child->parent = $parent;
 
         $this->assertSame(2, $child->id);
         $this->assertSame('UL09', $child->name);

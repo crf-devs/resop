@@ -15,4 +15,4 @@ default:
         FriendsOfBehat\SymfonyExtension:
             kernel:
                 environment: test
-                debug: true
+                debug: false
