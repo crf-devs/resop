@@ -23,6 +23,19 @@
                 <button class="btn btn-sm btn-block trigger-update locked" action="lock" data-status="locked" data-href="{{ path('planning_update', { action: 'lock' }) }}">Marquer comme bloqué</button>
                 <button class="btn btn-sm btn-block trigger-update unknown" action="delete" data-status="unknown" data-href="{{ path('planning_update', { action: 'delete' }) }}">Marquer comme NON disponible</button>
             </div>
+        {% else %}
+            <div class="col-md">
+                <ul class="list-unstyled planning-legend-container">
+                    <li><span class="availability-legend unknown"></span> <em>Non disponible</em></li>
+                    <li><span class="availability-legend available"></span> <em>Disponible</em></li>
+                </ul>
+            </div>
+            <div class="col-md">
+                <ul class="list-unstyled planning-legend-container">
+                    <li><span class="availability-legend booked"></span> <em>Engagé sur une mission</em></li>
+                    <li><span class="availability-legend locked"></span> <em>Bloqué</em></li>
+                </ul>
+            </div>
         {% endif %}
     </div>
 </div>

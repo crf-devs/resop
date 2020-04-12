@@ -1,3 +1,5 @@
+@import "variables";
+
 table.availability-form-table {
   position: relative;
 
@@ -19,15 +21,15 @@ table.availability-form-table {
     }
 
     &.checked {
-      background-color: #76bd79;
+      background-color: $colorAvailable;
 
       &:hover {
-        background-color: #72a870;
+        background-color: $colorAvailableHover;
       }
     }
 
     &.booked {
-      background-color: #67a2d3 !important;
+      background-color: $colorBooked !important;
     }
   }
 
