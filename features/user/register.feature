@@ -16,7 +16,7 @@ Feature:
             | user[lastName]             | DOE                |
             | user[emailAddress]         | john.doe@resop.com |
             | user[phoneNumber]          | 0612345678         |
-        And I select "UL 05" from "user[organization]"
+        And I select "UL 01-02" from "user[organization]"
         And I check "Maraudeur.se"
         And I press "Valider"
         Then the response status code should not be 400
@@ -31,7 +31,7 @@ Feature:
             | user[lastName]             | DOE                |
             | user[emailAddress]         | new.user@resop.com |
             | user[phoneNumber]          | 0612345678         |
-        And I select "UL 05" from "user[organization]"
+        And I select "UL 01-02" from "user[organization]"
         And I check "Maraudeur.se"
         And I press "Valider"
         Then the response status code should not be 400
@@ -46,7 +46,7 @@ Feature:
             | user[lastName]             | HADDOCK                      |
             | user[emailAddress]         | archibald.haddockr@resop.com |
             | user[phoneNumber]          | 0612345678                   |
-        And I select "UL 05" from "user[organization]"
+        And I select "UL 01-02" from "user[organization]"
         And I check "Maraudeur.se"
         And I press "Valider"
         Then I should be on "/"
