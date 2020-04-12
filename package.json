@@ -21,8 +21,8 @@
     "stylelint-scss": "^3.16.0",
     "webpack-notifier": "^1.6.0"
   },
-  "license": "UNLICENSED",
-  "private": true,
+  "license": "GPL-3.0",
+  "private": false,
   "scripts": {
     "dev-server": "encore dev-server",
     "dev": "encore dev",
