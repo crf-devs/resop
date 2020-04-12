@@ -6,7 +6,7 @@ Un serveur de démonstration est disponible à l'adresse [https://resop.aws.mroc
 
 Vous pouvez tester la partie utilisateur avec les identifiants suivants :
 
-* Numéro NIVOL :`990001A`
+* Email :`user1@resop.com`
 * Date de naissance: `01/01/1990`
 
 Chaque bénévole peut :
