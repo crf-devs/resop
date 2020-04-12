@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\EntityListener\UserPasswordEntityListener;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,8 +15,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *   }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
+ * @ORM\EntityListeners({UserPasswordEntityListener::class})
  */
-class Organization implements UserInterface, \JsonSerializable
+class Organization implements UserPasswordInterface, \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -37,16 +38,14 @@ class Organization implements UserInterface, \JsonSerializable
     public ?string $password = null;
 
     /**
+     * Not persisted in database, used to encode password.
+     */
+    public ?string $plainPassword = null;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
      */
     public ?self $parent = null;
-
-    public function __construct(?int $id, string $name, self $parent = null)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->parent = $parent;
-    }
 
     public function __toString(): string
     {
@@ -77,6 +76,11 @@ class Organization implements UserInterface, \JsonSerializable
     public function getRoles(): array
     {
         return ['ROLE_ORGANIZATION'];
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
     }
 
     public function getPassword(): ?string

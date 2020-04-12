@@ -45,7 +45,9 @@ class CommissionableAssetsController extends AbstractController
     {
         /** @var Organization $organization */
         $organization = $this->getUser();
-        $asset = new CommissionableAsset(null, $organization, 'VL', '');
+        $asset = new CommissionableAsset();
+        $asset->organization = $organization;
+        $asset->type = 'VL';
 
         $form = $this->createForm(CommissionableAssetType::class, $asset);
 

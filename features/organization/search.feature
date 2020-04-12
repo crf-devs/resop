@@ -7,23 +7,72 @@ Feature:
         When I go to "/organizations/search?query=foo"
         Then I should be on "/organizations/login"
 
-    Scenario: As an authenticated organization, I can search for a user
-        Given I am authenticated as an organization
+    Scenario Outline: As an authenticated parent organization, I can search for a user even in my children
+        Given I am authenticated as "DT75"
         And I am on "/organizations/"
-        When I fill in "query" with " UsER44 reSOp "
+        When I fill in "query" with " <search> "
         And I press "Rechercher"
         Then I should be on "/organizations/search"
-        And I should see "Rechercher \"UsER44 reSOp\""
-        And I should see "990044A"
-        And I should see "user44@resop.com"
+        And I should see "Rechercher \"<search>\""
+        And I should see "<identificationNumber>"
+        And I should see "<email>"
+        And I should see "Aucun véhicule ne correspond à votre recherche."
+        Examples:
+            | search         | email              | identificationNumber |
+            | jOhN dOe reSOp | john.doe@resop.com | 990001A              |
+            | jAnE dOe reSOp | jane.doe@resop.com | 990002A              |
+
+    Scenario: As an authenticated children organization, I can search for a user in my organization
+        Given I am authenticated as "UL 01-02"
+        And I am on "/organizations/"
+        When I fill in "query" with " jAnE dOe reSOp "
+        And I press "Rechercher"
+        Then I should be on "/organizations/search"
+        And I should see "Rechercher \"jAnE dOe reSOp\""
+        And I should see "990002A"
+        And I should see "jane.doe@resop.com"
         And I should see "Aucun véhicule ne correspond à votre recherche."
 
-    Scenario: As an authenticated organization, I can search for an asset
-        Given I am authenticated as an organization
+    Scenario: As an authenticated organization, I cannot search for a user in another organization
+        Given I am authenticated as "UL 01-02"
         And I am on "/organizations/"
-        When I fill in "query" with " 75052 "
+        When I fill in "query" with " cHuCk nOrRiS reSOp "
         And I press "Rechercher"
         Then I should be on "/organizations/search"
-        And I should see "Rechercher \"75052\""
-        And I should see "VPSP - 75052"
+        And I should see "Rechercher \"cHuCk nOrRiS reSOp\""
         And I should see "Aucun bénévole ne correspond à votre recherche."
+        And I should see "Aucun véhicule ne correspond à votre recherche."
+
+    Scenario Outline: As an authenticated parent organization, I can search for an asset even in my children
+        Given I am authenticated as "DT75"
+        And I am on "/organizations/"
+        When I fill in "query" with " <search> "
+        And I press "Rechercher"
+        Then I should be on "/organizations/search"
+        And I should see "Rechercher \"<search>\""
+        And I should see "<name>"
+        And I should see "Aucun bénévole ne correspond à votre recherche."
+        Examples:
+            | search | name         |
+            | 75992  | VPSP - 75992 |
+            | 75012  | VPSP - 75012 |
+
+    Scenario: As an authenticated children organization, I can search for a user in my organization
+        Given I am authenticated as "UL 01-02"
+        And I am on "/organizations/"
+        When I fill in "query" with " 75012 "
+        And I press "Rechercher"
+        Then I should be on "/organizations/search"
+        And I should see "Rechercher \"75012\""
+        And I should see "VPSP - 75012"
+        And I should see "Aucun bénévole ne correspond à votre recherche."
+
+    Scenario: As an authenticated organization, I cannot search for a user in another organization
+        Given I am authenticated as "UL 01-02"
+        And I am on "/organizations/"
+        When I fill in "query" with " 77282 "
+        And I press "Rechercher"
+        Then I should be on "/organizations/search"
+        And I should see "Rechercher \"77282\""
+        And I should see "Aucun bénévole ne correspond à votre recherche."
+        And I should see "Aucun véhicule ne correspond à votre recherche."

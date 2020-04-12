@@ -37,7 +37,8 @@ class OrganizationEditController extends AbstractController
         }
 
         if (null === $organization) {
-            $organization = new Organization(null, '', $currentOrganization);
+            $organization = new Organization();
+            $organization->parent = $currentOrganization;
         }
 
         $form = $this->formFactory->create(OrganizationType::class, $organization)->handleRequest($request);

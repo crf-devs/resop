@@ -1,0 +1,40 @@
+App\Entity\User:
+  User.john_doe:
+    firstName: John
+    lastName: DOE
+    organization: '@Organization.DT75'
+    identificationNumber: 990001A
+    emailAddress (unique): john.doe@resop.com
+    phoneNumber: '<fr_FR:phoneNumber()>'
+    birthday: '1990-01-01'
+    occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
+    organizationOccupation: Secouriste
+    skillSet: '<skillSet(<{app.available_skills}>)>'
+    vulnerable: '<boolean(50)>'
+    fullyEquipped: '<boolean(50)>'
+  User.jane_doe:
+    firstName: Jane
+    lastName: DOE
+    organization: '@Organization.UL-01-02'
+    identificationNumber: 990002A
+    emailAddress (unique): jane.doe@resop.com
+    phoneNumber: '<fr_FR:phoneNumber()>'
+    birthday: '1990-01-01'
+    occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
+    organizationOccupation: Secouriste
+    skillSet: '<skillSet(<{app.available_skills}>)>'
+    vulnerable: '<boolean(50)>'
+    fullyEquipped: '<boolean(50)>'
+  User.chuck_norris:
+    firstName: Chuck
+    lastName: NORRIS
+    organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
+    identificationNumber: 990003A
+    emailAddress (unique): chuck.norris@resop.com
+    phoneNumber: '<fr_FR:phoneNumber()>'
+    birthday: '1990-01-01'
+    occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
+    organizationOccupation: Secouriste
+    skillSet: '<skillSet(<{app.available_skills}>)>'
+    vulnerable: '<boolean(50)>'
+    fullyEquipped: '<boolean(50)>'

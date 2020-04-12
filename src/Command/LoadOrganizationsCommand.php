@@ -111,7 +111,9 @@ class LoadOrganizationsCommand extends Command
 
     private function createOrganization(string $organizationName, Organization $parentOrganization = null): Organization
     {
-        $organization = new Organization(null, $organizationName, $parentOrganization);
+        $organization = new Organization();
+        $organization->name = $organizationName;
+        $organization->parent = $parentOrganization;
 
         $encoder = $this->encoders->getEncoder(Organization::class);
         $plainPassword = $this->getPlainPassword();

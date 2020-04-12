@@ -7,16 +7,20 @@ Feature:
         When I go to "/organizations"
         Then I should be on "/organizations/login"
 
-    Scenario: As a registered organization, I can log in
+    Scenario Outline: As a registered organization, I can log in
         Given I am on "/organizations/login"
-        When I select "UL 05" from "identifier"
+        When I select "<identifier>" from "identifier"
         And I fill in "password" with "covid19"
         And I press "Je me connecte"
         Then I should be on "/organizations/"
-        And I should see "DT75 - UL 05"
+        And I should see "<name>"
+        Examples:
+            | identifier | name            |
+            | DT75       | DT75            |
+            | UL 01-02   | DT75 - UL 01-02 |
 
     Scenario: As an authenticated organization, I can log out
-        Given I am authenticated as an organization
+        Given I am authenticated as "UL 01-02"
         And I am on "/organizations/"
         When I follow "Déconnexion"
         Then I should be on "/organizations/login"

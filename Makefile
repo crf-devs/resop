@@ -109,7 +109,7 @@ test-advanced:
 
 test-behat:
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/post-install-dev.sh"
-	bin/tools vendor/bin/behat --format=progress
+	bin/tools sh -c "APP_DEBUG=0 APP_ENV=test vendor/bin/behat --format=progress"
 
 test-unit:
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/post-install-dev.sh"
@@ -118,7 +118,7 @@ test-unit:
 test-coverage:
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/post-install-dev.sh"
 	bin/tools sh -c "APP_DEBUG=0 vendor/bin/phpunit --coverage-text"
-	bin/tools sh -c "APP_DEBUG=0 COVERAGE=true vendor/bin/behat --format=progress"
+	bin/tools sh -c "APP_DEBUG=0 APP_ENV=test COVERAGE=true vendor/bin/behat --format=progress"
 
 move-test-profiler:
 	bin/tools sh -c "rm -rf var/cache/dev/profiler && mkdir -p var/cache/dev && cp -R var/cache/test/profiler var/cache/dev/profiler"

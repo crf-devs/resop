@@ -178,7 +178,10 @@ final class ApplicationFixtures extends Fixture
             $nameToSearch = $organization->isParent() ? $organization->name : $organization->getParentName();
             $prefix = str_replace('DT', '', $nameToSearch ?? '');
             foreach ($combinations as [$type, $suffix]) {
-                $asset = new CommissionableAsset(null, $organization, $type, $prefix.$ulId.$suffix);
+                $asset = new CommissionableAsset();
+                $asset->organization = $organization;
+                $asset->type = $type;
+                $asset->name = $prefix.$ulId.$suffix;
                 $this->validateAndPersist($manager, $asset);
                 $this->assets[] = $asset;
             }
@@ -342,7 +345,9 @@ final class ApplicationFixtures extends Fixture
 
     private function makeOrganization(string $name, string $password = null, Organization $parent = null): Organization
     {
-        $organization = new Organization(null, $name, $parent);
+        $organization = new Organization();
+        $organization->name = $name;
+        $organization->parent = $parent;
 
         if ($password) {
             $organization->password = $password;
