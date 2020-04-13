@@ -1,0 +1,51 @@
+<div class="search shadow-sm p-3 mb-5 bg-white rounded">
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <label for="availableRange">Période: </label><input type="text" id="availableRange" class="form-control" readonly>
+            <div class="hidden">
+                {{ form_row(form.availableFrom) }}
+                {{ form_row(form.availableTo) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-md-2">
+        <div class="col-12 col-md-6">
+            <div class="row">
+                {{ form_label(form.organizations, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
+                <div class="col-12 col-md-9">
+                    {{ form_widget(form.organizations) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            {{ form_row(form.displayVulnerables) }}
+        </div>
+    </div>
+
+    <div class="row mt-md-2">
+        <div class="col-12 col-md-6">
+            <div class="row">
+                {{ form_label(form.missionTypes, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
+                <div class="col-12 col-md-9">
+                    {{ form_widget(form.missionTypes) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            {{ form_row(form.onlyFullyEquiped) }}
+        </div>
+    </div>
+
+    <div class="row mt-md-2">
+        <div class="col-12 col-md-6">
+            {{ form_row(form.ignoreAlreadyBooked) }}
+        </div>
+
+        <div class="col-12 col-md-4">
+            <button class="btn btn-outline-primary btn-block" type="submit">Calculer</button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>

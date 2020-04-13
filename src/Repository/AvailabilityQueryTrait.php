@@ -14,7 +14,7 @@ trait AvailabilityQueryTrait
         return 0 === $number % 2;
     }
 
-    private function addAvailabilityBetween(QueryBuilder $qb, \DateTimeImmutable $start, \DateTimeImmutable $end, string $availabilityClass, string $groupByField): QueryBuilder
+    private function addAvailabilityBetween(QueryBuilder $qb, \DateTimeImmutable $start, \DateTimeImmutable $end, string $availabilityClass, string $groupByField, array $statuses = [AvailabilityInterface::STATUS_AVAILABLE]): QueryBuilder
     {
         $start = $start->setTime((int) $start->format('h'), 0);
         $end = $end->setTime((int) $end->format('h'), 0);
@@ -36,7 +36,7 @@ trait AvailabilityQueryTrait
         $subQuery = $this->getEntityManager()->createQueryBuilder()
             ->select(sprintf('IDENTITY(abse.%s)', $groupByField))
             ->from($availabilityClass, 'abse')
-            ->andWhere('abse.status = :status')
+            ->andWhere('abse.status IN (:statuses)')
             ->andWhere(':searchStartTime <= abse.startTime')
             ->andWhere('abse.startTime < :searchEndTime')
             ->andWhere(':searchStartEndTime < abse.endTime')
@@ -49,7 +49,7 @@ trait AvailabilityQueryTrait
             $subQuery->getDQL()
         ));
 
-        $qb->setParameter('status', AvailabilityInterface::STATUS_AVAILABLE);
+        $qb->setParameter('statuses', $statuses);
         $qb->setParameter('searchStartTime', $start);
         $qb->setParameter('searchEndTime', $end);
         $qb->setParameter('searchStartEndTime', $start);

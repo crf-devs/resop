@@ -1,0 +1,66 @@
+{% if filters.ignoreAlreadyBooked|default(false) %}
+    <p class="alert alert-warning">Attention: certains bénévoles ou véhicules sont déjà engagés sur d'autres missions.</p>
+{% endif %}
+
+{% for missionType in filters.missionTypes %}
+    <h3>{{ missionType.name }}</h3>
+
+    <a href="{{ path('planning', {
+        'from': filters.availableFrom |date_modify('-1 day') | date('Y-m-d\\T00:00:00'),
+        'to': filters.availableTo |date_modify('+1 day') | date('Y-m-d\\T00:00:00'),
+        'availableFrom': filters.availableFrom | date('Y-m-d\\TH:i:00'),
+        'availableTo': filters.availableTo | date('Y-m-d\\TH:i:00'),
+        'organizations': filters.organizations | map(orga => orga.id),
+        'userSkills': missionType.userSkillsRequirement | map(skillRequirement => skillRequirement.skill),
+        'onlyFullyEquiped': filters.onlyFullyEquiped,
+        'displayVulnerables': filters.displayVulnerables,
+        'assetTypes': missionType.assetTypesRequirement | map(assetRequirement => assetRequirement.type),
+    } | filter(val => val)) }}">Voir sur le planning</a>
+
+    <table class="table table-sm mb-5">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">Bénévole</th>
+            <th scope="col">Nombre par mission</th>
+            <th scope="col">Disponibles</th>
+            <th scope="col">Missions possibles</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for skillRequirement in missionType.userSkillsRequirement %}
+            <tr>
+                <th scope="row">{{ skillRequirement.skill }}</th>
+                <td>{{ skillRequirement.number }}</td>
+                <td>{{ forecast[missionType.id].users[skillRequirement.skill].ids|length }}</td>
+                <td>{{ forecast[missionType.id].users[skillRequirement.skill].potential_missions_number }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">Véhicule</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for assetRequirement in missionType.assetTypesRequirement %}
+            <tr>
+                <th scope="row">{{ assetRequirement.type }}</th>
+                <td>{{ assetRequirement.number }}</td>
+                <td>{{ forecast[missionType.id].assets[assetRequirement.type].ids|length }}</td>
+                <td>{{ forecast[missionType.id].assets[assetRequirement.type].potential_missions_number }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <thead class="thead-light">
+        <tr>
+            <th>Equipages complets</th>
+            <th></th>
+            <th></th>
+            <th>{{ forecast[missionType.id].potential_missions_number }}</th>
+        </tr>
+        </thead>
+    </table>
+{% endfor %}

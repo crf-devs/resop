@@ -19,7 +19,7 @@ class SkillSetDomain
     }
 
     /**
-     * Returns an array with saved savlues as keys and translations as values.
+     * Returns an array with saved values as keys and translations as values.
      */
     public function getSkillSet(): array
     {

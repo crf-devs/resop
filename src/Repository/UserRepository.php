@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\AvailabilityInterface;
 use App\Entity\Organization;
 use App\Entity\User;
 use App\Entity\UserAvailability;
@@ -105,7 +106,8 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         }
 
         if (!empty($formData['availableFrom']) && !empty($formData['availableTo'])) {
-            $qb = $this->addAvailabilityBetween($qb, $formData['availableFrom'], $formData['availableTo'], UserAvailability::class, 'user');
+            $availableStatuses = $formData['availableStatuses'] ?? [AvailabilityInterface::STATUS_AVAILABLE];
+            $qb = $this->addAvailabilityBetween($qb, $formData['availableFrom'], $formData['availableTo'], UserAvailability::class, 'user', $availableStatuses);
         }
 
         $qb->orderBy('o.name');
