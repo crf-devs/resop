@@ -16,15 +16,15 @@ trait AvailabilityQueryTrait
 
     private function addAvailabilityBetween(QueryBuilder $qb, \DateTimeImmutable $start, \DateTimeImmutable $end, string $availabilityClass, string $groupByField, array $statuses = [AvailabilityInterface::STATUS_AVAILABLE]): QueryBuilder
     {
-        $start = $start->setTime((int) $start->format('h'), 0);
-        $end = $end->setTime((int) $end->format('h'), 0);
+        $start = $start->setTime((int) $start->format('H'), 0);
+        $end = $end->setTime((int) $end->format('H'), 0);
 
         // Round to the closest even the start and end date
-        $hour = (int) $start->format('h');
+        $hour = (int) $start->format('H');
         if (!$this->isEven($hour)) {
             $start = $start->sub(new \DateInterval('PT1H'));
         }
-        $hour = (int) $end->format('h');
+        $hour = (int) $end->format('H');
         if (!$this->isEven($hour)) {
             $end = $end->add(new \DateInterval('PT1H'));
         }
