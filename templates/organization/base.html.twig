@@ -28,6 +28,7 @@
                         <a class="nav-link" href="{{ path('app_organization_login')}}">Espace structure</a>
                     {% else %}
                         {{  app.user }}
+                        {% include 'organization/_help.html.twig' %}
                         <a class="mx-4" href="{{ logout_path() }}">Déconnexion</a>
                     {% endif %}
                 </div>
