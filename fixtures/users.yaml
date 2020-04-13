@@ -9,7 +9,7 @@ App\Entity\User:
     birthday: '1990-01-01'
     occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
     organizationOccupation: Secouriste
-    skillSet: '<skillSet(<{app.available_skills}>)>'
+    skillSet: '<randomSkillSet()>'
     vulnerable: '<boolean(50)>'
     fullyEquipped: '<boolean(50)>'
   User.jane_doe:
@@ -22,7 +22,7 @@ App\Entity\User:
     birthday: '1990-01-01'
     occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
     organizationOccupation: Secouriste
-    skillSet: '<skillSet(<{app.available_skills}>)>'
+    skillSet: '<randomSkillSet()>'
     vulnerable: '<boolean(50)>'
     fullyEquipped: '<boolean(50)>'
   User.chuck_norris:
@@ -35,6 +35,6 @@ App\Entity\User:
     birthday: '1990-01-01'
     occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
     organizationOccupation: Secouriste
-    skillSet: '<skillSet(<{app.available_skills}>)>'
+    skillSet: '<randomSkillSet()>'
     vulnerable: '<boolean(50)>'
     fullyEquipped: '<boolean(50)>'

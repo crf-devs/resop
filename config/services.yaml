@@ -60,6 +60,10 @@ services:
             $nbUsers: '%env(int:APP_NB_USERS)%'
             $nbAvailabilities: '%env(int:APP_NB_AVAILABILITIES)%'
 
+    App\DataFixtures\Faker\Provider\:
+        resource: '../src/DataFixtures/Faker/Provider'
+        tags: ['nelmio_alice.faker.provider']
+
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
         arguments:
              - !service { class: PDO, factory: ['@database_connection', 'getWrappedConnection'] }
