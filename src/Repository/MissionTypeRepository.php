@@ -36,7 +36,7 @@ class MissionTypeRepository extends ServiceEntityRepository
             ->join('mt.organization', 'o')
             ->where($qb->expr()->orX('o.id = :orga', 'o.parent = :orga'))
             ->setParameter('orga', $organization->parent ?: $organization)
-            ->addOrderBy('o.name', 'ASC');
+            ->addOrderBy('mt.name', 'ASC');
 
         return $qb;
     }

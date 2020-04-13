@@ -1,0 +1,32 @@
+{% extends 'organization/base.html.twig' %}
+
+{% block title %}Types de missions{% endblock %}
+
+{% block body %}
+    <h1>Types de missions</h1>
+
+    <table class="table mt-5">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mission_type in mission_types %}
+            <tr>
+                <td>{{ mission_type.name }}</td>
+                <td>
+                    <a href="{{ path('app_organization_mission_type_edit', {'id': mission_type.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">Aucun enregistrement</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_organization_mission_type_new') }}" class="btn btn-outline-primary">Ajouter un nouveau type de mission</a>
+{% endblock %}
