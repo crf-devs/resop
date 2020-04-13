@@ -75,7 +75,13 @@ class Organization implements UserPasswordInterface, \JsonSerializable
 
     public function getRoles(): array
     {
-        return ['ROLE_ORGANIZATION'];
+        $roles = ['ROLE_ORGANIZATION'];
+
+        if ($this->isParent()) {
+            $roles[] = 'ROLE_PARENT_ORGANIZATION';
+        }
+
+        return $roles;
     }
 
     public function getPlainPassword(): ?string

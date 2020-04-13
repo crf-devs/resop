@@ -47,7 +47,7 @@ class MissionType
      *                  @Assert\NotBlank,
      *              },
      *              "number" = {
-     *                  @Assert\Type(type="int"),
+     *                  @Assert\Type(type="integer"),
      *                  @Assert\Range(min="1"),
      *              },
      *         }

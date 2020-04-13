@@ -36,7 +36,12 @@ class MissionTypeForecastDomain
         /** @var MissionType $missionType */
         foreach ($filters['missionTypes'] ?? [] as $missionType) {
             $results[$missionType->id] = $this->calculateHowMany($missionType, $filters);
-            $results[$missionType->id]['potential_missions_number'] = min(array_column($results[$missionType->id]['users'] + $results[$missionType->id]['assets'], 'potential_missions_number'));
+            $results[$missionType->id]['potential_missions_number'] = 0;
+
+            $allResources = array_merge($results[$missionType->id]['users'] ?? [], $results[$missionType->id]['assets'] ?? []);
+            if (\count($allResources)) {
+                $results[$missionType->id]['potential_missions_number'] = min(array_column($allResources, 'potential_missions_number'));
+            }
         }
 
         return $results;

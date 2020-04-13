@@ -1,0 +1,16 @@
+{% extends 'organization/base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('mission-type-form') }}
+{% endblock %}
+
+{% block title %}Nouveau type de mission{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_organization_mission_type_index') }}">Retourner à la liste</a>
+
+    <h1>Ajouter un nouveau type de mission</h1>
+
+    {{ include('organization/mission_type/_form.html.twig') }}
+{% endblock %}

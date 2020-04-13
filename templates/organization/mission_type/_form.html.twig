@@ -1,0 +1,19 @@
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+
+<div>
+    {{ form_row(form.userSkillsRequirement) }}
+    <div class="text-center">
+        <button type="button" class="btn btn-outline-secondary add-collection-widget" data-list-selector="#mission_type_userSkillsRequirement">Ajouter un type de bénévole</button>
+    </div>
+</div>
+
+<div>
+    {{ form_row(form.assetTypesRequirement) }}
+    <div class="text-center">
+        <button type="button" class="btn btn-outline-secondary add-collection-widget" data-list-selector="#mission_type_assetTypesRequirement">Ajouter un type de véhicule</button>
+    </div>
+</div>
+
+<button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

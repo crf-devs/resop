@@ -1,0 +1,8 @@
+
+<div class="mt-5 text-right">
+    <form method="post" action="{{ path('app_organization_mission_type_delete', {'id': mission_type.id}) }}" onsubmit="return confirm('Voulez-vous vraiemnt supprimer ce type de mission ?');">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ mission_type.id) }}">
+        <button class="btn btn-danger">Supprimer ce type de mission</button>
+    </form>
+</div>

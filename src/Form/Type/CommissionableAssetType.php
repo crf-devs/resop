@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CommissionableAssetType extends AbstractType
 {
-    private const TYPES = [
+    public const TYPES = [
         'VL - Véhicule léger' => 'VL',
         'VPSP - Véhicule de premiers secours' => 'VPSP',
     ];
