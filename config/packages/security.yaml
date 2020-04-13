@@ -31,6 +31,7 @@ security:
                 target: app_organization_index
 
             remember_me:
+                name: remember_me_organization
                 secret:   '%kernel.secret%'
                 lifetime: 604800 # 1 week in seconds
                 path:     /
@@ -47,6 +48,7 @@ security:
                 target: user_home
 
             remember_me:
+                name: remember_me_user
                 secret:   '%kernel.secret%'
                 lifetime: 604800 # 1 week in seconds
                 path:     /
