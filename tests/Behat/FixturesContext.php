@@ -19,7 +19,7 @@ final class FixturesContext implements Context
     }
 
     /**
-     * @BeforeScenario
+     * @BeforeScenario @LoadFixtures
      */
     public function loadFixtures(): void
     {

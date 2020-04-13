@@ -4,6 +4,7 @@ default:
             contexts:
                 - App\Tests\Behat\CoverageContext
                 - App\Tests\Behat\DatabaseContext
+                - App\Tests\Behat\FixturesContext
                 - App\Tests\Behat\SecurityContext
                 - App\Tests\Behat\UserPlanningContext
                 - Behat\MinkExtension\Context\MinkContext
