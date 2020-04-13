@@ -221,6 +221,10 @@ final class ApplicationFixtures extends Fixture
             $nameToSearch = $organization->isParent() ? $organization->name : $organization->getParentName();
             $prefix = str_replace('DT', '', $nameToSearch ?? '');
             foreach ($combinations as [$type, $suffix]) {
+                if (random_int(0, 10) >= 5) {
+                    continue;
+                }
+
                 $asset = new CommissionableAsset();
                 $asset->organization = $organization;
                 $asset->type = $type;
