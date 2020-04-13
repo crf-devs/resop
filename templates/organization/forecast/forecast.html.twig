@@ -15,6 +15,13 @@
             {% include 'organization/forecast/_search_type.html.twig' %}
         </div>
         <div class="container">
+            {% if filters.missionTypes|length == 0 %}
+                <p class="alert alert-success">
+                    Aucun type de mission n'existe pour le moment.
+                    <a href="{{ path('app_organization_mission_type_new') }}" class="btn btn-success">Créer un type de mission</a>
+                </p>
+            {% endif %}
+
             {% if filters.availableFrom is defined %}
                 {% include 'organization/forecast/_results.html.twig' %}
             {% else %}

@@ -3,7 +3,7 @@
 {% endif %}
 
 {% for missionType in filters.missionTypes %}
-    <h3>{{ missionType.name }}</h3>
+    <h3><a href="{{ path('app_organization_mission_type_edit', {id: missionType.id}) }}">{{ missionType.name }}</a></h3>
 
     <a href="{{ path('planning', {
         'from': filters.availableFrom |date_modify('-1 day') | date('Y-m-d\\T00:00:00'),
@@ -15,7 +15,7 @@
         'onlyFullyEquiped': filters.onlyFullyEquiped,
         'displayVulnerables': filters.displayVulnerables,
         'assetTypes': missionType.assetTypesRequirement | map(assetRequirement => assetRequirement.type),
-    } | filter(val => val)) }}">Voir sur le planning</a>
+    } | filter(val => val)) }}" class="float-right">Voir sur le planning</a>
 
     <table class="table table-sm mb-5">
         <thead class="thead-light">
@@ -64,3 +64,5 @@
         </thead>
     </table>
 {% endfor %}
+
+<a href="{{ path('app_organization_mission_type_new') }}" class="btn btn-outline-secondary">Ajouter un nouveau type de mission</a>
