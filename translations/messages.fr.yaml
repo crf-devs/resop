@@ -1,37 +1,126 @@
 action:
+  cancel: Annuler
+  close: Fermer
+  delete: Supprimer
+  displayMore: Afficher plus d'informations
+  edit: Modifier
+  loading: Chargement
   login: Connexion
   search: Rechercher "%query%"
   loginSubmit: Je me connecte
   logout: Déconnexion
   rememberMe: Se souvenir de moi
-  submit: Enregistrer
+  saveMyAvailabilities: Enregistrer mes disponibilités
+  selectAll: Tout sélectionner
+  save: Enregistrer
+  submit: Valider
 calendar:
+  displayedPeriod: Période affichée
+  hours: heures
+  period: du %from% au %to%
+  schedule: Planning
+  showAvailableOnly: Afficher seulement si disponible sur la période
+  sortByDayAvailabilities: Trier par nombre de disponibilités sur le jour
   week:
     current: Semaine actuelle
     next: Semaine prochaine
-  period: du %from% au %to%
+    startMonday: Semaine du lundi %week%
+common:
+  actions: Actions
+  availabilities: Disponibilités
+  informations: Informations
+  manager: Cadre
+  name: Nom
+  occupation: Profession
+  phoneNumberShort: Tél
+  yes: Oui
+message:
+  editForbidden: Vous ne pouvez pas modifier les disponibilités saisies pour les prochaines %period% heures
+  saveAvailabilitiesWarning: Attention, certaines modifications de disponibilités n'ont pas été sauvegardées. Vous devez les annuler ou enregistrer le formulaire avant de changer de page.
+  updatedWarning: Des modifications ont été effectuées par d'autres utilisateurs, <a href="#" class="text-body">cliquez ici pour rafraichir la page</a>
 nav:
   home: Accueil
   section:
     volunteer: Espace bénévole
     organization: Espace structure
   welcome: Bienvenue
-project:
-  contribute: Contribuez au projet
-  description: Réserve opérationnelle - Croix-Rouge Française à Paris
-  name: ResOP
-user:
-  availabilityCurrentWeek: Mes disponibilités pour la semaine courante
-  availabilityNextWeek: Mes disponibilités pour la semaine prochaine
-  createMyAccount: Créer mon compte
-  dob: Date de naissance
-  editMyInfo: Modifier mes informations
-  login: Numéro NIVOL ou Adresse e-mail
-  identificationNumber: NIVOL
-  welcome: Bienvenue, %name%
 organization:
+  add: Ajouter une structure
+  asset:
+    available: Disponible
+    availabilities: Disponibilités de %asset%
+    booked: Engagé sur une mission
+    locked: Bloqué
+    markAsAvailable: Marquer comme disponible
+    markAsBooked: Marquer comme réservé
+    markAsLocked: Marquer comme bloqué
+    markAsUnavailable: Marquer comme NON disponible
+    unavailable: Non disponible
+  default: Structure de rattachement
+  edit: Modifier une structure
+  editAll: Modifier mes structures
+  editMissionType: Modifier les types de missions
+  editUserProfile: Modifier un profil
+  forecast: Projections
+  label: Structure
+  list: Liste des structures
   search:
     query: Rechercher un bénévole ou un véhicule
     submit: Rechercher
     no_users: Aucun bénévole ne correspond à votre recherche.
     no_assets: Aucun véhicule ne correspond à votre recherche.
+  showCommissionableAssets: Afficher la liste de mes véhicules
+  showOrganizationList: Afficher la liste de mes structures
+  showAllUsersAvailability: Afficher les disponibilités de tous les bénévoles
+  showUserList: Afficher la liste de mes bénévoles inscrits
+  vehicle:
+    add: Ajouter un nouveau véhicule
+    createEdit: "%action% d'un véhicule"
+    firstAidKit: Lot de secours
+    identificationNumber: Identifiant
+    radio: Radio
+    seat: place
+  vehicles: Véhicules
+  userAvailabilities: Disponibilité des bénévoles
+  userAvailabilityCurrentWeek: Afficher les disponibilités de mes bénévoles pour la semaine actuelle
+  userAvailabilityNextWeek: Afficher les disponibilités de mes bénévoles pour la semaine prochaine
+  userList: Liste des bénévoles
+  user:
+    isFullyEquipped: Uniforme en dotation ?
+    occupation: Fonction de cadre au sein de la structure d'emploi
+    skillset: Compétences Croix-Rouge
+  users: Bénévoles
+project:
+  contribute: Contribuez au projet
+  description: Réserve opérationnelle - Croix-Rouge Française à Paris
+  name: ResOP
+user:
+  accountAction: "%action% de compte"
+  availabilities: Vos disponibilités
+  availabilityCurrentWeek: Mes disponibilités pour la semaine courante
+  availabilityNextWeek: Mes disponibilités pour la semaine prochaine
+  availabilitySpecificWeek: Mes disponibilités pour la semaine du %week%
+  createMyAccount: Créer mon compte
+  detail:
+    fullyEquipped: Avez-vous un uniforme en dotation chez vous ?
+    occupation: Quelle est votre profession ?
+    organization: Votre structure de rattachement
+    organizationOccupation: Quelles sont vos fonctions de cadre au sein de votre structure d'emploi ?
+    skillSet:
+      label: Quelles sont vos compétences Croix-Rouge ?
+      help: Cochez toutes vos compétences
+    vulnerable:
+      label: Vulnérable
+      yes: Je fais partie des personnes vulnérables
+      no: Je ne fais PAS partie des personnes vulnérables
+  dob: Date de naissance
+  editMyInfo: Modifier mes informations
+  email: E-mail
+  firstName: Prénom
+  identificationNumber: NIVOL
+  lastName: Nom
+  login: Numéro NIVOL ou Adresse e-mail
+  mobile: Numéro de téléphone portable
+  skills: Compétences
+  uniform: Uniforme
+  welcome: Bienvenue, %name%

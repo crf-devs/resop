@@ -1,6 +1,6 @@
 {% extends 'organization/base.html.twig' %}
 
-{% block title %}Espace structure{% endblock %}
+{% block title %}{{ 'nav.section.organization' | trans }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Véhicules - {{ app.user }}</h1>
+    <h1>{{ 'organization.vehicles' | trans }} - {{ app.user }}</h1>
 
     {{ include('organization/commissionable_asset/_list.html.twig') }}
 {% endblock %}

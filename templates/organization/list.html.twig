@@ -1,21 +1,21 @@
 {% extends 'organization/base.html.twig' %}
 
-{% block title %}Liste des structures{% endblock %}
+{% block title %}{{ 'organization.list' | trans }}{% endblock %}
 
 {% block body %}
     <h1>{{ app.user }}</h1>
 
     <div class="row">
         <div class="col-12 text-right mb-2">
-            <a href="{{ path('app_organization_new') }}" class="btn btn-success">Ajouter une structure</a>
+            <a href="{{ path('app_organization_new') }}" class="btn btn-success">{{ 'organization.add' | trans }}</a>
         </div>
     </div>
     <div class="row">
         <table class="table table-striped">
             <thead class="thead-light">
             <tr>
-                <th>Nom</th>
-                <th class="actions">Actions</th>
+                <th>{{ 'common.name' | trans }}</th>
+                <th class="actions">{{ 'common.actions' | trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -23,9 +23,9 @@
                 <tr>
                     <td>{{ organization.name }}</td>
                     <td>
-                        <a href="{{ path('app_organization_edit', { id: organization.id }) }}" class="btn btn-outline-secondary">Modifier</a>
-                        <a class="btn btn-outline-primary" role="button" href="{{ path('app_organization_user_list', {'id': organization.id}) }}">Liste des bénévoles</a>
-                        <a class="btn btn-outline-primary" role="button" href="{{ path('planning', {'organizations[]': organization.id}) }}">Disponibilité des bénévoles</a>
+                        <a href="{{ path('app_organization_edit', { id: organization.id }) }}" class="btn btn-outline-secondary">{{ 'action.edit' | trans }}</a>
+                        <a class="btn btn-outline-primary" role="button" href="{{ path('app_organization_user_list', {'id': organization.id}) }}">{{ 'organization.userList' | trans }}</a>
+                        <a class="btn btn-outline-primary" role="button" href="{{ path('planning', {'organizations[]': organization.id}) }}">{{ 'organization.userAvailabilities' | trans }}</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -33,4 +33,3 @@
         </table>
     </div>
 {% endblock %}
-

@@ -4,36 +4,36 @@
         <div class="col-md">
             <div class="text-center" id="loader">
                 <div class="spinner-border" role="status">
-                    <span class="sr-only">Chargement...</span>
+                    <span class="sr-only">{{ 'action.loading' | trans }}...</span>
                 </div>
             </div>
             <div class="display-more-container form-check">
                 <input class="form-check-input" type="checkbox" id="display-more">
                 <label class="form-check-label" for="display-more">
-                    Afficher plus d'informations
+                    {{ 'action.displayMore' | trans }}
                 </label>
             </div>
         </div>
         {% if displayActions %}
             <div class="col-md">
-                <button class="btn btn-sm btn-block trigger-update booked" action="book" data-status="booked" data-href="{{ path('planning_update', { action: 'book' }) }}">Marquer comme réservé</button>
-                <button class="btn btn-sm btn-block trigger-update available" action="allow" data-status="available" data-href="{{ path('planning_update', { action: 'allow' }) }}">Marquer comme disponible</button>
+                <button class="btn btn-sm btn-block trigger-update booked" action="book" data-status="booked" data-href="{{ path('planning_update', { action: 'book' }) }}">{{ 'organization.asset.markAsBooked' | trans }}</button>
+                <button class="btn btn-sm btn-block trigger-update available" action="allow" data-status="available" data-href="{{ path('planning_update', { action: 'allow' }) }}">{{ 'organization.asset.markAsAvailable' | trans }}</button>
             </div>
             <div class="col-md">
-                <button class="btn btn-sm btn-block trigger-update locked" action="lock" data-status="locked" data-href="{{ path('planning_update', { action: 'lock' }) }}">Marquer comme bloqué</button>
-                <button class="btn btn-sm btn-block trigger-update unknown" action="delete" data-status="unknown" data-href="{{ path('planning_update', { action: 'delete' }) }}">Marquer comme NON disponible</button>
+                <button class="btn btn-sm btn-block trigger-update locked" action="lock" data-status="locked" data-href="{{ path('planning_update', { action: 'lock' }) }}">{{ 'organization.asset.markAsLocked' | trans }}</button>
+                <button class="btn btn-sm btn-block trigger-update unknown" action="delete" data-status="unknown" data-href="{{ path('planning_update', { action: 'delete' }) }}">{{ 'organization.asset.markAsUnavailable' | trans }}</button>
             </div>
         {% else %}
             <div class="col-md">
                 <ul class="list-unstyled planning-legend-container">
-                    <li><span class="availability-legend unknown"></span> <em>Non disponible</em></li>
-                    <li><span class="availability-legend available"></span> <em>Disponible</em></li>
+                    <li><span class="availability-legend unknown"></span> <em>{{ 'organization.asset.unavailable' | trans }}</em></li>
+                    <li><span class="availability-legend available"></span> <em>{{ 'organization.asset.available' | trans }}</em></li>
                 </ul>
             </div>
             <div class="col-md">
                 <ul class="list-unstyled planning-legend-container">
-                    <li><span class="availability-legend booked"></span> <em>Engagé sur une mission</em></li>
-                    <li><span class="availability-legend locked"></span> <em>Bloqué</em></li>
+                    <li><span class="availability-legend booked"></span> <em>{{ 'organization.asset.booked' | trans }}</em></li>
+                    <li><span class="availability-legend locked"></span> <em>{{ 'organization.asset.locked' | trans }}</em></li>
                 </ul>
             </div>
         {% endif %}
@@ -43,8 +43,8 @@
 {% set itemDataRow = 8 %}
 
 <div class="alert alert-warning d-none alert-dismissible" role="alert" id="alert-last-update">
-    <span>Des modifications ont été effectuées par d'autres utilisateurs, <a href="#" class="text-body">cliquez ici pour rafraichir la page</a></span>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+    <span>{{ 'message.updatedWarning' | trans | raw }}</span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="{{ 'action.close' | trans }}">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
@@ -57,22 +57,22 @@
         <thead>
         <tr class="days">
             <th rowspan="2"></th>
-            <th colspan="{{ itemDataRow }}" class="item-data">Informations</th>
+            <th colspan="{{ itemDataRow }}" class="item-data">{{ 'common.informations' | trans }}</th>
             {% for item in periodCalculator.days %}
-                <th colspan="{{ item.slots }}" data-day="{{ item.date|date("Y-m-d") }}" title="Trier par nombre de disponibilités sur le jour">
+                <th colspan="{{ item.slots }}" data-day="{{ item.date|date("Y-m-d") }}" title="{{ 'calendar.sortByDayAvailabilities' | trans }}">
                     {{ item.date|format_date(pattern="eeee dd MMMM") }}
                 </th>
             {% endfor %}
         </tr>
         <tr class="hours">
-            <th class="item-data">NIVOL</th>
-            <th class="item-data">Tel</th>
-            <th class="item-data">Email</th>
-            <th class="item-data">Profession</th>
-            <th class="item-data">Cadre</th>
-            <th class="item-data">Compétences</th>
-            <th class="item-data">Uniforme</th>
-            <th class="item-data">Vulnérable</th>
+            <th class="item-data">{{ 'user.identificationNumber' | trans }}</th>
+            <th class="item-data">{{ 'common.phoneNumberShort' | trans }}</th>
+            <th class="item-data">{{ 'user.email' | trans }}</th>
+            <th class="item-data">{{ 'common.occupation' | trans }}</th>
+            <th class="item-data">{{ 'common.manager' | trans }}</th>
+            <th class="item-data">{{ 'user.skills' | trans }}</th>
+            <th class="item-data">{{ 'user.uniform' | trans }}</th>
+            <th class="item-data">{{ 'user.detail.vulnerable.label' | trans }}</th>
             {% for item in periodCalculator.slots %}
                 <th class="slot-name">
                     {{ item|format_date(pattern="HH") }}
@@ -89,7 +89,7 @@
                         {% if  isAsset %}
                             {{ type }}
                         {% else %}
-                            {{ usersSkills[type] | default('Bénévoles') }}
+                            {{ usersSkills[type] | default('organization.users' | trans) }}
                         {% endif %}
                         ({{ list|length }})
                     </th>
@@ -117,8 +117,8 @@
                                     <span class="badge badge-{{ skill in importantSkills ? 'primary' : 'secondary' }}">{{ skill }}</span>
                                 {%- endfor %}
                             </td>
-                            <td class="item-data">{{ item.entity.fullyEquipped ? 'Oui' : '-' }}</td>
-                            <td class="item-data">{{ item.entity.vulnerable ? 'Oui' : '-' }}</td>
+                            <td class="item-data">{{ item.entity.fullyEquipped ? 'common.yes' | trans : '-' }}</td>
+                            <td class="item-data">{{ item.entity.vulnerable ? 'common.yes' | trans : '-' }}</td>
                         {% else %}
                             <td class="item-data" colspan="{{ itemDataRow }}"></td>
                         {% endif %}
@@ -151,8 +151,8 @@
                 Vous êtes sur le point de modifier la disponibilité de <span id="nb-assets-users"></span>.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">Modifier</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'action.cancel' | trans }}</button>
+                <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">{{ 'action.delete' | trans }}</button>
             </div>
         </div>
     </div>

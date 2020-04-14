@@ -6,13 +6,13 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Modifier un profil</h1>
+    <h1>{{ 'organization.editUserProfile' | trans }}</h1>
     {%
         set labels = {
-        'fullyEquipped': 'Uniforme en dotation ?',
-        'occupation': 'Profession ?',
-        'organizationOccupation': 'Fonction de cadre au sein de la structure d\'emploi',
-        'skillSet': 'Compétences Croix-Rouge ?'
+        'fullyEquipped': 'organization.user.isFullyEquipped' | trans,
+        'occupation': 'common.occupation' | trans,
+        'organizationOccupation': 'organization.user.occupation' | trans,
+        'skillSet': 'organization.user.skillset' | trans
     } %}
     {% set helps = {
         'skillSet': null,

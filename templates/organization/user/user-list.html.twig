@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Bénévoles - {{ organization }}</h1>
+    <h1>{{ 'organization.users' | trans }} - {{ organization }}</h1>
 
     {{ include('organization/user/_list.html.twig') }}
 {% endblock %}

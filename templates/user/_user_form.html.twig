@@ -3,38 +3,38 @@
 
 <div class="row">
     <div class="col-6">
-        {{ form_row(form.identificationNumber, { 'label': 'NIVOL'}) }}
+        {{ form_row(form.identificationNumber, { 'label': 'user.identificationNumber' | trans }) }}
     </div>
 </div>
 <div class="row">
     <div class="col-6">
-        {{ form_row(form.organization, { 'label': labels.organization | default('Structure de rattachement'), 'help': helps.organization }) }}
+        {{ form_row(form.organization, { 'label': labels.organization | default('organization.default' | trans), 'help': helps.organization }) }}
     </div>
 </div>
 
 <div class="row">
     <div class="col-12 col-md-6">
-        {{ form_row(form.firstName, { 'label': 'Prénom'}) }}
+        {{ form_row(form.firstName, { 'label': 'user.firstName' | trans }) }}
     </div>
     <div class="col-12 col-md-6">
-        {{ form_row(form.lastName, { 'label': 'Nom'}) }}
+        {{ form_row(form.lastName, { 'label': 'user.lastName' | trans }) }}
     </div>
 </div>
 
 <div class="row">
     <div class="col-12 col-md-6">
-        {{ form_row(form.emailAddress, { 'label' : 'Adresse e-mail'}) }}
+        {{ form_row(form.emailAddress, { 'label' : 'user.email' | trans }) }}
     </div>
     <div class="col-12 col-md-6">
-        {{ form_row(form.phoneNumber, { 'label' : 'Numéro de téléphone portable'}) }}
+        {{ form_row(form.phoneNumber, { 'label' : 'user.mobile' | trans }) }}
     </div>
 </div>
 
 {% if form.birthday is defined %}
-    {{ form_row(form.birthday, { 'label': 'Date de naissance'}) }}
+    {{ form_row(form.birthday, { 'label': 'user.dob' | trans }) }}
 {% endif %}
 
-{{ form_row(form.vulnerable, { 'label': 'Vulnérable'}) }}
+{{ form_row(form.vulnerable, { 'label': 'user.detail.vulnerable.label' | trans }) }}
 {{ form_row(form.organizationOccupation, { 'label': labels.organizationOccupation }) }}
 
 <div class="row">
@@ -49,7 +49,7 @@
 {{ form_row(form.fullyEquipped, {'label': labels.fullyEquipped}) }}
 
 <div class="float-right">
-    {{ form_row(form.submit, {label: 'Valider'}) }}
+    {{ form_row(form.submit, {label: 'action.submit' | trans }) }}
 </div>
 <div class="clearfix"></div>
 {{ form_end(form) }}

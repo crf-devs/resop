@@ -3,7 +3,7 @@
 <div class="container mt-2 availability-actions">
     <div class="row">
         <div class="col-12 col-md-4">
-            <button class="btn-secondary btn mt-3 select-all" type="button">Tout sélectionner</button>
+            <button class="btn-secondary btn mt-3 select-all" type="button">{{ 'action.selectAll' | trans }}</button>
         </div>
         <div class="col-12 col-md-8">
             <nav class="mt-3">
@@ -11,12 +11,12 @@
                     <li class="page-item{% if nowIsCurrent %} disabled{% endif %}">
                         <a class="page-link" href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({week: 'now'|date('o-\\WW')})) }}">
                             <span aria-hidden="true">&laquo;</span>
-                            Semaine courante
+                            {{ 'calendar.week.current' | trans }}
                         </a>
                     </li>
                     <li class="page-item{% if not nowIsCurrent %} disabled{% endif %}">
                         <a class="page-link" href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({week: 'next week'|date('o-\\WW')})) }}">
-                            Mes disponiblités pour la semaine du lundi {{ 'monday next week' | date('d/m/Y') }}
+                            {{ 'user.availabilitySpecificWeek' | trans({ '%week%' : 'monday next week' | date('d/m/Y') }) }}
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -63,11 +63,11 @@
 <div class="row">
     <div class="col-12 col-md-8">
         {% if blockedSlotsInterval is defined %}
-            <p class="font-italic">Vous ne pouvez pas modifier les disponibilités saisies pour les prochaines {{ blockedSlotsInterval.format('%h heures') }}</p>
+            <p class="font-italic">{{ 'message.editForbidden' | trans ({ '%period%' : blockedSlotsInterval.format('%h') }) }}</p>
         {% endif %}
     </div>
     <div class="col-12 col-md-4">
-        <div class="float-right mt-2">{{ form_widget(form.submit, {label: 'Enregistrer mes disponibilités'}) }}</div>
+        <div class="float-right mt-2">{{ form_widget(form.submit, {label: 'action.saveMyAvailabilities' | trans }) }}</div>
     </div>
 </div>
 
@@ -92,11 +92,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                Attention, certaines modifications de disponibilités n'ont pas été sauvegardées.
-                Vous devez les annuler ou enregistrer le formulaire avant de changer de page.
+                {{ 'message.saveAvailabilitiesWarning' | trans }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'action.cancel' | trans }}</button>
             </div>
         </div>
     </div>

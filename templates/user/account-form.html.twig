@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {%  set actionName = (user is defined and user.id is not null) ? 'Modification' : 'Création' %}
-{% block title %}{{ actionName }} de compte{% endblock %}
+{% block title %}{{ 'user.accountAction' | trans({ '%action%' : actionName }) }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -9,17 +9,17 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ actionName }} de compte</h1>
+    <h1>{{ 'user.accountAction' | trans({ '%action%' : actionName }) }}</h1>
 
     {% set labels = {
-        'fullyEquipped': 'Avez-vous un uniforme en dotation chez vous ?',
-        'occupation': 'Quelle est votre profession ?',
-        'organizationOccupation': 'Quelles sont vos fonction de cadre au sein de votre structure d\'emploi ?',
-        'organization': 'Votre structure de rattachement',
-        'skillSet': 'Quelles sont vos compétences Croix-Rouge ?'
+        'fullyEquipped': 'user.detail.fullyEquipped' | trans,
+        'occupation': 'user.detail.occupation' | trans,
+        'organizationOccupation': 'user.detail.organizationOccupation' | trans,
+        'organization': 'user.detail.organization' | trans,
+        'skillSet': 'user.detail.skillSet.label' | trans
     } %}
     {% set helps = {
-        'skillSet': 'Cochez toutes vos compétences',
+        'skillSet': 'user.detail.skillSet.help' | trans,
         'occupation': null,
         'organization': null
     } %}
