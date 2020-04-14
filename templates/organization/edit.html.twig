@@ -2,10 +2,10 @@
 
 {% if organization.id is null %}
     {% set formAction = path('app_organization_new') %}
-    {% set formTitle = 'Ajouter une structure' %}
+    {% set formTitle = 'organization.add' | trans %}
 {% else %}
     {% set formAction = path('app_organization_edit', { id: organization.id }) %}
-    {% set formTitle = 'Editer une structure' %}
+    {% set formTitle = 'organization.edit' | trans %}
 {% endif %}
 
 {% block title %}{{formTitle}}{% endblock %}
@@ -14,7 +14,7 @@
 
     <h1>{{formTitle}}</h1>
     {{ form_start(form, { method: 'POST', action: formAction }) }}
-    {{ form_row(form.name, { label: 'Nom'}) }}
-    {{ form_row(form.submit, { label: 'Valider'}) }}
+    {{ form_row(form.name, { label: 'common.name' | trans }) }}
+    {{ form_row(form.submit, { label: 'action.submit' | trans }) }}
     {{ form_end(form) }}
 {% endblock %}

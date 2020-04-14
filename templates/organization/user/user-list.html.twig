@@ -6,20 +6,20 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Bénévoles - {{ organization }}</h1>
+    <h1>{{ 'organization.users' | trans }} - {{ organization }}</h1>
 
     <div class="table-responsive">
         <table class="table table-striped mt-5">
             <thead  class="thead-light">
             <tr>
-                <th>NIVOL</th>
-                <th>Prénom</th>
-                <th>Nom</th>
-                <th>E-mail</th>
+                <th>{{ 'user.identificationNumber' | trans }}</th>
+                <th>{{ 'user.firstName' | trans }}</th>
+                <th>{{ 'user.lastName' | trans }}</th>
+                <th>{{ 'user.email' | trans }}</th>
                 {% if organization.parent is null %}
-                    <th>Structure</th>
+                    <th>{{ 'organization.label' | trans }}</th>
                 {% endif %}
-                <th>Actions</th>
+                <th>{{ 'common.actions' | trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -33,8 +33,8 @@
                         <td>{{ user.organization.name }}</td>
                     {% endif %}
                     <td>
-                        <a class="btn btn-outline-primary" href="{{ path('organization_user_edit', { 'id': user.id }) }}">Modifier</a>
-                        <a class="btn btn-danger trigger-delete" data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )" href="#" data-href="{{ path('app_user_delete', { 'id': user.id }) }}">Supprimer</a>
+                        <a class="btn btn-outline-primary" href="{{ path('organization_user_edit', { 'id': user.id }) }}">{{ 'action.edit' | trans }}</a>
+                        <a class="btn btn-danger trigger-delete" data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )" href="#" data-href="{{ path('app_user_delete', { 'id': user.id }) }}">{{ 'action.delete' | trans }}</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -52,11 +52,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Vous êtes sur le point de supprimer le bénévole : <span id="to-delete-name"></span> et toutes ses disponibilités.
+                    Vous êtes sur le point de supprimer le bénévole <span id="to-delete-name"></span> et toutes ses disponibilités.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">Supprimer</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'action.cancel' | trans }}</button>
+                    <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">{{ 'action.delete' | trans }}</button>
                 </div>
             </div>
         </div>

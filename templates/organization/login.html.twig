@@ -1,6 +1,6 @@
 {% extends 'organization/base.html.twig' %}
 
-{% block title %}Connexion{% endblock %}
+{% block title %}{{ 'action.login' | trans }}{% endblock %}
 
 {% block body %}
     <div class="row">
@@ -12,10 +12,10 @@
                     </div>
                 {% endif %}
 
-                <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+                <h1 class="h3 mb-3 font-weight-normal">{{ 'action.login' | trans }}</h1>
 
                 <div class="form-row mb-4">
-                    <label for="inputIdentifier">Structure</label>
+                    <label for="inputIdentifier">{{ 'organization.label' | trans }}</label>
                     <select name="identifier" id="inputIdentifier" class="form-control selectpicker show-tick" required data-live-search="true">
                         {% for parentName, children in organizations %}
                             <optgroup label="{{ parentName }}">
@@ -39,14 +39,14 @@
 
                 <div class="mt-4 mb-2 d-flex">
                     <label>
-                        <input type="checkbox" name="_remember_me"> Se souvenir de moi
+                        <input type="checkbox" name="_remember_me"> {{ 'action.rememberMe' | trans }}
                     </label>
                 </div>
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                 <button class="btn btn-lg btn-primary w-100" type="submit">
-                    Je me connecte
+                    {{ 'action.loginSubmit' | trans }}
                 </button>
             </form>
         </div>

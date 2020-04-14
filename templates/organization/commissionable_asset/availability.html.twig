@@ -1,6 +1,6 @@
 {% extends 'organization/base.html.twig' %}
 
-{% block title %}Disponibilités de {{ asset }}{% endblock %}
+{% block title %}{{ 'organization.asset.availabilities' | trans ({ '%asset%' : asset }) }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Disponibilités de {{ asset }}</h1>
+    <h1>{{ 'organization.asset.availabilities' | trans ({ '%asset%' : asset }) }}</h1>
 
     {% include 'availability/_table.html.twig' %}
 {% endblock %}

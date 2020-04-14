@@ -1,6 +1,6 @@
 {% extends 'organization/base.html.twig' %}
 
-{% block title %}Espace structure{% endblock %}
+{% block title %}{{ 'nav.section.organization' | trans }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -8,11 +8,11 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Véhicules - {{ app.user }}</h1>
+    <h1>{{ 'organization.vehicles' | trans }} - {{ app.user }}</h1>
 
     <div class="row">
         <div class="col-12 text-right mb-2">
-            <a class="btn btn-success" href="{{ path('app_organization_commissionable_add_asset') }}" role="button">Ajouter un nouveau véhicule</a>
+            <a class="btn btn-success" href="{{ path('app_organization_commissionable_add_asset') }}" role="button">{{ 'organization.vehicle.add' | trans }}</a>
         </div>
     </div>
 
@@ -20,9 +20,9 @@
         <table class="table table-stripped">
             <thead class="thead-light">
                 <tr>
-                    <th>Identifiant</th>
-                    <th>Disponibilités</th>
-                    <th>Actions</th>
+                    <th>{{ 'organization.vehicle.identificationNumber' | trans }}</th>
+                    <th>{{ 'common.availabilities' | trans }}</th>
+                    <th>{{ 'common.actions' | trans }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,22 +32,22 @@
                         {{ asset }}
                         <span class="badge badge-pill badge-primary">
                             {{ asset.seatingCapacity }}
-                            place{{ asset.seatingCapacity > 1 ? 's' }}
+                            {{ 'organization.vehicle.seat' | trans }}{{ asset.seatingCapacity > 1 ? 's' }}
                         </span>
                         {% if asset.hasMobileRadio %}
-                        <span class="badge badge-pill badge-info">radio</span>
+                        <span class="badge badge-pill badge-info">{{ 'organization.vehicle.radio' | trans }}</span>
                         {% endif %}
                         {% if asset.hasFirstAidKit %}
-                            <span class="badge badge-pill badge-danger">lot de secours</span>
+                            <span class="badge badge-pill badge-danger">{{ 'organization.vehicle.firstAidKit' | trans }}</span>
                         {% endif %}
                     </td>
                     <td>
-                        <a class="btn btn-outline-primary" href="{{ path('organization_commisionable_asset_availability', { id: asset.id }) }}">Semaine courante</a>
-                        <a class="btn btn-outline-primary" href="{{ path('organization_commisionable_asset_availability', { id: asset.id, week: 'next week' | date('o-\\WW') }) }}">Semaine du lundi {{ 'monday next week' | date('d/m/Y') }}</a>
+                        <a class="btn btn-outline-primary" href="{{ path('organization_commisionable_asset_availability', { id: asset.id }) }}">{{ 'calendar.week.current' | trans }}</a>
+                        <a class="btn btn-outline-primary" href="{{ path('organization_commisionable_asset_availability', { id: asset.id, week: 'next week' | date('o-\\WW') }) }}">{{ 'calendar.week.specific' | trans ({'%week%' : 'lundi ' ~ 'monday next week' | date('d/m/Y')}) }}</a>
                     </td>
                     <td>
-                        <a class="btn btn-secondary" href="{{ path('app_organization_commissionable_edit_asset', { id: asset.id }) }}">Modifier</a>
-                        <a class="btn btn-outline-danger trigger-delete" data-display-name="{{ asset }}" href="#" data-href="{{ path('app_commissionable_asset_delete', { id: asset.id }) }}">Supprimer</a>
+                        <a class="btn btn-secondary" href="{{ path('app_organization_commissionable_edit_asset', { id: asset.id }) }}">{{ 'action.edit' | trans }}</a>
+                        <a class="btn btn-outline-danger trigger-delete" data-display-name="{{ asset }}" href="#" data-href="{{ path('app_commissionable_asset_delete', { id: asset.id }) }}">{{ 'action.delete' | trans }}</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -68,8 +68,8 @@
                     Vous êtes sur le point de supprimer le véhicule : <span id="to-delete-name"></span> et toutes ses disponibilités.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">Supprimer</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'action.cancel' | trans }}</button>
+                    <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">{{ 'action.delete' | trans }}</button>
                 </div>
             </div>
         </div>
