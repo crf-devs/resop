@@ -1,0 +1,35 @@
+{% extends 'organization/planning/_availabilities_base.html.twig' %}
+
+{% block type %}{{ usersSkills[type] | default('organization.users' | trans) }}{% endblock type %}
+
+{# columns number of blocks itemDataHeader and itemDataDetails should be the same than in _availabilities_assets.html.twig #}
+{% block itemDataHeader %}
+    <th class="item-data">{{ 'user.identificationNumber' | trans }}</th>
+    <th class="item-data">{{ 'common.phoneNumberShort' | trans }}</th>
+    <th class="item-data">{{ 'user.email' | trans }}</th>
+    <th class="item-data">{{ 'common.occupation' | trans }}</th>
+    <th class="item-data">{{ 'common.manager' | trans }}</th>
+    <th class="item-data">{{ 'user.skills' | trans }}</th>
+    <th class="item-data">{{ 'user.uniform' | trans }}</th>
+    <th class="item-data">{{ 'user.detail.vulnerable.label' | trans }}</th>
+{% endblock itemDataHeader %}
+
+{% block importantSkills %}
+    {{ item.entity.skillSet | filter(skill => skill != type and skill in importantSkillsToDisplay) | map(skill => '<span class="badge badge-secondary">' ~skill~ '</span>') | join | raw }}
+{% endblock importantSkills %}
+
+{% block itemDataDetails %}
+    <td class="item-data">{{ item.entity.identificationNumber }}</td>
+    <td class="item-data">{{ item.entity.phoneNumber }}</td>
+    <td class="item-data">{{ item.entity.emailAddress }}</td>
+    <td class="item-data">{{ item.entity.occupation }}</td>
+    <td class="item-data">{{ item.entity.organizationOccupation }}</td>
+    <td class="item-data">
+        {% for skill in item.entity.skillSet -%}
+            <span
+                class="badge badge-{{ skill in importantSkills ? 'primary' : 'secondary' }}">{{ skill }}</span>
+        {%- endfor %}
+    </td>
+    <td class="item-data">{{ item.entity.fullyEquipped ? 'common.yes' | trans : '-' }}</td>
+    <td class="item-data">{{ item.entity.vulnerable ? 'common.yes' | trans : '-' }}</td>
+{% endblock itemDataDetails %}

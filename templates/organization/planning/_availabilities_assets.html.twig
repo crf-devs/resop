@@ -1,0 +1,22 @@
+{% extends 'organization/planning/_availabilities_base.html.twig' %}
+
+{% block type %}{{ type }}{% endblock type %}
+
+{# columns number of blocks itemDataHeader and itemDataDetails should be the same than in _availabilities_users.html.twig #}
+{% block itemDataHeader %}
+    <th class="item-data">Radio mobile?</th>
+    <th class="item-data" colspan="2">Kit de premiers soins?</th>
+    <th class="item-data">Contact</th>
+    <th class="item-data" colspan="2">Lieu de stationnement</th>
+    <th class="item-data">Places</th>
+    <th class="item-data">Immatriculation</th>
+{% endblock itemDataHeader %}
+
+{% block itemDataDetails %}
+    <td class="item-data">{{ item.entity.hasMobileRadio ? 'Oui' : '-' }}</td>
+    <td class="item-data" colspan="2">{{ item.entity.hasFirstAidKit ? 'Oui' : '-' }}</td>
+    <td class="item-data">{{ item.entity.contact }}</td>
+    <td class="item-data" colspan="2">{{ item.entity.parkingLocation }}</td>
+    <td class="item-data">{{ item.entity.seatingCapacity }}</td>
+    <td class="item-data">{{ item.entity.licensePlate }}</td>
+{% endblock itemDataDetails %}

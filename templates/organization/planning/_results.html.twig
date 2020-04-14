@@ -54,82 +54,8 @@
 {% set availabilities = getAvailabilities(periodCalculator, filters) %}
 <div class="planning-container">
     <table class="planning table table-sm table-bordered availability-table" data-availability-mode="planning" style="display: none;">
-        <thead>
-        <tr class="days">
-            <th rowspan="2"></th>
-            <th colspan="{{ itemDataRow }}" class="item-data">{{ 'common.informations' | trans }}</th>
-            {% for item in periodCalculator.days %}
-                <th colspan="{{ item.slots }}" data-day="{{ item.date|date("Y-m-d") }}" title="{{ 'calendar.sortByDayAvailabilities' | trans }}">
-                    {{ item.date|format_date(pattern="eeee dd MMMM") }}
-                </th>
-            {% endfor %}
-        </tr>
-        <tr class="hours">
-            <th class="item-data">{{ 'user.identificationNumber' | trans }}</th>
-            <th class="item-data">{{ 'common.phoneNumberShort' | trans }}</th>
-            <th class="item-data">{{ 'user.email' | trans }}</th>
-            <th class="item-data">{{ 'common.occupation' | trans }}</th>
-            <th class="item-data">{{ 'common.manager' | trans }}</th>
-            <th class="item-data">{{ 'user.skills' | trans }}</th>
-            <th class="item-data">{{ 'user.uniform' | trans }}</th>
-            <th class="item-data">{{ 'user.detail.vulnerable.label' | trans }}</th>
-            {% for item in periodCalculator.slots %}
-                <th class="slot-name">
-                    {{ item|format_date(pattern="HH") }}
-                </th>
-            {% endfor %}
-        </tr>
-        </thead>
-        {% for type, list in availabilities %}
-            {% set isAsset = type in (assetsTypes|keys) %}
-            {% set entityType = isAsset ? 'assets' : 'users' %}
-            <tbody>
-                <tr>
-                    <th class="separator bg-dark">
-                        {% if  isAsset %}
-                            {{ type }}
-                        {% else %}
-                            {{ usersSkills[type] | default('organization.users' | trans) }}
-                        {% endif %}
-                        ({{ list|length }})
-                    </th>
-                    <td colspan="{{ itemDataRow + periodCalculator.slots|length }}"></td>
-                </tr>
-            </tbody>
-
-            <tbody class="item-rows">
-                {% for item in list %}
-                    <tr data-type="{{ entityType }}" data-id="{{ item.entity.id }}">
-                        <th class="item-detail">
-                            {{ item.entity }}
-                            {% if  not isAsset %}
-                                {{ item.entity.skillSet | filter(skill => skill != type and skill in importantSkillsToDisplay) | map(skill => '<span class="badge badge-secondary">' ~skill~ '</span>') | join | raw }}
-                            {% endif %}
-                        </th>
-                        {% if not isAsset %}
-                            <td class="item-data">{{ item.entity.identificationNumber }}</td>
-                            <td class="item-data">{{ item.entity.phoneNumber }}</td>
-                            <td class="item-data">{{ item.entity.emailAddress }}</td>
-                            <td class="item-data">{{ item.entity.occupation }}</td>
-                            <td class="item-data">{{ item.entity.organizationOccupation }}</td>
-                            <td class="item-data">
-                                {% for skill in item.entity.skillSet -%}
-                                    <span class="badge badge-{{ skill in importantSkills ? 'primary' : 'secondary' }}">{{ skill }}</span>
-                                {%- endfor %}
-                            </td>
-                            <td class="item-data">{{ item.entity.fullyEquipped ? 'common.yes' | trans : '-' }}</td>
-                            <td class="item-data">{{ item.entity.vulnerable ? 'common.yes' | trans : '-' }}</td>
-                        {% else %}
-                            <td class="item-data" colspan="{{ itemDataRow }}"></td>
-                        {% endif %}
-                        {% autoescape false %}
-                            {# Table td are rendered in php in order to avoid twig performance issue #}
-                            {{ renderPlanningTable(item.availabilities, displayActions) }}
-                        {% endautoescape %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        {% endfor %}
+        {% include 'organization/planning/_availabilities_assets.html.twig' with {availabilities: availabilities.assets, entityType: 'assets'} %}
+        {% include 'organization/planning/_availabilities_users.html.twig' with {availabilities: availabilities.users, entityType: 'users'} %}
         <tfoot>
             <tr>
                 <td colspan="{{ 1 + itemDataRow + periodCalculator.slots|length }}" class="separator"></td>
