@@ -13,7 +13,6 @@ action:
   saveMyAvailabilities: Enregistrer mes disponibilités
   selectAll: Tout sélectionner
   save: Enregistrer
-  search: Rechercher
   submit: Valider
 calendar:
   displayedPeriod: Période affichée
@@ -25,7 +24,7 @@ calendar:
   week:
     current: Semaine actuelle
     next: Semaine prochaine
-    specific: Semaine du %week%
+    startMonday: Semaine du lundi %week%
 common:
   actions: Actions
   availabilities: Disponibilités
@@ -55,9 +54,17 @@ organization:
     markAsUnavailable: Marquer comme NON disponible
   default: Structure de rattachement
   edit: Modifier une structure
+  editAll: Modifier mes structures
+  editMissionType: Modifier les types de missions
   editUserProfile: Modifier un profil
+  forecast: Projections
   label: Structure
   list: Liste des structures
+  search:
+    query: Rechercher un bénévole ou un véhicule
+    submit: Rechercher
+    no_users: Aucun bénévole ne correspond à votre recherche.
+    no_assets: Aucun véhicule ne correspond à votre recherche.
   showCommissionableAssets: Afficher la liste de mes véhicules
   showOrganizationList: Afficher la liste de mes structures
   showAllUsersAvailability: Afficher les disponibilités de tous les bénévoles
@@ -113,9 +120,3 @@ user:
   skills: Compétences
   uniform: Uniforme
   welcome: Bienvenue, %name%
-organization:
-  search:
-    query: Rechercher un bénévole ou un véhicule
-    submit: Rechercher
-    no_users: Aucun bénévole ne correspond à votre recherche.
-    no_assets: Aucun véhicule ne correspond à votre recherche.

@@ -25,16 +25,16 @@
     {{ include('organization/_search.html.twig') }}
 
     <hr>
-    <p><a class="btn btn-secondary" role="button" href="{{ path('app_organization_user_list', {'id': app.user.id}) }}">Afficher la liste de mes bénévoles inscrits</a></p>
-    <p><a class="btn btn-secondary" href="{{ path('app_organization_commissionable_assets') }}" role="button">Afficher la liste de mes véhicules</a></p>
+    <p><a class="btn btn-secondary" role="button" href="{{ path('app_organization_user_list', {'id': app.user.id}) }}">{{ 'organization.showUserList' | trans }}</a></p>
+    <p><a class="btn btn-secondary" href="{{ path('app_organization_commissionable_assets') }}" role="button">{{ 'organization.showCommissionableAssets' | trans }}</a></p>
 
     {% if app.user.parent == null %}
         <hr>
-        <p><a class="btn btn-info" href="{{ path('planning') }}" role="button">Afficher les disponibilités de tous les bénévoles</a></p>
-        <p><a class="btn btn-info" href="{{ path('app_organisation_forecast') }}" role="button">Projections</a></p>
+        <p><a class="btn btn-info" href="{{ path('planning') }}" role="button">{{ 'organization.showAllUsersAvailability' | trans }}</a></p>
+        <p><a class="btn btn-info" href="{{ path('app_organisation_forecast') }}" role="button">{{ 'organization.forecast' | trans }}</a></p>
 
         <hr>
-        <p><a href="{{ path('app_organization_list') }}" class="btn btn-info">Modifier mes structures</a></p>
-        <p><a href="{{ path('app_organization_mission_type_index') }}" class="btn btn-info">Modifier les types de missions</a></p>
+        <p><a href="{{ path('app_organization_list') }}" class="btn btn-info">{{ 'organization.editAll' | trans }}</a></p>
+        <p><a href="{{ path('app_organization_mission_type_index') }}" class="btn btn-info">{{ 'organization.editMissionType' | trans }}</a></p>
     {% endif %}
 {% endblock %}
