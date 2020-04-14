@@ -12,6 +12,7 @@ App\Entity\User:
     skillSet: '<randomSkillSet()>'
     vulnerable: '<boolean(50)>'
     fullyEquipped: '<boolean(50)>'
+    drivingLicence: '<boolean(50)>'
   User.jane_doe:
     firstName: Jane
     lastName: DOE
@@ -25,6 +26,7 @@ App\Entity\User:
     skillSet: '<randomSkillSet()>'
     vulnerable: '<boolean(50)>'
     fullyEquipped: '<boolean(50)>'
+    drivingLicence: '<boolean(50)>'
   User.chuck_norris:
     firstName: Chuck
     lastName: NORRIS
@@ -38,3 +40,4 @@ App\Entity\User:
     skillSet: '<randomSkillSet()>'
     vulnerable: '<boolean(50)>'
     fullyEquipped: '<boolean(50)>'
+    drivingLicence: '<boolean(50)>'

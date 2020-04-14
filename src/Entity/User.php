@@ -121,6 +121,11 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
     public bool $fullyEquipped = false;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    public bool $drivingLicence = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\UserAvailability", mappedBy="user")
      */
     private iterable $availabilities = [];

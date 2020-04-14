@@ -264,6 +264,7 @@ final class ApplicationFixtures extends Fixture
                 $user->skillSet = (array) array_rand($availableSkillSet, random_int(1, 3));
                 $user->vulnerable = (bool) random_int(0, 1);
                 $user->fullyEquipped = (bool) random_int(0, 1);
+                $user->drivingLicence = (bool) random_int(0, 1);
 
                 $this->users[$user->getIdentificationNumber()] = $user;
 

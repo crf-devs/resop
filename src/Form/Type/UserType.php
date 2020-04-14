@@ -98,6 +98,15 @@ class UserType extends AbstractType
                 'expanded' => true,
                 'placeholder' => false,
             ])
+            ->add('drivingLicence', ChoiceType::class, [
+                'choices' => [
+                    'Oui' => 1,
+                    'Non' => 0,
+                ],
+                'required' => true,
+                'expanded' => true,
+                'placeholder' => false,
+            ])
             ->add('skillSet', ChoiceType::class, [
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),
                 'multiple' => true,

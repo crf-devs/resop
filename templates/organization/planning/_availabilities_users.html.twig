@@ -11,6 +11,7 @@
     <th class="item-data">{{ 'common.manager' | trans }}</th>
     <th class="item-data">{{ 'user.skills' | trans }}</th>
     <th class="item-data">{{ 'user.uniform' | trans }}</th>
+    <th class="item-data">{{ 'user.drivingLicence' | trans }}</th>
     <th class="item-data">{{ 'user.detail.vulnerable.label' | trans }}</th>
 {% endblock itemDataHeader %}
 
@@ -31,5 +32,6 @@
         {%- endfor %}
     </td>
     <td class="item-data">{{ item.entity.fullyEquipped ? 'common.yes' | trans : '-' }}</td>
+    <td class="item-data">{{ item.entity.drivingLicence ? 'common.yes' | trans : '-' }}</td>
     <td class="item-data">{{ item.entity.vulnerable ? 'common.yes' | trans : '-' }}</td>
 {% endblock itemDataDetails %}
