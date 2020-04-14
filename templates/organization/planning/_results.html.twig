@@ -26,14 +26,14 @@
         {% else %}
             <div class="col-md">
                 <ul class="list-unstyled planning-legend-container">
-                    <li><span class="availability-legend unknown"></span> <em>Non disponible</em></li>
-                    <li><span class="availability-legend available"></span> <em>Disponible</em></li>
+                    <li><span class="availability-legend unknown"></span> <em>{{ 'organization.asset.unavailable' | trans }}</em></li>
+                    <li><span class="availability-legend available"></span> <em>{{ 'organization.asset.available' | trans }}</em></li>
                 </ul>
             </div>
             <div class="col-md">
                 <ul class="list-unstyled planning-legend-container">
-                    <li><span class="availability-legend booked"></span> <em>Engagé sur une mission</em></li>
-                    <li><span class="availability-legend locked"></span> <em>Bloqué</em></li>
+                    <li><span class="availability-legend booked"></span> <em>{{ 'organization.asset.booked' | trans }}</em></li>
+                    <li><span class="availability-legend locked"></span> <em>{{ 'organization.asset.locked' | trans }}</em></li>
                 </ul>
             </div>
         {% endif %}

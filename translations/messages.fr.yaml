@@ -47,11 +47,15 @@ nav:
 organization:
   add: Ajouter une structure
   asset:
+    available: Disponible
     availabilities: Disponibilités de %asset%
+    booked: Engagé sur une mission
+    locked: Bloqué
     markAsAvailable: Marquer comme disponible
     markAsBooked: Marquer comme réservé
     markAsLocked: Marquer comme bloqué
     markAsUnavailable: Marquer comme NON disponible
+    unavailable: Non disponible
   default: Structure de rattachement
   edit: Modifier une structure
   editAll: Modifier mes structures
