@@ -23,12 +23,15 @@ class SkillSetDomain
      */
     public function getSkillSet(): array
     {
-        return $this->availableSkillSets;
+        return array_map(
+            fn (array $skill) => $skill['label'],
+            $this->availableSkillSets
+        );
     }
 
     public function getSkillSetKeys(): array
     {
-        return array_keys($this->availableSkillSets);
+        return array_keys($this->getSkillSet());
     }
 
     public function getImportantSkills(): array

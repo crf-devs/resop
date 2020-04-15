@@ -8,23 +8,56 @@ parameters:
     app.most_important_skills_to_display: 3 # used for displaying a badge near the user name
     app.available_skills:
         # Caution: the order matters for the planning display
-        ci_bspp:  CI Réseau BSPP
-        ci_samu: CI Réseau Samu
-        ch_vpsp: Chauffeur VPSP
-        ci: CI
-        pse2: PSE2
-        pse1: PSE1
-        ch_vl: Chauffeur VL
-        infirmier: Infirmier.e local.e
-        ce_maraude: Chef.fe d'équipe maraudes
-        solidar: Solidar
-        maraudeur: Maraudeur.se
-        tsa_coreg: TSA / Coreg
-        logisticien: Logisticien.ne Croix-Rouge
-        resp_perm_soc: Responsable Permanence Sociale
-        anim_fle: Animateur.rice de cours de FLE
-        psc1: PSC1
-        nouveau: Nouveau bénévole
+        ci_bspp:
+            label: CI Réseau BSPP
+            includes: [ci_samu]
+        ci_samu:
+            label: CI Réseau Samu
+            includes: [ci]
+        ch_vpsp:
+            label: Chauffeur VPSP
+            includes: [pse2, ch_vl]
+        ci:
+            label: CI
+            includes: [pse2]
+        pse2:
+            label: PSE2
+            includes: [pse1]
+        pse1:
+            label: PSE1
+            includes: [psc1]
+        ch_vl:
+            label: Chauffeur VL
+            includes: [benevole]
+        infirmier:
+            label: Infirmier.e local.e
+            includes: [benevole]
+        ce_maraude:
+            label: Chef.fe d'équipe maraudes
+            includes: [solidar]
+        solidar:
+            label: Solidar
+            includes: [maraudeur]
+        maraudeur:
+            label: Maraudeur.se
+            includes: [benevole]
+        tsa_coreg:
+            label: TSA / Coreg
+            includes: [pse2]
+        logisticien:
+            label: Logisticien.ne Croix-Rouge
+            includes: [benevole]
+        resp_perm_soc:
+            label: Responsable Permanence Sociale
+            includes: [benevole]
+        anim_fle:
+            label: Animateur.rice de cours de FLE
+            includes: [benevole]
+        psc1:
+            label: PSC1
+            includes: [benevole]
+        nouveau:
+            label: Nouveau bénévole
 
 services:
     # default configuration for services in *this* file
