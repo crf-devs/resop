@@ -32,9 +32,7 @@ build:
 	docker-compose build --pull
 
 build-prod:
-	docker build -t resop-fpm:latest -f docker/php-flex/Dockerfile --target withsources-fpm .
-	docker run --rm -v `pwd`:/host resop-fpm:latest sh -c "(rm -rf /host/public/*/ || true) && mv -f /srv/public/*/ /host/public && chown -R `id -u`:`id -g` /host/public/*/"
-	docker build -t resop-nginx:latest -f docker/nginx/Dockerfile --target withsources .
+	docker build -t resop:latest -f docker/php-flex/Dockerfile .
 
 start-db:
 	$(DOCKER_COMPOSE_UP) traefik postgres adminer

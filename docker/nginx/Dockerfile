@@ -7,7 +7,9 @@ RUN apk add --update --no-cache \
 
 COPY ./docker/nginx/files/. /
 
-ENV FPM_ENDPOINT "fpm:9001"
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+
+ENV FPM_ENDPOINT "fpm:9000"
 
 WORKDIR /srv
 
