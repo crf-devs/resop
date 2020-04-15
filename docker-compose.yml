@@ -43,8 +43,6 @@ services:
       - ./public:/srv/public:ro
     depends_on:
       - fpm
-    environment:
-      - "FPM_ENDPOINT=fpm:9001"
     labels:
       - 'traefik.enable=true'
       - 'traefik.port=80'

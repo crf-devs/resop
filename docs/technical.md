@@ -205,15 +205,12 @@ make webpack-watch-dev
 
 Every time a new commit is pushed onto master, the following Docker images are built:
 
-- [crfdevs/resop:fpm-master](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=fpm)
-- [crfdevs/resop:nginx-master](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=nginx)
+- [crfdevs/resop:master](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=master)
 
 Every time a new release is created, the following Docker images are built:
 
-- [crfdevs/resop:fpm-1.1.1](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=fpm-)
-- [crfdevs/resop:fpm-release-latest](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=fpm-release-latest)
-- [crfdevs/resop:nginx-1.1.1](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=nginx-)
-- [crfdevs/resop:nginx-release-latest](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=nginx-release-latest)
+- [crfdevs/resop:1.1.1](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1)
+- [crfdevs/resop:release-latest](https://hub.docker.com/repository/docker/crfdevs/resop/tags?page=1&name=release-latest)
 
 ## Usage in production
 
@@ -221,23 +218,57 @@ This is an example of docker-compose.yml file with parameters you should use for
 
 ```yaml
 services:
-  nginx:
-    image: crfdevs/resop:nginx-release-latest
-    depends_on:
-      - fpm
-    environment:
-      - "FPM_ENDPOINT=fpm:9001"
-
-  fpm:
-    image: crfdevs/resop:npm-release-latest
+  resop:
+    image: crfdevs/resop:release-latest
     environment:
       - INIT_DB=true # Run migrations on start
       - DANGEROUSLY_LOAD_FIXTURES=false # Reset DB and load fixtures on start
       - "DATABASE_URL=postgresql://<USER>:<PASSWORD>@<URL>/<DB>?serverVersion=11&charset=utf8"
 ```
 
-If you want to initialize the DB with production data, run the following command in the fpm container:
+If you want to initialize the DB with production data, run the following command into the container:
 
 ```bash
 bin/console app:load-organizations
+```
+
+### Usage in production with nginx and fpm separated containers
+
+If you want to have one image for nginx and an other one for fpm (one process per container), you can update the build workflow:
+
+```yaml
+jobs:
+    build:
+        steps:
+          # - Checkout and generate version variables
+
+            -   name: Build the Docker images
+                run: |
+                    docker build -t ${CI_REGISTRY_IMAGE}:fpm-${CI_COMMIT_REF_SLUG} -f docker/php-flex/Dockerfile --target withsources-fpm --build-arg BUILD_TAG=${BUILD_TAG} .
+                    docker run --rm -v $(pwd):/host ${CI_REGISTRY_IMAGE}:fpm-${CI_COMMIT_REF_SLUG} mv -f /srv/public/build /host/public
+                    docker build -t ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} -f docker/nginx/Dockerfile --target withsources .
+
+            -   name: Push the new Docker image
+                run: |
+                    docker push ${CI_REGISTRY_IMAGE}:fpm-${CI_COMMIT_REF_SLUG}
+                    docker push ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
+```
+
+Then, you can use the two images:
+
+```yaml
+services:
+  nginx:
+    image: crfdevs/resop:nginx-0.1
+    depends_on:
+      - fpm
+    environment:
+      - "FPM_ENDPOINT=fpm:9000"
+
+  fpm:
+    image: crfdevs/resop:npm-0.1
+    environment:
+      - INIT_DB=true # Run migrations on start
+      - DANGEROUSLY_LOAD_FIXTURES=false # Reset DB and load fixtures on start
+      - "DATABASE_URL=postgresql://<USER>:<PASSWORD>@<URL>/<DB>?serverVersion=11&charset=utf8"
 ```

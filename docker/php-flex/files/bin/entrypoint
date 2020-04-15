@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 set -e
 
+# If any command is provided, fall back to the default entrypoint
+if [ "$#" -ne 0 ]; then
+    exec docker-php-entrypoint "$@"
+fi
+
 PHP_FPM_PID='/var/run/php-fpm.pid'
 
 wait_for_pid () {
@@ -28,24 +33,22 @@ clean_up () {
     exit 0
 }
 
-# first arg is `-f` or `--some-option`
-if [ "${1#-}" != "$1" ]; then
-	set -- php-fpm "$@"
+echo -e "\n===== Testing PHP config\n"
+php-fpm -v
+php-fpm -t
+
+if command -v nginx > /dev/null; then
+    echo -e "\n===== Testing NGINX config\n"
+    nginx -t
 fi
 
-if [ "$1" == "php-fpm" ]; then
+mkdir -p var/cache var/log
+# The www-data user has a random uid/guid
+chown -R $(stat -c "%u" .):$(stat -c "%g" .) var
+setfacl -R -m u:www-data:rwX -m u:"$(stat -c "%u" .)":rwX var 2>/dev/null || true # Can fail on OSx
+setfacl -dR -m u:www-data:rwX -m u:"$(stat -c "%u" .)":rwX var 2>/dev/null || true
 
-  echo -e "\n===== Testing PHP config\n"
-  php-fpm -v
-  php-fpm -t
-
-	mkdir -p var/cache var/log
-	# The www-data user has a random uid/guid
-	chown -R $(stat -c "%u" .):$(stat -c "%g" .) var
-	setfacl -R -m u:www-data:rwX -m u:"$(stat -c "%u" .)":rwX var 2>/dev/null || true # Can fail on OSx
-	setfacl -dR -m u:www-data:rwX -m u:"$(stat -c "%u" .)":rwX var 2>/dev/null || true
-
-  if [ -n "${INIT_DB}" ]; then
+if [ -n "${INIT_DB}" ]; then
     if [ -n "${DANGEROUSLY_LOAD_FIXTURES}" ]; then
       echo -e "\n===== Init db and fixtures\n"
       bin/post-install-dev.sh || true
@@ -53,23 +56,24 @@ if [ "$1" == "php-fpm" ]; then
       echo -e "\n===== Run migrations\n"
       bin/update-db.sh || true
     fi
-  fi
-
-  echo -e "\n===== Running FPM only for localhost\n"
-  php-fpm -d listen=127.0.0.1:9001 -D
-
-  echo -e "\n===== Sending a GET / request in order to warmup the symfony cache\n"
-  REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/index.php HTTP_HOST=127.0.0.1 REMOTE_ADDR=127.0.0.1 REQUEST_URI=/ REQUEST_METHOD=GET HTTP_USER_AGENT=probe cgi-fcgi -bind -connect 127.0.0.1:9001 || (echo "Unable to run the GET / request" && true)
-  killall -KILL php-fpm || true
-
-  echo -e "\n===== Creating signal listener\n"
-  trap clean_up QUIT TERM INT
-
-  php-fpm -F --pid $PHP_FPM_PID &
-
-  while true; do sleep 1; done
-else
-  exec docker-php-entrypoint "$@"
 fi
 
+echo -e "\n===== Running FPM only for localhost\n"
+php-fpm -d listen=127.0.0.1:9000 -D
 
+echo -e "\n===== Sending a GET / request in order to warmup the symfony cache\n"
+(REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/index.php HTTP_HOST=127.0.0.1 REMOTE_ADDR=127.0.0.1 REQUEST_URI=/login REQUEST_METHOD=GET HTTP_USER_AGENT=probe cgi-fcgi -bind -connect 127.0.0.1:9000  | head -n 8) || (echo "Unable to run the GET / request" && true)
+killall -KILL php-fpm || true
+
+echo -e "\n===== Creating signal listener\n"
+trap clean_up QUIT TERM INT
+
+if command -v nginx > /dev/null; then
+    echo -e "\n===== Starting NGINX\n"
+    nginx
+fi
+
+echo -e "\n===== Starting FMP\n"
+php-fpm -F --pid $PHP_FPM_PID &
+
+while true; do sleep 1; done

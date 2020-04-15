@@ -54,14 +54,10 @@ RUN set -eux; \
   \
   apk del .build-deps
 
-RUN curl --insecure https://getcomposer.org/composer-stable.phar -o /usr/bin/composer \
-    && chmod +x /usr/bin/composer \
-    && mkdir /.composer \
-    \
+COPY --from=composer:1.10 /usr/bin/composer /usr/bin/composer
+
+RUN mkdir /.composer \
     && chown -R www-data:www-data /.composer \
-    && setfacl -R -m o::rwX /.composer \
-    && setfacl -dR -m o::rwX /.composer \
-    \
     && su-exec www-data composer global require "hirak/prestissimo" "jderusse/composer-warmup" --prefer-dist --no-progress --no-suggest --classmap-authoritative \
     && su-exec www-data composer clear-cache -n
 
@@ -94,10 +90,9 @@ WORKDIR /srv
 
 FROM withoutsources AS withoutsources-fpm
 
-EXPOSE 9001
-ENTRYPOINT ["/bin/entrypoint"]
-CMD ["php-fpm"]
-HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=3 CMD REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/ping.php REQUEST_URI=/ REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9001
+ENTRYPOINT ["entrypoint"]
+CMD []
+HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=3 CMD REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/ping.php REQUEST_URI=/ REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9000
 STOPSIGNAL SIGQUIT
 
 # ================================================
@@ -116,12 +111,15 @@ RUN yarn encore production
 
 FROM withoutsources AS withsources
 
+ARG BUILD_TAG=dev
+ENV IMAGE_BUILD_TAG=$BUILD_TAG
+
 COPY --chown=www-data:www-data composer.* symfony.lock /srv/
 
 RUN chown -R www-data:www-data /srv
 USER www-data
 
-RUN composer install --no-dev --ignore-platform-reqs --no-scripts --prefer-dist --no-suggest && composer clear-cache -n
+RUN composer install --no-dev --no-scripts --prefer-dist --no-suggest && composer clear-cache -n
 
 COPY --chown=www-data:www-data .env ./
 RUN composer dump-env prod && rm .env
@@ -149,16 +147,26 @@ RUN set -eux; \
 USER root
 
 # ================================================
+# Stop the build here if you want an image with sources and fpm
 
 FROM withsources AS withsources-fpm
 
-EXPOSE 9001
-ENTRYPOINT ["/bin/entrypoint"]
-CMD ["php-fpm"]
-HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=3 CMD REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/ping.php REQUEST_URI=/ REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9001
+ENTRYPOINT ["entrypoint"]
+CMD []
+HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=3 CMD REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/ping.php REQUEST_URI=/ REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9000
 STOPSIGNAL SIGQUIT
 
-ARG BUILD_TAG=dev
-ENV IMAGE_BUILD_TAG=$BUILD_TAG
-
 # ================================================
+# Stop the build here if you want an image with sources, fpm AND nginx
+
+FROM withsources-fpm AS withsources-nginx
+
+RUN apk add --no-cache nginx
+
+COPY ./docker/nginx/files/etc/nginx /etc/nginx
+
+RUN echo "upstream php-upstream { server 127.0.0.1:9000; }" > /etc/nginx/conf.d/upstream.conf
+
+EXPOSE 80
+
+HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=3 CMD curl -s http://0.0.0.0/ping.php 1>/dev/null || exit 1

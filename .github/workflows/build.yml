@@ -27,22 +27,18 @@ jobs:
 
             -   name: Pull existing Docker image
                 run: |
-                    docker pull ${CI_REGISTRY_IMAGE}:fpm-master || true
-                    docker pull ${CI_REGISTRY_IMAGE}:nginx-master || true
+                    docker pull ${CI_REGISTRY_IMAGE}:master || true
 
-            -   name: Build the Docker images
+            -   name: Build the Docker image
                 run: |
-                    docker build --pull -t ${CI_REGISTRY_IMAGE}:fpm-${CI_COMMIT_REF_SLUG} --cache-from ${CI_REGISTRY_IMAGE}:fpm-master -f docker/php-flex/Dockerfile --target withsources-fpm --build-arg BUILD_TAG=${BUILD_TAG} .
-                    docker run --rm -v $(pwd):/host ${CI_REGISTRY_IMAGE}:fpm-${CI_COMMIT_REF_SLUG} mv -f /srv/public/build /host/public
-                    docker build --pull -t ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} --cache-from ${CI_REGISTRY_IMAGE}:nginx-master -f docker/nginx/Dockerfile --target withsources .
+                    docker build --pull -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} --cache-from ${CI_REGISTRY_IMAGE}:master -f docker/php-flex/Dockerfile --target withsources-nginx --build-arg BUILD_TAG=${BUILD_TAG} .
                 env:
                     BUILD_TAG: ${{ steps.vars.outputs.BUILD_TAG }}
                     CI_COMMIT_REF_SLUG: ${{ steps.vars.outputs.CI_COMMIT_REF_SLUG }}
 
             -   name: Push the latest Docker image
                 run: |
-                    docker push ${CI_REGISTRY_IMAGE}:fpm-${CI_COMMIT_REF_SLUG}
-                    docker push ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
+                    docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
                 env:
                     CI_COMMIT_REF_SLUG: ${{ steps.vars.outputs.CI_COMMIT_REF_SLUG }}
 
@@ -53,9 +49,7 @@ jobs:
             -   name: Push the latest Docker release image
                 if: github.event_name == 'release'
                 run: |
-                    docker tag ${CI_REGISTRY_IMAGE}:fpm-${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}:fpm-release-latest
-                    docker push ${CI_REGISTRY_IMAGE}:fpm-release-latest
-                    docker tag ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}:nginx-release-latest
-                    docker push ${CI_REGISTRY_IMAGE}:nginx-release-latest
+                    docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}:release-latest
+                    docker push ${CI_REGISTRY_IMAGE}:release-latest
                 env:
                     CI_COMMIT_REF_SLUG: ${{ steps.vars.outputs.CI_COMMIT_REF_SLUG }}
