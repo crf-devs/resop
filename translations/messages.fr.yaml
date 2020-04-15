@@ -124,3 +124,19 @@ user:
   skills: Compétences
   uniform: Uniforme
   welcome: Bienvenue, %name%
+asset:
+  type: Type
+  name: Identifiant
+  hasMobileRadio: Présence d'un mobile radio ?
+  hasFirstAidKit: Présence d'un lot de secours ?
+  contact: Qui contacter ?
+  parkingLocation: Lieu de stationnement
+  seatingCapacity: Combien de places ?
+  licensePlate: Plaque d'immatriculation
+  comments: Commentaires
+  planing:
+    hasMobileRadio: Mobile radio ?
+    hasFirstAidKit: Kit de premiers soins ?    
+    contact: Contact
+    seatingCapacity: Places
+    licensePlate: Immatriculation
