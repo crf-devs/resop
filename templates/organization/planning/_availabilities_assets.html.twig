@@ -1,0 +1,22 @@
+{% extends 'organization/planning/_availabilities_base.html.twig' %}
+
+{% block type %}{{ type }}{% endblock type %}
+
+{# columns number of blocks itemDataHeader and itemDataDetails should be the same than in _availabilities_users.html.twig #}
+{% block itemDataHeader %}
+    <th class="item-data">{{ 'asset.planing.hasMobileRadio'|trans }}</th>
+    <th class="item-data" colspan="2">{{ 'asset.planing.hasFirstAidKit'|trans }}</th>
+    <th class="item-data">{{ 'asset.planing.contact'|trans }}</th>
+    <th class="item-data" colspan="2">{{ 'asset.parkingLocation'|trans }}</th>
+    <th class="item-data">{{ 'asset.planing.seatingCapacity'|trans }}</th>
+    <th class="item-data">{{ 'asset.planing.licensePlate'|trans }}</th>
+{% endblock itemDataHeader %}
+
+{% block itemDataDetails %}
+    <td class="item-data">{{ item.entity.hasMobileRadio ? 'common.yes' | trans : '-' }}</td>
+    <td class="item-data" colspan="2">{{ item.entity.hasFirstAidKit ? 'common.yes' | trans : '-' }}</td>
+    <td class="item-data">{{ item.entity.contact }}</td>
+    <td class="item-data" colspan="2">{{ item.entity.parkingLocation }}</td>
+    <td class="item-data">{{ item.entity.seatingCapacity }}</td>
+    <td class="item-data">{{ item.entity.licensePlate }}</td>
+{% endblock itemDataDetails %}

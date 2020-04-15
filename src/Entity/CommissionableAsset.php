@@ -81,6 +81,16 @@ class CommissionableAsset implements AvailabilitableInterface
      */
     public int $seatingCapacity = 1;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    public ?string $licensePlate = null;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    public ?string $comments = null;
+
     public function __toString(): string
     {
         return $this->type.' - '.$this->name;

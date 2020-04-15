@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -32,39 +33,45 @@ final class CommissionableAssetType extends AbstractType
         $builder
             ->add('type', ChoiceType::class, [
                 'choices' => self::TYPES,
-                'label' => 'Type',
+                'label' => 'asset.type',
             ])
             ->add('name', TextType::class, [
-                'label' => 'Identifiant',
+                'label' => 'asset.name',
             ])
             ->add('hasMobileRadio', ChoiceType::class, [
                 'choices' => [
-                    'Oui' => true,
-                    'Non' => false,
+                    'common.yes' => true,
+                    'common.no' => false,
                 ],
                 'expanded' => true,
                 'multiple' => false,
-                'label' => 'Présence d\'un mobile radio ?',
+                'label' => 'asset.hasMobileRadio',
             ])
             ->add('hasFirstAidKit', ChoiceType::class, [
                 'choices' => [
-                    'Oui' => true,
-                    'Non' => false,
+                    'common.yes' => true,
+                    'common.no' => false,
                 ],
                 'expanded' => true,
                 'multiple' => false,
-                'label' => 'Présence d\'un lot de secours ?',
+                'label' => 'asset.hasFirstAidKit',
             ])
             ->add('parkingLocation', TextType::class, [
                 'required' => false,
-                'label' => 'Lieu de stationnement',
+                'label' => 'asset.parkingLocation',
             ])
             ->add('contact', TextType::class, [
                 'required' => false,
-                'label' => 'Qui contacter ?',
+                'label' => 'asset.contact',
             ])
             ->add('seatingCapacity', IntegerType::class, [
-                'label' => 'Combien de places ?',
+                'label' => 'asset.seatingCapacity',
+            ])
+            ->add('licensePlate', TextType::class, [
+                'label' => 'asset.licensePlate',
+            ])
+            ->add('comments', TextareaType::class, [
+                'label' => 'asset.comments',
             ])
             ->add('submit', SubmitType::class)
         ;

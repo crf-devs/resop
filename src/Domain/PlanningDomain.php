@@ -99,10 +99,10 @@ class PlanningDomain
         $users = $filters['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($filters, false);
         $assets = $filters['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($filters, false);
 
-        return $this->splitAvailabilities(
-            $this->prepareAvailabilities($this->userAvailabilityRepository, $users, $datePeriod),
-            $this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $datePeriod)
-        );
+        return [
+            'assets' => $this->splitAssets($this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $datePeriod)),
+            'users' => $this->splitUsers($this->prepareAvailabilities($this->userAvailabilityRepository, $users, $datePeriod)),
+        ];
     }
 
     public function generateLastUpdateAndCount(array $filters): array
@@ -184,7 +184,7 @@ class PlanningDomain
         return $slots;
     }
 
-    protected function splitAvailabilities(array $usersAvailabilities, array $assetsAvailabilities): array
+    protected function splitAssets(array $assetsAvailabilities): array
     {
         $result = []; // Ordered associative array
 
@@ -197,6 +197,13 @@ class PlanningDomain
         foreach ($assetsAvailabilities as $item) {
             $result[$item['entity']->type][] = $item;
         }
+
+        return array_filter($result);
+    }
+
+    protected function splitUsers(array $usersAvailabilities): array
+    {
+        $result = []; // Ordered associative array
 
         // Users
         $importantSkills = $this->skillSetDomain->getImportantSkills();
