@@ -56,7 +56,7 @@ parameters:
         psc1:
             label: PSC1
             includes: [benevole]
-        nouveau:
+        benevole:
             label: Nouveau bénévole
 
 services:
@@ -116,3 +116,7 @@ services:
     Twig\CacheExtension\Extension:
         arguments:
             $cacheStrategy: '@Twig\CacheExtension\CacheStrategy\GenerationalCacheStrategy'
+
+    # declared as public because needed in a migration
+    App\Domain\SkillSetDomain:
+        public: true
