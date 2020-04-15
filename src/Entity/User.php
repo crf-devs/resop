@@ -121,7 +121,7 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
     public bool $fullyEquipped = false;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": false})
      */
     public bool $drivingLicence = false;
 
