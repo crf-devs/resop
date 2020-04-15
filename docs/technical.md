@@ -226,6 +226,8 @@ services:
       - "DATABASE_URL=postgresql://<USER>:<PASSWORD>@<URL>/<DB>?serverVersion=11&charset=utf8"
 ```
 
+The image exposes a `:80` port.
+
 If you want to initialize the DB with production data, run the following command into the container:
 
 ```bash

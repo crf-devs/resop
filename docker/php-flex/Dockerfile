@@ -166,6 +166,7 @@ RUN apk add --no-cache nginx
 COPY ./docker/nginx/files/etc/nginx /etc/nginx
 
 RUN echo "upstream php-upstream { server 127.0.0.1:9000; }" > /etc/nginx/conf.d/upstream.conf
+RUN sed -i 's/listen = 0.0.0.0:9000/listen = 127.0.0.1:9000/g' /usr/local/etc/php-fpm.conf
 
 EXPOSE 80
 
