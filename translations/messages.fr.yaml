@@ -34,6 +34,7 @@ common:
   occupation: Profession
   phoneNumberShort: Tél
   yes: Oui
+  no: No
 message:
   editForbidden: Vous ne pouvez pas modifier les disponibilités saisies pour les prochaines %period% heures
   saveAvailabilitiesWarning: Attention, certaines modifications de disponibilités n'ont pas été sauvegardées. Vous devez les annuler ou enregistrer le formulaire avant de changer de page.
@@ -137,7 +138,7 @@ asset:
   seatingCapacity: Combien de places ?
   licensePlate: Plaque d'immatriculation
   comments: Commentaires
-  planing:
+  planning:
     hasMobileRadio: Mobile radio ?
     hasFirstAidKit: Kit de premiers soins ?    
     contact: Contact
