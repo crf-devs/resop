@@ -55,7 +55,7 @@ final class ManageAvailabilityController extends AbstractController
 
         $end = $start->add(new \DateInterval('P7D'));
 
-        $blockedSlotsInterval = new \DateInterval('PT48H');
+        $blockedSlotsInterval = new \DateInterval('PT12H');
         $availabilitiesDomain = AvailabilitiesDomain::generate(
             $start,
             $end,
