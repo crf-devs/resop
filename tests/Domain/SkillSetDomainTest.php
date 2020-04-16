@@ -67,7 +67,7 @@ final class SkillSetDomainTest extends TestCase
     }
 
     /** @dataProvider dependentSkillsProvider */
-    public function testGetDependantSkillsFromSkillSet(array $skills, array $expectedSkills): void
+    public function testGetDependantSkills(array $skills, array $expectedSkills): void
     {
         $this->assertSame($expectedSkills, $this->skillSetDomain->getDependantSkillsFromSkillSet($skills));
     }
@@ -111,6 +111,35 @@ final class SkillSetDomainTest extends TestCase
                 'skill' => ['skill1', 'skill2', 'skill6'],
                 'expectedChildren' => ['skill1', 'skill2', 'skill3', 'skill4', 'skill5', 'skill6'],
             ],
+        ];
+    }
+
+    /** @dataProvider getDependantSkillsPreventsInfiniteLoopProvider */
+    public function testGetDependantSkillsPreventsInfiniteLoop(array $skillSetWithInfiniteLoop, array $expectedSkillSet): void
+    {
+        $skillSetDomain = new SkillSetDomain($skillSetWithInfiniteLoop);
+
+        $this->assertSame($expectedSkillSet, $skillSetDomain->getDependantSkillsFromSkillSet(['skill1']));
+    }
+
+    public function getDependantSkillsPreventsInfiniteLoopProvider(): array
+    {
+        return [
+            'loopWithinMainSkill' => [
+                'recursionWithin' => [
+                    'skill1' => ['includes' => ['skill2']],
+                    'skill2' => ['includes' => ['skill1']],
+                ],
+                'expectedSkillSet' => ['skill1', 'skill2']
+            ],
+            'loopWithoutMainSkill' => [
+                'skillSetWithInfiniteLoop' => [
+                    'skill1' => ['includes' => ['skill2']],
+                    'skill2' => ['includes' => ['skill3']],
+                    'skill3' => ['includes' => ['skill2']],
+                ],
+                'expectedSkillSet' => ['skill1', 'skill2', 'skill3']
+            ]
         ];
     }
 }

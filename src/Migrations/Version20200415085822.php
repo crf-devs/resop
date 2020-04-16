@@ -27,6 +27,10 @@ final class Version20200415085822 extends AbstractMigration implements Container
 
         $skillSetDomain = $this->container->get(SkillSetDomain::class);
 
+        // avoids annoying red message in dev when running migrations with a fresh database
+        $nbUsers = (int) $this->connection->executeQuery('SELECT count(users) FROM users')->fetch(FetchMode::COLUMN);
+        $this->skipIf(0 === $nbUsers, 'No users in database');
+
         $statement = $this->connection->executeQuery('SELECT id, skill_set as skill_set FROM users');
 
         while ($row = $statement->fetch(FetchMode::ASSOCIATIVE)) {

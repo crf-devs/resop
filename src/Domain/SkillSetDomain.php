@@ -52,8 +52,13 @@ class SkillSetDomain
         return array_values(array_unique($skills));
     }
 
-    private function getDependantSkills(string $skill): array
+    private function getDependantSkills(string $skill, array $parsedSkills = []): array
     {
+        if (\in_array($skill, $parsedSkills, true)) {
+            return [];
+        }
+        $parsedSkills[] = $skill;
+
         if (!\in_array($skill, $this->getSkillSetKeys(), true)) {
             return [];
         }
@@ -65,7 +70,7 @@ class SkillSetDomain
         $dependantSkills = [];
         foreach ($this->availableSkillSets[$skill]['includes'] as $include) {
             $dependantSkills[] = $include;
-            $dependantSkills = array_merge($dependantSkills, $this->getDependantSkills($include));
+            $dependantSkills = array_merge($dependantSkills, $this->getDependantSkills($include, $parsedSkills));
         }
 
         return array_values(array_unique($dependantSkills));
