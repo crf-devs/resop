@@ -130,7 +130,7 @@ final class SkillSetDomainTest extends TestCase
                     'skill1' => ['includes' => ['skill2']],
                     'skill2' => ['includes' => ['skill1']],
                 ],
-                'expectedSkillSet' => ['skill1', 'skill2']
+                'expectedSkillSet' => ['skill1', 'skill2'],
             ],
             'loopWithoutMainSkill' => [
                 'skillSetWithInfiniteLoop' => [
@@ -138,8 +138,72 @@ final class SkillSetDomainTest extends TestCase
                     'skill2' => ['includes' => ['skill3']],
                     'skill3' => ['includes' => ['skill2']],
                 ],
-                'expectedSkillSet' => ['skill1', 'skill2', 'skill3']
-            ]
+                'expectedSkillSet' => ['skill1', 'skill2', 'skill3'],
+            ],
         ];
+    }
+
+    /** @dataProvider getSkillsDisplayableInPlanningProvider */
+    public function testGetSkillsDisplayableInPlanning(array $skills, array $expectedDisplayableSkills): void
+    {
+        $this->assertSame($expectedDisplayableSkills, $this->skillSetDomain->getSkillsToDisplayInPlanning($skills));
+    }
+
+    public function getSkillsDisplayableInPlanningProvider(): array
+    {
+        return [
+            'no_skills' => [
+                'skills' => [],
+                'expectedDisplayableSkills' => [],
+            ],
+            'nonexistent_skill' => [
+                'skills' => ['foo'],
+                'expectedDisplayableSkills' => [],
+            ],
+            'one_main_skill' => [
+                'skills' => ['skill1'],
+                'expectedDisplayableSkills' => ['skill1'],
+            ],
+            'one_dependant_skill' => [
+                'skills' => ['skill2'],
+                'expectedDisplayableSkills' => ['skill2'],
+            ],
+            'two_main_skills' => [
+                'skills' => ['skill1', 'skill6'],
+                'expectedDisplayableSkills' => ['skill1', 'skill6'],
+            ],
+            'child_and_parent' => [
+                'skills' => ['skill1', 'skill2'],
+                'expectedDisplayableSkills' => ['skill1'],
+            ],
+            'parent_not_main_skill' => [
+                'skills' => ['skill4', 'skill5'],
+                'expectedDisplayableSkills' => ['skill4'],
+            ],
+            'not_direct_parent' => [
+                'skills' => ['skill1', 'skill5'],
+                'expectedDisplayableSkills' => ['skill1'],
+            ],
+            'all_skills' => [
+                'skills' => ['skill1', 'skill2', 'skill3', 'skill4', 'skill5', 'skill6'],
+                'expectedDisplayableSkills' => ['skill1', 'skill6'],
+            ],
+        ];
+    }
+
+    public function testGetSkillsDisplayableInPlanningPreventsInfiniteLoop(): void
+    {
+        $skillSetDomain = new SkillSetDomain(
+            [
+                'skill1' => ['includes' => ['skill2']],
+                'skill2' => ['includes' => ['skill3']],
+                'skill3' => ['includes' => ['skill2']],
+            ]
+        );
+
+        $this->assertSame(
+            ['skill1'],
+            $skillSetDomain->getSkillsToDisplayInPlanning(['skill1', 'skill2', 'skill3'])
+        );
     }
 }

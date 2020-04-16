@@ -52,6 +52,13 @@ class SkillSetDomain
         return array_values(array_unique($skills));
     }
 
+    public function getSkillsToDisplayInPlanning(array $skillSet): array
+    {
+        return array_values(
+            array_filter($skillSet, fn ($skill) => $this->shouldDisplaySkillInPlanning($skill, $skillSet))
+        );
+    }
+
     private function getDependantSkills(string $skill, array $parsedSkills = []): array
     {
         if (\in_array($skill, $parsedSkills, true)) {
@@ -74,5 +81,33 @@ class SkillSetDomain
         }
 
         return array_values(array_unique($dependantSkills));
+    }
+
+    private function shouldDisplaySkillInPlanning(string $skill, array $skillSet): bool
+    {
+        return \in_array($skill, $this->getSkillSetKeys(), true)
+            && 0 === \count(array_intersect($skillSet, $this->getParents($skill)));
+    }
+
+    private function getParents(string $skill, array $parsedSkills = []): array
+    {
+        if (\in_array($skill, $parsedSkills, true)) {
+            return [];
+        }
+        $parsedSkills[] = $skill;
+
+        if (!\in_array($skill, $this->getSkillSetKeys(), true)) {
+            return [];
+        }
+
+        $parents = [];
+        foreach ($this->availableSkillSets as $availableSkill => $skillDetails) {
+            if (\in_array($skill, $skillDetails['includes'] ?? [], true)) {
+                $parents[] = $availableSkill;
+                $parents = array_merge($parents, $this->getParents($availableSkill, $parsedSkills));
+            }
+        }
+
+        return $parents;
     }
 }

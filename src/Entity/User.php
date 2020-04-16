@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\EntityListener\AddDependantSkillsEntityListener;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function Symfony\Component\String\u;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\EntityListener\AddDependantSkillsEntityListener;
 
 /**
  * @ORM\Table(name="users", uniqueConstraints={

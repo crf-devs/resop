@@ -26,7 +26,7 @@
     <td class="item-data">{{ item.entity.occupation }}</td>
     <td class="item-data">{{ item.entity.organizationOccupation }}</td>
     <td class="item-data">
-        {% for skill in item.entity.skillSet -%}
+        {% for skill in getDisplayableSkillsInPlanning(item.entity) -%}
             {{ skill|skillBadge }}
         {%- endfor %}
     </td>
