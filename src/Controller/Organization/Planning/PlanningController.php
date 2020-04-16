@@ -73,7 +73,6 @@ class PlanningController extends AbstractController
             'periodCalculator' => $periodCalculator,
             'assetsTypes' => CommissionableAsset::TYPES,
             'usersSkills' => $this->skillSetDomain->getSkillSet(),
-            'importantSkills' => $this->skillSetDomain->getImportantSkills(),
             'importantSkillsToDisplay' => $this->skillSetDomain->getSkillsToDisplay(),
         ]);
     }

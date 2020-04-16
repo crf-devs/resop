@@ -16,7 +16,7 @@
 {% endblock itemDataHeader %}
 
 {% block importantSkills %}
-    {{ item.entity.skillSet | filter(skill => skill != type and skill in importantSkillsToDisplay) | map(skill => '<span class="badge badge-secondary">' ~skill~ '</span>') | join | raw }}
+    {{ item.entity.skillSet | filter(skill => skill != type and skill in importantSkillsToDisplay) | map(skill => skill|skillBadge) | join | raw }}
 {% endblock importantSkills %}
 
 {% block itemDataDetails %}
@@ -27,8 +27,7 @@
     <td class="item-data">{{ item.entity.organizationOccupation }}</td>
     <td class="item-data">
         {% for skill in item.entity.skillSet -%}
-            <span
-                class="badge badge-{{ skill in importantSkills ? 'primary' : 'secondary' }}">{{ skill }}</span>
+            {{ skill|skillBadge }}
         {%- endfor %}
     </td>
     <td class="item-data">{{ item.entity.fullyEquipped ? 'common.yes' | trans : '-' }}</td>

@@ -5,6 +5,7 @@
             <th>{{ 'user.identificationNumber' | trans }}</th>
             <th>{{ 'user.firstName' | trans }}</th>
             <th>{{ 'user.lastName' | trans }}</th>
+            <th>{{ 'organization.user.skillset' | trans }}</th>
             <th>{{ 'user.email' | trans }}</th>
             {% if organization.parent is null %}
                 <th>{{ 'organization.label' | trans }}</th>
@@ -18,6 +19,11 @@
                 <td>{{ user.identificationNumber }}</td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
+                <td>
+                    {% for skill in user.skillSet -%}
+                        {{ skill|skillBadge }}
+                    {%- endfor %}
+                </td>
                 <td>{{ user.emailAddress }}</td>
                 {% if organization.parent is null %}
                     <td>{{ user.organization.name }}</td>
