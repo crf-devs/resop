@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function Symfony\Component\String\u;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\EntityListener\AddDependantSkillsEntityListener;
 
 /**
  * @ORM\Table(name="users", uniqueConstraints={
@@ -25,6 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("emailAddress")
  * @UniqueEntity("identificationNumber")
+ * @ORM\EntityListeners({AddDependantSkillsEntityListener::class})
  */
 class User implements UserInterface, AvailabilitableInterface, JsonSerializable
 {
