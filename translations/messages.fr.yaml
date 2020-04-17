@@ -94,6 +94,8 @@ organization:
   users: Bénévoles
   planning:
     no_resource_available: Aucune resource ne correspond à votre recherche
+  mission_type:
+    delete_success_message: Le type de mission a été supprimé avec succès
 project:
   contribute: Contribuez au projet
   description: Réserve opérationnelle - Croix-Rouge Française à Paris
