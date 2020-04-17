@@ -87,7 +87,7 @@ organization:
   userAvailabilityNextWeek: Afficher les disponibilités de mes bénévoles pour la semaine prochaine
   userList: Liste des bénévoles
   user:
-    hasDrivingLicence: Permis depuis plus de 3 ans ?
+    hasDrivingLicence: Permis B depuis plus de 3 ans ?
     isFullyEquipped: Uniforme en dotation ?
     occupation: Fonction de cadre au sein de la structure d'emploi
     skillset: Compétences Croix-Rouge
@@ -106,7 +106,7 @@ user:
   availabilitySpecificWeek: Mes disponibilités pour la semaine du %week%
   createMyAccount: Créer mon compte
   detail:
-    drivingLicence: Avez-vous le permis depuis plus de 3 ans ?
+    drivingLicence: Avez-vous le permis B depuis plus de 3 ans ?
     fullyEquipped: Avez-vous un uniforme en dotation chez vous ?
     occupation: Quelle est votre profession ?
     organization: Votre structure de rattachement
