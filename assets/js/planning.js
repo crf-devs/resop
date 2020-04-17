@@ -64,6 +64,7 @@ function toggleMoreInfos() {
 }
 
 function dateSortPlanning($clickedTh, $planning) {
+  alert('ok')
   let day = $clickedTh.data('day');
 
   $clickedTh.siblings('th[data-day]').removeClass('loading').removeClass('sorted');
