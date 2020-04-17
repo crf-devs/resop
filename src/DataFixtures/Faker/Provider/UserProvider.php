@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures\Faker\Provider;
 
 use App\Domain\SkillSetDomain;
+use Faker\Provider\Base as Faker;
 
 class UserProvider
 {
@@ -17,6 +18,6 @@ class UserProvider
 
     public function randomSkillSet(): array
     {
-        return (array) array_rand($this->skillSetDomain->getSkillSetKeys(), random_int(1, 3));
+        return Faker::randomElements($this->skillSetDomain->getSkillSetKeys(), random_int(1, 3));
     }
 }

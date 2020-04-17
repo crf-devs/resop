@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\EntityListener\AddDependantSkillsEntityListener;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -25,6 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("emailAddress")
  * @UniqueEntity("identificationNumber")
+ * @ORM\EntityListeners({AddDependantSkillsEntityListener::class})
  */
 class User implements UserInterface, AvailabilitableInterface, JsonSerializable
 {
