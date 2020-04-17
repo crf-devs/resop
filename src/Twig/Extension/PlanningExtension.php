@@ -40,6 +40,6 @@ final class PlanningExtension extends AbstractExtension
 
     public function getDisplayableSkills(User $user): array
     {
-        return $this->skillSetDomain->getSkillsToDisplayInPlanning($user->skillSet);
+        return $this->skillSetDomain->filterIncludedSkills($user->skillSet);
     }
 }

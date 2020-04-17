@@ -57,7 +57,7 @@ parameters:
             label: PSC1
             includes: [benevole]
         benevole:
-            label: Nouveau bénévole
+            label: Bénévole
 
 services:
     # default configuration for services in *this* file

@@ -66,13 +66,13 @@ final class SkillSetDomainTest extends TestCase
         );
     }
 
-    /** @dataProvider dependentSkillsProvider */
-    public function testGetDependantSkills(array $skills, array $expectedSkills): void
+    /** @dataProvider includedSkillsFromSkillSetProvider */
+    public function testGetIncludedSkillsFromSkillSet(array $skills, array $expectedSkills): void
     {
-        $this->assertSame($expectedSkills, $this->skillSetDomain->getDependantSkillsFromSkillSet($skills));
+        $this->assertSame($expectedSkills, $this->skillSetDomain->getIncludedSkillsFromSkillSet($skills));
     }
 
-    public function dependentSkillsProvider(): array
+    public function includedSkillsFromSkillSetProvider(): array
     {
         return [
             'no_skills' => [
@@ -114,15 +114,15 @@ final class SkillSetDomainTest extends TestCase
         ];
     }
 
-    /** @dataProvider getDependantSkillsPreventsInfiniteLoopProvider */
-    public function testGetDependantSkillsPreventsInfiniteLoop(array $skillSetWithInfiniteLoop, array $expectedSkillSet): void
+    /** @dataProvider getIncludedSkillsFromSkillSetPreventsInfiniteLoopProvider */
+    public function testGetIncludedSkillsFromSkillSetPreventsInfiniteLoop(array $skillSetWithInfiniteLoop, array $expectedSkillSet): void
     {
         $skillSetDomain = new SkillSetDomain($skillSetWithInfiniteLoop);
 
-        $this->assertSame($expectedSkillSet, $skillSetDomain->getDependantSkillsFromSkillSet(['skill1']));
+        $this->assertSame($expectedSkillSet, $skillSetDomain->getIncludedSkillsFromSkillSet(['skill1']));
     }
 
-    public function getDependantSkillsPreventsInfiniteLoopProvider(): array
+    public function getIncludedSkillsFromSkillSetPreventsInfiniteLoopProvider(): array
     {
         return [
             'loopWithinMainSkill' => [
@@ -143,13 +143,13 @@ final class SkillSetDomainTest extends TestCase
         ];
     }
 
-    /** @dataProvider getSkillsDisplayableInPlanningProvider */
-    public function testGetSkillsDisplayableInPlanning(array $skills, array $expectedDisplayableSkills): void
+    /** @dataProvider filterIncludedSkillsProvider */
+    public function testFilterIncludedSkills(array $skills, array $expectedDisplayableSkills): void
     {
-        $this->assertSame($expectedDisplayableSkills, $this->skillSetDomain->getSkillsToDisplayInPlanning($skills));
+        $this->assertSame($expectedDisplayableSkills, $this->skillSetDomain->filterIncludedSkills($skills));
     }
 
-    public function getSkillsDisplayableInPlanningProvider(): array
+    public function filterIncludedSkillsProvider(): array
     {
         return [
             'no_skills' => [
@@ -191,7 +191,7 @@ final class SkillSetDomainTest extends TestCase
         ];
     }
 
-    public function testGetSkillsDisplayableInPlanningPreventsInfiniteLoop(): void
+    public function testFilterIncludedSkillsPreventsInfiniteLoop(): void
     {
         $skillSetDomain = new SkillSetDomain(
             [
@@ -203,7 +203,7 @@ final class SkillSetDomainTest extends TestCase
 
         $this->assertSame(
             ['skill1'],
-            $skillSetDomain->getSkillsToDisplayInPlanning(['skill1', 'skill2', 'skill3'])
+            $skillSetDomain->filterIncludedSkills(['skill1', 'skill2', 'skill3'])
         );
     }
 }

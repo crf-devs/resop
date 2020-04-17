@@ -18,7 +18,7 @@ class AddDependantSkillsEntityListener
 
     public function prePersist(User $user): void
     {
-        $user->skillSet = $this->skillSetDomain->getDependantSkillsFromSkillSet($user->skillSet);
+        $user->skillSet = $this->skillSetDomain->getIncludedSkillsFromSkillSet($user->skillSet);
     }
 
     public function preUpdate(User $user): void

@@ -35,7 +35,7 @@ final class Version20200415085822 extends AbstractMigration implements Container
 
         while ($row = $statement->fetch(FetchMode::ASSOCIATIVE)) {
             $skills = str_replace('nouveau', 'benevole', DataStructure::transformPostgresTextArrayToPHPArray($row['skill_set']));
-            $skills = $skillSetDomain->getDependantSkillsFromSkillSet($skills);
+            $skills = $skillSetDomain->getIncludedSkillsFromSkillSet($skills);
 
             $this->addSql(
                 'UPDATE users SET skill_set = :skill_set WHERE id = :id',

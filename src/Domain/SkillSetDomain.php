@@ -41,7 +41,7 @@ class SkillSetDomain
         return \array_slice($this->getSkillSetKeys(), 0, $this->importantSkillsToDisplayLimit);
     }
 
-    public function getDependantSkillsFromSkillSet(array $skillSet): array
+    public function getIncludedSkillsFromSkillSet(array $skillSet): array
     {
         $skills = [];
         foreach ($skillSet as $skill) {
@@ -52,7 +52,7 @@ class SkillSetDomain
         return array_values(array_unique($skills));
     }
 
-    public function getSkillsToDisplayInPlanning(array $skillSet): array
+    public function filterIncludedSkills(array $skillSet): array
     {
         return array_values(
             array_filter($skillSet, fn ($skill) => $this->shouldDisplaySkillInPlanning($skill, $skillSet))
@@ -61,6 +61,7 @@ class SkillSetDomain
 
     private function getDependantSkills(string $skill, array $parsedSkills = []): array
     {
+        // prevents infinite loop
         if (\in_array($skill, $parsedSkills, true)) {
             return [];
         }
@@ -91,6 +92,7 @@ class SkillSetDomain
 
     private function getParents(string $skill, array $parsedSkills = []): array
     {
+        // prevents infinite loop
         if (\in_array($skill, $parsedSkills, true)) {
             return [];
         }
