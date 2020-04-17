@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Organization;
+namespace App\Controller\Organization\MissionType;
 
 use App\Entity\MissionType;
 use App\Entity\Organization;
@@ -87,20 +87,5 @@ class MissionTypeController extends AbstractController
             'mission_type' => $missionType,
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/{id}", name="app_organization_mission_type_delete", methods={"DELETE"})
-     * @Security("missionType.organization == user")
-     */
-    public function delete(Request $request, MissionType $missionType): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$missionType->id, $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($missionType);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_organization_mission_type_index');
     }
 }
