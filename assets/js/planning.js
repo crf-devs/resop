@@ -65,9 +65,10 @@ function toggleMoreInfos() {
 
 function dateSortPlanning($clickedTh, $planning) {
   let day = $clickedTh.data('day');
+  let $thWithSameDay = $('th[data-day="' + day + '"]');
 
-  $clickedTh.siblings('th[data-day]').removeClass('loading').removeClass('sorted');
-  $clickedTh.removeClass('sorted').addClass('loading');
+  $thWithSameDay.siblings('th[data-day]').removeClass('loading').removeClass('sorted');
+  $thWithSameDay.removeClass('sorted').addClass('loading');
 
   // We need to wait for the adding of loading class before doing this udge operation
   setTimeout(function () {
@@ -87,7 +88,7 @@ function dateSortPlanning($clickedTh, $planning) {
         })
         .appendTo($tbody);
 
-      $clickedTh.removeClass('loading').addClass('sorted');
+      $thWithSameDay.removeClass('loading').addClass('sorted');
     });
   });
 }

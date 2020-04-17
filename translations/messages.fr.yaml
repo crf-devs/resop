@@ -92,6 +92,8 @@ organization:
     occupation: Fonction de cadre au sein de la structure d'emploi
     skillset: Compétences Croix-Rouge
   users: Bénévoles
+  planning:
+    no_resource_available: Aucune resource ne correspond à votre recherche
 project:
   contribute: Contribuez au projet
   description: Réserve opérationnelle - Croix-Rouge Française à Paris
