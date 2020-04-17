@@ -26,18 +26,14 @@
         {% else %}
             <div class="col-md">
                 <ul class="list-unstyled planning-legend-container">
-                    <li><span class="availability-legend unknown"></span>
-                        <em>{{ 'organization.asset.unavailable' | trans }}</em></li>
-                    <li><span class="availability-legend available"></span>
-                        <em>{{ 'organization.asset.available' | trans }}</em></li>
+                    <li><span class="availability-legend unknown"></span> <em>{{ 'organization.asset.unavailable' | trans }}</em></li>
+                    <li><span class="availability-legend available"></span> <em>{{ 'organization.asset.available' | trans }}</em></li>
                 </ul>
             </div>
             <div class="col-md">
                 <ul class="list-unstyled planning-legend-container">
-                    <li><span class="availability-legend booked"></span>
-                        <em>{{ 'organization.asset.booked' | trans }}</em></li>
-                    <li><span class="availability-legend locked"></span>
-                        <em>{{ 'organization.asset.locked' | trans }}</em></li>
+                    <li><span class="availability-legend booked"></span> <em>{{ 'organization.asset.booked' | trans }}</em></li>
+                    <li><span class="availability-legend locked"></span> <em>{{ 'organization.asset.locked' | trans }}</em></li>
                 </ul>
             </div>
         {% endif %}
@@ -55,27 +51,27 @@
 
 {# Store the following table in cache for performances (default TTL: 1 day) #}
 {% cache 'organization_planning' filters %}
-    {% set availabilities = getAvailabilities(periodCalculator, filters) %}
-    <div class="planning-container">
-        {% if availabilities.assets|length > 0 or availabilities.users|length > 0 %}
-            <table class="planning table table-sm table-bordered availability-table" data-availability-mode="planning" style="display: none;">
-                {% if availabilities.assets|length %}
-                    {% include 'organization/planning/_availabilities_assets.html.twig' with {availabilities: availabilities.assets, entityType: 'assets'} %}
-                {% endif %}
+{% set availabilities = getAvailabilities(periodCalculator, filters) %}
+<div class="planning-container">
+    {% if availabilities.assets|length > 0 or availabilities.users|length > 0 %}
+        <table class="planning table table-sm table-bordered availability-table" data-availability-mode="planning" style="display: none;">
+            {% if availabilities.assets|length %}
+                {% include 'organization/planning/_availabilities_assets.html.twig' with {availabilities: availabilities.assets, entityType: 'assets'} %}
+            {% endif %}
 
-                {% if availabilities.users|length %}
-                    {% include 'organization/planning/_availabilities_users.html.twig' with {availabilities: availabilities.users, entityType: 'users'} %}
-                {% endif %}
-                <tfoot>
-                <tr>
-                    <td colspan="{{ 1 + itemDataRow + periodCalculator.slots|length }}" class="separator"></td>
-                </tr>
-                </tfoot>
-            </table>
-        {% else %}
-            <p class="alert alert-warning mx-2">{{ 'organization.planning.no_resource_available'|trans }}</p>
-        {% endif %}
-    </div>
+            {% if availabilities.users|length %}
+                {% include 'organization/planning/_availabilities_users.html.twig' with {availabilities: availabilities.users, entityType: 'users'} %}
+            {% endif %}
+            <tfoot>
+            <tr>
+                <td colspan="{{ 1 + itemDataRow + periodCalculator.slots|length }}" class="separator"></td>
+            </tr>
+            </tfoot>
+        </table>
+    {% else %}
+        <p class="alert alert-warning mx-2">{{ 'organization.planning.no_resource_available'|trans }}</p>
+    {% endif %}
+</div>
 {% endcache %}
 
 <div class="modal fade" id="modal-update" tabindex="-1" role="dialog">
