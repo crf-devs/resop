@@ -35,10 +35,12 @@ common:
   phoneNumberShort: Tél
   yes: Oui
   no: No
+  back_to_list: Retourner à la liste
 message:
   editForbidden: Vous ne pouvez pas modifier les disponibilités saisies pour les prochaines %period% heures
   saveAvailabilitiesWarning: Attention, certaines modifications de disponibilités n'ont pas été sauvegardées. Vous devez les annuler ou enregistrer le formulaire avant de changer de page.
   updatedWarning: Des modifications ont été effectuées par d'autres utilisateurs, <a href="#" class="text-body">cliquez ici pour rafraichir la page</a>
+  no_available_data: Aucun enregistrement
 nav:
   home: Accueil
   section:
@@ -95,7 +97,11 @@ organization:
   planning:
     no_resource_available: Aucune resource ne correspond à votre recherche
   mission_type:
+    main_title: Types de missions
     delete_success_message: Le type de mission a été supprimé avec succès
+    add_new: Ajouter un nouveau type de mission
+    confirm_delete: Vous êtes sur le point de supprimer le type de mission
+    edit_form_title: Modifier un type de mission
 project:
   contribute: Contribuez au projet
   description: Réserve opérationnelle - Croix-Rouge Française à Paris

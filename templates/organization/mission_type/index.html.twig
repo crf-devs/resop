@@ -1,6 +1,6 @@
 {% extends 'organization/base.html.twig' %}
 
-{% block title %}Types de missions{% endblock %}
+{% block title %}{{ 'organization.mission_type.main_title' | trans }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -8,11 +8,11 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Types de missions</h1>
+    <h1>{{ 'organization.mission_type.main_title' | trans }}</h1>
 
     <div class="row">
         <div class="col-12 text-right mb-2">
-            <a class="btn btn-success" href="{{ path('app_organization_mission_type_new') }}" role="button">Ajouter un nouveau type de mission</a>
+            <a class="btn btn-success" href="{{ path('app_organization_mission_type_new') }}" role="button">{{ 'organization.mission_type.add_new' | trans }}</a>
         </div>
     </div>
 
@@ -20,8 +20,8 @@
         <table class="table">
             <thead class="thead-light">
             <tr>
-                <th>Nom</th>
-                <th>Actions</th>
+                <th>{{ 'common.name' | trans }}</th>
+                <th>{{ 'common.actions' | trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -35,7 +35,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="2">Aucun enregistrement</td>
+                    <td colspan="2">{{ 'message.no_available_data' | trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -51,10 +51,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Vous êtes sur le point de supprimer le type de mission : <span id="to-delete-name"></span>.
+                    {{ 'organization.mission_type.confirm_delete' | trans }} : <span id="to-delete-name"></span>.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'action.cancel' | trans}}</button>
                     <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-danger">
                         {{ 'action.delete' | trans }}</button>
                 </div>
