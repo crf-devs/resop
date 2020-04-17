@@ -26,7 +26,7 @@ class OrganizationRepository extends ServiceEntityRepository implements UserLoad
     /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername(string $username): Organization
+    public function loadUserByUsername(string $username): ?Organization
     {
         return $this->createQueryBuilder('o')
             ->where('o.name = :value')
