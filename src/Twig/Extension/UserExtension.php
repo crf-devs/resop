@@ -31,6 +31,6 @@ final class UserExtension extends AbstractExtension
     {
         $importantSkills = $this->skillSetDomain->getImportantSkills();
 
-        return sprintf('<span class="badge badge-%s">%s</span>', \in_array($skill, $importantSkills, true) ? 'primary' : 'secondary', $skill);
+        return sprintf('<span class="badge badge-%s mr-1">%s</span>', \in_array($skill, $importantSkills, true) ? 'primary' : 'secondary', $skill);
     }
 }

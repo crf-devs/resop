@@ -120,7 +120,7 @@ class UserType extends AbstractType
             if (self::DISPLAY_ORGANIZATION === $options['display_type']) {
                 $form->add('vulnerable', ChoiceType::class, [
                     'choices' => [
-                        'fait PAS partie des personnes vulnérables' => 0,
+                        'ne fait PAS partie des personnes vulnérables' => 0,
                         'fait partie des personnes vulnérables' => 1,
                     ],
                     'expanded' => true,
