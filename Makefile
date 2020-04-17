@@ -134,6 +134,8 @@ helpme:
 helpme-logs:
 	$(MAKE) -s pre-configure || true
 	@echo "=========================="
+	id || true
+	@echo "=========================="
 	git fetch -ap 2>&1 || true
 	git status 2>&1 || true
 	@echo "=========================="
