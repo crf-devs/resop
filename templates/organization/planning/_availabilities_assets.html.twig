@@ -16,8 +16,8 @@
 {% block itemDataDetails %}
     <td class="item-data">{{ item.entity.hasMobileRadio ? 'common.yes' | trans : '-' }}</td>
     <td class="item-data" colspan="2">{{ item.entity.hasFirstAidKit ? 'common.yes' | trans : '-' }}</td>
-    <td class="item-data">{{ item.entity.contact | truncate(30) }}</td>
-    <td class="item-data" colspan="2">{{ item.entity.parkingLocation | truncate(30) }}</td>
+    <td class="item-data"><small>{{ item.entity.contact | truncate(50) }}</small></td>
+    <td class="item-data" colspan="2"><small>{{ item.entity.parkingLocation | truncate(50) }}</small></td>
     <td class="item-data">{{ item.entity.seatingCapacity }}</td>
     <td class="item-data">{{ item.entity.licensePlate }}</td>
     <td class="item-data">{{ item.entity.comments | truncate(50) }}</td>

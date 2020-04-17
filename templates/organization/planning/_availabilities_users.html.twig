@@ -23,8 +23,8 @@
     <td class="item-data">{{ item.entity.identificationNumber }}</td>
     <td class="item-data">{{ item.entity.phoneNumber }}</td>
     <td class="item-data">{{ item.entity.emailAddress }}</td>
-    <td class="item-data">{{ item.entity.occupation }}</td>
-    <td class="item-data">{{ item.entity.organizationOccupation }}</td>
+    <td class="item-data">{{ item.entity.occupation | truncate(50) }}</td>
+    <td class="item-data">{{ item.entity.organizationOccupation | truncate(50) }}</td>
     <td class="item-data">
         {% for skill in getDisplayableSkillsInPlanning(item.entity) -%}
             {{ skill|skillBadge }}
