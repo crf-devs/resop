@@ -61,6 +61,10 @@ $tableBoxSize: 40px;
           font-weight: 400;
           min-width: $tableBoxSize;
           text-align: left;
+
+          &.selected {
+            background: #ffd674;
+          }
         }
       }
 
