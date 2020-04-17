@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Organization\User;
 
 use App\Entity\Organization;
+use App\Form\Type\OrganizationSelectorType;
 use App\Repository\OrganizationRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,9 +39,19 @@ class UserListController extends AbstractController
             throw new AccessDeniedException('You cannot manage this organization');
         }
 
-        return $this->render('organization/user/user-list.html.twig', [
-            'organization' => $organization,
-            'users' => $this->userRepository->findByOrganization($organization),
-        ]);
+        $organizationSelectorForm = $this->createForm(
+            OrganizationSelectorType::class,
+            ['organization' => $organization],
+            ['currentOrganization' => $currentOrganization, 'route_to_redirect' => $request->attributes->get('_route')]
+        );
+
+        return $this->render(
+            'organization/user/user-list.html.twig',
+            [
+                'organization' => $organization,
+                'users' => $this->userRepository->findByOrganization($organization),
+                'organization_selector_form' => $organizationSelectorForm->createView(),
+            ]
+        );
     }
 }

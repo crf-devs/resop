@@ -15,4 +15,9 @@ $(document).ready(function () {
     window.location = $(this).data('url');
     $(this).closest('.modal').modal('hide');
   });
+
+  $('form[name="organization_selector"] select').on('change', function () {
+    let $selectedOption = $("option:selected", this);
+    window.location = $selectedOption.data('url');
+  });
 });

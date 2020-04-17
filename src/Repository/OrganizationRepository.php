@@ -106,6 +106,14 @@ class OrganizationRepository extends ServiceEntityRepository implements UserLoad
         return $qb;
     }
 
+    public function findChildrenQueryBuilder(Organization $organization): QueryBuilder
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.parent = :organization OR o.id = :organization')
+            ->setParameter('organization', $organization)
+            ->addOrderBy('o.name', 'ASC');
+    }
+
     public function findByIdOrParentIdQueryBuilder(int $organizationId, QueryBuilder $qb = null): QueryBuilder
     {
         $alias = 'o';
@@ -121,10 +129,5 @@ class OrganizationRepository extends ServiceEntityRepository implements UserLoad
             ->setParameter('orgId', $organizationId);
 
         return $qb;
-    }
-
-    public function findByIdOrParentId(int $organizationId): iterable
-    {
-        return $this->findByIdOrParentIdQueryBuilder($organizationId)->getQuery()->getResult();
     }
 }

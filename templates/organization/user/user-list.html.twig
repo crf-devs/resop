@@ -10,5 +10,7 @@
 {% block body %}
     <h1>{{ 'organization.users' | trans }} - {{ organization }}</h1>
 
+    {{ form(organization_selector_form) }}
+
     {{ include('organization/user/_list.html.twig') }}
 {% endblock %}
