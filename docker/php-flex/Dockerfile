@@ -58,6 +58,8 @@ RUN curl https://getcomposer.org/composer-stable.phar -o /usr/bin/composer \
     && chmod +x /usr/bin/composer \
     && mkdir /.composer \
     && chown -R www-data:www-data /.composer \
+    && setfacl -R -m o::rwX /.composer \
+    && setfacl -dR -m o::rwX /.composer \
     && su-exec www-data composer global require "hirak/prestissimo" "jderusse/composer-warmup" --prefer-dist --no-progress --no-suggest --classmap-authoritative \
     && su-exec www-data composer clear-cache -n
 
