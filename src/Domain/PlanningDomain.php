@@ -154,6 +154,7 @@ class PlanningDomain
                     'from' => $from,
                     'to' => $to,
                     'status' => $existingSlot['status'] ?? AvailabilityInterface::STATUS_UNKNOW,
+                    'comment' => $existingSlot['comment'] ?? '',
                     // We format the date here in order to avoid many twig date filter call
                     'fromDay' => $from->format('Y-m-d'),
                     'fromDate' => $from->format('Y-m-d H:i'),

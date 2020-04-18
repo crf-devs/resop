@@ -112,10 +112,12 @@ services:
             $cache: '@Twig\CacheExtension\CacheProvider\PsrCacheAdapter'
             $keyGenerator: '@App\Twig\Cache\RequestGenerator'
             $lifetime: 86400 # 1 day
+
+    # The cache strategy is overrided in services_dev
     Twig\CacheExtension\CacheStrategyInterface: '@Twig\CacheExtension\CacheStrategy\GenerationalCacheStrategy'
     Twig\CacheExtension\Extension:
         arguments:
-            $cacheStrategy: '@Twig\CacheExtension\CacheStrategy\GenerationalCacheStrategy'
+            $cacheStrategy: '@Twig\CacheExtension\CacheStrategyInterface'
 
     # declared as public because needed in a migration
     App\Domain\SkillSetDomain:

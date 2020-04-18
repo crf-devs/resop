@@ -1,0 +1,4 @@
+services:
+    # Comment the 2 lines bellow if you want to test the planning twig cache in dev env
+    Twig\CacheExtension\CacheStrategy\BlackholeCacheStrategy: ~
+    Twig\CacheExtension\CacheStrategyInterface: '@Twig\CacheExtension\CacheStrategy\BlackholeCacheStrategy'

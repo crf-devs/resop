@@ -17,15 +17,17 @@ interface AvailabilityInterface
         self::STATUS_LOCKED,
     ];
 
-    public function book(Organization $planningAgent, \DateTimeImmutable $bookedAt = null): void;
+    public function book(Organization $planningAgent = null, string $comment = ''): void;
 
-    public function declareAvailable(\DateTimeImmutable $updatedAt = null): void;
+    public function declareAvailable(Organization $planningAgent = null): void;
 
-    public function lock(\DateTimeImmutable $updatedAt = null): void;
+    public function lock(Organization $planningAgent = null, string $comment = ''): void;
 
     public function getOwner(): AvailabilitableInterface;
 
     public function getStatus(): string;
+
+    public function getComment(): string;
 
     public function getStartTime(): \DateTimeImmutable;
 

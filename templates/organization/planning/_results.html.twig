@@ -16,11 +16,11 @@
         </div>
         {% if displayActions %}
             <div class="col-md">
-                <button class="btn btn-sm btn-block trigger-update booked" action="book" data-status="booked" data-href="{{ path('planning_update', { action: 'book' }) }}">{{ 'organization.asset.markAsBooked' | trans }}</button>
+                <button class="btn btn-sm btn-block trigger-update booked" action="book" data-status="booked" data-status-with-comment data-href="{{ path('planning_update', { action: 'book' }) }}">{{ 'organization.asset.markAsBooked' | trans }}</button>
                 <button class="btn btn-sm btn-block trigger-update available" action="allow" data-status="available" data-href="{{ path('planning_update', { action: 'allow' }) }}">{{ 'organization.asset.markAsAvailable' | trans }}</button>
             </div>
             <div class="col-md">
-                <button class="btn btn-sm btn-block trigger-update locked" action="lock" data-status="locked" data-href="{{ path('planning_update', { action: 'lock' }) }}">{{ 'organization.asset.markAsLocked' | trans }}</button>
+                <button class="btn btn-sm btn-block trigger-update locked" action="lock" data-status="locked" data-status-with-comment data-href="{{ path('planning_update', { action: 'lock' }) }}">{{ 'organization.asset.markAsLocked' | trans }}</button>
                 <button class="btn btn-sm btn-block trigger-update unknown" action="delete" data-status="unknown" data-href="{{ path('planning_update', { action: 'delete' }) }}">{{ 'organization.asset.markAsUnavailable' | trans }}</button>
             </div>
         {% else %}
@@ -83,11 +83,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                Vous êtes sur le point de modifier la disponibilité de <span id="nb-assets-users"></span>.
+                <p>
+                    Vous êtes sur le point de modifier la disponibilité de <strong id="nb-assets-users"></strong>.
+                </p>
+                <div class="form-group" id="status-update-comment-container">
+                    <label for="status-update-comment">Commentaire</label>
+                    <input type="text" class="form-control" id="status-update-comment" />
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'action.cancel' | trans }}</button>
-                <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">{{ 'action.delete' | trans }}</button>
+                <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">{{ 'action.edit' | trans }}</button>
             </div>
         </div>
     </div>
