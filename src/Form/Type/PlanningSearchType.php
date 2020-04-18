@@ -114,6 +114,10 @@ class PlanningSearchType extends AbstractType
                     'data-actions-box' => 'true',
                 ],
             ])
+            ->add('withoutAvailabilities', CheckboxType::class, [
+                'label' => 'Afficher aussi les resources sans disponibilité',
+                'required' => false,
+            ])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {

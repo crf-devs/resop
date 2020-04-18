@@ -9,14 +9,14 @@
 
     <p>{{ 'calendar.week.current' | trans }} : {{ 'calendar.period' | trans ({ '%from%' : 'this week' | date('d/m/Y'), '%to%' : 'sunday this week' | date('d/m/Y') }) }}</p>
     <p>
-        <a class="btn btn-outline-primary" role="button" href="{{ path('planning', {'organizations[]': app.user.id, 'from': 'monday this week' | date('Y-m-d\\T00:00:00'), 'to': 'sunday this week' | date('Y-m-d\\T00:00:00')}) }}">
+        <a class="btn btn-outline-primary" role="button" href="{{ path('planning', {'organizations[]': app.user.id, 'from': 'monday this week' | date('Y-m-d\\T00:00:00'), 'to': 'sunday this week' | date('Y-m-d\\T00:00:00'), 'withoutAvailabilities': 0}) }}">
             {{ 'organization.userAvailabilityCurrentWeek' | trans }}
         </a>
     </p>
 
     <p>{{ 'calendar.week.next' | trans }} : {{ 'calendar.period' | trans ({ '%from%' : 'next week' | date('d/m/Y'), '%to%' : 'sunday next week' | date('d/m/Y') }) }}</p>
     <p>
-        <a class="btn btn-outline-primary" role="button" href="{{ path('planning', {'organizations[]': app.user.id, 'from': 'monday next week' | date('Y-m-d\\T00:00:00'), 'to': 'sunday next week' | date('Y-m-d\\T00:00:00')}) }}">
+        <a class="btn btn-outline-primary" role="button" href="{{ path('planning', {'organizations[]': app.user.id, 'from': 'monday next week' | date('Y-m-d\\T00:00:00'), 'to': 'sunday next week' | date('Y-m-d\\T00:00:00'), 'withoutAvailabilities': 0}) }}">
             {{ 'organization.userAvailabilityNextWeek' | trans }}
         </a>
     </p>

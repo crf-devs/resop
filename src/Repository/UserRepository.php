@@ -110,6 +110,10 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             $qb = $this->addAvailabilityBetween($qb, $formData['availableFrom'], $formData['availableTo'], UserAvailability::class, 'user', $availableStatuses);
         }
 
+        if (($formData['withoutAvailabilities'] ?? false) === false && empty($formData['availableFrom']) && empty($formData['availableTo'])) {
+            $qb = $this->addAvailabilityBetween($qb, $formData['from'], $formData['to'], UserAvailability::class, 'user');
+        }
+
         $qb->orderBy('o.name');
         $qb->addOrderBy('u.firstName');
         $qb->addOrderBy('u.lastName');

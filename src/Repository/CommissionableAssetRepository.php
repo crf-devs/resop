@@ -85,6 +85,10 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
             $qb = $this->addAvailabilityBetween($qb, $formData['availableFrom'], $formData['availableTo'], CommissionableAssetAvailability::class, 'asset');
         }
 
+        if (($formData['withoutAvailabilities'] ?? false) === false && empty($formData['availableFrom']) && empty($formData['availableTo'])) {
+            $qb = $this->addAvailabilityBetween($qb, $formData['from'], $formData['to'], CommissionableAssetAvailability::class, 'asset');
+        }
+
         $qb->orderBy('a.name');
 
         return $qb
