@@ -15,9 +15,9 @@ class SlotBookingGuesser
 
     public function guessBookedSlot(\DateTimeImmutable $slot): bool
     {
-        $rand = mt_rand(1, 100);
+        $rand = random_int(1, 100);
 
-        if ($this->isPreviousSlotBooked($slot)) {
+        if ($this->isPreviousSlotBooked()) {
             if ($rand <= $this->bookedSlotPercentageWithPrevious) {
                 //Decreasing chances of being booked
                 $this->bookedSlotPercentageWithPrevious -= self::RATE_OF_BOOKED_PERCENTAGE;
@@ -52,7 +52,7 @@ class SlotBookingGuesser
         $this->bookedSlotPercentageWithPrevious = 100;
     }
 
-    private function isPreviousSlotBooked(\DateTimeImmutable $slot): bool
+    private function isPreviousSlotBooked(): bool
     {
         if (0 === $this->bookedSlotCount) {
             return false;

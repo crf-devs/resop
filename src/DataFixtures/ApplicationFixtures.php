@@ -302,16 +302,16 @@ final class ApplicationFixtures extends Fixture
         $resourcePartiallyAvailable = \array_slice($resourcesRandom, $index, (int) ($resourceCount * $percentPartiallyAvailable));
 
         // Creating slots locked
-        $data = $this->createAvailabilities($resourceLocked, $today, AvailabilityInterface::STATUS_LOCKED);
+        $data = $this->createAvailabilities($resourceLocked, $today, AvailabilityInterface::STATUS_LOCKED, false, 'Raison médicale');
 
         // Creating slots available
         $data = array_merge($data, $this->createAvailabilities($resourceAvailable, $today, AvailabilityInterface::STATUS_AVAILABLE));
 
         // Creating slots partially available
-        $data = array_merge($data, $this->createAvailabilities($resourcePartiallyAvailable, $today, AvailabilityInterface::STATUS_AVAILABLE, true));
+        $data = array_merge($data, $this->createAvailabilities($resourcePartiallyAvailable, $today, AvailabilityInterface::STATUS_AVAILABLE, true, 'Alpha '.random_int(1, 8)));
 
         $insert = sprintf(
-            'INSERT INTO %s (id, %s, start_time, end_time, status, created_at, updated_at, planning_agent_id) VALUES %s',
+            'INSERT INTO %s (id, %s, start_time, end_time, status, created_at, updated_at, planning_agent_id, comment) VALUES %s',
             $manager->getClassMetadata($class)->getTableName(),
             UserAvailability::class === $class ? 'user_id' : 'asset_id',
             implode(', ', $data)
@@ -327,7 +327,7 @@ final class ApplicationFixtures extends Fixture
         $manager->getConnection()->exec(sprintf('SELECT setval(\''.$sequence.'\', %d, true)', $this->availabilitiesId));
     }
 
-    private function createAvailabilities(array $objects, \DateTimeInterface $thisWeek, string $globalStatus, bool $partiallyAvailable = false): array
+    private function createAvailabilities(array $objects, \DateTimeInterface $thisWeek, string $globalStatus, bool $partiallyAvailable = false, string $defaultComment = ''): array
     {
         $data = [];
 
@@ -360,14 +360,18 @@ final class ApplicationFixtures extends Fixture
                         $organizationId = $this->getRandomOrganization();
                     }
 
-                    $data[] = '('.$this->availabilitiesId++.','.
-                        $object->getId().','.
-                        "'".$slot->format('Y-m-d H:i:s')."',".
-                        "'".$this->closeInterval($slot)->format('Y-m-d H:i:s')."',".
-                        "'".$status."',".
-                        "'".date('Y-m-d H:i:s')."',".
-                        "'".date('Y-m-d H:i:s')."',".
-                        ($organizationId ?: 'NULL').')';
+                    $data[] = sprintf(
+                        "(%d,%d,'%s','%s','%s','%s','%s',%s, '%s')",
+                        $this->availabilitiesId++,
+                        $object->getId(),
+                        $slot->format('Y-m-d H:i:s'),
+                        $this->closeInterval($slot)->format('Y-m-d H:i:s'),
+                        $status,
+                        date('Y-m-d H:i:s'),
+                        date('Y-m-d H:i:s'),
+                        $organizationId ?: 'NULL',
+                        AvailabilityInterface::STATUS_AVAILABLE !== $status ? $defaultComment : '',
+                    );
                 }
 
                 $slot = $slot->add(new \DateInterval(self::SLOT_INTERVAL));
