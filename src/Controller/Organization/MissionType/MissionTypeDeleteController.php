@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @Route("mission_type/delete/{id}", name="app_organization_mission_type_delete", methods={"GET"})
+ * @Route("/mission_type/delete/{id}", name="app_organization_mission_type_delete", methods={"GET"})
  * @Security("missionType.organization == user")
  * @IsGranted("ROLE_PARENT_ORGANIZATION")
  */

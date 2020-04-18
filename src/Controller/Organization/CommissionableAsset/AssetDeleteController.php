@@ -7,18 +7,20 @@ namespace App\Controller\Organization\CommissionableAsset;
 use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
 use App\Repository\CommissionableAssetAvailabilityRepository;
+use App\Security\Voter\CommissionableAssetVoter;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/{organization}/commissionable-assets/{asset}/delete", name="app_commissionable_asset_delete", methods={"GET"})
+ * @Route("/{asset<\d+>}/delete", name="app_organization_asset_delete", methods={"GET"})
  * @Security("asset.organization.id == organization")
+ * @IsGranted(CommissionableAssetVoter::CAN_EDIT, subject="asset")
  */
-class CommissionableAssetDeleteController extends AbstractController
+class AssetDeleteController extends AbstractController
 {
     private CommissionableAssetAvailabilityRepository $commissionableAvailabilityRepository;
 
@@ -29,11 +31,6 @@ class CommissionableAssetDeleteController extends AbstractController
 
     public function __invoke(EntityManagerInterface $entityManager, CommissionableAsset $asset): RedirectResponse
     {
-        $organization = $this->getUser();
-        if (!$organization instanceof Organization || false === $organization->isParent()) {
-            throw new AccessDeniedException();
-        }
-
         $entityManager->beginTransaction();
         $this->commissionableAvailabilityRepository->deleteByOwner($asset);
         $entityManager->remove($asset);
@@ -42,6 +39,6 @@ class CommissionableAssetDeleteController extends AbstractController
 
         $this->addFlash('success', 'Le véhicule a été supprimé avec succès.');
 
-        return $this->redirectToRoute('app_organization_commissionable_assets', ['organization' => $asset->organization->getId()]);
+        return $this->redirectToRoute('app_organization_assets', ['organization' => $asset->organization->getId()]);
     }
 }

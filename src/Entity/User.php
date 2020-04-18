@@ -172,6 +172,15 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
         return $this->organization->name.' / '.$this->getFullName();
     }
 
+    public function getNotNullOrganization(): Organization
+    {
+        if (null === $this->organization) {
+            throw new \RuntimeException('Null user organization');
+        }
+
+        return $this->organization;
+    }
+
     public function jsonSerialize(): array
     {
         return [

@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{organization}/commissionable-assets/{asset}/edit", name="app_organization_commissionable_edit_asset", methods={"GET", "POST"}, requirements={"id": "\d+"})
+ * @Route("/{asset<\d+>}/edit", name="app_organization_asset_edit", methods={"GET", "POST"})
  * @IsGranted(CommissionableAssetVoter::CAN_EDIT, subject="asset")
  * @Security("asset.organization.id == organization")
  */
-class CommissionableEditAssetController extends AbstractController
+class AssetEditController extends AbstractController
 {
     public function __invoke(Request $request, CommissionableAsset $asset): Response
     {
@@ -32,7 +32,7 @@ class CommissionableEditAssetController extends AbstractController
 
             $this->addFlash('success', sprintf('Véhicule "%s" mis à jour avec succès', $asset));
 
-            return $this->redirectToRoute('app_organization_commissionable_assets', ['organization' => $asset->organization->getId()]);
+            return $this->redirectToRoute('app_organization_assets', ['organization' => $asset->organization->getId()]);
         }
 
         return $this->render(

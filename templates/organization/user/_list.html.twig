@@ -29,7 +29,7 @@
                     <td>{{ user.organization.name }}</td>
                 {% endif %}
                 <td>
-                    <a class="btn btn-outline-primary" href="{{ path('organization_user_edit', { 'userToEdit': user.id, 'organization': user.organization.id }) }}">{{ 'action.edit' | trans }}</a>
+                    <a class="btn btn-outline-primary" href="{{ path('app_organization_user_edit', { 'userToEdit': user.id, 'organization': user.organization.id }) }}">{{ 'action.edit' | trans }}</a>
                     <a class="btn btn-danger trigger-delete" data-modal="#modal-delete-user" data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )" href="#" data-href="{{ path('app_user_delete', { 'userToDelete': user.id, 'organization': user.organization.id }) }}">{{ 'action.delete' | trans }}</a>
                 </td>
             </tr>

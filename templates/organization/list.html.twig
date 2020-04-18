@@ -25,7 +25,7 @@
                     <td>
                         <a href="{{ path('app_organization_edit', { id: organization.id }) }}" class="btn btn-outline-secondary">{{ 'action.edit' | trans }}</a>
                         <a class="btn btn-outline-primary" role="button" href="{{ path('app_organization_user_list', {'organization': organization.id}) }}">{{ 'organization.userList' | trans }}</a>
-                        <a class="btn btn-outline-primary" role="button" href="{{ path('app_organization_commissionable_assets', {'organization': organization.id}) }}">{{ 'organization.assetsList' | trans }}</a>
+                        <a class="btn btn-outline-primary" role="button" href="{{ path('app_organization_assets', {'organization': organization.id}) }}">{{ 'organization.assetsList' | trans }}</a>
                         <a class="btn btn-outline-primary" role="button" href="{{ path('planning', {'organizations[]': organization.id}) }}">{{ 'organization.userAvailabilities' | trans }}</a>
                     </td>
                 </tr>

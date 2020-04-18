@@ -7,3 +7,17 @@ _organizations_planning:
     resource: ../src/Controller/Organization/Planning
     type: annotation
     prefix: /organizations/planning
+
+_organizations_assets:
+    resource: ../src/Controller/Organization/CommissionableAsset
+    type: annotation
+    prefix: /organizations/{organization}/assets
+    requirements:
+        organization: '\d+'
+    
+_organizations_users:
+    resource: ../src/Controller/Organization/User
+    type: annotation
+    prefix: /organizations/{organization}/users
+    requirements:
+        organization: '\d+'
