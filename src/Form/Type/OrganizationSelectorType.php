@@ -39,7 +39,7 @@ final class OrganizationSelectorType extends AbstractType
                 [
                     'class' => Organization::class,
                     'label' => 'organization.children_selector.label',
-                    'query_builder' => $this->organizationRepository->findChildrenQueryBuilder($options['currentOrganization']),
+                    'query_builder' => $this->organizationRepository->findByParentQueryBuilder($options['currentOrganization']),
                     'choice_attr' => function (Organization $choice) use ($options) {
                         return [
                             'data-url' => $this->router->generate($options['route_to_redirect'], ['id' => $choice->getId()]),

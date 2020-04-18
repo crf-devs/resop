@@ -40,6 +40,6 @@ class CommissionableAssetDeleteController extends AbstractController
 
         $this->addFlash('success', 'Le véhicule a été supprimé avec succès.');
 
-        return $this->redirectToRoute('app_organization_commissionable_assets');
+        return $this->redirectToRoute('app_organization_commissionable_assets', ['id' => $commissionableAsset->organization->getId()]);
     }
 }

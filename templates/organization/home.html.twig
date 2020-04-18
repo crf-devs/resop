@@ -26,7 +26,7 @@
 
     <hr>
     <p><a class="btn btn-secondary" role="button" href="{{ path('app_organization_user_list', {'id': app.user.id}) }}">{{ 'organization.showUserList' | trans }}</a></p>
-    <p><a class="btn btn-secondary" href="{{ path('app_organization_commissionable_assets') }}" role="button">{{ 'organization.showCommissionableAssets' | trans }}</a></p>
+    <p><a class="btn btn-secondary" href="{{ path('app_organization_commissionable_assets', {'id': app.user.id}) }}" role="button">{{ 'organization.showCommissionableAssets' | trans }}</a></p>
 
     {% if app.user.parent == null %}
         <hr>

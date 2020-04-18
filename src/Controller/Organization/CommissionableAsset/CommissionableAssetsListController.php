@@ -2,34 +2,31 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Organization\User;
+namespace App\Controller\Organization\CommissionableAsset;
 
 use App\Entity\Organization;
 use App\Form\Factory\OrganizationSelectorFormFactory;
-use App\Repository\OrganizationRepository;
-use App\Repository\UserRepository;
+use App\Repository\CommissionableAssetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * @Route("/{id}/users", name="app_organization_user_list", methods={"GET"})
- */
-class UserListController extends AbstractController
+class CommissionableAssetsListController extends AbstractController
 {
-    protected UserRepository $userRepository;
-    protected OrganizationRepository $organizationRepository;
+    private CommissionableAssetRepository $assetRepository;
     private OrganizationSelectorFormFactory $organizationSelectorFormFactory;
 
-    public function __construct(OrganizationRepository $organizationRepository, UserRepository $userRepository, OrganizationSelectorFormFactory $organizationSelectorFormFactory)
+    public function __construct(CommissionableAssetRepository $assetRepository, OrganizationSelectorFormFactory $organizationSelectorFormFactory)
     {
-        $this->userRepository = $userRepository;
-        $this->organizationRepository = $organizationRepository;
+        $this->assetRepository = $assetRepository;
         $this->organizationSelectorFormFactory = $organizationSelectorFormFactory;
     }
 
+    /**
+     * @Route("/{id}", name="app_organization_commissionable_assets", methods={"GET"})
+     */
     public function __invoke(Request $request, Organization $organization): Response
     {
         $currentOrganization = $this->getUser();
@@ -42,10 +39,10 @@ class UserListController extends AbstractController
         }
 
         return $this->render(
-            'organization/user/user-list.html.twig',
+            'organization/commissionable_asset/list.html.twig',
             [
                 'organization' => $organization,
-                'users' => $this->userRepository->findByOrganization($organization),
+                'assets' => $this->assetRepository->findByOrganization($organization),
                 'organization_selector_form' => $this->organizationSelectorFormFactory->createForm(
                     $organization,
                     $currentOrganization,

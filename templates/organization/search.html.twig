@@ -30,5 +30,5 @@
     {% else %}
         <p>{{ 'organization.search.no_assets' | trans }}</p>
     {% endif %}
-    <p><a class="btn btn-secondary" href="{{ path('app_organization_commissionable_assets') }}" role="button">Afficher la liste de mes véhicules</a></p>
+    <p><a class="btn btn-secondary" href="{{ path('app_organization_commissionable_assets', {'id': app.user.id}) }}" role="button">Afficher la liste de mes véhicules</a></p>
 {% endblock %}

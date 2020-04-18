@@ -49,13 +49,13 @@ final class AvailabilityController extends AbstractController
         try {
             $start = new \DateTimeImmutable($week ?: 'monday this week');
         } catch (\Exception $e) {
-            return $this->redirectToRoute('app_organization_commissionable_assets');
+            return $this->redirectToRoute('app_organization_commissionable_assets', ['id' => $asset->organization->getId()]);
         }
 
         $interval = $start->diff(new \DateTimeImmutable());
         // edit current week and next week only
         if ($interval->days > 6) {
-            return $this->redirectToRoute('app_organization_commissionable_assets');
+            return $this->redirectToRoute('app_organization_commissionable_assets', ['id' => $asset->organization->getId()]);
         }
 
         $end = $start->add(new \DateInterval('P7D'));
@@ -77,7 +77,7 @@ final class AvailabilityController extends AbstractController
 
             $this->addFlash('success', sprintf('Les disponibilités du véhicule "%s" ont été mises à jour avec succès', $asset));
 
-            return $this->redirectToRoute('app_organization_commissionable_assets');
+            return $this->redirectToRoute('app_organization_commissionable_assets', ['id' => $asset->organization->getId()]);
         }
 
         return $this->render('organization/commissionable_asset/availability.html.twig', [

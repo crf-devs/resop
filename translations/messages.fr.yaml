@@ -103,7 +103,7 @@ organization:
     confirm_delete: Vous êtes sur le point de supprimer le type de mission
     edit_form_title: Modifier un type de mission
   children_selector:
-    label: Organization
+    label: Structure
 project:
   contribute: Contribuez au projet
   description: Réserve opérationnelle - Croix-Rouge Française à Paris
