@@ -29,7 +29,7 @@ class CommissionableAssetAvailability implements AvailabilityInterface
         CommissionableAsset $asset,
         \DateTimeImmutable $startTime,
         \DateTimeImmutable $endTime,
-        string $status = AvailabilityInterface::STATUS_LOCKED
+        string $status = AvailabilityInterface::STATUS_AVAILABLE
     ) {
         $this->initialize($id, $startTime, $endTime, $status);
         $this->asset = $asset;

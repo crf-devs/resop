@@ -23,16 +23,23 @@ final class AvailabilityDomainType extends AbstractType
                 $data = $event->getData();
                 $form = $event->getForm();
 
+                $attr = ['data-status' => AvailabilityInterface::STATUS_UNKNOW];
+
+                if ($data->availability) {
+                    $attr['data-status'] = $data->availability->getStatus();
+
+                    if (!empty(trim($data->availability->getComment()))) {
+                        $attr['title'] = $data->availability->getComment();
+                    }
+                }
+
                 $form->add('tick', CheckboxType::class, [
                     'label' => false,
                     'required' => false,
                     'disabled' => !$data->isEditable(),
-                    'attr' => [
-                        'data-status' => $data->availability ? $data->availability->getStatus() : AvailabilityInterface::STATUS_UNKNOW,
-                    ],
+                    'attr' => $attr,
                 ]);
-            })
-        ;
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -40,7 +47,6 @@ final class AvailabilityDomainType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => AvailabilityDomain::class,
-            ])
-        ;
+            ]);
     }
 }

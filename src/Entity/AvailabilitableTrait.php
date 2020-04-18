@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait AvailabilitableTrait
@@ -31,6 +32,11 @@ trait AvailabilitableTrait
      * @Assert\Choice(choices=AvailabilityInterface::STATUSES)
      */
     public string $status = '';
+
+    /**
+     * @ORM\Column(type="text", options={"default": ""})
+     */
+    public string $comment = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
@@ -63,34 +69,29 @@ trait AvailabilitableTrait
         return $date;
     }
 
-    private function initialize(?int $id, \DateTimeImmutable $startTime, \DateTimeImmutable $endTime, string $status = self::STATUS_LOCKED): void
+    private function initialize(?int $id, \DateTimeImmutable $startTime, \DateTimeImmutable $endTime, string $status = self::STATUS_AVAILABLE): void
     {
         $this->id = $id;
         $this->startTime = $startTime;
         $this->endTime = $endTime;
-        $this->status = $status;
         $this->createdAt = self::createImmutableDateTime();
-        $this->updatedAt = self::createImmutableDateTime();
+        $this->updateStatus($status);
     }
 
-    public function book(Organization $planningAgent, \DateTimeImmutable $bookedAt = null): void
+    public function book(Organization $planningAgent = null, string $comment = ''): void
     {
-        $this->planningAgent = $planningAgent;
-        $this->bookedAt = $bookedAt ?: self::createImmutableDateTime();
-        $this->updatedAt = $bookedAt ?: self::createImmutableDateTime();
-        $this->status = self::STATUS_BOOKED;
+        $this->updateStatus(self::STATUS_BOOKED, $planningAgent, $comment);
+        $this->bookedAt = self::createImmutableDateTime();
     }
 
-    public function declareAvailable(\DateTimeImmutable $updatedAt = null): void
+    public function declareAvailable(Organization $planningAgent = null): void
     {
-        $this->updatedAt = $updatedAt ?: self::createImmutableDateTime();
-        $this->status = self::STATUS_AVAILABLE;
+        $this->updateStatus(self::STATUS_AVAILABLE, $planningAgent);
     }
 
-    public function lock(\DateTimeImmutable $updatedAt = null): void
+    public function lock(Organization $planningAgent = null, string $comment = ''): void
     {
-        $this->updatedAt = $updatedAt ?: self::createImmutableDateTime();
-        $this->status = self::STATUS_LOCKED;
+        $this->updateStatus(self::STATUS_LOCKED, $planningAgent);
     }
 
     public function getStartTime(): \DateTimeImmutable
@@ -106,5 +107,18 @@ trait AvailabilitableTrait
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    private function updateStatus(string $newStatus, Organization $planningAgent = null, string $comment = ''): void
+    {
+        $this->status = $newStatus;
+        $this->planningAgent = $planningAgent;
+        $this->updatedAt = self::createImmutableDateTime();
+        $this->comment = $comment;
     }
 }

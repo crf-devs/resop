@@ -55,8 +55,15 @@ class PlanningUpdateDomain
 
     public const PAYLOAD_USERS_KEY = 'users';
     public const PAYLOAD_COMMISSIONABLE_ASSETS_KEY = 'assets';
+    public const PAYLOAD_COMMENT_KEY = 'comment';
 
     public const PAYLOAD_VALID_KEYS = [
+        self::PAYLOAD_USERS_KEY,
+        self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY,
+        self::PAYLOAD_COMMENT_KEY,
+    ];
+
+    public const PAYLOAD_ENTITIES_KEYS = [
         self::PAYLOAD_USERS_KEY,
         self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY,
     ];
@@ -87,18 +94,22 @@ class PlanningUpdateDomain
         $this->validateAction();
         $this->validatePayload();
 
-        if (isset($this->payload[self::PAYLOAD_USERS_KEY]) && !empty($this->payload[self::PAYLOAD_USERS_KEY])) {
-            $this->process(User::class, UserAvailability::class, $this->payload[self::PAYLOAD_USERS_KEY]);
+        $payloadAdditionalData = [
+            self::PAYLOAD_COMMENT_KEY => $this->payload[self::PAYLOAD_COMMENT_KEY] ?? null ?: '',
+        ];
+
+        if (!empty($this->payload[self::PAYLOAD_USERS_KEY])) {
+            $this->process(User::class, UserAvailability::class, $this->payload[self::PAYLOAD_USERS_KEY], $payloadAdditionalData);
         }
 
-        if (isset($this->payload[self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY]) && !empty($this->payload[self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY])) {
-            $this->process(CommissionableAsset::class, CommissionableAssetAvailability::class, $this->payload[self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY]);
+        if (!empty($this->payload[self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY])) {
+            $this->process(CommissionableAsset::class, CommissionableAssetAvailability::class, $this->payload[self::PAYLOAD_COMMISSIONABLE_ASSETS_KEY], $payloadAdditionalData);
         }
 
         $this->om->flush();
     }
 
-    protected function process(string $entityClass, string $availabilityClass, array $data): void
+    protected function process(string $entityClass, string $availabilityClass, array $data, array $payloadAdditionalData): void
     {
         $entityRepository = $this->getOwnerRepository($entityClass);
         $availabilityRepository = $this->getAvailabilityRepository($entityClass);
@@ -111,7 +122,7 @@ class PlanningUpdateDomain
             throw new \LogicException('Bad entity name');
         }
 
-        list($startSearch, $endSearch) = $this->getSearchDates($data);
+        [$startSearch, $endSearch] = $this->getSearchDates($data);
 
         $entities = $entityRepository->findByIds(array_keys($data));
         $availabilities = $availabilityRepository->findByOwnerAndDates($entities, new \DateTimeImmutable($startSearch), new \DateTimeImmutable($endSearch));
@@ -130,36 +141,38 @@ class PlanningUpdateDomain
                 $scheduleStartDate = new \DateTimeImmutable($scheduleStart);
                 $scheduleEndDate = new \DateTimeImmutable($scheduleEnd);
 
-                $searchAvailabilities = array_filter($availabilities, function (AvailabilityInterface $availability) use ($entityId, $scheduleStartDate, $scheduleEndDate) {
+                $searchAvailabilities = array_filter($availabilities, static function (AvailabilityInterface $availability) use ($entityId, $scheduleStartDate, $scheduleEndDate) {
                     // Caution: it's not possible to compare DateTimeImmutable with ====
                     return
                         $availability->getOwner()->getId() === (int) $entityId
                         && 0 === $availability->getStartTime()->getTimestamp() - $scheduleStartDate->getTimestamp()
                         && 0 === $availability->getEndTime()->getTimestamp() - $scheduleEndDate->getTimestamp();
                 });
+                /** @var AvailabilityInterface|false $availability */
                 $availability = end($searchAvailabilities);
 
+                // TODO Use workflow component
                 if (self::ACTION_DELETE === $this->action) {
-                    if (!$availability) {
+                    if (false === $availability) {
                         continue;
                     }
 
                     $this->om->remove($availability);
                 } else {
                     $status = $this->getNewStatus($this->action);
-                    if (!$availability) {
-                        $availability = new $availabilityClass(null, $currentEntity, new \DateTimeImmutable($scheduleStart), new \DateTimeImmutable($scheduleEnd), $status);
+                    if (false === $availability) {
+                        $availability = new $availabilityClass(null, $currentEntity, new \DateTimeImmutable($scheduleStart), new \DateTimeImmutable($scheduleEnd));
                         $this->om->persist($availability);
                     }
                     switch ($status) {
                         case AvailabilityInterface::STATUS_BOOKED:
-                            $availability->book($this->planningAgent);
+                            $availability->book($this->planningAgent, $payloadAdditionalData[self::PAYLOAD_COMMENT_KEY]);
                             break;
                         case AvailabilityInterface::STATUS_AVAILABLE:
-                            $availability->declareAvailable();
+                            $availability->declareAvailable($this->planningAgent);
                             break;
                         case AvailabilityInterface::STATUS_LOCKED:
-                            $availability->lock();
+                            $availability->lock($this->planningAgent, $payloadAdditionalData[self::PAYLOAD_COMMENT_KEY]);
                             break;
                     }
                 }
@@ -182,9 +195,9 @@ class PlanningUpdateDomain
     protected function getSearchDates(array $data): array
     {
         $firstUser = end($data);
-        list($min, $max) = end($firstUser);
+        [$min, $max] = end($firstUser);
         foreach ($data as $schedules) {
-            foreach ($schedules as list($start, $end)) {
+            foreach ($schedules as [$start, $end]) {
                 if ($start < $min) {
                     $min = $start;
                 }
@@ -207,16 +220,21 @@ class PlanningUpdateDomain
 
     protected function validatePayload(): void
     {
+        // TODO Use deserializer & validator
         $keys = array_keys($this->payload);
-        for ($i = 0; $i < \count($keys); ++$i) {
-            if (!\in_array($keys[$i], self::PAYLOAD_VALID_KEYS, true)) {
-                throw new \InvalidArgumentException(sprintf('Invalid key : %s', $keys[$i]));
+        foreach ($keys as $key) {
+            if (!\in_array($key, self::PAYLOAD_VALID_KEYS, true)) {
+                throw new \InvalidArgumentException(sprintf('Invalid key : %s', $key));
             }
         }
 
-        foreach ($this->payload as $entityPayload) {
+        foreach ($this->payload as $key => $entityPayload) {
+            if (!\in_array($key, self::PAYLOAD_ENTITIES_KEYS, true)) {
+                continue;
+            }
+
             foreach ($entityPayload as $entitySchedules) {
-                foreach ($entitySchedules as list($start, $end)) {
+                foreach ($entitySchedules as [$start, $end]) {
                     try {
                         $start = new \DateTimeImmutable($start);
                     } catch (\Exception $e) {

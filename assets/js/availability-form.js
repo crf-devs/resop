@@ -34,6 +34,11 @@ $(document).ready(function () {
     selectDay($(this).closest('.day-title'));
   });
 
+  $table.find('.slot-box input:checkbox[title]').each(function (index, checkbox) {
+    const $checkbox = $(checkbox);
+    $checkbox.closest('.slot-box').attr('title', $checkbox.attr('title')).data('toggle', 'tooltip').tooltip();
+  });
+
   $actions.on('click', 'button.select-all', function () {
     selectAll($table);
   });

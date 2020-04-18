@@ -1,7 +1,7 @@
 const $ = require('jquery');
 require('bootstrap');
 
-function triggerUpdate(url, newStatus, $planning, $modal) {
+function triggerUpdate(url, newStatus, withComment, $planning, $modal) {
   const payload = generatePayload($planning);
 
   const nbAssets = Object.keys(payload.assets).length;
@@ -20,6 +20,7 @@ function triggerUpdate(url, newStatus, $planning, $modal) {
 
   $modal.find('#nb-assets-users').text(updates.join(' et '));
   $modal.find('#confirm-update').data('status', newStatus).data('url', url);
+  $modal.find('#status-update-comment-container').toggle(withComment);
   $modal.modal('show');
 }
 
@@ -49,18 +50,29 @@ function updatePlanningFromPayload($planning, newStatus, payload) {
         let [from, to] = schedule;
         const $td = $planning.find('tr[data-type="' + ownerType + '"][data-id="' + objectId + '"] td[data-from="' + from + '"][data-to="' + to + '"]');
         $td.removeClass($td.data('status')).addClass(newStatus).data('status', newStatus);
+
+        if (payload.comment) {
+          $td.attr('title', payload.comment).data('toggle', 'tooltip').tooltip();
+        } else {
+          $td.removeAttr('title').data('toggle', false).tooltip('dispose');
+        }
       });
     });
   });
 
   $planning.find('.checked').removeClass('checked').find('input:checkbox').prop('checked', false);
+
+  $('#status-update-comment').val('');
 }
 
 function generatePayload($planning) {
   let payload = {
     users: {},
     assets: {},
+    comment: null,
   };
+
+  payload.comment = $('#status-update-comment').val();
 
   $planning.find('input[type=checkbox]:checked').each(function () {
     const $owner = $(this).closest('tr');
@@ -113,17 +125,15 @@ $(document).ready(function () {
 
   const $modalUpdate = $('#modal-update');
 
-  $('.trigger-update').on('click', function () {
-    const $this = $(this);
-    triggerUpdate($this.data('href'), $this.data('status'), $planning, $modalUpdate);
-  });
-
   $modalUpdate
     .on('hide.bs.modal', function () {
       $('.planning-actions-container .btn').prop('disabled', false);
     })
     .on('show.bs.modal', function () {
       $('.planning-actions-container .btn').prop('disabled', true);
+    })
+    .on('shown.bs.modal', function () {
+      $modalUpdate.find('input:visible:first').focus();
     });
 
   $modalUpdate.find('#confirm-update').on('click', function () {
@@ -131,6 +141,11 @@ $(document).ready(function () {
     doUpdate($this.data('url'), $this.data('status'), $planning);
 
     $modalUpdate.modal('hide');
+  });
+
+  $('.trigger-update').on('click', function () {
+    const $this = $(this);
+    triggerUpdate($this.data('href'), $this.data('status'), $this.attr('data-status-with-comment') !== undefined, $planning, $modalUpdate);
   });
 
   $planning.find('input[type=checkbox]:checked').closest('.slot-box').addClass('checked');

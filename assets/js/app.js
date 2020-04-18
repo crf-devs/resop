@@ -4,6 +4,8 @@ import '../css/planning.scss';
 import '../css/availability-table.scss';
 
 const $ = require('jquery');
+require('util');
+require('popper.js');
 require('bootstrap');
 require('bootstrap-select');
 require('daterangepicker');

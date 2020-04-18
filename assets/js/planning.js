@@ -111,6 +111,8 @@ $(document).ready(function () {
     dateSortPlanning($(this), $planning);
   });
 
+  $('td[data-toggle="tooltip"]', $planning).tooltip();
+
   // The table is hidden by default for performances reason
   $planning.css('display', 'table');
   $('#loader').hide();
