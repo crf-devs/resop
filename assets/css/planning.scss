@@ -23,15 +23,12 @@ $tableBoxSize: 40px;
   .planning {
     margin-bottom: 40px;
 
-    .badge {
-      margin-right: 2px;
-    }
-
     thead {
       th {
         font-weight: 600;
         background-color: white;
         position: sticky;
+        white-space: nowrap;
         z-index: 99;
         top: 0;
 
@@ -61,6 +58,10 @@ $tableBoxSize: 40px;
           font-weight: 400;
           min-width: $tableBoxSize;
           text-align: left;
+
+          &.selected {
+            background: #ffd674;
+          }
         }
       }
 
@@ -106,6 +107,7 @@ $tableBoxSize: 40px;
 
     td.item-data {
       white-space: nowrap;
+      font-size: 0.85em;
     }
 
     td.slot-box {

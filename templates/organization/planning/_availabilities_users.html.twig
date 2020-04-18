@@ -2,7 +2,7 @@
 
 {% block type %}{{ usersSkills[type] | default('organization.users' | trans) }}{% endblock type %}
 
-{# columns number of blocks itemDataHeader and itemDataDetails should be the same than in _availabilities_assets.html.twig #}
+{# CAUTION: columns number of blocks itemDataHeader and itemDataDetails should be the same than in _availabilities_assets.html.twig #}
 {% block itemDataHeader %}
     <th class="item-data">{{ 'user.identificationNumber' | trans }}</th>
     <th class="item-data">{{ 'common.phoneNumberShort' | trans }}</th>
@@ -23,8 +23,8 @@
     <td class="item-data">{{ item.entity.identificationNumber }}</td>
     <td class="item-data">{{ item.entity.phoneNumber }}</td>
     <td class="item-data">{{ item.entity.emailAddress }}</td>
-    <td class="item-data">{{ item.entity.occupation }}</td>
-    <td class="item-data">{{ item.entity.organizationOccupation }}</td>
+    <td class="item-data">{{ item.entity.occupation | truncate(50) }}</td>
+    <td class="item-data">{{ item.entity.organizationOccupation | truncate(50) }}</td>
     <td class="item-data">
         {% for skill in getDisplayableSkillsInPlanning(item.entity) -%}
             {{ skill|skillBadge }}

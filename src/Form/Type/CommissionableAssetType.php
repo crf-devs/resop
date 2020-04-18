@@ -65,12 +65,15 @@ final class CommissionableAssetType extends AbstractType
                 'label' => 'asset.contact',
             ])
             ->add('seatingCapacity', IntegerType::class, [
+                'required' => false,
                 'label' => 'asset.seatingCapacity',
             ])
             ->add('licensePlate', TextType::class, [
+                'required' => false,
                 'label' => 'asset.licensePlate',
             ])
             ->add('comments', TextareaType::class, [
+                'required' => false,
                 'label' => 'asset.comments',
             ])
             ->add('submit', SubmitType::class)

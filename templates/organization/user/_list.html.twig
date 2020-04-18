@@ -16,15 +16,15 @@
         <tbody>
         {% for user in users %}
             <tr>
-                <td>{{ user.identificationNumber }}</td>
+                <td><small>{{ user.identificationNumber }}</small></td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>
-                    {% for skill in user.skillSet -%}
+                    {% for skill in getDisplayableSkillsInPlanning(user) -%}
                         {{ skill|skillBadge }}
                     {%- endfor %}
                 </td>
-                <td>{{ user.emailAddress }}</td>
+                <td><small>{{ user.emailAddress }}</small></td>
                 {% if organization.parent is null %}
                     <td>{{ user.organization.name }}</td>
                 {% endif %}
