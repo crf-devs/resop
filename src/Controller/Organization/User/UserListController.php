@@ -17,7 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/{id}/users", name="app_organization_user_list", methods={"GET"})
+ * @Route("/{organization}/users", name="app_organization_user_list", methods={"GET"})
+ * @IsGranted(OrganizationVoter::CAN_LIST_ASSETS, subject="organization")
  */
 class UserListController extends AbstractController
 {
@@ -32,9 +33,6 @@ class UserListController extends AbstractController
         $this->organizationSelectorFormFactory = $organizationSelectorFormFactory;
     }
 
-    /**
-     * @IsGranted(OrganizationVoter::CAN_LIST_ASSETS, subject="organization")
-     */
     public function __invoke(Request $request, Organization $organization): Response
     {
         $currentOrganization = $this->getUser();

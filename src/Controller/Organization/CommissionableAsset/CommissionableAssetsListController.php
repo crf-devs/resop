@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/commissionable-assets/{id}", name="app_organization_commissionable_assets", methods={"GET"})
+ * @Route("/{organization}/commissionable-assets", name="app_organization_commissionable_assets", methods={"GET"})
  * @IsGranted(OrganizationVoter::CAN_LIST_ASSETS, subject="organization")
  */
 class CommissionableAssetsListController extends AbstractController

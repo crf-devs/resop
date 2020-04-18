@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("{organization}/commissionable-assets/{asset}/edit", name="app_organization_commissionable_edit_asset", methods={"GET", "POST"}, requirements={"id": "\d+"})
+ * @Route("/{organization}/commissionable-assets/{asset}/edit", name="app_organization_commissionable_edit_asset", methods={"GET", "POST"}, requirements={"id": "\d+"})
  * @IsGranted(CommissionableAssetVoter::CAN_EDIT, subject="asset")
  * @Security("asset.organization.id == organization")
  */
@@ -32,7 +32,7 @@ class CommissionableEditAssetController extends AbstractController
 
             $this->addFlash('success', sprintf('Véhicule "%s" mis à jour avec succès', $asset));
 
-            return $this->redirectToRoute('app_organization_commissionable_assets', ['id' => $asset->organization->getId()]);
+            return $this->redirectToRoute('app_organization_commissionable_assets', ['organization' => $asset->organization->getId()]);
         }
 
         return $this->render(

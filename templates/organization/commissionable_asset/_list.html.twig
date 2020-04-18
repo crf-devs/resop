@@ -31,8 +31,8 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a class="btn btn-outline-primary" href="{{ path('organization_commisionable_asset_availability', { id: asset.id }) }}">{{ 'calendar.week.current' | trans }}</a>
-                    <a class="btn btn-outline-primary" href="{{ path('organization_commisionable_asset_availability', { id: asset.id, week: 'next week' | date('o-\\WW') }) }}">{{ 'calendar.week.startMonday' | trans ({'%week%' : 'monday next week' | date('d/m/Y')}) }}</a>
+                    <a class="btn btn-outline-primary" href="{{ path('organization_commisionable_asset_availability', { asset: asset.id, organization: asset.organization.id }) }}">{{ 'calendar.week.current' | trans }}</a>
+                    <a class="btn btn-outline-primary" href="{{ path('organization_commisionable_asset_availability', { asset: asset.id, organization: asset.organization.id, week: 'next week' | date('o-\\WW') }) }}">{{ 'calendar.week.startMonday' | trans ({'%week%' : 'monday next week' | date('d/m/Y')}) }}</a>
                 </td>
                 <td>{{ asset.organization.name }}</td>
                 <td>

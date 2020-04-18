@@ -36,7 +36,7 @@ class CommissionableAddAssetController extends AbstractController
 
             $this->addFlash('success', 'Véhicule créé');
 
-            return $this->redirectToRoute('app_organization_commissionable_assets', ['id' => $asset->organization->getId()]);
+            return $this->redirectToRoute('app_organization_commissionable_assets', ['organization' => $asset->organization->getId()]);
         }
 
         return $this->render(
