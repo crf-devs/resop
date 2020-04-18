@@ -35,10 +35,10 @@ final class UserPlanningContext implements Context
         $page = $this->minkContext->getSession()->getPage();
         /** @var int $time */
         $time = strtotime($day);
-
-        $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]:not(:disabled)', (int) date('N', $time) - 1));
+        $dayNumber = (int) date('N', $time) - 1;
+        $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]:not(:disabled)', $dayNumber));
         if (0 === \count($elements)) {
-            throw new ElementNotFoundException($this->minkContext->getSession()->getDriver(), 'form field', 'data-day', (string) $day);
+            throw new ElementNotFoundException($this->minkContext->getSession()->getDriver(), 'form field', 'data-day', sprintf('%s (%d)', $day, $dayNumber));
         }
 
         foreach ($elements as $element) {

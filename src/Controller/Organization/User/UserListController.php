@@ -14,11 +14,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/{organization}/users", name="app_organization_user_list", methods={"GET"})
- * @IsGranted(OrganizationVoter::CAN_LIST_ASSETS, subject="organization")
+ * @Route("/", name="app_organization_user_list", methods={"GET"})
+ * @IsGranted(OrganizationVoter::CAN_LIST_USERS, subject="organization")
  */
 class UserListController extends AbstractController
 {
@@ -35,14 +34,8 @@ class UserListController extends AbstractController
 
     public function __invoke(Request $request, Organization $organization): Response
     {
+        /** @var Organization $currentOrganization */
         $currentOrganization = $this->getUser();
-        if (!$currentOrganization instanceof Organization) {
-            throw new AccessDeniedException();
-        }
-
-        if ($currentOrganization !== $organization && $organization->parent !== $currentOrganization) {
-            throw new AccessDeniedException('You cannot manage this organization');
-        }
 
         return $this->render(
             'organization/user/user-list.html.twig',

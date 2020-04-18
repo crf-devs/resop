@@ -17,9 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{organization}/commissionable-assets/{asset<\d+>}/availability/{week<\d{4}-W\d{2}>?}",
- *     name="organization_commisionable_asset_availability",
- *     methods={"GET", "POST"})
+ * @Route("/{asset<\d+>}/availability/{week<\d{4}-W\d{2}>?}", name="app_organization_asset_availability", methods={"GET", "POST"})
  * @Security("asset.organization.id == organization")
  */
 final class AvailabilityController extends AbstractController
@@ -42,13 +40,13 @@ final class AvailabilityController extends AbstractController
         try {
             $start = new \DateTimeImmutable($week ?: 'monday this week');
         } catch (\Exception $e) {
-            return $this->redirectToRoute('app_organization_commissionable_assets', ['organization' => $asset->organization->getId()]);
+            return $this->redirectToRoute('app_organization_assets', ['organization' => $asset->organization->getId()]);
         }
 
         $interval = $start->diff(new \DateTimeImmutable());
         // edit current week and next week only
         if ($interval->days > 6) {
-            return $this->redirectToRoute('app_organization_commissionable_assets', ['organization' => $asset->organization->getId()]);
+            return $this->redirectToRoute('app_organization_assets', ['organization' => $asset->organization->getId()]);
         }
 
         $end = $start->add(new \DateInterval('P7D'));
@@ -70,7 +68,7 @@ final class AvailabilityController extends AbstractController
 
             $this->addFlash('success', sprintf('Les disponibilités du véhicule "%s" ont été mises à jour avec succès', $asset));
 
-            return $this->redirectToRoute('app_organization_commissionable_assets', ['organization' => $asset->organization->getId()]);
+            return $this->redirectToRoute('app_organization_assets', ['organization' => $asset->organization->getId()]);
         }
 
         return $this->render('organization/commissionable_asset/availability.html.twig', [

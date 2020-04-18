@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{organization}/commissionable-assets/add", name="app_organization_commissionable_add_asset", methods={"GET", "POST"})
+ * @Route("/add", name="app_organization_asset_add", methods={"GET", "POST"})
  * @IsGranted(OrganizationVoter::CAN_ADD_ASSET, subject="organization")
  */
-class CommissionableAddAssetController extends AbstractController
+class AssetAddController extends AbstractController
 {
     public function __invoke(Request $request, Organization $organization): Response
     {
@@ -36,7 +36,7 @@ class CommissionableAddAssetController extends AbstractController
 
             $this->addFlash('success', 'Véhicule créé');
 
-            return $this->redirectToRoute('app_organization_commissionable_assets', ['organization' => $asset->organization->getId()]);
+            return $this->redirectToRoute('app_organization_assets', ['organization' => $asset->organization->getId()]);
         }
 
         return $this->render(

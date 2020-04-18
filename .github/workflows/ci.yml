@@ -117,7 +117,8 @@ jobs:
                   bin/console doctrine:mapping:info
               if: always()
 
-            - run: vendor/bin/phpunit --printer mheap\\GithubActionsReporter\\Printer --coverage-clover=coverage.xml
+            - name: Run phpunit tests
+              run: vendor/bin/phpunit --printer mheap\\GithubActionsReporter\\Printer --coverage-clover=coverage.xml
               if: always()
 
             - uses: codecov/codecov-action@v1
@@ -126,7 +127,8 @@ jobs:
                 flags: unit
                 token: ${{ secrets.CODECOV_TOKEN }}
 
-            - run: |
+            - name: Run Behat tests
+              run: |
                   bin/post-install-test.sh
                   vendor/bin/behat --format=progress --out=std --format=junit --out=var/behat
               if: always()
