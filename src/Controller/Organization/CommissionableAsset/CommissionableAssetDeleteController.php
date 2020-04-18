@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/delete/{id}", name="app_commissionable_asset_delete", methods={"GET"})
+ * @Route("/{organization}/commissionable-assets/{asset}/delete", name="app_commissionable_asset_delete", methods={"GET"})
  */
 class CommissionableAssetDeleteController extends AbstractController
 {

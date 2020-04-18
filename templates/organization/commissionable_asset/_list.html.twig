@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12 text-right mb-2">
-        <a class="btn btn-success" href="{{ path('app_organization_commissionable_add_asset', {id: app.user.id}) }}" role="button">Ajouter un nouveau véhicule</a>
+        <a class="btn btn-success" href="{{ path('app_organization_commissionable_add_asset', {organization: app.user.id}) }}" role="button">Ajouter un nouveau véhicule</a>
     </div>
 </div>
 
@@ -36,8 +36,8 @@
                 </td>
                 <td>{{ asset.organization.name }}</td>
                 <td>
-                    <a class="btn btn-secondary" href="{{ path('app_organization_commissionable_edit_asset', { id: asset.id }) }}">{{ 'action.edit' | trans }}</a>
-                    <a class="btn btn-outline-danger trigger-delete" data-modal="#modal-delete-asset" data-display-name="{{ asset }}" href="#" data-href="{{ path('app_commissionable_asset_delete', { id: asset.id }) }}">{{ 'action.delete' | trans }}</a>
+                    <a class="btn btn-secondary" href="{{ path('app_organization_commissionable_edit_asset', { asset: asset.id, organization: asset.organization.id }) }}">{{ 'action.edit' | trans }}</a>
+                    <a class="btn btn-outline-danger trigger-delete" data-modal="#modal-delete-asset" data-display-name="{{ asset }}" href="#" data-href="{{ path('app_commissionable_asset_delete', { asset: asset.id, organization: asset.organization.id }) }}">{{ 'action.delete' | trans }}</a>
                 </td>
             </tr>
         {% endfor %}

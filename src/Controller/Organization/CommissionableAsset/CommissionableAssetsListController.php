@@ -14,6 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/commissionable-assets/{id}", name="app_organization_commissionable_assets", methods={"GET"})
+ * @IsGranted(OrganizationVoter::CAN_LIST_ASSETS, subject="organization")
+ */
 class CommissionableAssetsListController extends AbstractController
 {
     private CommissionableAssetRepository $assetRepository;
@@ -25,10 +29,6 @@ class CommissionableAssetsListController extends AbstractController
         $this->organizationSelectorFormFactory = $organizationSelectorFormFactory;
     }
 
-    /**
-     * @Route("/{id}", name="app_organization_commissionable_assets", methods={"GET"})
-     * @IsGranted(OrganizationVoter::CAN_LIST_ASSETS, subject="organization")
-     */
     public function __invoke(Request $request, Organization $organization): Response
     {
         /** @var Organization $currentOrganization */

@@ -3,11 +3,6 @@ _organizations:
     type: annotation
     prefix: /organizations
 
-_organizations_commissionable_assets:
-    resource: ../src/Controller/Organization/CommissionableAsset
-    type: annotation
-    prefix: /organizations/commissionable-assets
-
 _organizations_planning:
     resource: ../src/Controller/Organization/Planning
     type: annotation

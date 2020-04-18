@@ -16,7 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{id<\d+>}/availability/{week<\d{4}-W\d{2}>?}", name="organization_commisionable_asset_availability", methods={"GET", "POST"})
+ * @Route("/commissionable-assets/{id<\d+>}/availability/{week<\d{4}-W\d{2}>?}",
+ *     name="organization_commisionable_asset_availability",
+ *     methods={"GET", "POST"})
  */
 final class AvailabilityController extends AbstractController
 {
