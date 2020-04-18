@@ -87,7 +87,10 @@ class PlanningSearchType extends AbstractType
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),
                 'multiple' => true,
                 'required' => false,
-                'attr' => ['class' => 'selectpicker'],
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-actions-box' => 'true',
+                ],
             ])
             ->add('onlyFullyEquiped', CheckboxType::class, [
                 'label' => 'Avec uniforme seulement',
@@ -106,7 +109,10 @@ class PlanningSearchType extends AbstractType
                 'choices' => array_flip(CommissionableAsset::TYPES),
                 'multiple' => true,
                 'required' => false,
-                'attr' => ['class' => 'selectpicker'],
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-actions-box' => 'true',
+                ],
             ])
         ;
 

@@ -12,7 +12,7 @@
     {% block itemDataHeader %}{% endblock itemDataHeader %}
 
     {% for item in periodCalculator.slots %}
-        {% set selected = item >= filters.availableFrom and item <= filters.availableTo %}
+        {% set selected = filters.availableFrom is not empty and filters.availableTo is not empty and item >= filters.availableFrom and item <= filters.availableTo %}
         <th class="slot-name {{ selected ? 'selected' : '' }}">
             {{ item|format_date(pattern="HH") }}
         </th>
