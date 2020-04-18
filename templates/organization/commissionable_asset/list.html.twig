@@ -8,7 +8,9 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'organization.vehicles' | trans }} - {{ app.user }}</h1>
+    <h1>{{ 'organization.vehicles' | trans }} - {{ organization }}</h1>
+
+    {{ form(organization_selector_form) }}
 
     {{ include('organization/commissionable_asset/_list.html.twig') }}
 {% endblock %}

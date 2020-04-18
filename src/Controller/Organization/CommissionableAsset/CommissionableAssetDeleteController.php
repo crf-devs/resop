@@ -8,13 +8,15 @@ use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
 use App\Repository\CommissionableAssetAvailabilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/delete/{id}", name="app_commissionable_asset_delete", methods={"GET"})
+ * @Route("/{organization}/commissionable-assets/{asset}/delete", name="app_commissionable_asset_delete", methods={"GET"})
+ * @Security("asset.organization.id == organization")
  */
 class CommissionableAssetDeleteController extends AbstractController
 {
@@ -25,7 +27,7 @@ class CommissionableAssetDeleteController extends AbstractController
         $this->commissionableAvailabilityRepository = $commissionableAssetAvailabilityRepository;
     }
 
-    public function __invoke(EntityManagerInterface $entityManager, CommissionableAsset $commissionableAsset): RedirectResponse
+    public function __invoke(EntityManagerInterface $entityManager, CommissionableAsset $asset): RedirectResponse
     {
         $organization = $this->getUser();
         if (!$organization instanceof Organization || false === $organization->isParent()) {
@@ -33,13 +35,13 @@ class CommissionableAssetDeleteController extends AbstractController
         }
 
         $entityManager->beginTransaction();
-        $this->commissionableAvailabilityRepository->deleteByOwner($commissionableAsset);
-        $entityManager->remove($commissionableAsset);
+        $this->commissionableAvailabilityRepository->deleteByOwner($asset);
+        $entityManager->remove($asset);
         $entityManager->flush();
         $entityManager->commit();
 
         $this->addFlash('success', 'Le véhicule a été supprimé avec succès.');
 
-        return $this->redirectToRoute('app_organization_commissionable_assets');
+        return $this->redirectToRoute('app_organization_commissionable_assets', ['organization' => $asset->organization->getId()]);
     }
 }

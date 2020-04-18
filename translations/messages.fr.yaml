@@ -88,6 +88,7 @@ organization:
   userAvailabilityCurrentWeek: Afficher les disponibilités de mes bénévoles pour la semaine actuelle
   userAvailabilityNextWeek: Afficher les disponibilités de mes bénévoles pour la semaine prochaine
   userList: Liste des bénévoles
+  assetsList: Liste des véhicules
   user:
     hasDrivingLicence: Permis B depuis plus de 3 ans ?
     isFullyEquipped: Uniforme en dotation ?
@@ -102,6 +103,8 @@ organization:
     add_new: Ajouter un nouveau type de mission
     confirm_delete: Vous êtes sur le point de supprimer le type de mission
     edit_form_title: Modifier un type de mission
+  children_selector:
+    label: Structure
 project:
   contribute: Contribuez au projet
   description: Réserve opérationnelle - Croix-Rouge Française à Paris

@@ -8,13 +8,15 @@ use App\Entity\Organization;
 use App\Entity\User;
 use App\Repository\UserAvailabilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/delete/{id}", name="app_user_delete", methods={"GET"})
+ * @Route("/{organization}/users/{userToDelete}/delete", name="app_user_delete", methods={"GET"})
+ * @Security("userToDelete.organization.id == organization")
  */
 class UserDeleteController extends AbstractController
 {
@@ -25,7 +27,7 @@ class UserDeleteController extends AbstractController
         $this->userAvailabilityRepository = $userAvailabilityRepository;
     }
 
-    public function __invoke(EntityManagerInterface $entityManager, User $user): RedirectResponse
+    public function __invoke(EntityManagerInterface $entityManager, User $userToDelete): RedirectResponse
     {
         $organization = $this->getUser();
         if (!$organization instanceof Organization || false === $organization->isParent()) {
@@ -33,13 +35,13 @@ class UserDeleteController extends AbstractController
         }
 
         $entityManager->beginTransaction();
-        $this->userAvailabilityRepository->deleteByOwner($user);
-        $entityManager->remove($user);
+        $this->userAvailabilityRepository->deleteByOwner($userToDelete);
+        $entityManager->remove($userToDelete);
         $entityManager->flush();
         $entityManager->commit();
 
         $this->addFlash('success', 'Le bénévole a été supprimé avec succès.');
 
-        return $this->redirectToRoute('app_organization_user_list', ['id' => $organization->id]);
+        return $this->redirectToRoute('app_organization_user_list', ['organization' => $organization->id]);
     }
 }

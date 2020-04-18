@@ -122,9 +122,4 @@ class OrganizationRepository extends ServiceEntityRepository implements UserLoad
 
         return $qb;
     }
-
-    public function findByIdOrParentId(int $organizationId): iterable
-    {
-        return $this->findByIdOrParentIdQueryBuilder($organizationId)->getQuery()->getResult();
-    }
 }

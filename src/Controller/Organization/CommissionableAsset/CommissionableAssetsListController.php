@@ -2,53 +2,43 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Organization\User;
+namespace App\Controller\Organization\CommissionableAsset;
 
 use App\Entity\Organization;
 use App\Form\Factory\OrganizationSelectorFormFactory;
-use App\Repository\OrganizationRepository;
-use App\Repository\UserRepository;
+use App\Repository\CommissionableAssetRepository;
 use App\Security\Voter\OrganizationVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/{organization}/users", name="app_organization_user_list", methods={"GET"})
+ * @Route("/{organization}/commissionable-assets", name="app_organization_commissionable_assets", methods={"GET"})
  * @IsGranted(OrganizationVoter::CAN_LIST_ASSETS, subject="organization")
  */
-class UserListController extends AbstractController
+class CommissionableAssetsListController extends AbstractController
 {
-    protected UserRepository $userRepository;
-    protected OrganizationRepository $organizationRepository;
+    private CommissionableAssetRepository $assetRepository;
     private OrganizationSelectorFormFactory $organizationSelectorFormFactory;
 
-    public function __construct(OrganizationRepository $organizationRepository, UserRepository $userRepository, OrganizationSelectorFormFactory $organizationSelectorFormFactory)
+    public function __construct(CommissionableAssetRepository $assetRepository, OrganizationSelectorFormFactory $organizationSelectorFormFactory)
     {
-        $this->userRepository = $userRepository;
-        $this->organizationRepository = $organizationRepository;
+        $this->assetRepository = $assetRepository;
         $this->organizationSelectorFormFactory = $organizationSelectorFormFactory;
     }
 
     public function __invoke(Request $request, Organization $organization): Response
     {
+        /** @var Organization $currentOrganization */
         $currentOrganization = $this->getUser();
-        if (!$currentOrganization instanceof Organization) {
-            throw new AccessDeniedException();
-        }
-
-        if ($currentOrganization !== $organization && $organization->parent !== $currentOrganization) {
-            throw new AccessDeniedException('You cannot manage this organization');
-        }
 
         return $this->render(
-            'organization/user/user-list.html.twig',
+            'organization/commissionable_asset/list.html.twig',
             [
                 'organization' => $organization,
-                'users' => $this->userRepository->findByOrganization($organization),
+                'assets' => $this->assetRepository->findByOrganization($organization),
                 'organization_selector_form' => $this->organizationSelectorFormFactory->createForm(
                     $organization,
                     $currentOrganization,
