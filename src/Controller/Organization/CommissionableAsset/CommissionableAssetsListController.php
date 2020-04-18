@@ -7,11 +7,12 @@ namespace App\Controller\Organization\CommissionableAsset;
 use App\Entity\Organization;
 use App\Form\Factory\OrganizationSelectorFormFactory;
 use App\Repository\CommissionableAssetRepository;
+use App\Security\Voter\OrganizationVoter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CommissionableAssetsListController extends AbstractController
 {
@@ -26,17 +27,12 @@ class CommissionableAssetsListController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_organization_commissionable_assets", methods={"GET"})
+     * @IsGranted(OrganizationVoter::CAN_LIST_ASSETS, subject="organization")
      */
     public function __invoke(Request $request, Organization $organization): Response
     {
+        /** @var Organization $currentOrganization */
         $currentOrganization = $this->getUser();
-        if (!$currentOrganization instanceof Organization) {
-            throw new AccessDeniedException();
-        }
-
-        if ($currentOrganization !== $organization && $organization->parent !== $currentOrganization) {
-            throw new AccessDeniedException('You cannot manage this organization');
-        }
 
         return $this->render(
             'organization/commissionable_asset/list.html.twig',

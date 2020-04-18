@@ -7,6 +7,9 @@ namespace App\Controller\Organization\CommissionableAsset;
 use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
 use App\Form\Type\CommissionableAssetType;
+use App\Security\Voter\CommissionableAssetVoter;
+use App\Security\Voter\OrganizationVoter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,12 +18,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommissionableAssetsController extends AbstractController
 {
     /**
-     * @Route("add", name="app_organization_commissionable_add_asset", methods={"GET", "POST"})
+     * @Route("/{id}/add", name="app_organization_commissionable_add_asset", methods={"GET", "POST"})
+     * @IsGranted(OrganizationVoter::CAN_ADD_ASSET, subject="organization")
      */
-    public function addAsset(Request $request): Response
+    public function addAsset(Request $request, Organization $organization): Response
     {
-        /** @var Organization $organization */
-        $organization = $this->getUser();
         $asset = new CommissionableAsset();
         $asset->organization = $organization;
         $asset->type = 'VL';
@@ -47,6 +49,7 @@ class CommissionableAssetsController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_organization_commissionable_edit_asset", methods={"GET", "POST"}, requirements={"id": "\d+"})
+     * @IsGranted(CommissionableAssetVoter::CAN_EDIT, subject="asset")
      */
     public function editAsset(Request $request, CommissionableAsset $asset): Response
     {

@@ -8,6 +8,8 @@ use App\Entity\Organization;
 use App\Form\Factory\OrganizationSelectorFormFactory;
 use App\Repository\OrganizationRepository;
 use App\Repository\UserRepository;
+use App\Security\Voter\OrganizationVoter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +32,9 @@ class UserListController extends AbstractController
         $this->organizationSelectorFormFactory = $organizationSelectorFormFactory;
     }
 
+    /**
+     * @IsGranted(OrganizationVoter::CAN_LIST_ASSETS, subject="organization")
+     */
     public function __invoke(Request $request, Organization $organization): Response
     {
         $currentOrganization = $this->getUser();
