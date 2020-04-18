@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class CommissionableAssetVoterTest extends TestCase
 {
     /** @dataProvider voteProvider */
-    public function testVote(string $attribute, $subject, int $expectedResult, ?UserInterface $user): void
+    public function testVote(string $attribute, CommissionableAsset $subject, int $expectedResult, ?UserInterface $user): void
     {
         $voter = new CommissionableAssetVoter();
         $token = $this->createMock(TokenInterface::class);
@@ -42,12 +42,6 @@ class CommissionableAssetVoterTest extends TestCase
             'wrong attribute abstains' => [
                 'attribute' => 'foo',
                 'subject' => $parentAsset,
-                'expectedResult' => VoterInterface::ACCESS_ABSTAIN,
-                'loggedOrganization' => null,
-            ],
-            'wrong subject type abstains' => [
-                'attribute' => CommissionableAssetVoter::CAN_EDIT,
-                'subject' => new \stdClass(),
                 'expectedResult' => VoterInterface::ACCESS_ABSTAIN,
                 'loggedOrganization' => null,
             ],

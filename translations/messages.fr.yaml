@@ -88,6 +88,7 @@ organization:
   userAvailabilityCurrentWeek: Afficher les disponibilités de mes bénévoles pour la semaine actuelle
   userAvailabilityNextWeek: Afficher les disponibilités de mes bénévoles pour la semaine prochaine
   userList: Liste des bénévoles
+  assetsList: Liste des véhicules
   user:
     hasDrivingLicence: Permis B depuis plus de 3 ans ?
     isFullyEquipped: Uniforme en dotation ?

@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class OrganizationVoterTest extends TestCase
 {
     /** @dataProvider voteProvider */
-    public function testVote(string $attribute, $subject, int $expectedResult, ?UserInterface $user): void
+    public function testVote(string $attribute, Organization $subject, int $expectedResult, ?UserInterface $user): void
     {
         $voter = new OrganizationVoter();
         $token = $this->createMock(TokenInterface::class);
@@ -35,12 +35,6 @@ class OrganizationVoterTest extends TestCase
             'wrong attribute abstains' => [
                 'attribute' => 'foo',
                 'subject' => $organization,
-                'expectedResult' => VoterInterface::ACCESS_ABSTAIN,
-                'loggedOrganization' => null,
-            ],
-            'wrong subject type abstains' => [
-                'attribute' => OrganizationVoter::CAN_ADD_ASSET,
-                'subject' => new \stdClass(),
                 'expectedResult' => VoterInterface::ACCESS_ABSTAIN,
                 'loggedOrganization' => null,
             ],
