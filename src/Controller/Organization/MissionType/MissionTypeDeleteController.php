@@ -33,11 +33,6 @@ class MissionTypeDeleteController extends AbstractController
 
     public function __invoke(MissionType $missionType): RedirectResponse
     {
-        /** @var Organization $this->getUser() */
-        if (!$this->getUser() instanceof Organization || false === $this->getUser()->isParent()) {
-            throw new AccessDeniedException();
-        }
-
         $this->entityManager->remove($missionType);
         $this->entityManager->flush();
 
