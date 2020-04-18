@@ -1,32 +1,64 @@
 {% extends 'organization/base.html.twig' %}
 
-{% block title %}Types de missions{% endblock %}
+{% block title %}{{ 'organization.mission_type.main_title' | trans }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('mission-type') }}
+{% endblock %}
 
 {% block body %}
-    <h1>Types de missions</h1>
+    <h1>{{ 'organization.mission_type.main_title' | trans }}</h1>
 
-    <table class="table mt-5">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for mission_type in mission_types %}
-            <tr>
-                <td>{{ mission_type.name }}</td>
-                <td>
-                    <a href="{{ path('app_organization_mission_type_edit', {'id': mission_type.id}) }}">Modifier</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">Aucun enregistrement</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-12 text-right mb-2">
+            <a class="btn btn-success" href="{{ path('app_organization_mission_type_new') }}" role="button">{{ 'organization.mission_type.add_new' | trans }}</a>
+        </div>
+    </div>
 
-    <a href="{{ path('app_organization_mission_type_new') }}" class="btn btn-outline-primary">Ajouter un nouveau type de mission</a>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th>{{ 'common.name' | trans }}</th>
+                <th>{{ 'common.actions' | trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for mission_type in mission_types %}
+                <tr>
+                    <td>{{ mission_type.name }}</td>
+                    <td>
+                        <a class="btn btn-secondary" href="{{ path('app_organization_mission_type_edit', {'id': mission_type.id}) }}">{{ 'action.edit' | trans }}</a>
+                        <a class="btn btn-outline-danger trigger-delete" data-modal="#modal-delete-mission-type" data-display-name="{{ mission_type.name }}" href="#" data-href="{{ path('app_organization_mission_type_delete', { id: mission_type.id }) }}">{{ 'action.delete' | trans }}</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">{{ 'message.no_available_data' | trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="modal-delete-mission-type" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ 'organization.mission_type.confirm_delete' | trans }} : <span id="to-delete-name"></span>.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'action.cancel' | trans}}</button>
+                    <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-danger">
+                        {{ 'action.delete' | trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -5,14 +5,12 @@
     {{ encore_entry_script_tags('mission-type-form') }}
 {% endblock %}
 
-{% block title %}Modifier un type de mission{% endblock %}
+{% block title %}{{ 'organization.mission_type.edit_form_title' | trans }}{% endblock %}
 
 {% block body %}
 
-    <a href="{{ path('app_organization_mission_type_index') }}">Retourner à la liste</a>
-    <h1>Modifier un type de mission</h1>
+    <a href="{{ path('app_organization_mission_type_index') }}">{{ 'common.back_to_list' | trans }}</a>
+    <h1>{{ 'organization.mission_type.edit_form_title' | trans }}</h1>
 
-    {{ include('organization/mission_type/_form.html.twig', {'button_label': 'Enregistrer'}) }}
-
-    {{ include('organization/mission_type/_delete_form.html.twig') }}
+    {{ include('organization/mission_type/_form.html.twig', {'button_label': 'action.save' | trans}) }}
 {% endblock %}
