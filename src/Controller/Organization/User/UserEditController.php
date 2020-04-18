@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\User;
 
-use App\Entity\Organization;
 use App\Entity\User;
 use App\Form\Type\UserType;
 use App\Security\Voter\UserVoter;
