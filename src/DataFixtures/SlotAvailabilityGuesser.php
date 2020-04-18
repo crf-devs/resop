@@ -20,7 +20,7 @@ class SlotAvailabilityGuesser
 
     public function guessAvailableSlot(\DateTimeImmutable $slot): bool
     {
-        $rand = rand(1, 100);
+        $rand = random_int(1, 100);
         $chance = $this->getSlotChances($slot);
 
         if ($this->availableSlotCount > 0) {
