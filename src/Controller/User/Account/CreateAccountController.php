@@ -62,6 +62,6 @@ final class CreateAccountController extends AbstractController
 
         return $this->render('user/account-form.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ])->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
     }
 }

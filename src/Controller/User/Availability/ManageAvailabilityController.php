@@ -80,6 +80,6 @@ final class ManageAvailabilityController extends AbstractController
         return $this->render('user/availability.html.twig', [
             'form' => $form->createView(),
             'blockedSlotsInterval' => $blockedSlotsInterval,
-        ]);
+        ])->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
     }
 }

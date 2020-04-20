@@ -40,6 +40,6 @@ class UserEditController extends AbstractController
         return $this->render('organization/user/user-edit.html.twig', [
             'user' => $userToEdit,
             'form' => $form->createView(),
-        ]);
+        ])->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
     }
 }

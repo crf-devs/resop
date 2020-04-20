@@ -65,7 +65,7 @@ class MissionTypeController extends AbstractController
         return $this->render('organization/mission_type/new.html.twig', [
             'mission_type' => $missionType,
             'form' => $form->createView(),
-        ]);
+        ])->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
     }
 
     /**
@@ -86,6 +86,6 @@ class MissionTypeController extends AbstractController
         return $this->render('organization/mission_type/edit.html.twig', [
             'mission_type' => $missionType,
             'form' => $form->createView(),
-        ]);
+        ])->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
     }
 }

@@ -55,7 +55,9 @@ class UserType extends AbstractType
         $occupationChoices = (array) array_combine(self::DEFAULT_OCCUPATIONS, self::DEFAULT_OCCUPATIONS);
         $occupationChoices += ['Autre' => '-'];
         $builder
-            ->add('identificationNumber', TextType::class)
+            ->add('identificationNumber', TextType::class, [
+                'empty_data' => '',
+            ])
             ->add('organization', OrganizationEntityType::class, [
                 'placeholder' => '',
                 'query_builder' => static function (OrganizationRepository $repository) use ($organization) {
@@ -71,10 +73,18 @@ class UserType extends AbstractType
                     return $qb;
                 },
             ])
-            ->add('firstName', TextType::class)
-            ->add('lastName', TextType::class)
-            ->add('phoneNumber', TextType::class)
-            ->add('emailAddress', EmailType::class)
+            ->add('firstName', TextType::class, [
+                'empty_data' => '',
+            ])
+            ->add('lastName', TextType::class, [
+                'empty_data' => '',
+            ])
+            ->add('phoneNumber', TextType::class, [
+                'empty_data' => '',
+            ])
+            ->add('emailAddress', EmailType::class, [
+                'empty_data' => '',
+            ])
             ->add('birthday', BirthdayType::class, [
                 'format' => 'dd MMMM yyyy',
                 'input' => 'string',

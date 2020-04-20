@@ -60,6 +60,6 @@ class OrganizationEditController extends AbstractController
         return $this->render('organization/edit.html.twig', [
             'organization' => $organization,
             'form' => $form->createView(),
-        ]);
+        ])->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
     }
 }
