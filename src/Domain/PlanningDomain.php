@@ -101,7 +101,7 @@ class PlanningDomain
 
         return [
             'assets' => $this->splitAssets($this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $datePeriod)),
-            'users' => $this->splitUsers($this->prepareAvailabilities($this->userAvailabilityRepository, $users, $datePeriod)),
+            'users' => $this->splitUsers($this->prepareAvailabilities($this->userAvailabilityRepository, $users, $datePeriod), $filters['userSkills'] ?? []),
         ];
     }
 
@@ -202,12 +202,17 @@ class PlanningDomain
         return array_filter($result);
     }
 
-    protected function splitUsers(array $usersAvailabilities): array
+    protected function splitUsers(array $usersAvailabilities, array $displayedUserSkills = []): array
     {
         $result = []; // Ordered associative array
 
         // Users
         $importantSkills = $this->skillSetDomain->getImportantSkills();
+
+        // Don't split the table per a skill if the search doesn't contains it
+        if (!empty($displayedUserSkills)) {
+            $importantSkills = array_intersect($importantSkills, $displayedUserSkills);
+        }
 
         foreach ($importantSkills as $skill) {
             $result[$skill] = []; // Ordered associative array
