@@ -7,6 +7,7 @@ namespace App\Form\Type;
 use App\Entity\MissionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,6 +17,15 @@ class MissionTypeType extends AbstractType
     {
         $builder
             ->add('name', null, ['label' => 'Nom'])
+            ->add('minimumAvailableHours', IntegerType::class, [
+                'label' => 'Compter les ressources comme disponibles à partir de',
+                'help' => 'Si cette valeur n\'est pas spécifiée, les resources seront comptabilisées si elles sont disponibles sur toute la période',
+                'required' => false,
+                'attr' => [
+                    'min' => 0,
+                    'step' => 2,
+                ],
+            ])
             ->add('userSkillsRequirement', CollectionType::class, [
                 'entry_type' => MissionTypeUserSkillsType::class,
                 'allow_add' => true,

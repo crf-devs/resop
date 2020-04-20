@@ -33,6 +33,12 @@ class MissionType
     public ?Organization $organization = null;
 
     /**
+     * @var int|null allow to count resources as available even if they are not available on the full date range
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    public ?int $minimumAvailableHours = null;
+
+    /**
      * @var array Skills and number of required users.
      *
      * Example: [ [ 'skill' => 'ci_bspp', 'number' => 1 ], [ 'skill' => 'ch_vpsp', 'number' => 1 ], [ 'skill' => 'pse2', 'number' => 2 ] ]

@@ -27,6 +27,15 @@
             </div>
         </div>
         <div class="col-12 col-md-6" data-hide="available">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Afficher si disponible au moins</span>
+                </div>
+                {{ form_widget(form.minimumAvailableHours) }}
+                <div class="input-group-append">
+                    <div class="input-group-text">h</div>
+                </div>
+            </div>
             {{ form_row(form.displayAvailableWithBooked) }}
         </div>
     </div>

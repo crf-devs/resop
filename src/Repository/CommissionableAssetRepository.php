@@ -88,7 +88,15 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
                 $availableStatuses[] = AvailabilityInterface::STATUS_BOOKED;
             }
 
-            $qb = $this->addAvailabilityBetween($qb, $formData['availableFrom'], $formData['availableTo'], CommissionableAssetAvailability::class, 'asset', $availableStatuses);
+            $qb = $this->addAvailabilityBetween(
+                $qb,
+                $formData['availableFrom'],
+                $formData['availableTo'],
+                CommissionableAssetAvailability::class,
+                'asset',
+                $availableStatuses,
+                $formData['minimumAvailableHours'] ?? null,
+            );
         }
 
         $qb->orderBy('a.name');

@@ -14,8 +14,15 @@ trait AvailabilityQueryTrait
         return 0 === $number % 2;
     }
 
-    private function addAvailabilityBetween(QueryBuilder $qb, \DateTimeImmutable $start, \DateTimeImmutable $end, string $availabilityClass, string $groupByField, array $statuses = [AvailabilityInterface::STATUS_AVAILABLE]): QueryBuilder
-    {
+    private function addAvailabilityBetween(
+        QueryBuilder $qb,
+        \DateTimeImmutable $start,
+        \DateTimeImmutable $end,
+        string $availabilityClass,
+        string $groupByField,
+        array $statuses = [AvailabilityInterface::STATUS_AVAILABLE],
+        ?int $minimalAvailableTime = null
+    ): QueryBuilder {
         $start = $start->setTime((int) $start->format('H'), 0);
         $end = $end->setTime((int) $end->format('H'), 0);
 
@@ -33,6 +40,10 @@ trait AvailabilityQueryTrait
         $numberOfInterval = (int) ($interval->h / 2);
         $numberOfInterval += (int) (($interval->d * 24) / 2);
 
+        if (!empty($minimalAvailableTime)) { // can be null or 0
+            $numberOfInterval = min($numberOfInterval, (int) ($minimalAvailableTime / 2));
+        }
+
         $subQuery = $this->getEntityManager()->createQueryBuilder()
             ->select(sprintf('IDENTITY(abse.%s)', $groupByField))
             ->from($availabilityClass, 'abse')
@@ -42,7 +53,7 @@ trait AvailabilityQueryTrait
             ->andWhere(':searchStartEndTime < abse.endTime')
             ->andWhere('abse.endTime <= :searchEndEndTime')
             ->groupBy(sprintf('abse.%s', $groupByField))
-            ->having('count(1) = :numberOfInterval');
+            ->having('count(1) >= :numberOfInterval');
 
         $qb->andWhere($qb->expr()->in(
             sprintf('%s.id', $qb->getRootAliases()[0]),

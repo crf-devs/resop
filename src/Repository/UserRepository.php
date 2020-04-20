@@ -111,7 +111,15 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
                 $availableStatuses[] = AvailabilityInterface::STATUS_BOOKED;
             }
 
-            $qb = $this->addAvailabilityBetween($qb, $formData['availableFrom'], $formData['availableTo'], UserAvailability::class, 'user', $availableStatuses);
+            $qb = $this->addAvailabilityBetween(
+                $qb,
+                $formData['availableFrom'],
+                $formData['availableTo'],
+                UserAvailability::class,
+                'user',
+                $availableStatuses,
+                $formData['minimumAvailableHours'] ?? null,
+            );
         }
 
         $qb->orderBy('o.name');
