@@ -74,7 +74,7 @@ class PlanningForecastType extends AbstractType
                 'label' => 'Avec uniforme seulement',
                 'required' => false,
             ])
-            ->add('ignoreAlreadyBooked', CheckboxType::class, [
+            ->add('displayAvailableWithBooked', CheckboxType::class, [
                 'label' => 'Compter aussi les ressources déjà engagées',
                 'required' => false,
             ])

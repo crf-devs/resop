@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
-use App\Entity\AvailabilityInterface;
 use App\Entity\MissionType;
 use App\Repository\CommissionableAssetRepository;
 use App\Repository\UserRepository;
@@ -49,12 +48,6 @@ class MissionTypeForecastDomain
 
     private function calculateHowMany(MissionType $missionType, array $filters): array
     {
-        $filters['availableStatuses'] = [AvailabilityInterface::STATUS_AVAILABLE];
-
-        if ($filters['ignoreAlreadyBooked'] ?? false) {
-            $filters['availableStatuses'][] = AvailabilityInterface::STATUS_BOOKED;
-        }
-
         $usedIds = ['users' => [], 'assets' => []];
         $result = [];
 

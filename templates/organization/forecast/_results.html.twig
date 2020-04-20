@@ -1,4 +1,4 @@
-{% if filters.ignoreAlreadyBooked|default(false) %}
+{% if filters.displayAvailableWithBooked|default(false) %}
     <p class="alert alert-warning">Attention: certains bénévoles ou véhicules sont déjà engagés sur d'autres missions.</p>
 {% endif %}
 
@@ -13,6 +13,7 @@
         'organizations': filters.organizations | map(orga => orga.id),
         'userSkills': missionType.userSkillsRequirement | map(skillRequirement => skillRequirement.skill),
         'onlyFullyEquiped': filters.onlyFullyEquiped,
+        'displayAvailableWithBooked': filters.displayAvailableWithBooked,
         'displayVulnerables': filters.displayVulnerables,
         'assetTypes': missionType.assetTypesRequirement | map(assetRequirement => assetRequirement.type),
     } | filter(val => val)) }}" class="float-right">Voir sur le planning</a>
