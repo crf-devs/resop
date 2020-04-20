@@ -63,6 +63,10 @@ class PlanningSearchType extends AbstractType
                 'with_minutes' => false,
                 'required' => false,
             ])
+            ->add('displayAvailableWithBooked', CheckboxType::class, [
+                'label' => 'Afficher aussi les ressources déjà engagées',
+                'required' => false,
+            ])
             ->add('organizations', EntityType::class, [
                 'label' => 'Structures',
                 'class' => Organization::class,

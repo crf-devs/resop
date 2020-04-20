@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\AvailabilityInterface;
 use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
 use App\Entity\Organization;
@@ -82,7 +83,12 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
         }
 
         if (!empty($formData['availableFrom']) && !empty($formData['availableTo'])) {
-            $qb = $this->addAvailabilityBetween($qb, $formData['availableFrom'], $formData['availableTo'], CommissionableAssetAvailability::class, 'asset');
+            $availableStatuses = [AvailabilityInterface::STATUS_AVAILABLE];
+            if ($formData['displayAvailableWithBooked'] ?? false) {
+                $availableStatuses[] = AvailabilityInterface::STATUS_BOOKED;
+            }
+
+            $qb = $this->addAvailabilityBetween($qb, $formData['availableFrom'], $formData['availableTo'], CommissionableAssetAvailability::class, 'asset', $availableStatuses);
         }
 
         $qb->orderBy('a.name');

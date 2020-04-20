@@ -106,7 +106,11 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         }
 
         if (!empty($formData['availableFrom']) && !empty($formData['availableTo'])) {
-            $availableStatuses = $formData['availableStatuses'] ?? [AvailabilityInterface::STATUS_AVAILABLE];
+            $availableStatuses = [AvailabilityInterface::STATUS_AVAILABLE];
+            if ($formData['displayAvailableWithBooked'] ?? false) {
+                $availableStatuses[] = AvailabilityInterface::STATUS_BOOKED;
+            }
+
             $qb = $this->addAvailabilityBetween($qb, $formData['availableFrom'], $formData['availableTo'], UserAvailability::class, 'user', $availableStatuses);
         }
 

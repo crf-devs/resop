@@ -43,13 +43,13 @@ function initDatesRange($picker, $from, $to, withTime) {
 
   $picker.on('apply.daterangepicker', function (ev, picker) {
     displayDate();
-    $from.val(picker.startDate.format('YYYY-MM-DDTHH:mm'));
+    $from.val(picker.startDate.format('YYYY-MM-DDTHH:mm')).trigger('change');
     $to.val(picker.endDate.format('YYYY-MM-DDTHH:mm'));
   });
 
   $picker.on('cancel.daterangepicker', function () {
     $picker.val('');
-    $from.val('');
+    $from.val('').trigger('change');
     $to.val('');
   });
 }
@@ -57,6 +57,7 @@ function initDatesRange($picker, $from, $to, withTime) {
 function hideUselessFilters() {
   $('.search [data-hide="users"]').css('visibility', $('#hideUsers').prop('checked') ? 'hidden' : 'visible');
   $('.search [data-hide="assets"]').css('visibility', $('#hideAssets').prop('checked') ? 'hidden' : 'visible');
+  $('.search [data-hide="available"]').css('visibility', !$('#availableFrom').val() ? 'hidden' : 'visible');
 }
 
 function toggleMoreInfos() {
@@ -104,6 +105,7 @@ $(document).ready(function () {
 
   $('#hideUsers').on('change', hideUselessFilters);
   $('#hideAssets').on('change', hideUselessFilters);
+  $('#availableFrom').on('change', hideUselessFilters);
 
   $('#display-more').on('change', toggleMoreInfos);
 
