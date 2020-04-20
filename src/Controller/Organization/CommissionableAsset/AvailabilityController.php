@@ -74,6 +74,6 @@ final class AvailabilityController extends AbstractController
         return $this->render('organization/commissionable_asset/availability.html.twig', [
             'form' => $form->createView(),
             'asset' => $asset,
-        ]);
+        ])->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
     }
 }

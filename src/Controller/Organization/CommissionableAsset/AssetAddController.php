@@ -46,6 +46,6 @@ class AssetAddController extends AbstractController
                 'form' => $form->createView(),
                 'asset' => $asset,
             ]
-        );
+        )->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
     }
 }

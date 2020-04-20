@@ -70,6 +70,7 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      * @Assert\Regex(
      *     pattern="#^0[1-9][0-9]{8}$#",
      *     message="Le format est invalide, exemple : 0601020304."

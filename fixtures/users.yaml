@@ -5,14 +5,14 @@ App\Entity\User:
     organization: '@Organization.DT75'
     identificationNumber: 990001A
     emailAddress (unique): john.doe@resop.com
-    phoneNumber: '<fr_FR:phoneNumber()>'
+    phoneNumber: '0612345678'
     birthday: '1990-01-01'
-    occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
+    occupation: Pharmacien
     organizationOccupation: Secouriste
     skillSet: '<randomSkillSet()>'
-    vulnerable: '<boolean(50)>'
-    fullyEquipped: '<boolean(50)>'
-    drivingLicence: '<boolean(50)>'
+    vulnerable: true
+    fullyEquipped: true
+    drivingLicence: true
   User.jane_doe:
     firstName: Jane
     lastName: DOE
