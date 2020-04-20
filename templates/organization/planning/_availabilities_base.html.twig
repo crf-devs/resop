@@ -18,7 +18,7 @@
             filters.availableTo is defined and
             filters.availableTo is not empty and
             item >= filters.availableFrom and
-            item <= filters.availableTo
+            item < filters.availableTo
         %}
         <th class="slot-name {{ selected ? 'selected' : '' }}">
             {{ item|format_date(pattern="HH") }}
