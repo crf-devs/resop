@@ -10,18 +10,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommissionableAssetRepository")
  * @ORM\Table(indexes={
- *   @ORM\Index(name="commissionable_asset_name_idx", columns={"name"}),
- *   @ORM\Index(name="commissionable_asset_type_idx", columns={"type"}),
+ *   @ORM\Index(name="commissionable_asset_name_idx", columns={"name"})
  * })
  */
 class CommissionableAsset implements AvailabilitableInterface
 {
-    // TODO Use a parameter
-    public const TYPES = [
-        'VPSP' => 'Véhicule de premiers secours',
-        'VL' => 'Véhicule léger',
-    ];
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -30,11 +23,10 @@ class CommissionableAsset implements AvailabilitableInterface
     public ?int $id = null;
 
     /**
-     * @ORM\Column
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={CommissionableAsset::class, "getTypesKeys"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\AssetType")
+     * @ORM\JoinColumn(nullable=false)
      */
-    public string $type = '';
+    public AssetType $assetType;
 
     /**
      * @ORM\Column
@@ -54,46 +46,13 @@ class CommissionableAsset implements AvailabilitableInterface
     public iterable $availabilities = [];
 
     /**
-     * @ORM\Column(type="boolean")
-     * @Assert\Type("bool")
+     * @ORM\Column(type="json", nullable=false)
      */
-    public bool $hasMobileRadio = false;
-
-    /**
-     * @ORM\Column(type="boolean")
-     * @Assert\Type("bool")
-     */
-    public bool $hasFirstAidKit = false;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    public ?string $parkingLocation = null;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    public ?string $contact = null;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\Positive
-     */
-    public int $seatingCapacity = 1;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    public ?string $licensePlate = null;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    public ?string $comments = null;
+    public array $properties = [];
 
     public function __toString(): string
     {
-        return $this->type.' - '.$this->name;
+        return $this->assetType->name.' - '.$this->name;
     }
 
     public function getAvailabilities(): iterable
@@ -104,10 +63,5 @@ class CommissionableAsset implements AvailabilitableInterface
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public static function getTypesKeys(): array
-    {
-        return array_keys(self::TYPES);
     }
 }

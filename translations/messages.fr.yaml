@@ -56,6 +56,8 @@ common:
   phoneNumberShort: Tél
   type: Type
   yes: Oui
+  no: Non
+  back_to_list: Retourner à la liste
 message:
   deleteAssetWarning: "Vous êtes sur le point de supprimer le véhicule %asset% et toutes ses disponibilités."
   deleteSlotWarning: "Vous êtes sur le point de modifier la disponibilité de %nbAssets%"
@@ -89,6 +91,7 @@ organization:
     label: Structure
   edit: Modifier une structure
   editAll: Modifier mes structures
+  editAssetType: Modifier les types de véhicules
   editMissionType: Modifier les types de missions
   editUserProfile: Modifier un profil
   forecast: Projections
@@ -151,6 +154,34 @@ organization:
     occupation: Fonction de cadre au sein de la structure d'emploi
     skillset: Compétences Croix-Rouge
   users: Bénévoles
+  planning:
+    no_resource_available: Aucune resource ne correspond à votre recherche
+  asset_type:
+    main_title: Types de véhicule
+    add_new: Ajouter un nouveau type de véhicule
+    edit_form_title: Modifier un type de véhicule
+    properties:
+      main_title: Propriétés
+      add_new: Ajouter une nouvelle propriété
+      key: Identifiant unique
+      label: Libellé
+      help: Aide
+      hidden: Inactif
+      required: Obligatoire
+      format: Format
+      formats:
+        number: Nombre
+        boolean: Oui/Non
+        small_text: Texte court
+        text: Texte long
+  mission_type:
+    main_title: Types de missions
+    delete_success_message: Le type de mission a été supprimé avec succès
+    add_new: Ajouter un nouveau type de mission
+    confirm_delete: Vous êtes sur le point de supprimer le type de mission
+    edit_form_title: Modifier un type de mission
+  children_selector:
+    label: Structure
 project:
   contribute: Contribuez au projet
   description: Réserve opérationnelle - Croix-Rouge Française à Paris
@@ -209,6 +240,9 @@ user:
   skills: Compétences
   uniform: Uniforme
   welcome: Bienvenue, %name%
+asset:
+  type: Type
+  name: Identifiant
 
 # Symfony default translations
 Submit: Enregistrer

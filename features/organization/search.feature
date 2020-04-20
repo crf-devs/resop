@@ -51,11 +51,12 @@ Feature:
         Then I should be on "/organizations/search"
         And I should see "Rechercher \"<search>\""
         And I should see "<name>"
+        And I should see "<type>"
         And I should see "Aucun bénévole ne correspond à votre recherche."
         Examples:
-            | search | name         |
-            | 75992  | VPSP - 75992 |
-            | 75012  | VPSP - 75012 |
+            | search | name   | type |
+            | 75992  | 75992  | VPSP |
+            | 75012  | 75012  | VPSP |
 
     Scenario: As an authenticated children organization, I can search for a user in my organization
         Given I am authenticated as "UL 01-02"
@@ -64,7 +65,8 @@ Feature:
         And I press "Rechercher"
         Then I should be on "/organizations/search"
         And I should see "Rechercher \"75012\""
-        And I should see "VPSP - 75012"
+        And I should see "VPSP"
+        And I should see "75012"
         And I should see "Aucun bénévole ne correspond à votre recherche."
 
     Scenario: As an authenticated organization, I cannot search for a user in another organization

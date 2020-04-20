@@ -189,14 +189,14 @@ class PlanningDomain
     {
         $result = []; // Ordered associative array
 
-        // Assets
-        foreach (CommissionableAsset::getTypesKeys() as $type) {
-            $result[$type] = [];
-        }
-
         /** @var CommissionableAsset[] $item */
         foreach ($assetsAvailabilities as $item) {
-            $result[$item['entity']->type][] = $item;
+            /** @var int $assetTypeKey */
+            $assetTypeKey = $item['entity']->assetType->id;
+            if (!\array_key_exists($assetTypeKey, $result)) {
+                $result[$item['entity']->assetType->id] = [];
+            }
+            $result[$item['entity']->assetType->id][] = $item;
         }
 
         return array_filter($result);

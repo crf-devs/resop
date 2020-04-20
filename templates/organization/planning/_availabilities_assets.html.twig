@@ -4,21 +4,23 @@
 
 {# CAUTION: columns number of blocks itemDataHeader and itemDataDetails should be the same than in _availabilities_users.html.twig #}
 {% block itemDataHeader %}
-    <th class="item-data">{{ 'asset.planning.hasMobileRadio'|trans }}</th>
-    <th class="item-data" colspan="2">{{ 'asset.planning.hasFirstAidKit'|trans }}</th>
-    <th class="item-data">{{ 'asset.planning.contact'|trans }}</th>
-    <th class="item-data" colspan="2">{{ 'asset.parkingLocation'|trans }}</th>
-    <th class="item-data">{{ 'asset.planning.seatingCapacity'|trans }}</th>
-    <th class="item-data">{{ 'asset.planning.licensePlate'|trans }}</th>
-    <th class="item-data">{{ 'asset.comments'|trans }}</th>
+    <th class="item-data">Details</th>
+{#    {% for prop in asset.assetType.properties %}#}
+{#        <th class="item-data">{{ prop.label }}</th>#}
+{#    {% endfor %}#}
+{#    <th class="item-data">{{ 'asset.planning.hasMobileRadio'|trans }}</th>#}
+{#    <th class="item-data" colspan="2">{{ 'asset.planning.hasFirstAidKit'|trans }}</th>#}
+{#    <th class="item-data">{{ 'asset.planning.contact'|trans }}</th>#}
+{#    <th class="item-data" colspan="2">{{ 'asset.parkingLocation'|trans }}</th>#}
+{#    <th class="item-data">{{ 'asset.planning.seatingCapacity'|trans }}</th>#}
+{#    <th class="item-data">{{ 'asset.planning.licensePlate'|trans }}</th>#}
+{#    <th class="item-data">{{ 'asset.comments'|trans }}</th>#}
 {% endblock itemDataHeader %}
 
 {% block itemDataDetails %}
-    <td class="item-data">{{ item.entity.hasMobileRadio ? 'common.yes' | trans : '-' }}</td>
-    <td class="item-data" colspan="2">{{ item.entity.hasFirstAidKit ? 'common.yes' | trans : '-' }}</td>
-    <td class="item-data"><small>{{ item.entity.contact | truncate(50) }}</small></td>
-    <td class="item-data" colspan="2"><small>{{ item.entity.parkingLocation | truncate(50) }}</small></td>
-    <td class="item-data">{{ item.entity.seatingCapacity }}</td>
-    <td class="item-data">{{ item.entity.licensePlate }}</td>
-    <td class="item-data">{{ item.entity.comments | truncate(50) }}</td>
+        <td class="item-data">
+            {% for prop in item.entity.assetType.properties %}
+            {{ item.entity.properties[prop.key] |default('') }}
+            {% endfor %}
+        </td>
 {% endblock itemDataDetails %}

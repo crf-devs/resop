@@ -1,33 +1,33 @@
 App\Entity\CommissionableAsset:
   Asset.DT75.VPSP.{2..4,2}:
     organization: '@Organization.DT75'
-    type: VPSP
+    assetType: '@AssetType.DT75.VPSP'
     name: '7599<current()>'
   Asset.DT75.VL.{6..8,2}:
     organization: '@Organization.DT75'
-    type: VL
+    assetType: '@AssetType.DT75.VL'
     name: '7599<current()>'
   Asset.DT77.VPSP.{2..4,2}:
     organization: '@Organization.DT77'
-    type: VPSP
+    assetType: '@AssetType.DT77.VPSP'
     name: '7799<current()>'
   Asset.DT77.VL.{6..8,2}:
     organization: '@Organization.DT77'
-    type: VL
+    assetType: '@AssetType.DT77.VL'
     name: '7799<current()>'
   Asset.UL-01-02.VPSP.{2..4,2}:
     organization: '@Organization.UL-01-02'
-    type: VPSP
+    assetType: '@AssetType.DT75.VPSP'
     name: '7501<current()>'
   Asset.UL-01-02.VL.{6..8,2}:
     organization: '@Organization.UL-01-02'
-    type: VL
+    assetType: '@AssetType.DT75.VL'
     name: '7501<current()>'
   Asset.UL-DE-BRIE-ET-CHANTEREINE.VPSP.{2..4,2}:
     organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
-    type: VPSP
+    assetType: '@AssetType.DT77.VPSP'
     name: '7710<current()>'
   Asset.UL-DE-BRIE-ET-CHANTEREINE.VL.{6..8,2}:
     organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
-    type: VL
+    assetType: '@AssetType.DT77.VL'
     name: '7710<current()>'

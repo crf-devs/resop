@@ -1,0 +1,13 @@
+App\Entity\AssetType:
+  AssetType.DT75.VL:
+    organization: '@Organization.DT75'
+    name: VL
+  AssetType.DT75.VPSP:
+    organization: '@Organization.DT75'
+    name: VPSP
+  AssetType.DT77.VL:
+    organization: '@Organization.DT77'
+    name: VL
+  AssetType.DT77.VPSP:
+    organization: '@Organization.DT77'
+    name: VPSP

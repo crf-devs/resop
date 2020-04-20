@@ -118,6 +118,18 @@ class Organization implements UserPasswordInterface, \JsonSerializable
         return null === $this->parent;
     }
 
+    public function getParentOrganization(): Organization
+    {
+        if ($this->isParent()) {
+            return $this;
+        }
+
+        /** @var Organization $parent */
+        $parent = $this->parent;
+
+        return $parent;
+    }
+
     public function getParentName(): ?string
     {
         if (null === $this->parent) {

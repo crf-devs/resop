@@ -7,7 +7,8 @@ namespace App\Controller\Organization\Planning;
 use App\Domain\DatePeriodCalculator;
 use App\Domain\PlanningDomain;
 use App\Domain\SkillSetDomain;
-use App\Entity\CommissionableAsset;
+use App\Entity\Organization;
+use App\Repository\AssetTypeRepository;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\CacheItem;
@@ -21,17 +22,20 @@ use Twig\CacheExtension\CacheStrategyInterface;
  */
 class PlanningController extends AbstractController
 {
+    private AssetTypeRepository $assetTypeRepository;
     private SkillSetDomain $skillSetDomain;
     private PlanningDomain $planningDomain;
     private CacheStrategyInterface $cacheStrategy;
     private CacheItemPoolInterface $cacheTwig;
 
     public function __construct(
+        AssetTypeRepository $assetTypeRepository,
         SkillSetDomain $skillSetDomain,
         PlanningDomain $planningDomain,
         CacheStrategyInterface $cacheStrategy,
         CacheItemPoolInterface $cacheTwig
     ) {
+        $this->assetTypeRepository = $assetTypeRepository;
         $this->skillSetDomain = $skillSetDomain;
         $this->planningDomain = $planningDomain;
         $this->cacheStrategy = $cacheStrategy;
@@ -40,6 +44,9 @@ class PlanningController extends AbstractController
 
     public function __invoke(Request $request, string $slotInterval): Response
     {
+        /** @var Organization $organization */
+        $organization = $this->getUser();
+
         $form = $this->planningDomain->generateForm();
         $filters = $this->planningDomain->generateFilters($form);
 
@@ -66,11 +73,13 @@ class PlanningController extends AbstractController
             $this->cacheTwig->deleteItem($cacheKey);
         }
 
+        $assetTypes = $this->assetTypeRepository->findByOrganization($organization->getParentOrganization());
+
         return $this->render('organization/planning/planning.html.twig', [
             'filters' => $filters,
             'form' => $form->createView(),
             'periodCalculator' => $periodCalculator,
-            'assetsTypes' => CommissionableAsset::TYPES,
+            'assetsTypes' => $assetTypes,
             'usersSkills' => $this->skillSetDomain->getSkillSet(),
             'importantSkillsToDisplay' => $this->skillSetDomain->getSkillsToDisplay(),
         ]);
