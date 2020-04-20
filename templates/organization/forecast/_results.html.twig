@@ -5,7 +5,7 @@
 {% for missionType in filters.missionTypes %}
     <h3><a href="{{ path('app_organization_mission_type_edit', {id: missionType.id}) }}">{{ missionType.name }}</a></h3>
 
-    <a href="{{ path('planning', {
+    {% set planningOptions = {
         'from': filters.availableFrom |date_modify('-1 day') | date('Y-m-d\\T00:00:00'),
         'to': filters.availableTo |date_modify('+1 day') | date('Y-m-d\\T00:00:00'),
         'availableFrom': filters.availableFrom | date('Y-m-d\\TH:i:00'),
@@ -16,54 +16,85 @@
         'displayAvailableWithBooked': filters.displayAvailableWithBooked,
         'displayVulnerables': filters.displayVulnerables,
         'assetTypes': missionType.assetTypesRequirement | map(assetRequirement => assetRequirement.type),
-    } | filter(val => val)) }}" class="float-right">Voir sur le planning</a>
+    } | filter(val => val) %}
 
-    <table class="table table-sm mb-5">
-        <thead class="thead-light">
-        <tr>
-            <th scope="col">Bénévole</th>
-            <th scope="col">Nombre par mission</th>
-            <th scope="col">Disponibles</th>
-            <th scope="col">Missions possibles</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for skillRequirement in missionType.userSkillsRequirement %}
+
+    <div class="table-responsive">
+        <table class="table table-sm mb-5 text-center">
+            <thead class="thead-light">
             <tr>
-                <th scope="row">{{ skillRequirement.skill }}</th>
-                <td>{{ skillRequirement.number }}</td>
-                <td>{{ forecast[missionType.id].users[skillRequirement.skill].ids|length }}</td>
-                <td>{{ forecast[missionType.id].users[skillRequirement.skill].potential_missions_number }}</td>
+                <th scope="col">Bénévole</th>
+                <th scope="col">Nombre par mission</th>
+                <th scope="col">Disponibles</th>
+                <th scope="col">Missions possibles</th>
+                {% if forecast[missionType.id].partially_available is defined %}
+                    <th scope="col">Disponibles au moins {{ missionType.minimumAvailableHours }}h</th>
+                    <th scope="col">Missions éventuelles</th>
+                {% endif %}
             </tr>
-        {% endfor %}
-        </tbody>
-        <thead class="thead-light">
-        <tr>
-            <th scope="col">Véhicule</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for assetRequirement in missionType.assetTypesRequirement %}
+            </thead>
+            <tbody>
+            {% for skillRequirement in missionType.userSkillsRequirement %}
+                <tr>
+                    <th scope="row">{{ skillRequirement.skill }}</th>
+                    <td class="table-primary">{{ skillRequirement.number }}</td>
+                    <td>{{ forecast[missionType.id].fully_available.users[skillRequirement.skill].ids|length }}</td>
+                    <td>{{ forecast[missionType.id].fully_available.users[skillRequirement.skill].potential_missions_number }}</td>
+                    {% if forecast[missionType.id].partially_available is defined %}
+                        <td class="table-info">{{ forecast[missionType.id].partially_available.users[skillRequirement.skill].ids|length }}</td>
+                        <td class="table-info">{{ forecast[missionType.id].partially_available.users[skillRequirement.skill].potential_missions_number }}</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+            <thead class="thead-light">
             <tr>
-                <th scope="row">{{ assetRequirement.type }}</th>
-                <td>{{ assetRequirement.number }}</td>
-                <td>{{ forecast[missionType.id].assets[assetRequirement.type].ids|length }}</td>
-                <td>{{ forecast[missionType.id].assets[assetRequirement.type].potential_missions_number }}</td>
+                <th scope="col">Véhicule</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                {% if forecast[missionType.id].partially_available is defined %}
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                {% endif %}
             </tr>
-        {% endfor %}
-        </tbody>
-        <thead class="thead-light">
-        <tr>
-            <th>Equipages complets</th>
-            <th></th>
-            <th></th>
-            <th>{{ forecast[missionType.id].potential_missions_number }}</th>
-        </tr>
-        </thead>
-    </table>
+            </thead>
+            <tbody>
+            {% for assetRequirement in missionType.assetTypesRequirement %}
+                <tr>
+                    <th scope="row">{{ assetRequirement.type }}</th>
+                    <td class="table-primary">{{ assetRequirement.number }}</td>
+                    <td>{{ forecast[missionType.id].fully_available.assets[assetRequirement.type].ids|length }}</td>
+                    <td>{{ forecast[missionType.id].fully_available.assets[assetRequirement.type].potential_missions_number }}</td>
+                    {% if forecast[missionType.id].partially_available is defined %}
+                        <td class="table-info">{{ forecast[missionType.id].partially_available.assets[assetRequirement.type].ids|length }}</td>
+                        <td class="table-info">{{ forecast[missionType.id].partially_available.assets[assetRequirement.type].potential_missions_number }}</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+            <thead class="thead-light">
+            <tr>
+                <th>Equipages complets</th>
+                <th></th>
+                <th>
+                    <a href="{{ path('planning',  planningOptions) }}">
+                        Voir sur le planning
+                    </a>
+                </th>
+                <th>{{ forecast[missionType.id].fully_available.potential_missions_number }}</th>
+                {% if forecast[missionType.id].partially_available is defined %}
+                    <th>
+                        <a href="{{ path('planning',  planningOptions | merge({'minimumAvailableHours': missionType.minimumAvailableHours}) ) }}">
+                            Voir sur le planning
+                        </a>
+                    </th>
+                    <th>{{ forecast[missionType.id].partially_available.potential_missions_number }}</th>
+                {% endif %}
+            </tr>
+            </thead>
+        </table>
+    </div>
 {% endfor %}
 
 <a href="{{ path('app_organization_mission_type_new') }}" class="btn btn-outline-secondary">Ajouter un nouveau type de mission</a>

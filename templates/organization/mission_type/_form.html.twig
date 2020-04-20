@@ -1,7 +1,17 @@
 {{ form_start(form) }}
-    {{ form_row(form.name) }}
 
-<div>
+{{ form_row(form.name) }}
+
+{{ form_label(form.minimumAvailableHours) }}
+<div class="input-group">
+    {{ form_widget(form.minimumAvailableHours) }}
+    <div class="input-group-append">
+        <div class="input-group-text">heures</div>
+    </div>
+</div>
+{{ form_help(form.minimumAvailableHours) }}
+
+<div class="mt-5">
     {{ form_row(form.userSkillsRequirement) }}
     <div class="text-center">
         <button type="button" class="btn btn-outline-secondary add-collection-widget" data-list-selector="#mission_type_userSkillsRequirement">Ajouter un type de bénévole</button>

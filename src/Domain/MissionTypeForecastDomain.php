@@ -34,16 +34,32 @@ class MissionTypeForecastDomain
 
         /** @var MissionType $missionType */
         foreach ($filters['missionTypes'] ?? [] as $missionType) {
-            $results[$missionType->id] = $this->calculateHowMany($missionType, $filters);
-            $results[$missionType->id]['potential_missions_number'] = 0;
+            $results[$missionType->id]['fully_available'] = $this->calculate($missionType, $filters);
 
-            $allResources = array_merge($results[$missionType->id]['users'] ?? [], $results[$missionType->id]['assets'] ?? []);
-            if (\count($allResources)) {
-                $results[$missionType->id]['potential_missions_number'] = min(array_column($allResources, 'potential_missions_number'));
+            // If the mission type has a minimumAvailableHours smaller than the displayed period
+            $diff = (clone $filters['availableTo'])->diff(clone $filters['availableFrom']);
+            $hours = $diff->h + ($diff->days * 24);
+            if (!empty($missionType->minimumAvailableHours) && $missionType->minimumAvailableHours < $hours) {
+                $results[$missionType->id]['partially_available'] = $this->calculate($missionType, array_merge($filters, [
+                    'minimumAvailableHours' => $missionType->minimumAvailableHours,
+                ]));
             }
         }
 
         return $results;
+    }
+
+    private function calculate(MissionType $missionType, array $filters): array
+    {
+        $result = $this->calculateHowMany($missionType, $filters);
+        $result['potential_missions_number'] = 0;
+
+        $allResources = array_merge($result['users'] ?? [], $result['assets'] ?? []);
+        if (\count($allResources)) {
+            $result['potential_missions_number'] = min(array_column($allResources, 'potential_missions_number'));
+        }
+
+        return $result;
     }
 
     private function calculateHowMany(MissionType $missionType, array $filters): array

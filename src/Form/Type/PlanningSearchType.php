@@ -14,6 +14,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -66,6 +67,15 @@ class PlanningSearchType extends AbstractType
             ->add('displayAvailableWithBooked', CheckboxType::class, [
                 'label' => 'Afficher aussi les ressources déjà engagées',
                 'required' => false,
+            ])
+            ->add('minimumAvailableHours', IntegerType::class, [
+                'label' => 'Afficher si disponible au moins',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'heures',
+                    'min' => 0,
+                    'step' => 2,
+                ],
             ])
             ->add('organizations', EntityType::class, [
                 'label' => 'Structures',
