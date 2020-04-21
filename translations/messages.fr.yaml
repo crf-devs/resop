@@ -102,6 +102,9 @@ organization:
     mainTitle: Types de missions
   planning:
     countAlreadyBooked: Compter aussi les ressources déjà engagées
+    countMinimumAvailableHours:
+      label: Compter les ressources comme disponibles à partir de
+      help: Si cette valeur n'est pas spécifiée, les resources seront comptabilisées si elles sont disponibles sur toute la période
     countVulnerableUsers: Compter aussi les personnes signalées comme vulnérables
     hideAssets: Cacher les véhicules
     hideUsers: Cacher les bénévoles

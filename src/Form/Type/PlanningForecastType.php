@@ -75,7 +75,7 @@ class PlanningForecastType extends AbstractType
                 'required' => false,
             ])
             ->add('displayAvailableWithBooked', CheckboxType::class, [
-                'label' => 'Compter aussi les ressources déjà engagées',
+                'label' => 'organization.planning.countAlreadyBooked',
                 'required' => false,
             ])
             ->add('displayVulnerables', CheckboxType::class, [

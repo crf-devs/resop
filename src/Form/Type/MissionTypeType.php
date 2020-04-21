@@ -16,10 +16,10 @@ class MissionTypeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', null, ['label' => 'Nom'])
+            ->add('name', null, ['label' => 'common.name'])
             ->add('minimumAvailableHours', IntegerType::class, [
-                'label' => 'Compter les ressources comme disponibles à partir de',
-                'help' => 'Si cette valeur n\'est pas spécifiée, les resources seront comptabilisées si elles sont disponibles sur toute la période',
+                'label' => 'organization.planning.countMinimumAvailableHours.label',
+                'help' => 'organization.planning.countMinimumAvailableHours.help',
                 'required' => false,
                 'attr' => [
                     'min' => 0,
