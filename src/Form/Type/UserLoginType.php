@@ -16,7 +16,7 @@ final class UserLoginType extends AbstractType
     {
         $builder
             ->add('identifier', TextType::class, [
-                'label' => 'user.login'
+                'label' => 'user.login',
             ])
             ->add('birthday', BirthdayType::class, [
                 'format' => 'dd MMMM yyyy',
