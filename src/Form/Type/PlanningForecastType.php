@@ -29,20 +29,20 @@ class PlanningForecastType extends AbstractType
             ->add('availableFrom', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
-                'label' => 'Rechercher les ressources disponibles de ',
+                'label' => 'organization.planning.showAssetsFrom',
                 'with_minutes' => false,
                 'required' => true,
             ])
             ->add('availableTo', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
-                'label' => 'à',
+                'label' => 'calendar.to',
                 'data' => (new DateTimeImmutable('today'))->add(new \DateInterval('P1D')),
                 'with_minutes' => false,
                 'required' => true,
             ])
             ->add('organizations', EntityType::class, [
-                'label' => 'Structures',
+                'label' => 'organization.pluralLabel',
                 'class' => Organization::class,
                 'group_by' => 'parentName',
                 'query_builder' => static function (OrganizationRepository $repository) use ($organization) {
@@ -57,7 +57,7 @@ class PlanningForecastType extends AbstractType
                 ],
             ])
             ->add('missionTypes', EntityType::class, [
-                'label' => 'Types de missions',
+                'label' => 'organization.missionType.mainTitle',
                 'class' => MissionType::class,
                 'query_builder' => static function (MissionTypeRepository $repository) use ($organization) {
                     return $repository->findByOrganizationQb($organization);
@@ -71,7 +71,7 @@ class PlanningForecastType extends AbstractType
                 ],
             ])
             ->add('onlyFullyEquiped', CheckboxType::class, [
-                'label' => 'Avec uniforme seulement',
+                'label' => 'organization.planning.uniformOnly',
                 'required' => false,
             ])
             ->add('displayAvailableWithBooked', CheckboxType::class, [
@@ -79,7 +79,7 @@ class PlanningForecastType extends AbstractType
                 'required' => false,
             ])
             ->add('displayVulnerables', CheckboxType::class, [
-                'label' => 'Compter aussi les personnes signalées comme vulnérables',
+                'label' => 'organization.planning.countVulnerableUsers',
                 'required' => false,
             ]);
     }

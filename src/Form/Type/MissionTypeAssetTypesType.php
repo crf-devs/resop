@@ -16,7 +16,7 @@ class MissionTypeAssetTypesType extends AbstractType
     {
         $builder
             ->add('type', ChoiceType::class, [
-                'label' => 'Type',
+                'label' => 'common.type',
                 'choices' => CommissionableAssetType::TYPES,
                 'placeholder' => '',
                 'row_attr' => ['class' => 'row'],
@@ -24,7 +24,7 @@ class MissionTypeAssetTypesType extends AbstractType
                 'attr' => ['class' => 'col-sm-6'],
             ])
             ->add('number', IntegerType::class, [
-                'label' => 'Nombre',
+                'label' => 'common.number',
                 'row_attr' => ['class' => 'row'],
                 'label_attr' => ['class' => 'col-sm-2'],
                 'attr' => ['class' => 'col-sm-4'],

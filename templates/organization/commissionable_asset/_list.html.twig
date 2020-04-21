@@ -57,7 +57,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Vous êtes sur le point de supprimer le véhicule : <span id="to-delete-name"></span> et toutes ses disponibilités.
+                {{ 'message.deleteAssetWarning' | trans | raw }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>

@@ -69,7 +69,7 @@
             </tfoot>
         </table>
     {% else %}
-        <p class="alert alert-warning mx-2">{{ 'organization.planning.no_resource_available'|trans }}</p>
+        <p class="alert alert-warning mx-2">{{ 'organization.planning.noResourceAvailable'|trans }}</p>
     {% endif %}
 </div>
 {% endcache %}
@@ -84,7 +84,7 @@
             </div>
             <div class="modal-body">
                 <p>
-                    Vous êtes sur le point de modifier la disponibilité de <strong id="nb-assets-users"></strong>.
+                    {{ 'message.deleteSlotWarning' | trans | raw }}.
                 </p>
                 <div class="form-group" id="status-update-comment-container">
                     <label for="status-update-comment">Commentaire</label>

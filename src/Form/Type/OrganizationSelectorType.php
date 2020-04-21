@@ -38,7 +38,7 @@ final class OrganizationSelectorType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Organization::class,
-                    'label' => 'organization.children_selector.label',
+                    'label' => 'organization.childrenSelector.label',
                     'query_builder' => $this->organizationRepository->findByParentQueryBuilder($options['currentOrganization']),
                     'choice_attr' => function (Organization $choice) use ($options) {
                         return [

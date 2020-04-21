@@ -15,10 +15,13 @@ final class UserLoginType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('identifier', TextType::class)
+            ->add('identifier', TextType::class, [
+                'label' => 'user.login'
+            ])
             ->add('birthday', BirthdayType::class, [
                 'format' => 'dd MMMM yyyy',
                 'input' => 'string',
+                'label' => 'user.dob',
             ]);
     }
 

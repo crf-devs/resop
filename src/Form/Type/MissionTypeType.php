@@ -30,13 +30,13 @@ class MissionTypeType extends AbstractType
                 'entry_type' => MissionTypeUserSkillsType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => 'Bénévoles',
+                'label' => 'organization.users',
             ])
             ->add('assetTypesRequirement', CollectionType::class, [
                 'entry_type' => MissionTypeAssetTypesType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => 'Véhicules',
+                'label' => 'organization.vehicles',
             ])
         ;
     }

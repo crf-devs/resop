@@ -14,7 +14,7 @@
 
     <h1>{{formTitle}}</h1>
     {{ form_start(form, { method: 'POST', action: formAction }) }}
-    {{ form_row(form.name, { label: 'common.name' | trans }) }}
-    {{ form_row(form.submit, { label: 'action.submit' | trans }) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.submit) }}
     {{ form_end(form) }}
 {% endblock %}

@@ -5,12 +5,12 @@
     {{ encore_entry_script_tags('mission-type-form') }}
 {% endblock %}
 
-{% block title %}{{ 'organization.mission_type.edit_form_title' | trans }}{% endblock %}
+{% block title %}{{ 'organization.missionType.editFormTitle' | trans }}{% endblock %}
 
 {% block body %}
 
-    <a href="{{ path('app_organization_mission_type_index') }}">{{ 'common.back_to_list' | trans }}</a>
-    <h1>{{ 'organization.mission_type.edit_form_title' | trans }}</h1>
+    <a href="{{ path('app_organization_mission_type_index') }}">{{ 'common.backToList' | trans }}</a>
+    <h1>{{ 'organization.missionType.editFormTitle' | trans }}</h1>
 
     {{ include('organization/mission_type/_form.html.twig', {'button_label': 'action.save' | trans}) }}
 {% endblock %}

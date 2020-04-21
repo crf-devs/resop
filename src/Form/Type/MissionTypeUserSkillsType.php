@@ -24,7 +24,7 @@ class MissionTypeUserSkillsType extends AbstractType
     {
         $builder
             ->add('skill', ChoiceType::class, [
-                'label' => 'Compétence',
+                'label' => 'user.skill',
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),
                 'placeholder' => '',
                 'row_attr' => ['class' => 'row'],
@@ -32,7 +32,7 @@ class MissionTypeUserSkillsType extends AbstractType
                 'attr' => ['class' => 'col-sm-6'],
             ])
             ->add('number', IntegerType::class, [
-                'label' => 'Nombre',
+                'label' => 'common.number',
                 'row_attr' => ['class' => 'row'],
                 'label_attr' => ['class' => 'col-sm-2'],
                 'attr' => ['class' => 'col-sm-4'],

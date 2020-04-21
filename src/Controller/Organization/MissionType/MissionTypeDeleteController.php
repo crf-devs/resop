@@ -34,7 +34,7 @@ class MissionTypeDeleteController extends AbstractController
         $this->entityManager->remove($missionType);
         $this->entityManager->flush();
 
-        $this->addFlash('success', $this->translator->trans('organization.mission_type.delete_success_message'));
+        $this->addFlash('success', $this->translator->trans('organization.missionType.deleteSuccessMessage'));
 
         return $this->redirectToRoute('app_organization_mission_type_index');
     }
