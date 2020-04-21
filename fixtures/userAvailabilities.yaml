@@ -1,0 +1,9 @@
+App\Entity\UserAvailability:
+  UserAvailability.john_doe.next-week.monday.{2..4,2}am.locked:
+    __factory: { '@App\DataFixtures\Factory\UserAvailabilityFactory::create': ['@User.john_doe', 'next week monday <current()> am', 'locked'] }
+  UserAvailability.john_doe.next-week.monday.{6..8,2}am.booked:
+    __factory: { '@App\DataFixtures\Factory\UserAvailabilityFactory::create': ['@User.john_doe', 'next week monday <current()> am', 'booked'] }
+  UserAvailability.john_doe.next-week.monday.10am.available:
+    __factory: { '@App\DataFixtures\Factory\UserAvailabilityFactory::create': ['@User.john_doe', 'next week monday 10 am', 'available'] }
+  UserAvailability.john_doe.next-week.monday.12pm.available:
+    __factory: { '@App\DataFixtures\Factory\UserAvailabilityFactory::create': ['@User.john_doe', 'next week monday 12 pm', 'available'] }

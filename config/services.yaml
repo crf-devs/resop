@@ -97,6 +97,10 @@ services:
         resource: '../src/DataFixtures/Faker/Provider'
         tags: ['nelmio_alice.faker.provider']
 
+    App\DataFixtures\Factory\:
+        resource: '../src/DataFixtures/Factory'
+        public: true # Required by fixtures
+
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
         arguments:
              - !service { class: PDO, factory: ['@database_connection', 'getWrappedConnection'] }

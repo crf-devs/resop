@@ -28,17 +28,24 @@ final class UserPlanningContext implements Context
     }
 
     /**
-     * @When /^I (?P<action>(?:check|uncheck)) "(?P<day>(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday))" column$/
+     * @When /^I (?P<action>(?:check|uncheck)) "(?P<time>[^"]+)" availability checkbox$/
      */
-    public function checkColumn(string $action, string $day): void
+    public function checkColumn(string $action, string $time): void
     {
         $page = $this->minkContext->getSession()->getPage();
-        /** @var int $time */
-        $time = strtotime($day);
-        $dayNumber = (int) date('N', $time) - 1;
-        $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]:not(:disabled)', $dayNumber));
+        if (false === strtotime($time)) {
+            throw new \InvalidArgumentException("Time \"$time\" is not valid.");
+        }
+
+        $dateTime = new \DateTime($time);
+        $dateTime->setTime((int) $dateTime->format('H'), 0, 0, 0);
+        if (1 === (int) $dateTime->format('H') % 2) {
+            $dateTime->setTime((int) $dateTime->format('H') - 1, 0, 0, 0);
+        }
+
+        $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-from="%d"] input[type="checkbox"]:not(:disabled)', $dateTime->format('U')));
         if (0 === \count($elements)) {
-            throw new ElementNotFoundException($this->minkContext->getSession()->getDriver(), 'form field', 'data-day', sprintf('%s (%d)', $day, $dayNumber));
+            throw new ElementNotFoundException($this->minkContext->getSession()->getDriver(), 'form field', 'css', sprintf('%s (%s) (%s)', $time, $dateTime->format('Y-m-d H:i:s'), $dateTime->format('U')));
         }
 
         foreach ($elements as $element) {
@@ -51,20 +58,49 @@ final class UserPlanningContext implements Context
     }
 
     /**
-     * @When /^(?:the )?column "(?P<day>(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday))" should be (?P<action>(?:checked|unchecked))$/
+     * @Then /^(?:the )?"(?P<time>[^"]+)" availability checkbox should not exists$/
      */
-    public function verifyColumn(string $day, string $state): void
+    public function checkColumnExists(string $time): void
     {
         $page = $this->minkContext->getSession()->getPage();
-        /** @var int $time */
-        $time = strtotime($day);
+        if (false === strtotime($time)) {
+            throw new \InvalidArgumentException("Time \"$time\" is not valid.");
+        }
 
-        $locator = sprintf('table.availability-form-table tbody td[data-day="%d"] input[type="checkbox"]:not(:disabled)', (int) date('N', $time) - 1);
+        $dateTime = new \DateTime($time);
+        $dateTime->setTime((int) $dateTime->format('H'), 0, 0, 0);
+        if (1 === (int) $dateTime->format('H') % 2) {
+            $dateTime->setTime((int) $dateTime->format('H') - 1, 0, 0, 0);
+        }
+
+        $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-from="%d"] input[type="checkbox"]:not(:disabled)', $dateTime->format('U')));
+        if (0 < \count($elements)) {
+            throw new ExpectationException("The checkbox for \"$time\" is available.", $this->minkContext->getSession()->getDriver());
+        }
+    }
+
+    /**
+     * @When /^(?:the )?availability checkbox "(?P<time>[^"]+)" should be (?P<action>(?:checked|unchecked))$/
+     */
+    public function verifyColumn(string $time, string $state): void
+    {
+        $page = $this->minkContext->getSession()->getPage();
+        if (false === strtotime($time)) {
+            throw new \InvalidArgumentException("Time \"$time\" is not valid.");
+        }
+
+        $dateTime = new \DateTime($time);
+        $dateTime->setTime((int) $dateTime->format('H'), 0, 0, 0);
+        if (1 === (int) $dateTime->format('H') % 2) {
+            $dateTime->setTime((int) $dateTime->format('H') - 1, 0, 0, 0);
+        }
+
+        $locator = sprintf('table.availability-form-table tbody td[data-from="%d"] input[type="checkbox"]:not(:disabled)', $dateTime->format('U'));
         // Reverse the state to ensure no element is checked/unchecked
         $locator .= 'checked' === $state ? ':not(:checked)' : ':checked';
         $count = \count($page->findAll('css', $locator));
         if (0 < $count) {
-            throw new ExpectationException(sprintf('%d checkboxes of column "%s" are not %s.', (int) $count, (string) $day, (string) $state), $this->minkContext->getSession()->getDriver());
+            throw new ExpectationException(sprintf('%d checkboxes of column "%s" are not %s.', (int) $count, $time, (string) $state), $this->minkContext->getSession()->getDriver());
         }
     }
 }
