@@ -26,18 +26,18 @@ class UserType extends AbstractType
     public const DISPLAY_ORGANIZATION = 'organization';
 
     protected const DEFAULT_OCCUPATIONS = [
-        'user.occupation.pediatric',
-        'user.occupation.nurse',
-        'user.occupation.gp',
-        'user.occupation.paramedic',
-        'user.occupation.nursingAssistant',
-        'user.occupation.nurseAnaesthetist',
-        'user.occupation.midwife',
-        'user.occupation.pharmacist',
-        'user.occupation.otherHealth',
-        'user.occupation.firefighter',
-        'user.occupation.policeOfficer',
-        'user.occupation.logistics',
+        'Compétences pédiatriques',
+        'Infirmier.e',
+        'Médecin',
+        'Ambulancier.e',
+        'Aide soignant.e',
+        'Infirmier.e anesthésiste',
+        'Sage femme',
+        'Pharmacien',
+        'Autre personnel de santé',
+        'Pompier',
+        'Gendarme / Policier',
+        'Logisticien',
     ];
 
     protected SkillSetDomain $skillSetDomain;
