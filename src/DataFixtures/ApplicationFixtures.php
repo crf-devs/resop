@@ -25,9 +25,6 @@ final class ApplicationFixtures extends Fixture
     // 168 = 12 (slot per day) * 7 (days in a week) * 2 (number of week available)
     private const SLOT_NUMBER = 168;
 
-    // A slot is 2h long
-    private const SLOT_INTERVAL = 'PT2H';
-
     private const PERCENT_USER_LOCKED = 0.10;
     private const PERCENT_USER_AVAILABLE = 0.30;
     private const PERCENT_USER_PARTIALLY_AVAILABLE = 0.40;
@@ -98,6 +95,7 @@ final class ApplicationFixtures extends Fixture
     private int $nbAvailabilities;
 
     private int $availabilitiesId = 1;
+    private string $slotInterval;
 
     private SlotBookingGuesser $slotBookingGuesser;
     private SlotAvailabilityGuesser $slotAvailabilityGuesser;
@@ -110,6 +108,7 @@ final class ApplicationFixtures extends Fixture
         SlotBookingGuesser $slotBookingGuesser,
         SlotAvailabilityGuesser $slotAvailabilityGuesser,
         PhoneNumberUtil $phoneNumberUtil,
+        string $slotInterval,
         int $nbUsers = null,
         int $nbAvailabilities = null
     ) {
@@ -120,6 +119,7 @@ final class ApplicationFixtures extends Fixture
         $this->nbAvailabilities = $nbAvailabilities ?: random_int(2, 6);
         $this->slotBookingGuesser = $slotBookingGuesser;
         $this->slotAvailabilityGuesser = $slotAvailabilityGuesser;
+        $this->slotInterval = $slotInterval;
         $this->phoneNumberUtil = $phoneNumberUtil;
     }
 
@@ -378,7 +378,7 @@ final class ApplicationFixtures extends Fixture
                     );
                 }
 
-                $slot = $slot->add(new \DateInterval(self::SLOT_INTERVAL));
+                $slot = $slot->add(\DateInterval::createFromDateString($this->slotInterval));
             }
 
             $this->slotBookingGuesser->resetGuesser();
@@ -395,7 +395,7 @@ final class ApplicationFixtures extends Fixture
 
     private function closeInterval(\DateTimeImmutable $dateTime): \DateTimeInterface
     {
-        return $dateTime->add(new \DateInterval('PT2H'));
+        return $dateTime->add(\DateInterval::createFromDateString($this->slotInterval));
     }
 
     private function makeOrganization(string $name, string $password = null, Organization $parent = null): Organization

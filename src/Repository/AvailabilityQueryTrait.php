@@ -9,6 +9,8 @@ use Doctrine\ORM\QueryBuilder;
 
 trait AvailabilityQueryTrait
 {
+    use AvailabilityTrait;
+
     private function isEven(int $number): bool
     {
         return 0 === $number % 2;
@@ -18,30 +20,22 @@ trait AvailabilityQueryTrait
         QueryBuilder $qb,
         \DateTimeImmutable $start,
         \DateTimeImmutable $end,
+        string $slotInterval,
         string $availabilityClass,
         string $groupByField,
         array $statuses = [AvailabilityInterface::STATUS_AVAILABLE],
         ?int $minimalAvailableTime = null
     ): QueryBuilder {
-        $start = $start->setTime((int) $start->format('H'), 0);
-        $end = $end->setTime((int) $end->format('H'), 0);
-
         // Round to the closest even the start and end date
-        $hour = (int) $start->format('H');
-        if (!$this->isEven($hour)) {
-            $start = $start->sub(new \DateInterval('PT1H'));
-        }
-        $hour = (int) $end->format('H');
-        if (!$this->isEven($hour)) {
-            $end = $end->add(new \DateInterval('PT1H'));
-        }
+        $start = self::round($start, $slotInterval);
+        $end = self::round($end, $slotInterval, false);
 
         $interval = $start->diff($end);
-        $numberOfInterval = (int) ($interval->h / 2);
-        $numberOfInterval += (int) (($interval->d * 24) / 2);
+        $numberOfInterval = (int) ($interval->h / $interval);
+        $numberOfInterval += (int) (($interval->d * 24) / $interval);
 
         if (!empty($minimalAvailableTime)) { // can be null or 0
-            $numberOfInterval = min($numberOfInterval, (int) ($minimalAvailableTime / 2));
+            $numberOfInterval = min($numberOfInterval, (int) ($minimalAvailableTime / $interval));
         }
 
         $subQuery = $this->getEntityManager()->createQueryBuilder()

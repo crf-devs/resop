@@ -31,7 +31,7 @@ final class ManageAvailabilityController extends AbstractController
         $this->userAvailabilityRepository = $userAvailabilityRepository;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, string $slotInterval): Response
     {
         $user = $this->getUser();
 
@@ -59,6 +59,7 @@ final class ManageAvailabilityController extends AbstractController
         $availabilitiesDomain = AvailabilitiesDomain::generate(
             $start,
             $end,
+            $slotInterval,
             $this->userAvailabilityRepository->findBetweenDates($user, $start, $end),
             $blockedSlotsInterval
         );

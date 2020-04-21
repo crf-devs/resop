@@ -1,9 +1,12 @@
 App\Entity\UserAvailability:
-  UserAvailability.john_doe.next-week.monday.{2..4,2}am.locked:
-    __factory: { '@App\DataFixtures\Factory\UserAvailabilityFactory::create': ['@User.john_doe', 'next week monday <current()> am', 'locked'] }
-  UserAvailability.john_doe.next-week.monday.{6..8,2}am.booked:
-    __factory: { '@App\DataFixtures\Factory\UserAvailabilityFactory::create': ['@User.john_doe', 'next week monday <current()> am', 'booked'] }
-  UserAvailability.john_doe.next-week.monday.10am.available:
-    __factory: { '@App\DataFixtures\Factory\UserAvailabilityFactory::create': ['@User.john_doe', 'next week monday 10 am', 'available'] }
-  UserAvailability.john_doe.next-week.monday.12pm.available:
-    __factory: { '@App\DataFixtures\Factory\UserAvailabilityFactory::create': ['@User.john_doe', 'next week monday 12 pm', 'available'] }
+  # John DOE is locked/booked next monday from 2:00 to 9:59
+  UserAvailability.john_doe.next-week.monday.{2..8,2}:
+    __factory:
+      '@App\DataFixtures\Factory\UserAvailabilityFactory::create':
+        - '<{app.slot_interval}>'
+        - '@User.john_doe'
+        - 'next monday <current()>:00'
+        - '<randomElement(["locked", "booked"])>'
+  # John DOE is available next monday from 10:00 to 13:59
+  UserAvailability.john_doe.next-week.monday.{10..12,2}:
+    __factory: { '@App\DataFixtures\Factory\UserAvailabilityFactory::create': ['<{app.slot_interval}>', '@User.john_doe', 'next monday <current()>:00', 'available'] }
