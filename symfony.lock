@@ -8,6 +8,9 @@
     "behat/gherkin": {
         "version": "v4.6.2"
     },
+    "behat/mink-selenium2-driver": {
+        "version": "v1.4.0"
+    },
     "behat/transliterator": {
         "version": "v1.3.0"
     },
@@ -199,6 +202,9 @@
             "config/packages/test/hautelook_alice.yaml",
             "fixtures/.gitignore"
         ]
+    },
+    "instaclick/php-webdriver": {
+        "version": "1.4.7"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"

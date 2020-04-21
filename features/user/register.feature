@@ -1,12 +1,13 @@
 Feature:
-    In order to fill in my availabilities
-    As a user
-    I must be able to create my account
+    In order to fill in my availabilities,
+    As a user,
+    I must be able to create my account.
 
     Scenario: As authenticated user, I cannot create an account
         Given I am authenticated as "john.doe@resop.com"
         When I go to "/user/new"
         Then I should be on "/"
+        And the response status code should be 200
 
     Scenario: As anonymous, I cannot create an account with already registered email address
         Given I am on "/user/new"
@@ -19,8 +20,8 @@ Feature:
         And I select "UL 01-02" from "user[organization]"
         And I check "Maraudeur.se"
         And I press "Valider"
-        Then the response status code should be 400
-        And I should be on "/user/new"
+        Then I should be on "/user/new"
+        And the response status code should be 400
         And I should see "Cette valeur est déjà utilisée."
 
     Scenario: As anonymous, I cannot create an account with already registered identification number
@@ -34,8 +35,8 @@ Feature:
         And I select "UL 01-02" from "user[organization]"
         And I check "Maraudeur.se"
         And I press "Valider"
-        Then the response status code should be 400
-        And I should be on "/user/new"
+        Then I should be on "/user/new"
+        And the response status code should be 400
         And I should see "Cette valeur est déjà utilisée."
 
     Scenario: As anonymous, I can create an account with valid data
@@ -51,6 +52,7 @@ Feature:
         And I press "Valider"
         Then the response status code should be 200
         And I should be on "/"
+        And the response status code should be 200
         And I should see "Votre compte utilisateur a été créé avec succès."
         And I should see "Bienvenue, Archibald HADDOCK"
         And I should see "NIVOL : 999999A"

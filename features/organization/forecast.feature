@@ -6,7 +6,7 @@ Feature:
 
     Scenario: As anonymous, I cannot access to the forecast page
         When I go to "/organizations/201/forecast/"
-        Then I should be on "/organizations/login"
+        Then I should be on "/login"
 
     Scenario: As an authenticated children organization, I cannot use the forecast search form
         Given I am authenticated as "UL 01-02"

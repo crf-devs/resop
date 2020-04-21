@@ -6,7 +6,7 @@ Feature:
 
     Scenario: As anonymous, I cannot list mission types from an organization
         When I go to "/organizations/201/mission_type/new"
-        Then I should be on "/organizations/login"
+        Then I should be on "/login"
         And the response status code should be 200
 
     Scenario: As an organization, I can list my mission types

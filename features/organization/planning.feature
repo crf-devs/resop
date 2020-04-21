@@ -7,7 +7,7 @@ Feature:
 
     Scenario: As an anonymous, I cannot access the planning
         Given I go to "/organizations/201/planning/"
-        Then I should be on "/organizations/login"
+        Then I should be on "/login"
         And the response status code should be 200
 
     Scenario: As an organization, I have access to the planning and I can see my resources

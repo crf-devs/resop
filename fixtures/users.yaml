@@ -1,4 +1,6 @@
 App\Entity\User:
+  # John DOE is admin of DT75. He is not volunteer.
+  # As organization admin, his password is required.
   User.john_doe:
     id: 101
     firstName: John
@@ -6,6 +8,7 @@ App\Entity\User:
     organization: '@Organization.DT75'
     identificationNumber: 990001A
     emailAddress (unique): john.doe@resop.com
+    plainPassword: covid19
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
     occupation: Pharmacien
@@ -14,6 +17,11 @@ App\Entity\User:
     vulnerable: true
     fullyEquipped: true
     drivingLicence: true
+    organizations: ['@Organization.DT75']
+    roles: ['ROLE_USER']
+
+  # Jane DOE is volunteer and admin of UL 01-02, an organization children of DT75 managed by John DOE.
+  # As organization admin, her password is required, but she didn't filled it yet.
   User.jane_doe:
     id: 102
     firstName: Jane
@@ -29,13 +37,19 @@ App\Entity\User:
     vulnerable: '<boolean(50)>'
     fullyEquipped: '<boolean(50)>'
     drivingLicence: '<boolean(50)>'
+    organizations: ['@Organization.UL-01-02']
+    roles: ['ROLE_VOLUNTEER']
+
+  # Chuck NORRIS is volunteer in UL DE BRIE ET CHANTEREINE, an organization children of DT77 managed by Lady GAGA.
+  # Because he has a password, he has to connect using it.
   User.chuck_norris:
-    id: 103
+    id: 105
     firstName: Chuck
     lastName: NORRIS
     organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
-    identificationNumber: 990003A
+    identificationNumber: 990005A
     emailAddress (unique): chuck.norris@resop.com
+    plainPassword: covid19
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
     occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
@@ -44,3 +58,66 @@ App\Entity\User:
     vulnerable: '<boolean(50)>'
     fullyEquipped: '<boolean(50)>'
     drivingLicence: '<boolean(50)>'
+    roles: ['ROLE_VOLUNTEER']
+
+  # Freddy MERCURY is volunteer in Organization.UL-DE-BRIE-ET-CHANTEREINE, and admin of UL DE BRIE ET CHANTEREINE,
+  # an organization children of DT77 managed Lady GAGA.
+  # As organization admin, his password is required.
+  User.freddy_mercury:
+    id: 104
+    firstName: Freddy
+    lastName: MERCURY
+    organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
+    identificationNumber: 990004A
+    emailAddress (unique): freddy.mercury@resop.com
+    plainPassword: covid19
+    phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
+    birthday: '1990-01-01'
+    occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
+    organizationOccupation: Secouriste
+    skillSet: '<randomSkillSet()>'
+    vulnerable: '<boolean(50)>'
+    fullyEquipped: '<boolean(50)>'
+    drivingLicence: '<boolean(50)>'
+    organizations: ['@Organization.UL-DE-BRIE-ET-CHANTEREINE']
+    roles: ['ROLE_VOLUNTEER']
+
+  # Lady GAGA is admin of DT77. She is not volunteer.
+  # As organization admin, her password is required.
+  User.lady.gaga:
+    id: 106
+    firstName: Lady
+    lastName: GAGA
+    organization: '@Organization.DT77'
+    identificationNumber: 990006A
+    emailAddress (unique): lady.gaga@resop.com
+    plainPassword: covid19
+    phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
+    birthday: '1990-01-01'
+    occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
+    organizationOccupation: Secouriste
+    skillSet: '<randomSkillSet()>'
+    vulnerable: false
+    fullyEquipped: true
+    drivingLicence: true
+    organizations: ['@Organization.DT77']
+    roles: ['ROLE_USER']
+
+  # Jill DOE is volunteer of UL 01-02, an organization children of DT75 managed by John DOE.
+  # As volunteer, she doesn't any password, and connects using her birth date.
+  User.jill_doe:
+    id: 103
+    firstName: Jill
+    lastName: DOE
+    organization: '@Organization.UL-01-02'
+    identificationNumber: 990003A
+    emailAddress (unique): jill.doe@resop.com
+    phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
+    birthday: '1990-01-01'
+    occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
+    organizationOccupation: Secouriste
+    skillSet: '<randomSkillSet()>'
+    vulnerable: '<boolean(50)>'
+    fullyEquipped: '<boolean(50)>'
+    drivingLicence: '<boolean(50)>'
+    roles: ['ROLE_VOLUNTEER']
