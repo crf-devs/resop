@@ -32,7 +32,7 @@ class MissionTypeUserSkillsType extends AbstractType
                 'attr' => ['class' => 'col-sm-6'],
             ])
             ->add('number', IntegerType::class, [
-                'label' => 'common.number',
+                'label' => 'organization.missionType.userSkills.number',
                 'row_attr' => ['class' => 'row'],
                 'label_attr' => ['class' => 'col-sm-2'],
                 'attr' => ['class' => 'col-sm-4'],

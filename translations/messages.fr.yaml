@@ -96,10 +96,17 @@ organization:
   list: Liste des structures
   missionType:
     addNew: Ajouter un nouveau type de mission
+    assetTypes:
+      number: Nombre
+      type: Type
     confirmDelete: Vous êtes sur le point de supprimer le type de mission
     deleteSuccessMessage: Le type de mission a été supprimé avec succès
     editFormTitle: Modifier un type de mission
     mainTitle: Types de missions
+    name: Nom
+    userSkills:
+      number: Nombre
+  name: Nom
   planning:
     countAlreadyBooked: Compter aussi les ressources déjà engagées
     countMinimumAvailableHours:

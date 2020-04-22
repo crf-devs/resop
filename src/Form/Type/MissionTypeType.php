@@ -16,7 +16,7 @@ class MissionTypeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', null, ['label' => 'common.name'])
+            ->add('name', null, ['label' => 'organization.missionType.name'])
             ->add('minimumAvailableHours', IntegerType::class, [
                 'label' => 'organization.planning.countMinimumAvailableHours.label',
                 'help' => 'organization.planning.countMinimumAvailableHours.help',

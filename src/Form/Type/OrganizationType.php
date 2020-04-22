@@ -17,7 +17,7 @@ final class OrganizationType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'common.name',
+                'label' => 'organization.name',
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'action.submit',
