@@ -1,5 +1,22 @@
 # Fonctionnalités
 
+## *ResOp* en quelques points
+
+**Partie Utilisateur**
+
+- Chaque utilisateur crée un profil détaillé avec ses spécificités et ses compétences
+- Chaque semaine, l'utilisateur met à jour ses disponibilités et peut consulter les missions sur lesquels il est engagé
+
+**Partie Administrateurs**
+
+- Les cadres des structures mettent à jour les fiches et disponibilités des ressources mobilisables (véhicules, ...)
+- Les administrateurs accèdent à un planning répertoriant les disponibilités de chaque resource, peuvent les trier, les classer et faire des recherches
+- Les resources disponibles peuvent être marquées comme "engagées" sur une mission sur la plage horaire correspondante
+- Il est possible de réaliser des projections automatiques en fonction des caractéristiques des engagements à prendre
+  (ressources nécessaires, compétences requises) et des disponibilités des ressources
+
+## Démonstration
+
 Un serveur de démonstration est disponible à l'adresse [https://resop.aws.mroca.fr/](https://resop.aws.mroca.fr/).
 
 ## Espace bénévole
