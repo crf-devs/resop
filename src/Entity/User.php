@@ -71,7 +71,7 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
     public string $lastName = '';
 
     /**
-     * @ORM\Column(type="phone_number")
+     * @ORM\Column(type="phone_number", nullable=true)
      * @Assert\NotNull
      * @AssertPhoneNumber(defaultRegion="FR")
      */

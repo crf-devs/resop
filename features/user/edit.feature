@@ -62,6 +62,7 @@ Feature:
         When I fill in the following:
             | user[identificationNumber] | 899999A           |
             | user[emailAddress]         | vincent@resop.com |
+            | user[phoneNumber]          | <phoneNumber>     |
         And I press "Valider"
         Then I should be on "/"
         And I should see "Vos informations ont été mises à jour avec succès."
@@ -75,6 +76,6 @@ Feature:
         Then I should be on "/"
         And I should see "NIVOL : 899999A"
         Examples:
-            | login             |
-            | vincent@resop.com |
-            | 899999A           |
+            | login             | phoneNumber  |
+            | vincent@resop.com | 0612345678   |
+            | 899999A           | +33612345678 |

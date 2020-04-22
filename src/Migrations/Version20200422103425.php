@@ -19,7 +19,7 @@ final class Version20200422103425 extends AbstractMigration
         $this->abortIf('postgresql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('ALTER TABLE users ALTER phone_number TYPE VARCHAR(35)');
-        $this->addSql('ALTER TABLE users ALTER phone_number DROP DEFAULT');
+        $this->addSql('ALTER TABLE users ALTER phone_number DROP NOT NULL');
         $this->addSql('COMMENT ON COLUMN users.phone_number IS \'(DC2Type:phone_number)\'');
     }
 
@@ -28,7 +28,7 @@ final class Version20200422103425 extends AbstractMigration
         $this->abortIf('postgresql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('ALTER TABLE users ALTER phone_number TYPE VARCHAR(255)');
-        $this->addSql('ALTER TABLE users ALTER phone_number DROP DEFAULT');
+        $this->addSql('ALTER TABLE users ALTER phone_number SET NOT NULL');
         $this->addSql('COMMENT ON COLUMN users.phone_number IS NULL');
     }
 }
