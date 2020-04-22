@@ -6,6 +6,8 @@ namespace App\Tests\Entity;
 
 use App\Entity\Organization;
 use App\Entity\User;
+use libphonenumber\PhoneNumber;
+use libphonenumber\PhoneNumberUtil;
 use PHPUnit\Framework\TestCase;
 
 final class UserTest extends TestCase
@@ -21,7 +23,7 @@ final class UserTest extends TestCase
         $user->organization->name = 'DL7509';
         $user->setIdentificationNumber('00001752114V');
         $user->setEmailAddress('user+ALIAS@some-domain.tld');
-        $user->phoneNumber = '+33102030405';
+        $user->phoneNumber = PhoneNumberUtil::getInstance()->parse('+33102030405', 'FR');
         $user->birthday = '1990-02-28';
         $user->occupation = 'Pharmacien';
         $user->organizationOccupation = 'Secouriste';
@@ -37,7 +39,9 @@ final class UserTest extends TestCase
         $this->assertSame('DL7509 / Alain Proviste', (string) $user);
         $this->assertSame('1752114V', $user->getIdentificationNumber());
         $this->assertSame('user+alias@some-domain.tld', $user->getEmailAddress());
-        $this->assertSame('+33102030405', $user->phoneNumber);
+        $this->assertInstanceOf(PhoneNumber::class, $user->phoneNumber);
+        $this->assertEquals('102030405', $user->phoneNumber->getNationalNumber());
+        $this->assertEquals('33', $user->phoneNumber->getCountryCode());
         $this->assertSame('1990-02-28', $user->birthday);
         $this->assertSame('Pharmacien', $user->occupation);
         $this->assertSame('Secouriste', $user->organizationOccupation);

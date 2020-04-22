@@ -5,7 +5,7 @@ App\Entity\User:
     organization: '@Organization.DT75'
     identificationNumber: 990001A
     emailAddress (unique): john.doe@resop.com
-    phoneNumber: '0612345678'
+    phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
     occupation: Pharmacien
     organizationOccupation: Secouriste
@@ -19,7 +19,7 @@ App\Entity\User:
     organization: '@Organization.UL-01-02'
     identificationNumber: 990002A
     emailAddress (unique): jane.doe@resop.com
-    phoneNumber: '<fr_FR:phoneNumber()>'
+    phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
     occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
     organizationOccupation: Secouriste
@@ -33,7 +33,7 @@ App\Entity\User:
     organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
     identificationNumber: 990003A
     emailAddress (unique): chuck.norris@resop.com
-    phoneNumber: '<fr_FR:phoneNumber()>'
+    phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
     occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
     organizationOccupation: Secouriste

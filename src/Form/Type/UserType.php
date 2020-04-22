@@ -8,6 +8,8 @@ use App\Domain\SkillSetDomain;
 use App\Entity\Organization;
 use App\Entity\User;
 use App\Repository\OrganizationRepository;
+use libphonenumber\PhoneNumberFormat;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,6 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class UserType extends AbstractType
 {
@@ -79,8 +82,10 @@ class UserType extends AbstractType
             ->add('lastName', TextType::class, [
                 'empty_data' => '',
             ])
-            ->add('phoneNumber', TextType::class, [
-                'empty_data' => '',
+            ->add('phoneNumber', PhoneNumberType::class, [
+                'default_region' => 'FR',
+                'format' => PhoneNumberFormat::NATIONAL,
+                'constraints' => [new NotNull()],
             ])
             ->add('emailAddress', EmailType::class, [
                 'empty_data' => '',

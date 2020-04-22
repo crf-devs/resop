@@ -59,9 +59,9 @@ Feature:
         When I press "Valider"
         Then I should be on "/user/new"
         And the response status code should be 400
-        And I should see "Cette valeur ne doit pas être vide" in the "label[for=user_identificationNumber] .form-error-message" element
-        And I should see "Cette valeur ne doit pas être nulle" in the "label[for=user_organization] .form-error-message" element
-        And I should see "Cette valeur ne doit pas être vide" in the "label[for=user_firstName] .form-error-message" element
-        And I should see "Cette valeur ne doit pas être vide" in the "label[for=user_lastName] .form-error-message" element
-        And I should see "Cette valeur ne doit pas être vide" in the "label[for=user_emailAddress] .form-error-message" element
-        And I should see "Cette valeur ne doit pas être vide" in the "label[for=user_phoneNumber] .form-error-message" element
+        And I should see "Cette valeur ne doit pas être vide." in the "label[for=user_identificationNumber] .form-error-message" element
+        And I should see "Cette valeur ne doit pas être nulle." in the "label[for=user_organization] .form-error-message" element
+        And I should see "Cette valeur ne doit pas être vide." in the "label[for=user_firstName] .form-error-message" element
+        And I should see "Cette valeur ne doit pas être vide." in the "label[for=user_lastName] .form-error-message" element
+        And I should see "Cette valeur ne doit pas être vide." in the "label[for=user_emailAddress] .form-error-message" element
+        And I should see "Cette valeur ne doit pas être nulle." in the "label[for=user_phoneNumber] .form-error-message" element

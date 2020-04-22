@@ -7,6 +7,8 @@ namespace App\Entity;
 use App\EntityListener\AddDependantSkillsEntityListener;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
+use libphonenumber\PhoneNumber;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function Symfony\Component\String\u;
@@ -69,14 +71,10 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
     public string $lastName = '';
 
     /**
-     * @ORM\Column
-     * @Assert\NotBlank
-     * @Assert\Regex(
-     *     pattern="#^0[1-9][0-9]{8}$#",
-     *     message="Le format est invalide, exemple : 0601020304."
-     * )
+     * @ORM\Column(type="phone_number", nullable=true)
+     * @AssertPhoneNumber(defaultRegion="FR")
      */
-    public string $phoneNumber = '';
+    public ?PhoneNumber $phoneNumber = null;
 
     /**
      * @var string A "Y-m-d" formatted value

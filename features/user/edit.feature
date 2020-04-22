@@ -14,7 +14,7 @@ Feature:
         And the "user_emailAddress" field should contain "john.doe@resop.com"
         And the "user_firstName" field should contain "John"
         And the "user_lastName" field should contain "DOE"
-        And the "user_phoneNumber" field should contain "0612345678"
+        And the "user_phoneNumber" field should contain "06 12 34 56 78"
         And the "user_birthday_day" field should contain "1"
         And the "user_birthday_month" field should contain "1"
         And the "user_birthday_year" field should contain "1990"
@@ -40,7 +40,7 @@ Feature:
         And I should see "Cette valeur ne doit pas être vide." in the "label[for=user_emailAddress] .form-error-message" element
         And I should see "Cette valeur ne doit pas être vide." in the "label[for=user_firstName] .form-error-message" element
         And I should see "Cette valeur ne doit pas être vide." in the "label[for=user_lastName] .form-error-message" element
-        And I should see "Cette valeur ne doit pas être vide." in the "label[for=user_phoneNumber] .form-error-message" element
+        And I should see "Cette valeur ne doit pas être nulle." in the "label[for=user_phoneNumber] .form-error-message" element
 
     Scenario: As a user, I cannot update my account with invalid data
         Given I am authenticated as "john.doe@resop.com"
@@ -54,7 +54,7 @@ Feature:
         And the response status code should be 400
         And I should see "Le format est invalide, exemple : 0123456789A." in the "label[for=user_identificationNumber] .form-error-message" element
         And I should see "Cette valeur n'est pas une adresse email valide." in the "label[for=user_emailAddress] .form-error-message" element
-        And I should see "Le format est invalide, exemple : 0601020304." in the "label[for=user_phoneNumber] .form-error-message" element
+        And I should see "Cette valeur n'est pas un numéro de téléphone valide." in the "label[for=user_phoneNumber] .form-error-message" element
 
     Scenario Outline: As a user, I can update my account
         Given I am authenticated as "john.doe@resop.com"
@@ -62,6 +62,7 @@ Feature:
         When I fill in the following:
             | user[identificationNumber] | 899999A           |
             | user[emailAddress]         | vincent@resop.com |
+            | user[phoneNumber]          | <phoneNumber>     |
         And I press "Valider"
         Then I should be on "/"
         And I should see "Vos informations ont été mises à jour avec succès."
@@ -75,6 +76,6 @@ Feature:
         Then I should be on "/"
         And I should see "NIVOL : 899999A"
         Examples:
-            | login             |
-            | vincent@resop.com |
-            | 899999A           |
+            | login             | phoneNumber  |
+            | vincent@resop.com | 0612345678   |
+            | 899999A           | +33612345678 |

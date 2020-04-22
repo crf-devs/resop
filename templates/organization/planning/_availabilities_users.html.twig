@@ -21,7 +21,7 @@
 
 {% block itemDataDetails %}
     <td class="item-data">{{ item.entity.identificationNumber }}</td>
-    <td class="item-data">{{ item.entity.phoneNumber }}</td>
+    <td class="item-data">{{ item.entity.phoneNumber|phone_number_format('NATIONAL') }}</td>
     <td class="item-data">{{ item.entity.emailAddress }}</td>
     <td class="item-data">{{ item.entity.occupation | truncate(50) }}</td>
     <td class="item-data">{{ item.entity.organizationOccupation | truncate(50) }}</td>
