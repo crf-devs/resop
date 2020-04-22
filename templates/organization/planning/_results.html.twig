@@ -84,7 +84,7 @@
             </div>
             <div class="modal-body">
                 <p>
-                    {{ 'message.deleteSlotWarning' | trans | raw }}.
+                    {{ 'message.deleteSlotWarning' | trans ({ '%nbAssets%' : "<strong id='nb-assets-users'></strong>" }) | raw }}.
                 </p>
                 <div class="form-group" id="status-update-comment-container">
                     <label for="status-update-comment">Commentaire</label>

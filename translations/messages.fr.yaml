@@ -57,9 +57,9 @@ common:
   type: Type
   yes: Oui
 message:
-  deleteAssetWarning: "Vous êtes sur le point de supprimer le véhicule : <span id='to-delete-name'></span> et toutes ses disponibilités."
-  deleteSlotWarning: "Vous êtes sur le point de modifier la disponibilité de <strong id='nb-assets-users'></strong>"
-  deleteUserWarning: "Vous êtes sur le point de supprimer le bénévole : <span id='to-delete-name'></span> et toutes ses disponibilités."
+  deleteAssetWarning: "Vous êtes sur le point de supprimer le véhicule %asset% et toutes ses disponibilités."
+  deleteSlotWarning: "Vous êtes sur le point de modifier la disponibilité de %nbAssets%"
+  deleteUserWarning: "Vous êtes sur le point de supprimer le bénévole %user% et toutes ses disponibilités."
   editForbidden: Vous ne pouvez pas modifier les disponibilités saisies pour les prochaines %period% heures
   moreInfoOnHover: Passer la souris sur les cases pour afficher plus d'informations, si celles-ci sont disponibles
   noAvailableData: Aucun enregistrement
