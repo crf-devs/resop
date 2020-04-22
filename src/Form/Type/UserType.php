@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class UserType extends AbstractType
 {
@@ -84,6 +85,7 @@ class UserType extends AbstractType
             ->add('phoneNumber', PhoneNumberType::class, [
                 'default_region' => 'FR',
                 'format' => PhoneNumberFormat::NATIONAL,
+                'constraints' => [new NotNull()],
             ])
             ->add('emailAddress', EmailType::class, [
                 'empty_data' => '',

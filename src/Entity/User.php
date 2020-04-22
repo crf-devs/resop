@@ -72,7 +72,6 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
 
     /**
      * @ORM\Column(type="phone_number", nullable=true)
-     * @Assert\NotNull
      * @AssertPhoneNumber(defaultRegion="FR")
      */
     public ?PhoneNumber $phoneNumber = null;
