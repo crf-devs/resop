@@ -16,6 +16,7 @@ use App\Exception\ConstraintViolationListException;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
+use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -100,6 +101,7 @@ final class ApplicationFixtures extends Fixture
 
     private SlotBookingGuesser $slotBookingGuesser;
     private SlotAvailabilityGuesser $slotAvailabilityGuesser;
+    private PhoneNumberUtil $phoneNumberUtil;
 
     public function __construct(
         EncoderFactoryInterface $encoders,
@@ -107,6 +109,7 @@ final class ApplicationFixtures extends Fixture
         SkillSetDomain $skillSetDomain,
         SlotBookingGuesser $slotBookingGuesser,
         SlotAvailabilityGuesser $slotAvailabilityGuesser,
+        PhoneNumberUtil $phoneNumberUtil,
         int $nbUsers = null,
         int $nbAvailabilities = null
     ) {
@@ -117,6 +120,7 @@ final class ApplicationFixtures extends Fixture
         $this->nbAvailabilities = $nbAvailabilities ?: random_int(2, 6);
         $this->slotBookingGuesser = $slotBookingGuesser;
         $this->slotAvailabilityGuesser = $slotAvailabilityGuesser;
+        $this->phoneNumberUtil = $phoneNumberUtil;
     }
 
     /**
@@ -257,7 +261,7 @@ final class ApplicationFixtures extends Fixture
                 // e.g. 990001A
                 $user->setIdentificationNumber(str_pad(''.++$startIdNumber.'', 10, '0', \STR_PAD_LEFT).'A');
                 $user->setEmailAddress('user'.$x.'@resop.com');
-                $user->phoneNumber = '0102030405';
+                $user->phoneNumber = $this->phoneNumberUtil->parse('0102030405', 'FR');
                 $user->birthday = '1990-01-01';
                 $user->occupation = $occupations[array_rand($occupations)];
                 $user->organizationOccupation = 'Secouriste';
