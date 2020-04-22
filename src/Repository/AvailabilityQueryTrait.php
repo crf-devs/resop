@@ -4,35 +4,30 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Domain\DatePeriodCalculator;
 use App\Entity\AvailabilityInterface;
 use Doctrine\ORM\QueryBuilder;
 
 trait AvailabilityQueryTrait
 {
-    use AvailabilityTrait;
-
-    private function isEven(int $number): bool
-    {
-        return 0 === $number % 2;
-    }
-
     private function addAvailabilityBetween(
         QueryBuilder $qb,
         \DateTimeImmutable $start,
         \DateTimeImmutable $end,
-        string $slotInterval,
+        string $slotIntervalStr,
         string $availabilityClass,
         string $groupByField,
         array $statuses = [AvailabilityInterface::STATUS_AVAILABLE],
         ?int $minimalAvailableTime = null
     ): QueryBuilder {
+        $slotInterval = \DateInterval::createFromDateString($slotIntervalStr);
+
         // Round to the closest even the start and end date
-        $start = self::round($start, $slotInterval);
-        $end = self::round($end, $slotInterval, false);
+        $start = DatePeriodCalculator::roundToDailyInterval($start, $slotInterval);
+        $end = DatePeriodCalculator::roundToDailyInterval($end, $slotInterval, false);
 
         $interval = $start->diff($end);
-        $numberOfInterval = (int) ($interval->h / $interval);
-        $numberOfInterval += (int) (($interval->d * 24) / $interval);
+        $numberOfInterval = (int) (DatePeriodCalculator::intervalToSeconds($interval) / DatePeriodCalculator::intervalToSeconds($slotInterval));
 
         if (!empty($minimalAvailableTime)) { // can be null or 0
             $numberOfInterval = min($numberOfInterval, (int) ($minimalAvailableTime / $interval));

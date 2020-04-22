@@ -71,4 +71,29 @@ class DatePeriodCalculator
             $to->add(new \DateInterval('P1D'))->setTime(0, 0, 0, 0)
         );
     }
+
+    public static function intervalToSeconds(\DateInterval $interval): int
+    {
+        return $interval->h * 3600 + $interval->i * 60 + $interval->s;
+    }
+
+    /**
+     * Round a \DateTimeImmutable to closest interval.
+     * Use $floor=true to subtract diff (`floor`), or $floor=false to add diff (`ceil`).
+     */
+    public static function roundToDailyInterval(\DateTimeImmutable $date, \DateInterval $slotInterval, bool $floor = true): \DateTimeImmutable
+    {
+        $secondsSinceMidnight = $date->getTimestamp() - $date->modify('midnight')->getTimestamp();
+
+        $secondsFromLastSlot = $secondsSinceMidnight % self::intervalToSeconds($slotInterval);
+
+        if (0 === $secondsFromLastSlot) {
+            return $date;
+        }
+
+        $previousSlot = $date->sub(new \DateInterval(sprintf('PT%dS', $secondsFromLastSlot)));
+        $nextSlot = $previousSlot->add($slotInterval);
+
+        return $floor ? $previousSlot : $nextSlot;
+    }
 }
