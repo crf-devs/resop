@@ -4,44 +4,33 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Domain\DatePeriodCalculator;
 use App\Entity\AvailabilityInterface;
 use Doctrine\ORM\QueryBuilder;
 
 trait AvailabilityQueryTrait
 {
-    private function isEven(int $number): bool
-    {
-        return 0 === $number % 2;
-    }
-
     private function addAvailabilityBetween(
         QueryBuilder $qb,
         \DateTimeImmutable $start,
         \DateTimeImmutable $end,
+        string $slotIntervalStr,
         string $availabilityClass,
         string $groupByField,
         array $statuses = [AvailabilityInterface::STATUS_AVAILABLE],
         ?int $minimalAvailableTime = null
     ): QueryBuilder {
-        $start = $start->setTime((int) $start->format('H'), 0);
-        $end = $end->setTime((int) $end->format('H'), 0);
+        $slotInterval = \DateInterval::createFromDateString($slotIntervalStr);
 
         // Round to the closest even the start and end date
-        $hour = (int) $start->format('H');
-        if (!$this->isEven($hour)) {
-            $start = $start->sub(new \DateInterval('PT1H'));
-        }
-        $hour = (int) $end->format('H');
-        if (!$this->isEven($hour)) {
-            $end = $end->add(new \DateInterval('PT1H'));
-        }
+        $start = DatePeriodCalculator::roundToDailyInterval($start, $slotInterval);
+        $end = DatePeriodCalculator::roundToDailyInterval($end, $slotInterval, false);
 
         $interval = $start->diff($end);
-        $numberOfInterval = (int) ($interval->h / 2);
-        $numberOfInterval += (int) (($interval->d * 24) / 2);
+        $numberOfInterval = (int) (DatePeriodCalculator::intervalToSeconds($interval) / DatePeriodCalculator::intervalToSeconds($slotInterval));
 
         if (!empty($minimalAvailableTime)) { // can be null or 0
-            $numberOfInterval = min($numberOfInterval, (int) ($minimalAvailableTime / 2));
+            $numberOfInterval = min($numberOfInterval, (int) ($minimalAvailableTime / $interval));
         }
 
         $subQuery = $this->getEntityManager()->createQueryBuilder()

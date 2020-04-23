@@ -22,9 +22,13 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
 {
     use AvailabilityQueryTrait;
 
-    public function __construct(ManagerRegistry $registry)
+    private string $slotInterval;
+
+    public function __construct(ManagerRegistry $registry, string $slotInterval)
     {
         parent::__construct($registry, CommissionableAsset::class);
+
+        $this->slotInterval = $slotInterval;
     }
 
     /**
@@ -92,6 +96,7 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
                 $qb,
                 $formData['availableFrom'],
                 $formData['availableTo'],
+                $this->slotInterval,
                 CommissionableAssetAvailability::class,
                 'asset',
                 $availableStatuses,

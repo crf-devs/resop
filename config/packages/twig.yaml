@@ -3,3 +3,4 @@ twig:
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
         build_tag: '%env(IMAGE_BUILD_TAG)%'
+        slot_interval: '%app.slot_interval%'

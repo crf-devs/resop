@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class AvailabilitiesDomain
 {
-    public const SLOT_INTERVAL = 'PT2H';
+    public string $slotInterval;
     public array $availabilityDomains = [];
 
     /**
@@ -20,11 +20,11 @@ final class AvailabilitiesDomain
      *
      * @throws \Exception
      */
-    public static function generate(\DateTimeImmutable $start, \DateTimeImmutable $end, array $availabilities = [], ?\DateInterval $disabledIntervalFromNow = null): self
+    public static function generate(\DateTimeImmutable $start, \DateTimeImmutable $end, string $slotInterval, array $availabilities = [], ?\DateInterval $disabledIntervalFromNow = null): self
     {
         $period = new \DatePeriod(
             $start,
-            new \DateInterval(self::SLOT_INTERVAL),
+            \DateInterval::createFromDateString($slotInterval),
             $end
         );
 
@@ -43,17 +43,18 @@ final class AvailabilitiesDomain
             $availabilityDomains[] = new AvailabilityDomain($date, $availabilityEntity, $disabledIntervalFromNow);
         }
 
-        return new self($availabilityDomains);
+        return new self($availabilityDomains, $slotInterval);
     }
 
     /**
      * @param AvailabilityDomain[] $availabilityDomains
      */
-    public function __construct(array $availabilityDomains)
+    public function __construct(array $availabilityDomains, string $slotInterval)
     {
         Assertion::allIsInstanceOf($availabilityDomains, AvailabilityDomain::class);
 
         $this->availabilityDomains = $availabilityDomains;
+        $this->slotInterval = $slotInterval;
     }
 
     public function compute(EntityManagerInterface $em, string $availabilityClass, object $object): void
@@ -64,7 +65,7 @@ final class AvailabilitiesDomain
                     null,
                     $object,
                     $availabilityDomain->date,
-                    $availabilityDomain->date->add(new \DateInterval(self::SLOT_INTERVAL)),
+                    $availabilityDomain->date->add(\DateInterval::createFromDateString($this->slotInterval)),
                     AvailabilityInterface::STATUS_AVAILABLE
                 ));
             } elseif (!$availabilityDomain->tick && null !== $availabilityDomain->availability) {

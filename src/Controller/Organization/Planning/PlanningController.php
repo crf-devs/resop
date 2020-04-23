@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\Planning;
 
-use App\Domain\AvailabilitiesDomain;
 use App\Domain\DatePeriodCalculator;
 use App\Domain\PlanningDomain;
 use App\Domain\SkillSetDomain;
@@ -39,7 +38,7 @@ class PlanningController extends AbstractController
         $this->cacheTwig = $cacheTwig;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, string $slotInterval): Response
     {
         $form = $this->planningDomain->generateForm();
         $filters = $this->planningDomain->generateFilters($form);
@@ -51,7 +50,7 @@ class PlanningController extends AbstractController
 
         $periodCalculator = DatePeriodCalculator::createRoundedToDay(
             $filters['from'],
-            new \DateInterval(AvailabilitiesDomain::SLOT_INTERVAL),
+            \DateInterval::createFromDateString($slotInterval),
             $filters['to']
         );
 

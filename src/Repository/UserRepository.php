@@ -23,9 +23,13 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
 {
     use AvailabilityQueryTrait;
 
-    public function __construct(ManagerRegistry $registry)
+    private string $slotInterval;
+
+    public function __construct(ManagerRegistry $registry, string $slotInterval)
     {
         parent::__construct($registry, User::class);
+
+        $this->slotInterval = $slotInterval;
     }
 
     /**
@@ -115,6 +119,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
                 $qb,
                 $formData['availableFrom'],
                 $formData['availableTo'],
+                $this->slotInterval,
                 UserAvailability::class,
                 'user',
                 $availableStatuses,

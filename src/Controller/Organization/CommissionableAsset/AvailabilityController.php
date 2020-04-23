@@ -33,7 +33,7 @@ final class AvailabilityController extends AbstractController
         $this->commissionableAssetAvailabilityRepository = $commissionableAssetAvailabilityRepository;
     }
 
-    public function __invoke(Request $request, CommissionableAsset $asset): Response
+    public function __invoke(Request $request, CommissionableAsset $asset, string $slotInterval): Response
     {
         $week = $request->attributes->get('week');
 
@@ -54,6 +54,7 @@ final class AvailabilityController extends AbstractController
         $availabilitiesDomain = AvailabilitiesDomain::generate(
             $start,
             $end,
+            $slotInterval,
             $this->commissionableAssetAvailabilityRepository->findBetweenDates($asset, $start, $end)
         );
 
