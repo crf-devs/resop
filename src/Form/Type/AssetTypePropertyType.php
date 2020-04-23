@@ -45,15 +45,18 @@ class AssetTypePropertyType extends AbstractType
                 'label' => 'organization.asset_type.properties.required',
                 'required' => true,
                 'multiple' => false,
-                'expanded' => true,
-                'choices' => ['oui' => true, 'non' => false],
+                'expanded' => false,
+                'data' => false,
+                'choices' => ['common.yes' => true, 'common.no' => false],
             ])
             ->add('hidden', ChoiceType::class, [
                 'label' => 'organization.asset_type.properties.hidden',
                 'required' => true,
                 'multiple' => false,
-                'expanded' => true,
+                'expanded' => false,
                 'choices' => ['common.yes' => true, 'common.no' => false],
+                'data' => false,
+                'attr' => ['class' => 'hide-on-create'],
             ])
         ;
     }

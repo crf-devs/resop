@@ -10,6 +10,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @method AssetType|null find($id, $lockMode = null, $lockVersion = null)
+ * @method AssetType|null findOneBy(array $criteria, array $orderBy = null)
+ * @method AssetType[]    findAll()
+ * @method AssetType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class AssetTypeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

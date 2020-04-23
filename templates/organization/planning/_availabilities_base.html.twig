@@ -1,7 +1,7 @@
 <thead>
 <tr class="days">
     <th rowspan="2"></th>
-    <th colspan="{{ itemDataRow }}" class="item-data">{{ 'common.informations' | trans }}</th>
+    <th colspan="{{ itemDataRow }}" class="item-data"></th>
     {% for item in periodCalculator.days %}
         <th colspan="{{ item.slots }}" data-day="{{ item.date|date("Y-m-d") }}" title="{{ 'calendar.sortByDayAvailabilities' | trans }}">
             {{ item.date|format_date(pattern="eeee dd MMMM") }}
@@ -9,7 +9,7 @@
     {% endfor %}
 </tr>
 <tr class="hours">
-    {% block itemDataHeader %}{% endblock itemDataHeader %}
+    <th class="item-data" colspan="{{ itemDataRow }}"></th>
 
     {% for item in periodCalculator.slots %}
         {% set selected =
@@ -34,7 +34,9 @@
             {% block type %}{% endblock type %}
             ({{ list|length }})
         </th>
-        <td colspan="{{ itemDataRow + periodCalculator.slots|length }}"></td>
+        {% block itemDataHeader %}{% endblock itemDataHeader %}
+
+        <td colspan="{{ periodCalculator.slots|length }}"></td>
     </tr>
     </tbody>
 
@@ -42,8 +44,7 @@
     {% for item in list %}
         <tr data-type="{{ entityType }}" data-id="{{ item.entity.id }}">
             <th class="item-detail">
-                {{ item.entity }}
-                {% block importantSkills %}{% endblock importantSkills %}
+                {% block itemDataRowHeader %}{% endblock itemDataRowHeader %}
             </th>
 
             {% block itemDataDetails %}{% endblock itemDataDetails %}

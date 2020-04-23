@@ -10,6 +10,7 @@ function addNewWidget($list) {
 
   const $newWidget = $(newWidget);
   $newWidget.find('legend').remove();
+  $newWidget.find('.hide-on-create').closest('.form-group').hide();
   addWidgetDeleteLink($newWidget);
 
   $newWidget.appendTo($list);

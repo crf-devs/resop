@@ -62,7 +62,7 @@
             <tbody>
             {% for assetRequirement in missionType.assetTypesRequirement %}
                 <tr>
-                    <th scope="row">{{ assetRequirement.type }}</th>
+                    <th scope="row">{{ assetRequirement.type | assetTypeName }}</th>
                     <td class="table-primary">{{ assetRequirement.number }}</td>
                     <td>{{ forecast[missionType.id].fully_available.assets[assetRequirement.type].ids|length }}</td>
                     <td>{{ forecast[missionType.id].fully_available.assets[assetRequirement.type].potential_missions_number }}</td>

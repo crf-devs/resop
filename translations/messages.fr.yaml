@@ -163,11 +163,11 @@ organization:
     properties:
       main_title: Propriétés
       add_new: Ajouter une nouvelle propriété
-      key: Identifiant unique
-      label: Libellé
+      key: Identifiant unique de la question
+      label: Libellé de la question
       help: Aide
-      hidden: Inactif
-      required: Obligatoire
+      hidden: Cacher la question
+      required: Réponse obligatoire
       format: Format
       formats:
         number: Nombre

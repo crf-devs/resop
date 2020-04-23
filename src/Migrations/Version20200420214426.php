@@ -19,7 +19,7 @@ final class Version20200420214426 extends AbstractMigration
     {
         $this->abortIf('postgresql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SEQUENCE asset_type_id_seq INCREMENT BY 1 MINVALUE 3 START 3');
+        $this->addSql('CREATE SEQUENCE asset_type_id_seq INCREMENT BY 1');
         $this->addSql('CREATE TABLE asset_type (id INT NOT NULL, organization_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, properties JSON NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_68BA92E132C8A3DE ON asset_type (organization_id)');
         $this->addSql('CREATE UNIQUE INDEX assetType_unique_org_name ON asset_type (organization_id, name)');
@@ -31,6 +31,8 @@ final class Version20200420214426 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_4D68E555A6A2CDC5 ON commissionable_asset (asset_type_id)');
 
         $this->migrateData();
+
+        $this->addSql('SELECT setval(\'asset_type_id_seq\', 3, true)');
 
         $this->addSql('ALTER TABLE commissionable_asset ALTER COLUMN properties SET NOT NULL');
         $this->addSql('ALTER TABLE commissionable_asset ALTER COLUMN asset_type_id SET NOT NULL');
