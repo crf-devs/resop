@@ -40,26 +40,26 @@ class PlanningSearchType extends AbstractType
             ->add('from', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
-                'label' => 'Visualiser les jours de ',
+                'label' => 'organization.planning.showDaysFrom',
                 'with_minutes' => false,
             ])
             ->add('to', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
-                'label' => 'à',
+                'label' => 'calendar.to',
                 'with_minutes' => false,
             ])
             ->add('availableFrom', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
-                'label' => 'Rechercher les disponibilités de ',
+                'label' => 'organization.planning.showAvailabilitesFrom',
                 'with_minutes' => false,
                 'required' => false,
             ])
             ->add('availableTo', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
-                'label' => 'à',
+                'label' => 'calendar.to',
                 'data' => (new DateTimeImmutable('today'))->add(new \DateInterval('P1D')),
                 'with_minutes' => false,
                 'required' => false,
@@ -78,7 +78,7 @@ class PlanningSearchType extends AbstractType
                 ],
             ])
             ->add('organizations', EntityType::class, [
-                'label' => 'Structures',
+                'label' => 'organization.pluralLabel',
                 'class' => Organization::class,
                 'group_by' => 'parentName',
                 'query_builder' => static function (OrganizationRepository $repository) use ($organization) {
@@ -93,11 +93,11 @@ class PlanningSearchType extends AbstractType
                 ],
             ])
             ->add('hideUsers', CheckboxType::class, [
-                'label' => 'Cacher les bénévoles',
+                'label' => 'organization.planning.hideUsers',
                 'required' => false,
             ])
             ->add('userSkills', ChoiceType::class, [
-                'label' => 'Compétences',
+                'label' => 'user.skills',
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),
                 'multiple' => true,
                 'required' => false,
@@ -107,19 +107,19 @@ class PlanningSearchType extends AbstractType
                 ],
             ])
             ->add('onlyFullyEquiped', CheckboxType::class, [
-                'label' => 'Avec uniforme seulement',
+                'label' => 'organization.planning.uniformOnly',
                 'required' => false,
             ])
             ->add('displayVulnerables', CheckboxType::class, [
-                'label' => 'Afficher aussi les personnes signalées comme vulnérables',
+                'label' => 'organization.planning.showVulnerableUsers',
                 'required' => false,
             ])
             ->add('hideAssets', CheckboxType::class, [
-                'label' => 'Cacher les véhicules',
+                'label' => 'organization.planning.hideAssets',
                 'required' => false,
             ])
             ->add('assetTypes', ChoiceType::class, [
-                'label' => 'Type',
+                'label' => 'common.type',
                 'choices' => array_flip(CommissionableAsset::TYPES),
                 'multiple' => true,
                 'required' => false,

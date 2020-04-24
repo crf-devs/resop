@@ -1,6 +1,6 @@
 {% extends 'organization/base.html.twig' %}
 
-{% block title %}{{ 'organization.mission_type.main_title' | trans }}{% endblock %}
+{% block title %}{{ 'organization.missionType.mainTitle' | trans }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -8,11 +8,11 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'organization.mission_type.main_title' | trans }}</h1>
+    <h1>{{ 'organization.missionType.mainTitle' | trans }}</h1>
 
     <div class="row">
         <div class="col-12 text-right mb-2">
-            <a class="btn btn-success" href="{{ path('app_organization_mission_type_new') }}" role="button">{{ 'organization.mission_type.add_new' | trans }}</a>
+            <a class="btn btn-success" href="{{ path('app_organization_mission_type_new') }}" role="button">{{ 'organization.missionType.addNew' | trans }}</a>
         </div>
     </div>
 
@@ -35,7 +35,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="2">{{ 'message.no_available_data' | trans }}</td>
+                    <td colspan="2">{{ 'message.noAvailableData' | trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -51,7 +51,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{ 'organization.mission_type.confirm_delete' | trans }} : <span id="to-delete-name"></span>.
+                    {{ 'organization.missionType.confirmDelete' | trans }} : <span id="to-delete-name"></span>.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'action.cancel' | trans}}</button>

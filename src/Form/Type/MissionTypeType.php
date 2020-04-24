@@ -16,10 +16,10 @@ class MissionTypeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', null, ['label' => 'Nom'])
+            ->add('name', null, ['label' => 'organization.missionType.name'])
             ->add('minimumAvailableHours', IntegerType::class, [
-                'label' => 'Compter les ressources comme disponibles à partir de',
-                'help' => 'Si cette valeur n\'est pas spécifiée, les resources seront comptabilisées si elles sont disponibles sur toute la période',
+                'label' => 'organization.planning.countMinimumAvailableHours.label',
+                'help' => 'organization.planning.countMinimumAvailableHours.help',
                 'required' => false,
                 'attr' => [
                     'min' => 0,
@@ -30,13 +30,13 @@ class MissionTypeType extends AbstractType
                 'entry_type' => MissionTypeUserSkillsType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => 'Bénévoles',
+                'label' => 'organization.users',
             ])
             ->add('assetTypesRequirement', CollectionType::class, [
                 'entry_type' => MissionTypeAssetTypesType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => 'Véhicules',
+                'label' => 'organization.vehicles',
             ])
         ;
     }

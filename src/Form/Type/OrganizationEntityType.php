@@ -21,7 +21,7 @@ final class OrganizationEntityType extends AbstractType
             'attr' => [
                 'class' => 'selectpicker show-tick',
                 'data-live-search' => 'true',
-                'title' => 'Choisissez votre structure',
+                'title' => 'user.selectOrganization',
             ],
             'group_by' => 'parentName',
             'query_builder' => static function (OrganizationRepository $repository): QueryBuilder {

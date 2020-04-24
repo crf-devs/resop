@@ -106,8 +106,8 @@ class UserType extends AbstractType
             ])
             ->add('fullyEquipped', ChoiceType::class, [
                 'choices' => [
-                    'Oui' => 1,
-                    'Non' => 0,
+                    'common.yes' => 1,
+                    'common.no' => 0,
                 ],
                 'required' => true,
                 'expanded' => true,
@@ -115,8 +115,8 @@ class UserType extends AbstractType
             ])
             ->add('drivingLicence', ChoiceType::class, [
                 'choices' => [
-                    'Oui' => 1,
-                    'Non' => 0,
+                    'common.yes' => 1,
+                    'common.no' => 0,
                 ],
                 'required' => true,
                 'expanded' => true,
@@ -131,25 +131,24 @@ class UserType extends AbstractType
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             $form = $event->getForm();
-            $vulnerableHelp = '<ul><li>malade chronique</li><li>obésité morbide</li><li>syndrome grippal</li><li>immunodéprimé</li><li>personne mineure ou personne de plus de 70 ans</li><li>avis défavorable de votre unité locale ou du pole santé (local ou territorial)</li></ul>';
             if (self::DISPLAY_ORGANIZATION === $options['display_type']) {
                 $form->add('vulnerable', ChoiceType::class, [
                     'choices' => [
-                        'ne fait PAS partie des personnes vulnérables' => 0,
-                        'fait partie des personnes vulnérables' => 1,
+                        'organization.user.isNotVulnerable' => 0,
+                        'organization.user.isVulnerable' => 1,
                     ],
                     'expanded' => true,
-                    'help' => $vulnerableHelp,
+                    'help' => 'user.detail.vulnerable.help',
                     'help_html' => true,
                 ]);
             } else {
                 $form->add('vulnerable', ChoiceType::class, [
                     'choices' => [
-                        'Je ne fais PAS partie des personnes vulnérables' => 0,
-                        'Je fais partie des personnes vulnérables' => 1,
+                        'user.detail.vulnerable.no' => 0,
+                        'user.detail.vulnerable.yes' => 1,
                     ],
                     'expanded' => true,
-                    'help' => $vulnerableHelp,
+                    'help' => 'user.detail.vulnerable.help',
                     'help_html' => true,
                 ]);
 

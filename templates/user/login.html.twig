@@ -13,8 +13,8 @@
             <h1 class="h3 mb-3 font-weight-normal">{{ 'action.login' | trans }}</h1>
 
             {{ form_start(loginForm) }}
-            {{ form_row(loginForm.identifier, {label: 'user.login' | trans }) }}
-            {{ form_row(loginForm.birthday, {label: 'user.dob' | trans }) }}
+            {{ form_row(loginForm.identifier) }}
+            {{ form_row(loginForm.birthday) }}
 
             <div class="mt-4 mb-2 d-flex">
                 <label>

@@ -14,6 +14,23 @@ action:
   selectAll: Tout sélectionner
   save: Enregistrer
   submit: Valider
+asset:
+  comments: Commentaires
+  contact: Qui contacter ?
+  hasMobileRadio: Présence d'un mobile radio ?
+  hasFirstAidKit: Présence d'un lot de secours ?
+  licensePlate: Plaque d'immatriculation
+  lightVehicle: Véhicule léger
+  name: Identifiant
+  parkingLocation: Lieu de stationnement
+  planning:
+    hasMobileRadio: Mobile radio ?
+    hasFirstAidKit: Kit de premiers soins ?
+    contact: Contact
+    seatingCapacity: Places
+    licensePlate: Immatriculation
+  seatingCapacity: Combien de places ?
+  type: Type
 calendar:
   displayedPeriod: Période affichée
   hours: heures
@@ -21,6 +38,7 @@ calendar:
   schedule: Planning
   showAvailableOnly: Afficher seulement si disponible sur la période
   sortByDayAvailabilities: Trier par nombre de disponibilités sur le jour
+  to: à
   week:
     current: Semaine actuelle
     next: Semaine prochaine
@@ -28,20 +46,25 @@ calendar:
 common:
   actions: Actions
   availabilities: Disponibilités
+  backToList: Retourner à la liste
   informations: Informations
   manager: Cadre
   name: Nom
+  number: Nombre
+  no: Non
   occupation: Profession
   phoneNumberShort: Tél
+  type: Type
   yes: Oui
-  no: Non
-  back_to_list: Retourner à la liste
 message:
+  deleteAssetWarning: "Vous êtes sur le point de supprimer le véhicule %asset% et toutes ses disponibilités."
+  deleteSlotWarning: "Vous êtes sur le point de modifier la disponibilité de %nbAssets%"
+  deleteUserWarning: "Vous êtes sur le point de supprimer le bénévole %user% et toutes ses disponibilités."
   editForbidden: Vous ne pouvez pas modifier les disponibilités saisies pour les prochaines %period% heures
   moreInfoOnHover: Passer la souris sur les cases pour afficher plus d'informations, si celles-ci sont disponibles
+  noAvailableData: Aucun enregistrement
   saveAvailabilitiesWarning: Attention, certaines modifications de disponibilités n'ont pas été sauvegardées. Vous devez les annuler ou enregistrer le formulaire avant de changer de page.
   updatedWarning: Des modifications ont été effectuées par d'autres utilisateurs, <a href="#" class="text-body">cliquez ici pour rafraichir la page</a>
-  no_available_data: Aucun enregistrement
 nav:
   home: Accueil
   section:
@@ -61,6 +84,9 @@ organization:
     markAsUnavailable: Marquer comme NON disponible
     unavailable: Non disponible
   default: Structure de rattachement
+  assetsList: Liste des véhicules
+  childrenSelector:
+    label: Structure
   edit: Modifier une structure
   editAll: Modifier mes structures
   editMissionType: Modifier les types de missions
@@ -68,14 +94,42 @@ organization:
   forecast: Projections
   label: Structure
   list: Liste des structures
+  missionType:
+    addNew: Ajouter un nouveau type de mission
+    assetTypes:
+      number: Nombre
+      type: Type
+    confirmDelete: Vous êtes sur le point de supprimer le type de mission
+    deleteSuccessMessage: Le type de mission a été supprimé avec succès
+    editFormTitle: Modifier un type de mission
+    mainTitle: Types de missions
+    name: Nom
+    userSkills:
+      number: Nombre
+  name: Nom
+  planning:
+    countAlreadyBooked: Compter aussi les ressources déjà engagées
+    countMinimumAvailableHours:
+      label: Compter les ressources comme disponibles à partir de
+      help: Si cette valeur n'est pas spécifiée, les resources seront comptabilisées si elles sont disponibles sur toute la période
+    countVulnerableUsers: Compter aussi les personnes signalées comme vulnérables
+    hideAssets: Cacher les véhicules
+    hideUsers: Cacher les bénévoles
+    noResourceAvailable: Aucune resource ne correspond à votre recherche
+    showAssetsFrom: "Rechercher les ressources disponibles de "
+    showAvailabilitesFrom: "Rechercher les disponibilités de "
+    showDaysFrom: "Visualiser les jours de "
+    showVulnerableUsers: Afficher aussi les personnes signalées comme vulnérables
+    uniformOnly: Avec uniforme seulement
+  pluralLabel: Structures
   search:
+    noAssets: Aucun véhicule ne correspond à votre recherche.
+    noUsers: Aucun bénévole ne correspond à votre recherche.
     query: Rechercher un bénévole ou un véhicule
     submit: Rechercher
-    no_users: Aucun bénévole ne correspond à votre recherche.
-    no_assets: Aucun véhicule ne correspond à votre recherche.
+  showAllUsersAvailability: Afficher les disponibilités de tous les bénévoles
   showCommissionableAssets: Afficher la liste de mes véhicules
   showOrganizationList: Afficher la liste de mes structures
-  showAllUsersAvailability: Afficher les disponibilités de tous les bénévoles
   showUserList: Afficher la liste de mes bénévoles inscrits
   vehicle:
     add: Ajouter un nouveau véhicule
@@ -89,23 +143,14 @@ organization:
   userAvailabilityCurrentWeek: Afficher les disponibilités de mes bénévoles pour la semaine actuelle
   userAvailabilityNextWeek: Afficher les disponibilités de mes bénévoles pour la semaine prochaine
   userList: Liste des bénévoles
-  assetsList: Liste des véhicules
   user:
     hasDrivingLicence: Permis B depuis plus de 3 ans ?
     isFullyEquipped: Uniforme en dotation ?
+    isVulnerable: fait partie des personnes vulnérables
+    isNotVulnerable: ne fait PAS partie des personnes vulnérables
     occupation: Fonction de cadre au sein de la structure d'emploi
     skillset: Compétences Croix-Rouge
   users: Bénévoles
-  planning:
-    no_resource_available: Aucune resource ne correspond à votre recherche
-  mission_type:
-    main_title: Types de missions
-    delete_success_message: Le type de mission a été supprimé avec succès
-    add_new: Ajouter un nouveau type de mission
-    confirm_delete: Vous êtes sur le point de supprimer le type de mission
-    edit_form_title: Modifier un type de mission
-  children_selector:
-    label: Structure
 project:
   contribute: Contribuez au projet
   description: Réserve opérationnelle - Croix-Rouge Française à Paris
@@ -127,9 +172,16 @@ user:
       label: Quelles sont vos compétences Croix-Rouge ?
       help: Cochez toutes vos compétences
     vulnerable:
+      help: |
+               - malade chronique
+               - obésité morbide
+               - syndrome grippal
+               - immunodéprimé
+               - personne mineure ou personne de plus de 70 ans
+               - avis défavorable de votre unité locale ou du pole santé (local ou territorial)
       label: Vulnérable
-      yes: Je fais partie des personnes vulnérables
       no: Je ne fais PAS partie des personnes vulnérables
+      yes: Je fais partie des personnes vulnérables
   dob: Date de naissance
   drivingLicence: Permis
   editMyInfo: Modifier mes informations
@@ -139,25 +191,24 @@ user:
   lastName: Nom
   login: Numéro NIVOL ou Adresse e-mail
   mobile: Numéro de téléphone portable
+  occupation:
+    firefighter: Pompier
+    gp: Médecin
+    logistics: Logisticien
+    midwife: Sage femme
+    nurse: Infirmier.e
+    nurseAnaesthetist: Infirmier.e anesthésiste
+    nursingAssistant: Aide soignant.e
+    otherHealth: Autre personnel de santé
+    paramedic: Ambulancier.e
+    pediatric: Compétences pédiatriques
+    pharmacist: Pharmacien
+    policeOfficer: Gendarme / Policier
+  selectOrganization: Choisissez votre structure
+  skill: Compétence
   skills: Compétences
   uniform: Uniforme
   welcome: Bienvenue, %name%
-asset:
-  type: Type
-  name: Identifiant
-  hasMobileRadio: Présence d'un mobile radio ?
-  hasFirstAidKit: Présence d'un lot de secours ?
-  contact: Qui contacter ?
-  parkingLocation: Lieu de stationnement
-  seatingCapacity: Combien de places ?
-  licensePlate: Plaque d'immatriculation
-  comments: Commentaires
-  planning:
-    hasMobileRadio: Mobile radio ?
-    hasFirstAidKit: Kit de premiers soins ?    
-    contact: Contact
-    seatingCapacity: Places
-    licensePlate: Immatriculation
 
 # Symfony default translations
 Submit: Enregistrer
