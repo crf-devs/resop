@@ -3,6 +3,7 @@ Feature:
     As a user
     I must be able to log in
 
+    @javascript
     Scenario: As anonymous, I cannot access to the homepage
         When I go to the homepage
         Then I should be on "/login"
