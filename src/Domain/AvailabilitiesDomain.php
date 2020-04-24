@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class AvailabilitiesDomain
 {
+    private const DAY_SECONDS = 86400;
+
     public string $slotInterval;
     public array $availabilityDomains = [];
 
@@ -51,6 +53,10 @@ final class AvailabilitiesDomain
      */
     public function __construct(array $availabilityDomains, string $slotInterval)
     {
+        if (0 !== self::DAY_SECONDS % DatePeriodCalculator::intervalToSeconds(\DateInterval::createFromDateString($slotInterval))) {
+            throw new \InvalidArgumentException(sprintf('Invalid slot interval: unable to set a complete day with "%s".', $slotInterval));
+        }
+
         Assertion::allIsInstanceOf($availabilityDomains, AvailabilityDomain::class);
 
         $this->availabilityDomains = $availabilityDomains;
