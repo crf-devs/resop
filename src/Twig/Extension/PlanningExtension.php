@@ -9,17 +9,20 @@ use App\Domain\PlanningDomain;
 use App\Domain\SkillSetDomain;
 use App\Entity\User;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 final class PlanningExtension extends AbstractExtension
 {
     private PlanningDomain $planningDomain;
     private SkillSetDomain $skillSetDomain;
+    private string $slotInterval;
 
-    public function __construct(PlanningDomain $planningDomain, SkillSetDomain $skillSetDomain)
+    public function __construct(PlanningDomain $planningDomain, SkillSetDomain $skillSetDomain, string $slotInterval)
     {
         $this->planningDomain = $planningDomain;
         $this->skillSetDomain = $skillSetDomain;
+        $this->slotInterval = $slotInterval;
     }
 
     /**
@@ -32,6 +35,21 @@ final class PlanningExtension extends AbstractExtension
             new TwigFunction('getAvailabilities', [$this, 'getAvailabilities']),
             new TwigFunction('getDisplayableSkillsInPlanning', [$this, 'getDisplayableSkills']),
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilters(): array
+    {
+        return [
+            new TwigFilter('timeSlot', [$this, 'getTimeSlot']),
+        ];
+    }
+
+    public function getTimeSlot(\DateTimeInterface $time): string
+    {
+        return 0 === \DateInterval::createFromDateString($this->slotInterval)->i ? $time->format('H') : $time->format('H:i');
     }
 
     public function getAvailabilities(DatePeriodCalculator $periodCalculator, array $filters): array
