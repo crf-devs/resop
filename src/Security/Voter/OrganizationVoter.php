@@ -18,7 +18,7 @@ class OrganizationVoter extends Voter
     }
 
     /**
-     * @param string $attribute
+     * @param string       $attribute
      * @param Organization $subject
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool

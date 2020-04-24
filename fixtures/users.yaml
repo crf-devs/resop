@@ -1,6 +1,6 @@
 App\Entity\User:
   User.john_doe:
-    id: 1
+    id: 10
     firstName: John
     lastName: DOE
     organization: '@Organization.DT75'
@@ -15,7 +15,7 @@ App\Entity\User:
     fullyEquipped: true
     drivingLicence: true
   User.jane_doe:
-    id: 2
+    id: 20
     firstName: Jane
     lastName: DOE
     organization: '@Organization.UL-01-02'
@@ -30,7 +30,7 @@ App\Entity\User:
     fullyEquipped: '<boolean(50)>'
     drivingLicence: '<boolean(50)>'
   User.chuck_norris:
-    id: 3
+    id: 30
     firstName: Chuck
     lastName: NORRIS
     organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'

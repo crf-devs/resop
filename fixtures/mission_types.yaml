@@ -1,0 +1,15 @@
+App\Entity\MissionType:
+  MissionType.DT75.{1..2}:
+    id: 75<current()>
+    name: Mission type DT75 <current()>
+    organization: '@Organization.DT75'
+    minimumAvailableHours: 5
+    userSkillsRequirement: <randomSkillRequirement()>
+    assetTypesRequirement: <randomAssetTypeRequirement()>
+  MissionType.DT77.{1..2}:
+    id: 77<current()>
+    name: Mission type DT77 <current()>
+    organization: '@Organization.DT77'
+    minimumAvailableHours: 5
+    userSkillsRequirement: <randomSkillRequirement()>
+    assetTypesRequirement: <randomAssetTypeRequirement()>

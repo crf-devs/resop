@@ -42,7 +42,7 @@ Feature:
         Given I am authenticated as "<login>"
         When I go to "/organizations/30/users"
         And I follow "Modifier"
-        Then I should be on "/organizations/30/users/2/edit"
+        Then I should be on "/organizations/30/users/20/edit"
         And the response status code should be 200
         And the "user_identificationNumber" field should contain "990002A"
         And the "user_emailAddress" field should contain "jane.doe@resop.com"
@@ -57,8 +57,8 @@ Feature:
         Then I should be on "/organizations/30/users/"
         And the response status code should be 200
         And I should see "Les informations ont été mises à jour avec succès."
-        When I go to "/organizations/30/users/2/edit"
-        Then I should be on "/organizations/30/users/2/edit"
+        When I go to "/organizations/30/users/20/edit"
+        Then I should be on "/organizations/30/users/20/edit"
         And the response status code should be 200
         And the "user_identificationNumber" field should contain "999999A"
         And the "user_emailAddress" field should contain "john.bon.jovi@resop.com"
@@ -71,7 +71,7 @@ Feature:
 
     Scenario: As an admin of an organization, I cannot update a user from another organizations
         Given I am authenticated as "DT75"
-        When I go to "/organizations/40/users/3/edit"
+        When I go to "/organizations/40/users/30/edit"
         Then the response status code should be 403
 #
 #    @javascript
@@ -99,10 +99,10 @@ Feature:
         Given I am authenticated as "DT75"
         When I go to "/organizations/40/users"
         Then the response status code should be 403
-        When I go to "/organizations/40/users/3/delete"
+        When I go to "/organizations/40/users/30/delete"
         Then the response status code should be 403
 
     Scenario: As an admin of an organization, I cannot access a user with a mismatched url
         Given I am authenticated as "DT75"
-        When I go to "/organizations/10/users/2/edit"
+        When I go to "/organizations/10/users/20/edit"
         Then the response status code should be 404

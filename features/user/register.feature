@@ -49,7 +49,8 @@ Feature:
         And I select "UL 01-02" from "user[organization]"
         And I check "Maraudeur.se"
         And I press "Valider"
-        Then I should be on "/"
+        Then the response status code should be 200
+        And I should be on "/"
         And I should see "Votre compte utilisateur a été créé avec succès."
         And I should see "Bienvenue, Archibald HADDOCK"
         And I should see "NIVOL : 999999A"

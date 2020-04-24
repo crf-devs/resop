@@ -25,9 +25,9 @@ final class TraversingContext extends RawMinkContext
         $link = str_replace('\\"', '"', $link);
         $links = $this->getSession()->getPage()->findAll('named', ['link', $link]);
 
-        $index = $position < 0 ? count($links) + $position : $position;
+        $index = $position < 0 ? \count($links) + $position : $position;
 
-        if (!array_key_exists($index, $links)) {
+        if (!\array_key_exists($index, $links)) {
             throw new ElementNotFoundException($this->getSession(), 'link', 'id|title|alt|text', $link);
         }
 
