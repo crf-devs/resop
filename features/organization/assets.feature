@@ -1,6 +1,6 @@
 Feature:
     In order to manage the assets in my organization,
-    As an organization admin,
+    As an organization,
     I must be able to list, edit and delete assets in my organization.
 
     Scenario: As anonymous, I cannot list the assets from an organization

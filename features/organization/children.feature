@@ -1,6 +1,6 @@
 Feature:
     In order to manage my children organizations,
-    As an admin of a parent organization,
+    As a parent organization,
     I must be able to list, edit and create them.
 
     Scenario: As anonymous, I cannot list the children of an organization

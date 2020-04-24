@@ -2,7 +2,7 @@
 Feature:
     In order to manage my actions
     As an organization
-    I must be able to log in
+    I must be able to log in.
 
     Scenario: As anonymous, I cannot access to the homepage
         When I go to "/organizations"
