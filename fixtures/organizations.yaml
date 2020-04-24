@@ -1,15 +1,19 @@
 App\Entity\Organization:
   Organization.DT75:
+    id: 1
     name: DT75
     plainPassword: covid19
   Organization.DT77:
+    id: 2
     name: DT77
     plainPassword: covid19
   Organization.UL-01-02:
+    id: 3
     name: UL 01-02
     plainPassword: covid19
     parent: '@Organization.DT75'
   Organization.UL-DE-BRIE-ET-CHANTEREINE:
+    id: 4
     name: UL DE BRIE ET CHANTEREINE
     plainPassword: covid19
     parent: '@Organization.DT77'
