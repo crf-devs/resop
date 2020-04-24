@@ -4,7 +4,7 @@
     {% set formAction = path('app_organization_new') %}
     {% set formTitle = 'organization.add' | trans %}
 {% else %}
-    {% set formAction = path('app_organization_edit', { id: organization.id }) %}
+    {% set formAction = path('app_organization_edit', { organization: organization.id }) %}
     {% set formTitle = 'organization.edit' | trans %}
 {% endif %}
 

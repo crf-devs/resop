@@ -1,19 +1,20 @@
+# todo: use slugs instead of ids in urls - Alice does not update auto increment index when forcing ids
 App\Entity\Organization:
   Organization.DT75:
-    id: 1
+    id: 10
     name: DT75
     plainPassword: covid19
   Organization.DT77:
-    id: 2
+    id: 20
     name: DT77
     plainPassword: covid19
   Organization.UL-01-02:
-    id: 3
+    id: 30
     name: UL 01-02
     plainPassword: covid19
     parent: '@Organization.DT75'
   Organization.UL-DE-BRIE-ET-CHANTEREINE:
-    id: 4
+    id: 40
     name: UL DE BRIE ET CHANTEREINE
     plainPassword: covid19
     parent: '@Organization.DT77'

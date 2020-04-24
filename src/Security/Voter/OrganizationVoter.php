@@ -18,7 +18,7 @@ class OrganizationVoter extends Voter
     }
 
     /**
-     * @param string       $attribute
+     * @param string $attribute
      * @param Organization $subject
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
@@ -29,10 +29,10 @@ class OrganizationVoter extends Voter
             return false;
         }
 
-        return $this->canAccessOrganization($loggedOrganization, $subject);
+        return $this->canManageOrganization($loggedOrganization, $subject);
     }
 
-    private function canAccessOrganization(Organization $loggedOrganization, Organization $organization): bool
+    private function canManageOrganization(Organization $loggedOrganization, Organization $organization): bool
     {
         return $loggedOrganization === $organization || $loggedOrganization === $organization->parent;
     }
