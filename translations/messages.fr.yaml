@@ -15,22 +15,8 @@ action:
   save: Enregistrer
   submit: Valider
 asset:
-  comments: Commentaires
-  contact: Qui contacter ?
-  hasMobileRadio: Présence d'un mobile radio ?
-  hasFirstAidKit: Présence d'un lot de secours ?
-  licensePlate: Plaque d'immatriculation
-  lightVehicle: Véhicule léger
-  name: Identifiant
-  parkingLocation: Lieu de stationnement
-  planning:
-    hasMobileRadio: Mobile radio ?
-    hasFirstAidKit: Kit de premiers soins ?
-    contact: Contact
-    seatingCapacity: Places
-    licensePlate: Immatriculation
-  seatingCapacity: Combien de places ?
   type: Type
+  name: Identifiant
 calendar:
   displayedPeriod: Période affichée
   hours: heures
@@ -56,8 +42,6 @@ common:
   phoneNumberShort: Tél
   type: Type
   yes: Oui
-  no: Non
-  back_to_list: Retourner à la liste
 message:
   deleteAssetWarning: "Vous êtes sur le point de supprimer le véhicule %asset% et toutes ses disponibilités."
   deleteSlotWarning: "Vous êtes sur le point de modifier la disponibilité de %nbAssets%"
@@ -154,8 +138,6 @@ organization:
     occupation: Fonction de cadre au sein de la structure d'emploi
     skillset: Compétences Croix-Rouge
   users: Bénévoles
-  planning:
-    no_resource_available: Aucune resource ne correspond à votre recherche
   asset_type:
     main_title: Types de véhicule
     add_new: Ajouter un nouveau type de véhicule
@@ -240,9 +222,6 @@ user:
   skills: Compétences
   uniform: Uniforme
   welcome: Bienvenue, %name%
-asset:
-  type: Type
-  name: Identifiant
 
 # Symfony default translations
 Submit: Enregistrer
