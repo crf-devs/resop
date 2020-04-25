@@ -60,6 +60,7 @@ services:
     environment:
       - APP_ENV=dev
       - APP_DEBUG=1
+      - PANTHER_CHROME_DRIVER_BINARY=/usr/bin/chromedriver
 
   tools:
     build:

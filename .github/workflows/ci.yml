@@ -18,6 +18,7 @@ env:
     APP_ENV: test
     APP_DEBUG: 0
     DATABASE_SERVER_VERSION: 11 # update service "postgresql" if this value change
+    PANTHER_CHROME_DRIVER_BINARY: /usr/bin/chromedriver
 
 jobs:
     php:
