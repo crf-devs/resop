@@ -5,6 +5,7 @@ default:
                 - App\Tests\Behat\CoverageContext
                 - App\Tests\Behat\DatabaseContext
                 - App\Tests\Behat\FixturesContext
+                - App\Tests\Behat\OrganizationPlanningContext
                 - App\Tests\Behat\SecurityContext
                 - App\Tests\Behat\TraversingContext
                 - App\Tests\Behat\UserPlanningContext
