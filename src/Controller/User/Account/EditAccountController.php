@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @Route("/user/edit", name="user_edit", methods={"GET", "POST"})
+ * @Route("/user/edit", name="app_user_edit", methods={"GET", "POST"})
  */
 final class EditAccountController extends AbstractController
 {
@@ -52,7 +52,7 @@ final class EditAccountController extends AbstractController
 
             $this->addFlash('success', 'Vos informations ont été mises à jour avec succès.');
 
-            return $this->redirectToRoute('user_home');
+            return $this->redirectToRoute('app_user_home');
         }
 
         return $this->render('user/account-form.html.twig', [

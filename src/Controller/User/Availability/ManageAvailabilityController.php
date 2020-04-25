@@ -44,13 +44,13 @@ final class ManageAvailabilityController extends AbstractController
         try {
             $start = new \DateTimeImmutable($week ?: 'monday this week');
         } catch (\Exception $e) {
-            return $this->redirectToRoute('user_home');
+            return $this->redirectToRoute('app_user_home');
         }
 
         $interval = $start->diff(new \DateTimeImmutable());
         // edit current week and next week only
         if ($interval->days > 6) {
-            return $this->redirectToRoute('user_home');
+            return $this->redirectToRoute('app_user_home');
         }
 
         $end = $start->add(new \DateInterval('P7D'));
@@ -75,7 +75,7 @@ final class ManageAvailabilityController extends AbstractController
 
             $this->addFlash('success', 'Vos disponibilités ont été mises à jour avec succès.');
 
-            return $this->redirectToRoute('user_home');
+            return $this->redirectToRoute('app_user_home');
         }
 
         return $this->render('user/availability.html.twig', [

@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
- * @Route("/user/new", name="user_new", methods={"GET", "POST"})
+ * @Route("/user/new", name="app_user_create", methods={"GET", "POST"})
  */
 final class CreateAccountController extends AbstractController
 {
@@ -39,7 +39,7 @@ final class CreateAccountController extends AbstractController
         $user = $this->getUser();
 
         if ($user instanceof User) {
-            return $this->redirectToRoute('user_home');
+            return $this->redirectToRoute('app_user_home');
         }
 
         $user = User::bootstrap($this->authenticationUtils->getLastUsername());

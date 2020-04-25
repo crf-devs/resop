@@ -89,13 +89,13 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
-        return new RedirectResponse($this->router->generate('user_home'));
+        return new RedirectResponse($this->router->generate('app_user_home'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         if ($exception instanceof UsernameNotFoundException) {
-            return new RedirectResponse($this->router->generate('user_new'));
+            return new RedirectResponse($this->router->generate('app_user_create'));
         }
 
         return parent::onAuthenticationFailure($request, $exception);

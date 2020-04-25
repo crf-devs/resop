@@ -22,9 +22,6 @@
     </p>
 
     <hr>
-    {{ include('organization/_search.html.twig') }}
-
-    <hr>
     <p><a class="btn btn-secondary" role="button" href="{{ path('app_organization_user_list', {'organization': app.user.id}) }}">{{ 'organization.showUserList' | trans }}</a></p>
     <p><a class="btn btn-secondary" href="{{ path('app_organization_assets', {'organization': app.user.id}) }}" role="button">{{ 'organization.showCommissionableAssets' | trans }}</a></p>
 

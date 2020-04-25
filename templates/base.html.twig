@@ -8,32 +8,42 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="{{ path('user_home')}}">{{ 'project.name' | trans }}</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <a class="navbar-brand" href="{{ path('app_user_home')}}">{{ 'project.name' | trans }}</a>
 
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ path('user_home')}}">{{ 'nav.home' | trans }}</a>
-                    </li>
-                </ul>
-                <div class="my-2 my-lg-0 d-flex">
-                    {% if not app.user %}
-                        <a class="nav-link" href="{{ path('app_login')}}">{{ 'nav.section.volunteer' | trans }}</a>
-                        <a class="nav-link" href="{{ path('app_organization_login')}}">{{ 'nav.section.organization' | trans }}</a>
-                    {% else %}
-                        {{  app.user }}
-                        <a class="mx-4" href="{{ logout_path() }}">{{ 'action.logout' | trans }}</a>
-                    {% endif %}
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <span class="navbar-text navbar-separator d-none d-lg-block"></span>
+
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_user_home')}}">{{ 'nav.section.volunteer' | trans }}</a>
+                        </li>
+                    </ul>
+                    <div class="navbar-nav">
+                        {% if not app.user %}
+                            <a class="nav-link" href="{{ path('app_organization_login')}}">{{ 'nav.section.organization' | trans }}</a>
+                        {% else %}
+                            <a class="nav-link active" href="{{ path('app_user_edit')}}">{{ 'nav.profile' | trans }}</a>
+                            <a class="nav-link active" href="{{ path('user_availability')}}">{{ 'nav.availability' | trans }}</a>
+                            <a class="nav-link" href="{{ logout_path() }}">{{ 'action.logout' | trans }}</a>
+                            <span class="navbar-text navbar-separator mt-1 ml-3 mr-4 d-none d-lg-block"></span>
+                            <span class="navbar-text active text-dark font-weight-bold">
+                                {{  app.user }}
+                            </span>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </nav>
-        <div class="container my-4">
+        <div class="container my-5">
             {% block body %}{% endblock %}
         </div>
 

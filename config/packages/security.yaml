@@ -45,7 +45,7 @@ security:
 
             logout:
                 path: app_logout
-                target: user_home
+                target: app_user_home
 
             remember_me:
                 name: remember_me_user

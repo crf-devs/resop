@@ -12,8 +12,6 @@
 
     <h1>{{ 'action.search' | trans({'%query%': query}) }}</h1>
 
-    {{ include('organization/_search.html.twig') }}
-
     <hr/>
     <h3>Bénévoles</h3>
     {% if users|length %}

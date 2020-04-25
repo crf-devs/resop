@@ -1,3 +1,4 @@
+@search
 Feature:
     In order to find a user or an asset
     As an organization

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/", name="user_home", methods={"GET", "POST"})
+ * @Route("/", name="app_user_home", methods={"GET", "POST"})
  */
 final class IndexController extends AbstractController
 {
