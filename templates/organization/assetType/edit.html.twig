@@ -17,7 +17,7 @@
         {% endif %}
     </h1>
 
-    {{ form_start(form, { attr: { id: 'edit-asset-type-form'}}) }}
+    {{ form_start(form, { attr: { id: 'edit-asset-type-form', 'data-persisted-keys': persistedKeys|join(',')}}) }}
 
     {{ form_errors(form) }}
     <div class="row">

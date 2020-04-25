@@ -73,8 +73,8 @@ final class Version20200420214426 extends AbstractMigration
             if ('VL' === $row['type']) {
                 $assetTypeId = 1;
                 $properties += [
-                    'radio' => !empty($row['has_mobile_radio']) ? 'yes' : 'no',
-                    'kitSecours' => !empty($row['has_first_aid_kit']) ? 'yes' : 'no',
+                    'radio' => !empty($row['has_mobile_radio']),
+                    'kitSecours' => !empty($row['has_first_aid_kit']),
                 ];
             }
 

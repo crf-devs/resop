@@ -30,6 +30,7 @@ class MissionTypeAssetTypesType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        // As the result is stored in JSON, we don't use EntityType here because we only want the entity.id and not the full serialized object
         $builder
             ->add('type', ChoiceType::class, [
                 'label' => 'organization.missionType.assetTypes.type',

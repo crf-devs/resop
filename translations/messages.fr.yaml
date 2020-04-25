@@ -142,6 +142,7 @@ organization:
     main_title: Types de véhicule
     add_new: Ajouter un nouveau type de véhicule
     edit_form_title: Modifier un type de véhicule
+    property_unique_error: Au moins un identifiant unique est dupliqué
     properties:
       main_title: Propriétés
       add_new: Ajouter une nouvelle propriété

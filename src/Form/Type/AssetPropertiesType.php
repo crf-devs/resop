@@ -41,7 +41,7 @@ class AssetPropertiesType extends AbstractType
                 case AssetType::TYPE_BOOLEAN:
                     $formClass = ChoiceType::class;
                     $options['expanded'] = true;
-                    $options['choices'] = ['oui' => 'oui', 'non' => 'non'];
+                    $options['choices'] = ['common.yes' => true, 'common.no' => false];
                     break;
                 default:
                     throw new \InvalidArgumentException('Unsupported property.type');

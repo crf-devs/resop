@@ -92,7 +92,7 @@ class AssetType
         $propertiesKeys = array_column($this->properties, 'key');
         if (\count(array_unique($propertiesKeys)) !== \count($propertiesKeys)) {
             $context
-                ->buildViolation('assetType.propertyUniqueError')
+                ->buildViolation('organization.asset_type.property_unique_error')
                 ->atPath('properties')
                 ->addViolation();
         }

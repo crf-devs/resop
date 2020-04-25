@@ -19,7 +19,7 @@ class AssetTypePropertyType extends AbstractType
             ->add('key', TextType::class, [
                 'required' => true,
                 'label' => 'organization.asset_type.properties.key',
-                'attr' => ['class' => 'disable-on-edit'],
+                'attr' => ['class' => 'disable-on-edit key-input'],
             ])
             ->add('type', ChoiceType::class, [
                 'required' => true,
@@ -46,7 +46,6 @@ class AssetTypePropertyType extends AbstractType
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
-                'data' => false,
                 'choices' => ['common.yes' => true, 'common.no' => false],
             ])
             ->add('hidden', ChoiceType::class, [
@@ -55,8 +54,6 @@ class AssetTypePropertyType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'choices' => ['common.yes' => true, 'common.no' => false],
-                'data' => false,
-                'attr' => ['class' => 'hide-on-create'],
             ])
         ;
     }

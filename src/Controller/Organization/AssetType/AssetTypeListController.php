@@ -6,12 +6,14 @@ namespace App\Controller\Organization\AssetType;
 
 use App\Entity\Organization;
 use App\Repository\AssetTypeRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/assetType", name="app_organization_assetType_list", methods={"GET"})
+ * @Route("/assetTypes", name="app_organization_assetType_list", methods={"GET"})
+ * @Security("is_granted('ROLE_PARENT_ORGANIZATION')")
  */
 class AssetTypeListController extends AbstractController
 {
