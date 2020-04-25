@@ -23,7 +23,8 @@ class PreAddAssetController extends AbstractController
         $form = $this->createForm(
             PreAddAssetType::class,
             null,
-            ['parent_organization' => $organization->getParentOrganization()])
+            ['parent_organization' => $organization->getParentOrganization()]
+        )
             ->createView();
 
         return $this->render('organization/commissionable_asset/preAdd.html.twig', [
