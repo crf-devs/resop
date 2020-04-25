@@ -55,7 +55,7 @@
 {% set availabilities = getAvailabilities(periodCalculator, filters) %}
 <div class="planning-container">
     {% if availabilities.assets|length > 0 or availabilities.users|length > 0 %}
-        <table class="planning table table-sm table-bordered availability-table" data-availability-mode="planning" style="display: none;">
+        <table class="planning table table-sm table-bordered availability-table" data-availability-mode="planning" {#style="display: none;"#}>
             {% if availabilities.assets|length %}
                 {% include 'organization/planning/_availabilities_assets.html.twig' with {availabilities: availabilities.assets, entityType: 'assets'} %}
             {% endif %}

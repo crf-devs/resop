@@ -1,4 +1,4 @@
-# todo: use slugs instead of ids in urls - Alice does not update auto increment index when forcing ids
+# todo: increase ids
 App\Entity\Organization:
   Organization.DT75:
     id: 10

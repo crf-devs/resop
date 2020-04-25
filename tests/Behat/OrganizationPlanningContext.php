@@ -41,18 +41,7 @@ final class OrganizationPlanningContext extends RawMinkContext
         }
 
         if ($expectedAvailability !== $currentAvailability = $slot->getAttribute('data-status')) {
-            throw new ExpectationException(
-                sprintf(
-                    'Availability of %s "%s" for slot "%s" at %s is %s. Expected: %s',
-                    $resourceType,
-                    $username,
-                    $date,
-                    $time,
-                    $currentAvailability,
-                    $expectedAvailability
-                ),
-                $this->getSession()
-            );
+            throw new ExpectationException(sprintf('Availability of %s "%s" for slot "%s" at %s is %s. Expected: %s', $resourceType, $username, $date, $time, $currentAvailability, $expectedAvailability), $this->getSession());
         }
     }
 }

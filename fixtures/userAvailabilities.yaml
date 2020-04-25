@@ -2,15 +2,16 @@ App\Entity\UserAvailability:
   # John DOE is locked/booked next monday from 2:00 to 9:59
   UserAvailability.john_doe.next-week.monday.{2..8,2}:
     __factory:
-      '@App\DataFixtures\Factory\UserAvailabilityFactory::create':
+      '@App\DataFixtures\Factory\AvailabilitableResourceFactory::create':
         - '<{app.slot_interval}>'
         - '@User.john_doe'
         - 'next monday <current()>:00'
         - '<randomElement(["locked", "booked"])>'
+
   # John DOE is available next tuesday from 10:00 to 13:59
   UserAvailability.john_doe.next-week.tuesday.{10..12,2}:
-    __factory:
-      '@App\DataFixtures\Factory\UserAvailabilityFactory::create':
+    __factory: 
+      '@App\DataFixtures\Factory\AvailabilitableResourceFactory::create': 
         - '<{app.slot_interval}>'
         - '@User.john_doe'
         - 'tuesday next week <current()>:00'
@@ -19,23 +20,25 @@ App\Entity\UserAvailability:
   # Jane DOE is booked next monday from 6:00 to 9:59
   UserAvailability.jane_doe.next-week.monday.{6..8,2}:
     __factory:
-      '@App\DataFixtures\Factory\UserAvailabilityFactory::create':
+      '@App\DataFixtures\Factory\AvailabilitableResourceFactory::create':
         - '<{app.slot_interval}>'
         - '@User.jane_doe'
         - 'next monday <current()>:00'
         - 'booked'
+
   # Jane DOE is booked next monday from 10:00 to 13:59
   UserAvailability.jane_doe.next-week.monday.{10..12,2}:
     __factory:
-      '@App\DataFixtures\Factory\UserAvailabilityFactory::create':
+      '@App\DataFixtures\Factory\AvailabilitableResourceFactory::create':
         - '<{app.slot_interval}>'
         - '@User.jane_doe'
         - 'next monday <current()>:00'
         - 'available'
+
   # Jane DOE is booked next monday from 14:00 to 17:59
   UserAvailability.jane_doe.next-week.monday.{14..16,2}:
     __factory:
-      '@App\DataFixtures\Factory\UserAvailabilityFactory::create':
+      '@App\DataFixtures\Factory\AvailabilitableResourceFactory::create':
         - '<{app.slot_interval}>'
         - '@User.jane_doe'
         - 'next monday <current()>:00'
