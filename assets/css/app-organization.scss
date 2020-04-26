@@ -1,0 +1,27 @@
+@import "~bootstrap/scss/bootstrap";
+
+.navbar {
+  .input-group-search {
+    background: $light;
+
+    .input-group-prepend {
+      .input-group-text {
+        background-color: transparent;
+        border: none;
+      }
+    }
+
+    .form-control {
+      background-color: transparent;
+      border: none;
+    }
+
+    .input-group-append {
+      background-color: transparent;
+
+      button {
+        border: none;
+      }
+    }
+  }
+}

@@ -67,6 +67,8 @@ message:
   updatedWarning: Des modifications ont été effectuées par d'autres utilisateurs, <a href="#" class="text-body">cliquez ici pour rafraichir la page</a>
 nav:
   home: Accueil
+  profile: Profil
+  availability: Disponibilités
   section:
     volunteer: Espace bénévole
     organization: Espace structure

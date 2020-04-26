@@ -32,5 +32,8 @@
     "lint:fix": "npx eslint 'assets/js/**/*.js' --cache --max-warnings=0 --fix",
     "lint:css": "npx stylelint 'assets/css/**/*.{css,scss}' --cache --max-warnings=0",
     "lint:css:fix": "npx stylelint 'assets/css/**/*.{css,scss}' --cache --max-warnings=0 --fix"
+  },
+  "dependencies": {
+    "font-awesome": "^4.7.0"
   }
 }

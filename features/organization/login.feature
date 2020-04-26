@@ -1,3 +1,4 @@
+@login
 Feature:
     In order to manage my actions
     As an organization

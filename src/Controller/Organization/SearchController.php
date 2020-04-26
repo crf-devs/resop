@@ -26,7 +26,7 @@ final class SearchController extends AbstractController
         /** @var string $query */
         $query = preg_replace('/\s+/', ' ', trim($request->query->get('query')));
         if (empty($query)) {
-            throw $this->createNotFoundException('Missing "query" query parameter');
+            return $this->redirectToRoute('app_organization_index');
         }
 
         return $this->render('organization/search.html.twig', [
