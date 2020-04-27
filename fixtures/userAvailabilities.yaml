@@ -13,5 +13,5 @@ App\Entity\UserAvailability:
       '@App\DataFixtures\Factory\UserAvailabilityFactory::create':
         - '<{app.slot_interval}>'
         - '@User.john_doe'
-        - 'next tuesday <current()>:00'
+        - 'tuesday next week <current()>:00'
         - 'available'

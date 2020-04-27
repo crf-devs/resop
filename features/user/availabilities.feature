@@ -85,4 +85,4 @@ Feature:
         And the availability checkbox "<time>" should be unchecked
         Examples:
             | time                    |
-            | next week tuesday 10 am |
+            | tuesday next week 10 am |
