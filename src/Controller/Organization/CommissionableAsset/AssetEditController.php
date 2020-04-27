@@ -8,7 +8,6 @@ use App\Entity\CommissionableAsset;
 use App\Form\Type\CommissionableAssetType;
 use App\Security\Voter\CommissionableAssetVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/{asset<\d+>}/edit", name="app_organization_asset_edit", methods={"GET", "POST"})
  * @IsGranted(CommissionableAssetVoter::CAN_EDIT, subject="asset")
- * @Security("asset.organization.id == organization")
  */
 class AssetEditController extends AbstractController
 {

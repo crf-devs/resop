@@ -10,7 +10,6 @@ use App\Entity\CommissionableAssetAvailability;
 use App\Form\Type\AvailabilitiesDomainType;
 use App\Repository\CommissionableAssetAvailabilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/{asset<\d+>}/availability/{week<\d{4}-W\d{2}>?}", name="app_organization_asset_availability", methods={"GET", "POST"})
- * @Security("asset.organization.id == organization")
  */
 final class AvailabilityController extends AbstractController
 {
@@ -60,8 +58,7 @@ final class AvailabilityController extends AbstractController
 
         $form = $this
             ->createForm(AvailabilitiesDomainType::class, $availabilitiesDomain)
-            ->handleRequest($request)
-        ;
+            ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $availabilitiesDomain->compute($this->entityManager, CommissionableAssetAvailability::class, $asset);
@@ -72,9 +69,12 @@ final class AvailabilityController extends AbstractController
             return $this->redirectToRoute('app_organization_assets', ['organization' => $asset->organization->getId()]);
         }
 
-        return $this->render('organization/commissionable_asset/availability.html.twig', [
-            'form' => $form->createView(),
-            'asset' => $asset,
-        ])->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
+        return $this->render(
+            'organization/commissionable_asset/availability.html.twig',
+            [
+                'form' => $form->createView(),
+                'asset' => $asset,
+            ]
+        )->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
     }
 }
