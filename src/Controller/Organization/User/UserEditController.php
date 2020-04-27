@@ -8,7 +8,6 @@ use App\Entity\User;
 use App\Form\Type\UserType;
 use App\Security\Voter\UserVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/{userToEdit<\d+>}/edit", name="app_organization_user_edit", methods={"GET", "POST"})
- * @Security("userToEdit.organization.id == organization")
  * @IsGranted(UserVoter::CAN_EDIT, subject="userToEdit")
  */
 class UserEditController extends AbstractController
