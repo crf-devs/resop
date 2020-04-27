@@ -7,6 +7,7 @@ namespace App\DataFixtures\Factory;
 use App\Domain\DatePeriodCalculator;
 use App\Entity\AvailabilitableInterface;
 use App\Entity\AvailabilityInterface;
+use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
 use App\Entity\User;
 use App\Entity\UserAvailability;
@@ -17,14 +18,16 @@ final class AvailabilitableResourceFactory
     {
         $startDate = DatePeriodCalculator::roundToDailyInterval(new \DateTimeImmutable($startTime), \DateInterval::createFromDateString($slotInterval));
 
-        $availabilityClass = User::class === \get_class($resource) ? UserAvailability::class : CommissionableAssetAvailability::class;
+        $endTime = $startDate->add(\DateInterval::createFromDateString($slotInterval));
 
-        return new $availabilityClass(
-            null,
-            $resource,
-            $startDate,
-            $startDate->add(\DateInterval::createFromDateString($slotInterval)),
-            $status
-        );
+        if ($resource instanceof User) {
+            return new UserAvailability(null, $resource, $startDate, $endTime, $status);
+        }
+
+        if ($resource instanceof CommissionableAsset) {
+            return new CommissionableAssetAvailability(null, $resource, $startDate, $endTime, $status);
+        }
+
+        throw new \LogicException(sprintf('Not handled resource of type "%s"', \get_class($resource)));
     }
 }

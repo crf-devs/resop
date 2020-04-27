@@ -1,7 +1,6 @@
-# todo: increase ids
 App\Entity\User:
   User.john_doe:
-    id: 10
+    id: 101
     firstName: John
     lastName: DOE
     organization: '@Organization.DT75'
@@ -16,7 +15,7 @@ App\Entity\User:
     fullyEquipped: true
     drivingLicence: true
   User.jane_doe:
-    id: 20
+    id: 102
     firstName: Jane
     lastName: DOE
     organization: '@Organization.UL-01-02'
@@ -31,7 +30,7 @@ App\Entity\User:
     fullyEquipped: '<boolean(50)>'
     drivingLicence: '<boolean(50)>'
   User.chuck_norris:
-    id: 30
+    id: 103
     firstName: Chuck
     lastName: NORRIS
     organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'

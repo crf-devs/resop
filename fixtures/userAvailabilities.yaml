@@ -8,7 +8,7 @@ App\Entity\UserAvailability:
         - 'next monday <current()>:00'
         - '<randomElement(["locked", "booked"])>'
 
-  # John DOE is available next tuesday from 10:00 to 13:59
+  # John DOE is available tuesday next week from 10:00 to 13:59
   UserAvailability.john_doe.next-week.tuesday.{10..12,2}:
     __factory: 
       '@App\DataFixtures\Factory\AvailabilitableResourceFactory::create': 

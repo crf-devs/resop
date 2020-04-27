@@ -26,9 +26,6 @@ class OrganizationEditController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $flashMessage = 'La structure a été mise à jour avec succès.';
-            if (null === $organization->id) {
-                $flashMessage = 'La structure a été ajoutée avec succès.';
-            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($organization);

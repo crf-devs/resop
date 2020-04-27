@@ -10,27 +10,22 @@ use Behat\MinkExtension\Context\RawMinkContext;
 final class TraversingContext extends RawMinkContext
 {
     /**
-     * Click on third link:
-     * Example: When I follow "link" at position 2
-     *
      * Click on last link:
-     * Example: When I follow "link" at position -1
+     * Example: When I follow the last "link"
      *
-     * @When /^(?:|I )follow "(?P<link>(?:[^"]|\\")*)" at position (-?\d+)$/
+     * @When /^(?:|I )follow the last "(?P<link>(?:[^"]|\\")*)"$/
      *
      * @throws ElementNotFoundException
      */
-    public function clickLastLink(string $link, int $position): void
+    public function clickLastLink(string $link): void
     {
         $link = str_replace('\\"', '"', $link);
         $links = $this->getSession()->getPage()->findAll('named', ['link', $link]);
 
-        $index = $position < 0 ? \count($links) + $position : $position;
-
-        if (!\array_key_exists($index, $links)) {
+        if (0 === \count($links)) {
             throw new ElementNotFoundException($this->getSession(), 'link', 'id|title|alt|text', $link);
         }
 
-        $links[$index]->click();
+        $links[\count($links) - 1]->click();
     }
 }

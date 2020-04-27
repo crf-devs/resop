@@ -50,7 +50,7 @@ Feature:
         When I follow "Modifier"
         And I should see "CI Réseau BSPP"
 
-    Scenario: As an organization, I cannot edit a mission type from another organization
+    Scenario: As an organization, I cannot edit a mission type of another organization
         Given I am authenticated as "DT75"
         And I am on "/organizations/mission_type/771/edit"
         Then the response status code should be 403
@@ -67,7 +67,7 @@ Feature:
 #        And I should not see "Le type de mission a été supprimé avec succès "
 #        And I should not see "Mission type DT75 1"
 
-    Scenario: As an organization, I cannot delete a mission type from another organization
+    Scenario: As an organization, I cannot delete a mission type of another organization
         Given I am authenticated as "DT75"
         And I am on "/organizations/mission_type/771/delete"
         Then the response status code should be 403

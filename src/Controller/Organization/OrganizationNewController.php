@@ -6,23 +6,23 @@ namespace App\Controller\Organization;
 
 use App\Entity\Organization;
 use App\Form\Type\OrganizationType;
+use App\Security\Voter\OrganizationVoter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/new", name="app_organization_new", methods={"GET", "POST"})
+ * @IsGranted(OrganizationVoter::CAN_CREATE)
  */
 class OrganizationNewController extends AbstractController
 {
     public function __invoke(Request $request): Response
     {
+        /** @var Organization $currentOrganization */
         $currentOrganization = $this->getUser();
-        if (!($currentOrganization instanceof Organization) || null !== $currentOrganization->parent) {
-            throw new AccessDeniedException();
-        }
 
         $organization = new Organization();
         $organization->parent = $currentOrganization;
