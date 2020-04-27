@@ -74,6 +74,7 @@ services:
     environment:
       - APP_ENV=dev
       - APP_DEBUG=1
+      - PANTHER_CHROME_DRIVER_BINARY=/usr/bin/chromedriver
     ulimits:
       nofile:
         soft: "65536"

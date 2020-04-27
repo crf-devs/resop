@@ -18,6 +18,7 @@ env:
     APP_ENV: test
     APP_DEBUG: 0
     DATABASE_SERVER_VERSION: 11 # update service "postgresql" if this value change
+    PANTHER_CHROME_DRIVER_BINARY: /usr/bin/chromedriver
 
 jobs:
     php:
@@ -43,7 +44,7 @@ jobs:
                   coverage: pcov
                   extensions: ctype, iconv, intl
                   ini-values: date.timezone=UTC, memory_limit=-1, session.gc_probability=0, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=20000, opcache.validate_timestamps=0, realpath_cache_size=4096K, realpath_cache_ttl=600
-                  tools: cs2pr
+                  tools: cs2pr, symfony
 
             - name: Install Node.js
               uses: actions/setup-node@v1
@@ -127,9 +128,15 @@ jobs:
                 flags: unit
                 token: ${{ secrets.CODECOV_TOKEN }}
 
+            - name: Start WebServer in background for Behat tests
+              run: |
+                  symfony serve -d --no-tls --port=8000
+              if: always()
+
             - name: Run Behat tests
               run: |
                   bin/post-install-test.sh
+                  sed -i 's/base_url: .*/base_url: http:\/\/localhost:8000\//' behat.yml.dist
                   vendor/bin/behat --format=progress --out=std --format=junit --out=var/behat
               if: always()
 

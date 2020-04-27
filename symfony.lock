@@ -197,6 +197,9 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.1"
     },
+    "lctrs/mink-panther-driver": {
+        "version": "0.5.x-dev"
+    },
     "martin-georgiev/postgresql-for-doctrine": {
         "version": "v1.3.0"
     },
@@ -254,6 +257,9 @@
     },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
+    },
+    "php-webdriver/webdriver": {
+        "version": "1.8.2"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"
@@ -476,6 +482,12 @@
             "src/Kernel.php"
         ]
     },
+    "symfony/http-client": {
+        "version": "v5.0.7"
+    },
+    "symfony/http-client-contracts": {
+        "version": "v2.0.1"
+    },
     "symfony/http-foundation": {
         "version": "v5.0.1"
     },
@@ -522,6 +534,9 @@
     },
     "symfony/orm-pack": {
         "version": "v1.0.7"
+    },
+    "symfony/panther": {
+        "version": "v0.7.1"
     },
     "symfony/phpunit-bridge": {
         "version": "4.3",

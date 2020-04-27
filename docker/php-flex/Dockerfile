@@ -84,6 +84,12 @@ RUN test -z "$DEBUG_TOOLS" || ( \
         && rm -Rf /tmp/blackfire \
     )
 
+RUN test -z "$DEBUG_TOOLS" || ( \
+        apk add --no-cache \
+            chromium \
+            chromium-chromedriver \
+    )
+
 COPY ./docker/php-flex/files/. /
 
 WORKDIR /srv
