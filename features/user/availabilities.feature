@@ -35,6 +35,7 @@ Feature:
         Given I am authenticated as "john.doe@resop.com"
         And I am on "/"
         When I follow "Mes disponibilités pour la semaine prochaine"
+        # TODO Check the full url /user/availability/2020-W18
         Then the url should match "/user/availability"
         And the response status code should be 200
         When I check "<time>" availability checkbox
@@ -57,8 +58,8 @@ Feature:
         And the availability checkbox "<time>" should be unchecked
         Examples:
             | time                      |
-            | next week monday 1 pm     |
-            | next week tuesday 10 am   |
+            | next week monday 3 pm     |
+            | next week tuesday 8 am    |
             | next week wednesday 12 pm |
             | next week thursday 2pm    |
             | next week friday 4pm      |
@@ -72,6 +73,7 @@ Feature:
         When I follow "Mes disponibilités pour la semaine prochaine"
         Then the url should match "/user/availability"
         And the response status code should be 200
+        And the availability checkbox "<time>" should be checked
         When I uncheck "<time>" availability checkbox
         And I press "Enregistrer mes disponibilités"
         Then I should be on "/"
@@ -82,5 +84,5 @@ Feature:
         And the response status code should be 200
         And the availability checkbox "<time>" should be unchecked
         Examples:
-            | time                   |
-            | next week monday 12 am |
+            | time                    |
+            | next week tuesday 10 am |
