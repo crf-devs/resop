@@ -41,7 +41,7 @@ class AssetTypeRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('at')
             ->where('at.organization = :organization AND at.id = :id')
-            ->setParameter('organization', $organization)
+            ->setParameter('organization', $organization->getParentOrganization())
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();

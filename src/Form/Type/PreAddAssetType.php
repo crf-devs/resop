@@ -17,10 +17,7 @@ class PreAddAssetType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $parentOrganization = $options['parent_organization'];
-        if (!$parentOrganization instanceof Organization) {
-            throw new \LogicException('parent_organization must be an instance of Organization');
-        }
+        $parentOrganization = $options['organization']->getParentOrganization();
 
         $builder
             ->add('type', EntityType::class, [
@@ -40,9 +37,11 @@ class PreAddAssetType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired(['parent_organization']);
-        $resolver->setDefaults([
-            'csrf_protection' => false,
-        ]);
+        $resolver
+            ->setRequired(['organization'])
+            ->addAllowedTypes('organization', Organization::class)
+            ->setDefaults([
+                'csrf_protection' => false,
+            ]);
     }
 }

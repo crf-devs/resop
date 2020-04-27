@@ -23,7 +23,7 @@ class PreAddAssetController extends AbstractController
         $form = $this->createForm(
             PreAddAssetType::class,
             null,
-            ['parent_organization' => $organization->getParentOrganization()]
+            ['organization' => $organization]
         )
             ->createView();
 

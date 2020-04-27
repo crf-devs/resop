@@ -31,12 +31,9 @@ class AssetAddController extends AbstractController
 
     public function __invoke(Request $request, Organization $organization): Response
     {
-        /** @var Organization $parentOrganization */
-        $parentOrganization = $organization->isParent() ? $organization : $organization->parent;
-
         $assetType = null;
         if ($request->query->has('type')) {
-            $assetType = $this->assetTypeRepository->findByOrganizationAndId($parentOrganization, (int) $request->query->get('type'));
+            $assetType = $this->assetTypeRepository->findByOrganizationAndId($organization, (int) $request->query->get('type'));
         }
 
         if (null === $assetType) {
