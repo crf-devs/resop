@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/", name="app_organization_assets", methods={"GET"})
- * @IsGranted(OrganizationVoter::CAN_LIST_ASSETS, subject="organization")
+ * @IsGranted(OrganizationVoter::CAN_MANAGE, subject="organization")
  */
 class AssetsListController extends AbstractController
 {

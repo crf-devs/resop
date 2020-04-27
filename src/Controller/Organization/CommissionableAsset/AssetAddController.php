@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/add", name="app_organization_asset_add", methods={"GET", "POST"})
- * @IsGranted(OrganizationVoter::CAN_ADD_ASSET, subject="organization")
+ * @IsGranted(OrganizationVoter::CAN_MANAGE, subject="organization")
  */
 class AssetAddController extends AbstractController
 {

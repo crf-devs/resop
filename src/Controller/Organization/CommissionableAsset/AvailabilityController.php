@@ -58,7 +58,8 @@ final class AvailabilityController extends AbstractController
 
         $form = $this
             ->createForm(AvailabilitiesDomainType::class, $availabilitiesDomain)
-            ->handleRequest($request);
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $availabilitiesDomain->compute($this->entityManager, CommissionableAssetAvailability::class, $asset);
@@ -69,12 +70,9 @@ final class AvailabilityController extends AbstractController
             return $this->redirectToRoute('app_organization_assets', ['organization' => $asset->organization->getId()]);
         }
 
-        return $this->render(
-            'organization/commissionable_asset/availability.html.twig',
-            [
-                'form' => $form->createView(),
-                'asset' => $asset,
-            ]
-        )->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
+        return $this->render('organization/commissionable_asset/availability.html.twig', [
+            'form' => $form->createView(),
+            'asset' => $asset,
+        ])->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
     }
 }

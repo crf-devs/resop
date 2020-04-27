@@ -6,7 +6,6 @@ namespace App\Controller\Organization\MissionType;
 
 use App\Entity\MissionType;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,7 +15,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * @Route("/mission_type/delete/{id}", name="app_organization_mission_type_delete", methods={"GET"})
  * @Security("missionType.organization == user")
- * @IsGranted("ROLE_PARENT_ORGANIZATION")
  */
 class MissionTypeDeleteController extends AbstractController
 {

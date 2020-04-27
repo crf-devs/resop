@@ -10,14 +10,11 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class OrganizationVoter extends Voter
 {
-    public const CAN_LIST_ASSETS = 'CAN_LIST_ASSETS';
-    public const CAN_ADD_ASSET = 'CAN_ADD_ASSETS';
-    public const CAN_LIST_USERS = 'CAN_LIST_USERS';
+    public const CAN_MANAGE = 'CAN_MANAGE_ORGANIZATION';
 
     protected function supports($attribute, $subject): bool
     {
-        return \in_array($attribute, [self::CAN_LIST_ASSETS, self::CAN_ADD_ASSET, self::CAN_LIST_USERS], true)
-            && $subject instanceof Organization;
+        return self::CAN_MANAGE === $attribute && $subject instanceof Organization;
     }
 
     /**
