@@ -10,7 +10,6 @@ use App\Entity\CommissionableAssetAvailability;
 use App\Form\Type\AvailabilitiesDomainType;
 use App\Repository\CommissionableAssetAvailabilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/{asset<\d+>}/availability/{week<\d{4}-W\d{2}>?}", name="app_organization_asset_availability", methods={"GET", "POST"})
- * @Security("asset.organization.id == organization")
  */
 final class AvailabilityController extends AbstractController
 {

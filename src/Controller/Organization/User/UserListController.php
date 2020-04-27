@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/", name="app_organization_user_list", methods={"GET"})
- * @IsGranted(OrganizationVoter::CAN_LIST_USERS, subject="organization")
+ * @IsGranted(OrganizationVoter::CAN_MANAGE, subject="organization")
  */
 class UserListController extends AbstractController
 {
