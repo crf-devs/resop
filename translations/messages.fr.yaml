@@ -15,22 +15,8 @@ action:
   save: Enregistrer
   submit: Valider
 asset:
-  comments: Commentaires
-  contact: Qui contacter ?
-  hasMobileRadio: Présence d'un mobile radio ?
-  hasFirstAidKit: Présence d'un lot de secours ?
-  licensePlate: Plaque d'immatriculation
-  lightVehicle: Véhicule léger
-  name: Identifiant
-  parkingLocation: Lieu de stationnement
-  planning:
-    hasMobileRadio: Mobile radio ?
-    hasFirstAidKit: Kit de premiers soins ?
-    contact: Contact
-    seatingCapacity: Places
-    licensePlate: Immatriculation
-  seatingCapacity: Combien de places ?
   type: Type
+  name: Identifiant
 calendar:
   displayedPeriod: Période affichée
   hours: heures
@@ -91,6 +77,7 @@ organization:
     label: Structure
   edit: Modifier une structure
   editAll: Modifier mes structures
+  editAssetType: Modifier les types de véhicules
   editMissionType: Modifier les types de missions
   editUserProfile: Modifier un profil
   forecast: Projections
@@ -153,6 +140,32 @@ organization:
     occupation: Fonction de cadre au sein de la structure d'emploi
     skillset: Compétences Croix-Rouge
   users: Bénévoles
+  asset_type:
+    main_title: Types de véhicule
+    add_new: Ajouter un nouveau type de véhicule
+    edit_form_title: Modifier un type de véhicule
+    properties:
+      main_title: Propriétés
+      add_new: Ajouter une nouvelle propriété
+      key: Identifiant unique de la question
+      label: Libellé de la question
+      help: Aide
+      hidden: Cacher la question
+      required: Réponse obligatoire
+      format: Format
+      formats:
+        number: Nombre
+        boolean: Oui/Non
+        small_text: Texte court
+        text: Texte long
+  mission_type:
+    main_title: Types de missions
+    delete_success_message: Le type de mission a été supprimé avec succès
+    add_new: Ajouter un nouveau type de mission
+    confirm_delete: Vous êtes sur le point de supprimer le type de mission
+    edit_form_title: Modifier un type de mission
+  children_selector:
+    label: Structure
 project:
   contribute: Contribuez au projet
   description: Réserve opérationnelle - Croix-Rouge Française à Paris

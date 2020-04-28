@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Form\Type;
 
 use App\Domain\SkillSetDomain;
-use App\Entity\CommissionableAsset;
+use App\Entity\AssetType;
 use App\Entity\Organization;
+use App\Repository\AssetTypeRepository;
 use App\Repository\OrganizationRepository;
 use DateTimeImmutable;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -118,9 +119,12 @@ class PlanningSearchType extends AbstractType
                 'label' => 'organization.planning.hideAssets',
                 'required' => false,
             ])
-            ->add('assetTypes', ChoiceType::class, [
+            ->add('assetTypes', EntityType::class, [
+                'class' => AssetType::class,
+                'query_builder' => function (AssetTypeRepository $assetTypeRepository) use ($organization) {
+                    return $assetTypeRepository->findByOrganizationQB($organization->isParent() ? $organization : $organization->parent);
+                },
                 'label' => 'common.type',
-                'choices' => array_flip(CommissionableAsset::TYPES),
                 'multiple' => true,
                 'required' => false,
                 'attr' => [

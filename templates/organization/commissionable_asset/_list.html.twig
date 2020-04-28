@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12 text-right mb-2">
-        <a class="btn btn-success" href="{{ path('app_organization_asset_add', {organization: organization.id | default(app.user.id)}) }}" role="button">
+        <a class="btn btn-success" href="{{ path('app_organization_commissionable_pre_add_asset', {organization: organization.id | default(app.user.id)}) }}" role="button">
             {{ 'organization.vehicle.add' | trans }}
         </a>
     </div>
@@ -10,6 +10,7 @@
     <table class="table table-stripped">
         <thead class="thead-light">
             <tr>
+                <th>{{ 'common.type' | trans }}</th>
                 <th>{{ 'organization.vehicle.identificationNumber' | trans }}</th>
                 <th>{{ 'common.availabilities' | trans }}</th>
                 <th>{{ 'organization.label' | trans }}</th>
@@ -19,18 +20,9 @@
         <tbody>
         {% for asset in assets %}
             <tr>
+                <td>{{ asset.assetType.name }}</td>
                 <td class="text-nowrap">
-                    {{ asset }}
-                    <span class="badge badge-pill badge-primary">
-                        {{ asset.seatingCapacity }}
-                        {{ 'organization.vehicle.seat' | trans }}{{ asset.seatingCapacity > 1 ? 's' }}
-                    </span>
-                    {% if asset.hasMobileRadio %}
-                    <span class="badge badge-pill badge-info">{{ 'organization.vehicle.radio' | trans }}</span>
-                    {% endif %}
-                    {% if asset.hasFirstAidKit %}
-                        <span class="badge badge-pill badge-danger">{{ 'organization.vehicle.firstAidKit' | trans }}</span>
-                    {% endif %}
+                    {{ asset.name }}
                 </td>
                 <td>
                     <a class="btn btn-outline-primary" href="{{ path('app_organization_asset_availability', { asset: asset.id, organization: asset.organization.id }) }}">{{ 'calendar.week.current' | trans }}</a>

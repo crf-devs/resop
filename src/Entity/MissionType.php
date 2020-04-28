@@ -75,7 +75,7 @@ class MissionType
      *     @Assert\Collection(
      *         fields={
      *              "type" = {
-     *                  @Assert\Choice(callback={CommissionableAsset::class, "getTypesKeys"}),
+     *                  @Assert\Type(type="integer"),
      *                  @Assert\NotBlank,
      *              },
      *              "number" = {

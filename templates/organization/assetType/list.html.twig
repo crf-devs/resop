@@ -1,0 +1,38 @@
+{% extends 'organization/base.html.twig' %}
+
+{% block title %}{{ 'nav.section.organization' | trans }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'organization.asset_type.main_title' | trans }} - {{ app.user }}</h1>
+
+    <div class="row">
+        <div class="col-12 text-right mb-2">
+            <a class="btn btn-success" href="{{ path('app_organization_assetType_new') }}" role="button">{{ 'organization.asset_type.add_new'|trans }}</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="table table-striped">
+            <thead class="thead-light">
+            <tr>
+                <th>{{ 'common.name' | trans }}</th>
+                <th class="actions">{{ 'common.actions' | trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for assetType in assetTypes %}
+                <tr>
+                    <td>{{ assetType.name }}</td>
+                    <td>
+                        <a href="{{ path('app_organization_assetType_edit', { id: assetType.id }) }}" class="btn btn-outline-secondary">{{ 'action.edit' | trans }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

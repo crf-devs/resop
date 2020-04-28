@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Domain\SkillSetDomain;
+use App\Entity\AssetType;
 use App\Entity\AvailabilityInterface;
 use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
@@ -90,6 +91,8 @@ final class ApplicationFixtures extends Fixture
     /** @var CommissionableAsset[] */
     private array $assets = [];
 
+    private array $assetTypes = [];
+
     private SkillSetDomain $skillSetDomain;
     private int $nbUsers;
     private int $nbAvailabilities;
@@ -129,6 +132,7 @@ final class ApplicationFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $this->loadOrganizations($manager);
+        $this->loadAssetTypes($manager);
         $this->loadMissionTypes($manager);
         $this->loadCommissionableAssets($manager);
         $this->loadResourcesAvailabilities($manager, $this->assets, CommissionableAssetAvailability::class);
@@ -136,6 +140,58 @@ final class ApplicationFixtures extends Fixture
         $this->loadResourcesAvailabilities($manager, $this->users, UserAvailability::class);
 
         $manager->flush();
+    }
+
+    public function loadAssetTypes(ObjectManager $manager): void
+    {
+        foreach ($this->organizations as $organization) {
+            if (null !== $organization->parent) {
+                continue;
+            }
+
+            $vl = new AssetType();
+            $vl->organization = $organization;
+            $vl->name = 'VL';
+            $vl->properties = [
+                ['key' => 'radio', 'type' => AssetType::TYPE_BOOLEAN, 'label' => 'Présence d\'un mobile radio ?', 'help' => '', 'required' => true, 'hidden' => false],
+                ['key' => 'kitSecours', 'type' => AssetType::TYPE_BOOLEAN, 'label' => 'Présence d\'un lot de secours ?', 'help' => '', 'required' => true, 'hidden' => false],
+                ['key' => 'stationnement', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Lieu de stationnement', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'contact', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Qui contacter ?', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'places', 'type' => AssetType::TYPE_NUMBER, 'label' => 'Combien de places ?', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'immatriculation', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Plaque d\'immatriculation', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'commentaire', 'type' => AssetType::TYPE_TEXT, 'label' => 'Commentaires', 'help' => '', 'required' => false, 'hidden' => false],
+            ];
+            $manager->persist($vl);
+
+            $vpsp = new AssetType();
+            $vpsp->organization = $organization;
+            $vpsp->name = 'VPSP';
+            $vpsp->properties = [
+                ['key' => 'stationnement', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Lieu de stationnement', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'contact', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Qui contacter ?', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'immatriculation', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Plaque d\'immatriculation', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'commentaires', 'type' => AssetType::TYPE_TEXT, 'label' => 'Commentaires', 'help' => '', 'required' => false, 'hidden' => false],
+            ];
+            $manager->persist($vpsp);
+
+            $drone = new AssetType();
+            $drone->organization = $organization;
+            $drone->name = 'DRONE';
+            $drone->properties = [
+                ['key' => 'key1', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Lieu de stationnement', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'key2', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Qui contacter ?', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'key3', 'type' => AssetType::TYPE_TEXT, 'label' => 'Commentaires', 'help' => '', 'required' => false, 'hidden' => false],
+            ];
+            $manager->persist($drone);
+
+            $this->assetTypes[$organization->id] = [
+                'VL' => $vl,
+                'VPSP' => $vpsp,
+                'DRONE' => $drone,
+            ];
+
+            $manager->flush();
+        }
     }
 
     private function loadMissionTypes(ObjectManager $manager): void
@@ -155,7 +211,7 @@ final class ApplicationFixtures extends Fixture
             ];
 
             $alphaType->assetTypesRequirement = [
-                ['type' => 'VPSP', 'number' => 1],
+                ['type' => $this->assetTypes[$organization->id]['VPSP']->id, 'number' => 1],
             ];
 
             $this->validateAndPersist($manager, $alphaType);
@@ -170,7 +226,7 @@ final class ApplicationFixtures extends Fixture
             ];
 
             $alphaType->assetTypesRequirement = [
-                ['type' => 'VL', 'number' => 1],
+                ['type' => $this->assetTypes[$organization->id]['VL']->id, 'number' => 1],
             ];
 
             $this->validateAndPersist($manager, $alphaType);
@@ -231,7 +287,7 @@ final class ApplicationFixtures extends Fixture
 
                 $asset = new CommissionableAsset();
                 $asset->organization = $organization;
-                $asset->type = $type;
+                $asset->assetType = $this->assetTypes[$organization->getParentOrganization()->id][$type];
                 $asset->name = $prefix.$ulId.$suffix;
                 $this->validateAndPersist($manager, $asset);
                 $this->assets[] = $asset;

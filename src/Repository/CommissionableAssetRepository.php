@@ -37,14 +37,16 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
     public function search(Organization $organization, string $query): array
     {
         $words = explode(' ', $query);
-        $qb = $this->createQueryBuilder('ca');
+        $qb = $this
+            ->createQueryBuilder('ca')
+            ->leftJoin('ca.assetType', 'at');
 
         $qb->andWhere($qb->expr()->in('ca.organization', 'SELECT o.id FROM App:Organization o WHERE o.id = :orgId OR o.parent = :orgId'));
         $qb->setParameter('orgId', $organization);
 
         foreach ($words as $i => $word) {
             $qb
-                ->andWhere("LOWER(CONCAT(ca.type, ca.name)) LIKE LOWER(?$i) OR LOWER(ca.contact) LIKE LOWER(?$i)")
+                ->andWhere("LOWER(CONCAT(at.name, ca.name)) LIKE LOWER(?$i)")
                 ->setParameter($i, "%$word%");
         }
 
@@ -79,7 +81,7 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
         }
 
         if (\count($formData['assetTypes'] ?? []) > 0) {
-            $qb->andWhere('a.type IN (:types)')->setParameter('types', $formData['assetTypes']);
+            $qb->andWhere('a.assetType IN (:types)')->setParameter('types', $formData['assetTypes']);
         }
 
         if (\count($formData['organizations'] ?? []) > 0) {

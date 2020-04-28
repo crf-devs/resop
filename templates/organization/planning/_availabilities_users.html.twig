@@ -15,9 +15,10 @@
     <th class="item-data">{{ 'user.detail.vulnerable.label' | trans }}</th>
 {% endblock itemDataHeader %}
 
-{% block importantSkills %}
+{% block itemDataRowHeader %}
+    {{ item.entity }}
     {{ item.entity.skillSet | filter(skill => skill != type and skill in importantSkillsToDisplay) | map(skill => skill|skillBadge) | join | raw }}
-{% endblock importantSkills %}
+{% endblock itemDataRowHeader %}
 
 {% block itemDataDetails %}
     <td class="item-data">{{ item.entity.identificationNumber }}</td>

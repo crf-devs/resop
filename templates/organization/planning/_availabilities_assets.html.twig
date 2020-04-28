@@ -1,24 +1,31 @@
 {% extends 'organization/planning/_availabilities_base.html.twig' %}
 
-{% block type %}{{ type }}{% endblock type %}
+{% block type %}{{ type | assetTypeName }}{% endblock type %}
 
 {# CAUTION: columns number of blocks itemDataHeader and itemDataDetails should be the same than in _availabilities_users.html.twig #}
 {% block itemDataHeader %}
-    <th class="item-data">{{ 'asset.planning.hasMobileRadio'|trans }}</th>
-    <th class="item-data" colspan="2">{{ 'asset.planning.hasFirstAidKit'|trans }}</th>
-    <th class="item-data">{{ 'asset.planning.contact'|trans }}</th>
-    <th class="item-data" colspan="2">{{ 'asset.parkingLocation'|trans }}</th>
-    <th class="item-data">{{ 'asset.planning.seatingCapacity'|trans }}</th>
-    <th class="item-data">{{ 'asset.planning.licensePlate'|trans }}</th>
-    <th class="item-data">{{ 'asset.comments'|trans }}</th>
+    {% for prop in type | assetTypeProperties(itemDataRow) %}
+        <th class="item-data">{{ prop.label | default('') }}</th>
+    {% endfor %}
 {% endblock itemDataHeader %}
 
+{% block itemDataRowHeader %}
+    {{ item.entity }}
+{% endblock itemDataRowHeader %}
+
 {% block itemDataDetails %}
-    <td class="item-data">{{ item.entity.hasMobileRadio ? 'common.yes' | trans : '-' }}</td>
-    <td class="item-data" colspan="2">{{ item.entity.hasFirstAidKit ? 'common.yes' | trans : '-' }}</td>
-    <td class="item-data"><small>{{ item.entity.contact | truncate(50) }}</small></td>
-    <td class="item-data" colspan="2"><small>{{ item.entity.parkingLocation | truncate(50) }}</small></td>
-    <td class="item-data">{{ item.entity.seatingCapacity }}</td>
-    <td class="item-data">{{ item.entity.licensePlate }}</td>
-    <td class="item-data">{{ item.entity.comments | truncate(50) }}</td>
+    {% for prop in type | assetTypeProperties(itemDataRow) %}
+        <td class="item-data">
+            {% if prop != null %}
+                {%  set currentValue = item.entity.properties[prop.key] | default('') %}
+                {% if currentValue is same as(true) %}
+                    {{ 'common.yes'|trans }}
+                {% elseif currentValue is same as(false) %}
+                    {{ 'common.no'|trans }}
+                {% else %}
+                    {{ currentValue | truncate(75) }}
+                {% endif %}
+            {% endif %}
+        </td>
+    {% endfor %}
 {% endblock itemDataDetails %}

@@ -19,6 +19,13 @@ $tableBoxSize: 40px;
   }
 }
 
+.planning-container,
+.planning-actions-container {
+  .item-data {
+    display: none;
+  }
+}
+
 .planning-container {
   .planning {
     margin-bottom: 40px;
@@ -106,9 +113,14 @@ $tableBoxSize: 40px;
       border-right: none;
     }
 
-    td.item-data {
+    .item-data {
       white-space: nowrap;
       font-size: 0.85em;
+      vertical-align: middle;
+
+      &th {
+        font-size: 0.9em;
+      }
     }
 
     td.slot-box {
@@ -127,13 +139,6 @@ $tableBoxSize: 40px;
         }
       }
     }
-  }
-}
-
-.planning-container,
-.planning-actions-container {
-  .item-data {
-    display: none;
   }
 }
 
