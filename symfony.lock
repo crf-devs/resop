@@ -171,6 +171,9 @@
     "giggsey/locale": {
         "version": "1.8"
     },
+    "guikingone/panther-extension": {
+        "version": "0.2.0"
+    },
     "hautelook/alice-bundle": {
         "version": "2.1",
         "recipe": {
@@ -196,9 +199,6 @@
     },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.1"
-    },
-    "lctrs/mink-panther-driver": {
-        "version": "0.5.x-dev"
     },
     "martin-georgiev/postgresql-for-doctrine": {
         "version": "v1.3.0"
@@ -483,7 +483,7 @@
         ]
     },
     "symfony/http-client": {
-        "version": "v5.0.7"
+        "version": "v5.0.8"
     },
     "symfony/http-client-contracts": {
         "version": "v2.0.1"
