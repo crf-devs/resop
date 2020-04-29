@@ -10,7 +10,7 @@ use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 final class DatabaseContext implements Context
 {
     /**
-     * @BeforeSuite
+     * @BeforeSuite ~@javascript
      */
     public static function beforeSuite(): void
     {
@@ -18,7 +18,7 @@ final class DatabaseContext implements Context
     }
 
     /**
-     * @BeforeScenario
+     * @BeforeScenario ~@javascript
      */
     public function beforeScenario(): void
     {
@@ -26,7 +26,7 @@ final class DatabaseContext implements Context
     }
 
     /**
-     * @AfterScenario
+     * @AfterScenario ~@javascript
      */
     public function afterScenario(): void
     {
@@ -34,7 +34,7 @@ final class DatabaseContext implements Context
     }
 
     /**
-     * @AfterSuite
+     * @AfterSuite ~@javascript
      */
     public static function afterSuite(): void
     {
