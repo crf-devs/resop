@@ -1,5 +1,2 @@
 framework:
     test: true
-    session:
-        storage_id: session.storage.mock_file
-        handler_id: null

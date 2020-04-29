@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Behat;
 
+use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use PantherExtension\Driver\PantherDriver;
 
 final class TraversingContext extends RawMinkContext
 {
@@ -30,10 +32,16 @@ final class TraversingContext extends RawMinkContext
     }
 
     /**
-     * @When I wait for the modal to load
+     * @When I wait for the modal :modal to load
      */
-    public function iWaitForTheModalToLoad(): void
+    public function iWaitForTheModalToLoad(string $modal): void
     {
-        $this->getSession()->wait(500);
+        $driver = $this->getSession()->getDriver();
+
+        if (!$driver instanceof PantherDriver) {
+            throw new DriverException('PantherDriver is mandatory for this context. You should use "@javascript" on your scenario.');
+        }
+
+        $driver->waitFor($modal, 2);
     }
 }

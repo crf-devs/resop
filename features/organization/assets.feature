@@ -131,7 +131,7 @@ Feature:
         Then I should be on "/organizations/203/assets/"
         And I should see "75012"
         When I follow "Supprimer"
-        And I wait for the modal to load
+        And I wait for the modal "#modal-delete-asset" to load
         Then I should see "Vous êtes sur le point de supprimer le véhicule VPSP - 75012"
         When I press "Supprimer"
         Then I should be on "/organizations/203/assets/"
