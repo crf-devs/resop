@@ -8,19 +8,17 @@ default:
                 - App\Tests\Behat\SecurityContext
                 - App\Tests\Behat\UserPlanningContext
                 - Behat\MinkExtension\Context\MinkContext
+                - PantherExtension\Context\PantherContext
     extensions:
-        Lctrs\MinkPantherDriver\Extension\PantherExtension: ~
+        PantherExtension\Extension\PantherExtension: ~
         Behat\MinkExtension:
-            base_url: http://nginx/
+            browser_name: chrome
             default_session: symfony
-            javascript_session: panther
+            javascript_session: javascript
             sessions:
-                panther:
+                javascript:
                     panther:
-                        chrome:
-                            arguments:
-                                - "--headless"
-                                - "--no-sandbox"
+                        driver: 'chrome'
                 symfony:
                     symfony: ~
         FriendsOfBehat\SymfonyExtension:

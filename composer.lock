@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "564fb96cfb8941e2ab41f6dc4110da18",
+    "content-hash": "c5f5548ddc942aae2ce5496e0508c428",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2700,16 +2700,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v5.0.7",
+            "version": "v5.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "3e633c31a34738f7f4ed7a225c43fc45ca74c986"
+                "reference": "db1674e1a261148429f123871f30d211992294e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/3e633c31a34738f7f4ed7a225c43fc45ca74c986",
-                "reference": "3e633c31a34738f7f4ed7a225c43fc45ca74c986",
+                "url": "https://api.github.com/repos/symfony/config/zipball/db1674e1a261148429f123871f30d211992294e7",
+                "reference": "db1674e1a261148429f123871f30d211992294e7",
                 "shasum": ""
             },
             "require": {
@@ -2774,7 +2774,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-27T16:56:45+00:00"
+            "time": "2020-04-15T15:59:10+00:00"
         },
         {
             "name": "symfony/console",
@@ -2868,16 +2868,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v5.0.7",
+            "version": "v5.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "4e48dc44680d8efa357410c78093a04753196981"
+                "reference": "92d8b3bd896a87cdd8aba0a3dd041bc072e8cfba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/4e48dc44680d8efa357410c78093a04753196981",
-                "reference": "4e48dc44680d8efa357410c78093a04753196981",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/92d8b3bd896a87cdd8aba0a3dd041bc072e8cfba",
+                "reference": "92d8b3bd896a87cdd8aba0a3dd041bc072e8cfba",
                 "shasum": ""
             },
             "require": {
@@ -2951,7 +2951,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-30T11:42:42+00:00"
+            "time": "2020-04-28T17:58:55+00:00"
         },
         {
             "name": "symfony/doctrine-bridge",
@@ -3412,16 +3412,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v5.0.7",
+            "version": "v5.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "ca3b87dd09fff9b771731637f5379965fbfab420"
+                "reference": "7cd0dafc4353a0f62e307df90b48466379c8cc91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/ca3b87dd09fff9b771731637f5379965fbfab420",
-                "reference": "ca3b87dd09fff9b771731637f5379965fbfab420",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/7cd0dafc4353a0f62e307df90b48466379c8cc91",
+                "reference": "7cd0dafc4353a0f62e307df90b48466379c8cc91",
                 "shasum": ""
             },
             "require": {
@@ -3472,7 +3472,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-27T16:56:45+00:00"
+            "time": "2020-04-12T14:40:17+00:00"
         },
         {
             "name": "symfony/finder",
@@ -6996,16 +6996,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598"
+                "reference": "ab2cb0b3b559010b75981b1bdce728da3ee90ad6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/aed98a490f9a8f78468232db345ab9cf606cf598",
-                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/ab2cb0b3b559010b75981b1bdce728da3ee90ad6",
+                "reference": "ab2cb0b3b559010b75981b1bdce728da3ee90ad6",
                 "shasum": ""
             },
             "require": {
@@ -7013,7 +7013,7 @@
                 "symfony/polyfill-ctype": "^1.8"
             },
             "conflict": {
-                "vimeo/psalm": "<3.6.0"
+                "vimeo/psalm": "<3.9.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.8.36 || ^7.5.13"
@@ -7040,7 +7040,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2020-02-14T12:15:55+00:00"
+            "time": "2020-04-18T12:12:48+00:00"
         }
     ],
     "packages-dev": [
@@ -7869,6 +7869,66 @@
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
+            "name": "guikingone/panther-extension",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Guikingone/panther-extension.git",
+                "reference": "bdb5cdcaa95459969e7c9b0a9315ea01b740228b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Guikingone/panther-extension/zipball/bdb5cdcaa95459969e7c9b0a9315ea01b740228b",
+                "reference": "bdb5cdcaa95459969e7c9b0a9315ea01b740228b",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.5",
+                "behat/mink": "^1.5",
+                "behat/mink-extension": "^2.0",
+                "ext-zip": "*",
+                "php": ">=7.1",
+                "symfony/config": "^2.7|^3.0|^4.0|^5.0",
+                "symfony/panther": "^0.7.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "infection/infection": "^0.13.6",
+                "phpunit/phpunit": "^7.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PantherExtension\\": "src/",
+                    "PantherExtension\\Context\\": "src/Context/",
+                    "PantherExtension\\Driver\\": "src/Driver/",
+                    "PantherExtension\\Driver\\Element\\": "src/Driver/Element/",
+                    "PantherExtension\\Driver\\Exception\\": "src/Driver/Exception/",
+                    "PantherExtension\\Extension\\": "src/Extension/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guillaume Loulier",
+                    "email": "contact@guillaumeloulier.fr"
+                }
+            ],
+            "description": "Panther extension for Mink",
+            "keywords": [
+                "Mink",
+                "Panther",
+                "browser",
+                "driver",
+                "extension",
+                "web"
+            ],
+            "time": "2020-04-29T12:31:06+00:00"
+        },
+        {
             "name": "hautelook/alice-bundle",
             "version": "2.7.2",
             "source": {
@@ -7941,76 +8001,6 @@
                 }
             ],
             "time": "2020-03-15T10:07:54+00:00"
-        },
-        {
-            "name": "lctrs/mink-panther-driver",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vincentchalamon/mink-panther-driver.git",
-                "reference": "e9a2811fcb3ef51d3b42245694d407986eb85098"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vincentchalamon/mink-panther-driver/zipball/e9a2811fcb3ef51d3b42245694d407986eb85098",
-                "reference": "e9a2811fcb3ef51d3b42245694d407986eb85098",
-                "shasum": ""
-            },
-            "require": {
-                "behat/behat": "^3.6.1",
-                "behat/mink": "^1.8.1",
-                "behat/mink-extension": "^2.3.1",
-                "php": "^7.2",
-                "php-webdriver/webdriver": "^1.8.2",
-                "symfony/browser-kit": "^4.4.7 || ^5.0",
-                "symfony/config": "^4.4.7 || ^5.0",
-                "symfony/dependency-injection": "^4.4.7 || ^5.0",
-                "symfony/dom-crawler": "^4.4.7 || ^5.0",
-                "symfony/panther": "^0.7.1",
-                "webmozart/assert": "^1.7.0"
-            },
-            "require-dev": {
-                "doctrine/coding-standard": "^7.0.2",
-                "ergebnis/composer-normalize": "^2.3.2",
-                "maglnet/composer-require-checker": "^2.0.0",
-                "matthiasnoback/symfony-config-test": "^4.1.0",
-                "matthiasnoback/symfony-dependency-injection-test": "^3.1.0",
-                "mink/driver-testsuite": "dev-master",
-                "ondram/ci-detector": "^3.3.0",
-                "phpstan/extension-installer": "^1.0.4",
-                "phpstan/phpstan": "^0.12.18",
-                "phpstan/phpstan-deprecation-rules": "^0.12.2",
-                "phpstan/phpstan-phpunit": "^0.12.6",
-                "phpstan/phpstan-strict-rules": "^0.12.2",
-                "phpstan/phpstan-webmozart-assert": "^0.12.3",
-                "phpunit/phpunit": "^7.5.20",
-                "psalm/plugin-phpunit": "^0.10.0",
-                "vimeo/psalm": "^3.10.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Lctrs\\MinkPantherDriver\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Lctrs\\MinkPantherDriver\\Test\\": "test/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Panther (WebDriver) driver for Mink framework",
-            "support": {
-                "source": "https://github.com/vincentchalamon/mink-panther-driver/tree/master"
-            },
-            "time": "2020-04-23T23:22:33+00:00"
         },
         {
             "name": "mheap/phpunit-github-actions-printer",
@@ -9984,7 +9974,7 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v5.0.7",
+            "version": "v5.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",
@@ -10124,7 +10114,7 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v5.0.7",
+            "version": "v5.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
@@ -10199,16 +10189,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v5.0.7",
+            "version": "v5.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "14d386ae55b699ea9a0ddb872fa5f3e35219bba8"
+                "reference": "93b41572fbb3b8dd11d4f6f0434bbbbacd8619ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/14d386ae55b699ea9a0ddb872fa5f3e35219bba8",
-                "reference": "14d386ae55b699ea9a0ddb872fa5f3e35219bba8",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/93b41572fbb3b8dd11d4f6f0434bbbbacd8619ab",
+                "reference": "93b41572fbb3b8dd11d4f6f0434bbbbacd8619ab",
                 "shasum": ""
             },
             "require": {
@@ -10263,7 +10253,21 @@
             ],
             "description": "Symfony HttpClient component",
             "homepage": "https://symfony.com",
-            "time": "2020-03-27T16:56:45+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-04-12T16:45:47+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -10557,16 +10561,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.0.7",
+            "version": "v5.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "c5ca4a0fc16a0c888067d43fbcfe1f8a53d8e70e"
+                "reference": "3179f68dff5bad14d38c4114a1dab98030801fd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/c5ca4a0fc16a0c888067d43fbcfe1f8a53d8e70e",
-                "reference": "c5ca4a0fc16a0c888067d43fbcfe1f8a53d8e70e",
+                "url": "https://api.github.com/repos/symfony/process/zipball/3179f68dff5bad14d38c4114a1dab98030801fd7",
+                "reference": "3179f68dff5bad14d38c4114a1dab98030801fd7",
                 "shasum": ""
             },
             "require": {
@@ -10616,7 +10620,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-27T16:56:45+00:00"
+            "time": "2020-04-15T15:59:10+00:00"
         },
         {
             "name": "symfony/profiler-pack",
@@ -10945,17 +10949,9 @@
             "time": "2019-06-13T22:48:21+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "1.8.1",
-            "alias_normalized": "1.8.1.0",
-            "version": "1.8.0.0",
-            "package": "friends-of-behat/mink"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "lctrs/mink-panther-driver": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,

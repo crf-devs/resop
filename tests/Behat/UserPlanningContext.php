@@ -4,35 +4,18 @@ declare(strict_types=1);
 
 namespace App\Tests\Behat;
 
-use Behat\Behat\Context\Context;
-use Behat\Behat\Context\Environment\InitializedContextEnvironment;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\MinkExtension\Context\MinkContext;
+use Behat\MinkExtension\Context\RawMinkContext;
 
-final class UserPlanningContext implements Context
+final class UserPlanningContext extends RawMinkContext
 {
-    private MinkContext $minkContext;
-
-    /**
-     * @BeforeScenario
-     */
-    public function gatherContext(BeforeScenarioScope $scope): void
-    {
-        /** @var InitializedContextEnvironment $environment */
-        $environment = $scope->getEnvironment();
-        /** @var MinkContext $minkContext */
-        $minkContext = $environment->getContext(MinkContext::class);
-        $this->minkContext = $minkContext;
-    }
-
     /**
      * @When /^I (?P<action>(?:check|uncheck)) "(?P<time>[^"]+)" availability checkbox$/
      */
     public function checkColumn(string $action, string $time): void
     {
-        $page = $this->minkContext->getSession()->getPage();
+        $page = $this->getSession()->getPage();
         if (false === strtotime($time)) {
             throw new \InvalidArgumentException("Time \"$time\" is not valid.");
         }
@@ -45,7 +28,7 @@ final class UserPlanningContext implements Context
 
         $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-from="%d"] input[type="checkbox"]:not(:disabled)', $dateTime->format('U')));
         if (0 === \count($elements)) {
-            throw new ElementNotFoundException($this->minkContext->getSession()->getDriver(), 'form field', 'css', sprintf('%s (%s) (%s)', $time, $dateTime->format('Y-m-d H:i:s'), $dateTime->format('U')));
+            throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'css', sprintf('%s (%s) (%s)', $time, $dateTime->format('Y-m-d H:i:s'), $dateTime->format('U')));
         }
 
         foreach ($elements as $element) {
@@ -62,7 +45,7 @@ final class UserPlanningContext implements Context
      */
     public function checkColumnExists(string $time): void
     {
-        $page = $this->minkContext->getSession()->getPage();
+        $page = $this->getSession()->getPage();
         if (false === strtotime($time)) {
             throw new \InvalidArgumentException("Time \"$time\" is not valid.");
         }
@@ -75,7 +58,7 @@ final class UserPlanningContext implements Context
 
         $elements = $page->findAll('css', sprintf('table.availability-form-table tbody td[data-from="%d"] input[type="checkbox"]:not(:disabled)', $dateTime->format('U')));
         if (0 < \count($elements)) {
-            throw new ExpectationException("The checkbox for \"$time\" is available.", $this->minkContext->getSession()->getDriver());
+            throw new ExpectationException("The checkbox for \"$time\" is available.", $this->getSession()->getDriver());
         }
     }
 
@@ -84,7 +67,7 @@ final class UserPlanningContext implements Context
      */
     public function verifyColumn(string $time, string $state): void
     {
-        $page = $this->minkContext->getSession()->getPage();
+        $page = $this->getSession()->getPage();
         if (false === strtotime($time)) {
             throw new \InvalidArgumentException("Time \"$time\" is not valid.");
         }
@@ -100,7 +83,7 @@ final class UserPlanningContext implements Context
         $locator .= 'checked' === $state ? ':not(:checked)' : ':checked';
         $count = \count($page->findAll('css', $locator));
         if (0 < $count) {
-            throw new ExpectationException(sprintf('%d checkboxes of column "%s" are not %s.', (int) $count, $time, (string) $state), $this->minkContext->getSession()->getDriver());
+            throw new ExpectationException(sprintf('%d checkboxes of column "%s" are not %s.', (int) $count, $time, (string) $state), $this->getSession()->getDriver());
         }
     }
 }

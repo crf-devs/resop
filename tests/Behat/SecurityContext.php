@@ -7,41 +7,25 @@ namespace App\Tests\Behat;
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
 use App\Repository\UserRepository;
-use Behat\Behat\Context\Context;
-use Behat\Behat\Context\Environment\InitializedContextEnvironment;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Driver\BrowserKitDriver;
-use Behat\MinkExtension\Context\MinkContext;
+use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-final class SecurityContext implements Context
+final class SecurityContext extends RawMinkContext
 {
     private UserRepository $userRepository;
     private OrganizationRepository $organizationRepository;
     private SessionInterface $session;
-    private MinkContext $minkContext;
 
     public function __construct(UserRepository $userRepository, OrganizationRepository $organizationRepository, SessionInterface $session)
     {
         $this->userRepository = $userRepository;
         $this->organizationRepository = $organizationRepository;
         $this->session = $session;
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function gatherContext(BeforeScenarioScope $scope): void
-    {
-        /** @var InitializedContextEnvironment $environment */
-        $environment = $scope->getEnvironment();
-        /** @var MinkContext $minkContext */
-        $minkContext = $environment->getContext(MinkContext::class);
-        $this->minkContext = $minkContext;
     }
 
     /**
@@ -67,7 +51,7 @@ final class SecurityContext implements Context
         $this->session->save();
 
         /** @var BrowserKitDriver $driver */
-        $driver = $this->minkContext->getSession()->getDriver();
+        $driver = $this->getSession()->getDriver();
         $driver->getClient()->getCookieJar()->set(new Cookie($this->session->getName(), $this->session->getId()));
     }
 }

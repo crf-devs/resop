@@ -3,12 +3,6 @@
   "license": "GPL-3.0-or-later",
   "name": "crf-devs/resop",
   "description": "ResOp",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:vincentchalamon/mink-panther-driver.git"
-    }
-  ],
   "require": {
     "php": "^7.4",
     "ext-ctype": "*",
@@ -44,13 +38,13 @@
     "behat/behat": "^3.6",
     "dama/doctrine-test-bundle": "^6.3",
     "escapestudios/symfony2-coding-standard": "^3.11",
-    "friends-of-behat/mink": "1.8.0 as 1.8.1",
+    "friends-of-behat/mink": "^1.8",
     "friends-of-behat/mink-browserkit-driver": "^1.4",
     "friends-of-behat/mink-extension": "^2.4",
     "friends-of-behat/symfony-extension": "^2.1",
     "friendsofphp/php-cs-fixer": "^2.16",
+    "guikingone/panther-extension": "^0.3.0",
     "hautelook/alice-bundle": "^2.7",
-    "lctrs/mink-panther-driver": "dev-master",
     "mheap/phpunit-github-actions-printer": "^1.2",
     "phpstan/phpstan-doctrine": "^0.12.8",
     "phpstan/phpstan-symfony": "^0.12.2",
