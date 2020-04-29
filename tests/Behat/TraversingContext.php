@@ -7,6 +7,8 @@ namespace App\Tests\Behat;
 use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 use PantherExtension\Driver\PantherDriver;
 
 final class TraversingContext extends RawMinkContext
@@ -42,6 +44,6 @@ final class TraversingContext extends RawMinkContext
             throw new DriverException('PantherDriver is mandatory for this context. You should use "@javascript" on your scenario.');
         }
 
-        $driver->waitFor($modal, 2);
+        $driver->wait(5, WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector($modal)));
     }
 }
