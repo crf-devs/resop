@@ -28,4 +28,12 @@ final class TraversingContext extends RawMinkContext
 
         $links[\count($links) - 1]->click();
     }
+
+    /**
+     * @When I wait for the modal to load
+     */
+    public function iWaitForTheModalToLoad(): void
+    {
+        $this->getSession()->wait(500);
+    }
 }

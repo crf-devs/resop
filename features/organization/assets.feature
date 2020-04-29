@@ -117,26 +117,31 @@ Feature:
         When I go to "/organizations/201/assets/75012/edit"
         Then the response status code should be 404
 
-#    @javascript
-#    Scenario Outline: As a parent organization, I can delete an asset from my organization or children organizations
-#        Given I am authenticated as "<login>"
-#        When I go to "/organizations/203/assets"
-#        And I press "Supprimer"
-#        Then I should see "Vous êtes sur le point de supprimer le véhicule : VPSP - 75992 et toutes ses disponibilités."
-#        When I press "Supprimer"
-#        Then I should be on "/organizations/203/assets"
-#        And the response status code should be 200
-#        And I should see "Le véhicule a été supprimé avec succès."
-#        And I should not see "75992"
-#        Examples:
-#            | login    |
-#            | DT75     |
-#            | UL 01-02 |
+    Scenario: As a parent organization, I can delete an asset from my organization or children organizations
+        Given I am on "/organizations/login"
+        When I select "DT75" from "identifier"
+        And I fill in "password" with "covid19"
+        And I press "Je me connecte"
+        Then I should be on "/organizations/"
 
-#    Scenario: As a parent organization, I cannot directly delete an asset from my organization
-#        Given I am authenticated as "john.doe@resop.com"
-#        When I go to "/organizations/201/assets/75992/delete"
-#        Then the response status code should be 405
+    @javascript
+    Scenario: As a parent organization, I can delete an asset from my organization or children organizations
+        Given I am authenticated as "DT75"
+        And I go to "/organizations/203/assets"
+        Then I should be on "/organizations/203/assets/"
+        And I should see "75012"
+        When I follow "Supprimer"
+        And I wait for the modal to load
+        Then I should see "Vous êtes sur le point de supprimer le véhicule VPSP - 75012"
+        When I press "Supprimer"
+        Then I should be on "/organizations/203/assets/"
+        And I should see "Le véhicule a été supprimé avec succès."
+        And I should not see "75012"
+
+    Scenario: As a parent organization, I cannot directly delete an asset from my organization
+        Given I am authenticated as "john.doe@resop.com"
+        When I go to "/organizations/201/assets/75992/delete"
+        Then the response status code should be 405
 
     Scenario: As a parent organization, I cannot delete an asset from another organization
         Given I am authenticated as "DT75"
