@@ -1,21 +1,17 @@
-<div class="row">
-    <div class="col-12 text-right mb-2">
-        <a class="btn btn-success" href="{{ path('app_organization_commissionable_pre_add_asset', {organization: organization.id | default(app.user.id)}) }}" role="button">
-            {{ 'organization.vehicle.add' | trans }}
-        </a>
-    </div>
-</div>
-
 <div class="table-responsive">
-    <table class="table table-stripped">
+    <table class="table table-stripped mt-3">
         <thead class="thead-light">
-            <tr>
-                <th>{{ 'common.type' | trans }}</th>
-                <th>{{ 'organization.vehicle.identificationNumber' | trans }}</th>
+        <tr>
+            <th>{{ 'common.type' | trans }}</th>
+            <th>{{ 'organization.asset.identificationNumber' | trans }}</th>
+            {% if showActions is not defined or showActions %}
                 <th>{{ 'common.availabilities' | trans }}</th>
-                <th>{{ 'organization.label' | trans }}</th>
+            {% endif %}
+            <th>{{ 'organization.label' | trans }}</th>
+            {% if showActions is not defined or showActions %}
                 <th>{{ 'common.actions' | trans }}</th>
-            </tr>
+            {% endif %}
+        </tr>
         </thead>
         <tbody>
         {% for asset in assets %}
@@ -24,37 +20,34 @@
                 <td class="text-nowrap">
                     {{ asset.name }}
                 </td>
-                <td>
-                    <a class="btn btn-outline-primary" href="{{ path('app_organization_asset_availability', { asset: asset.id, organization: asset.organization.id }) }}">{{ 'calendar.week.current' | trans }}</a>
-                    <a class="btn btn-outline-primary" href="{{ path('app_organization_asset_availability', { asset: asset.id, organization: asset.organization.id, week: 'next week' | date('o-\\WW') }) }}">{{ 'calendar.week.startMonday' | trans ({'%week%' : 'monday next week' | date('d/m/Y')}) }}</a>
-                </td>
+
+                {% if showActions is not defined or showActions %}
+                    <td>
+                        <a class="btn btn-outline-primary" href="{{ path('app_organization_asset_availability', { asset: asset.id, organization: asset.organization.id }) }}">{{ 'calendar.week.current' | trans }}</a>
+                        <a class="btn btn-outline-primary" href="{{ path('app_organization_asset_availability', { asset: asset.id, organization: asset.organization.id, week: 'next week' | date('o-\\WW') }) }}">{{ 'calendar.week.startMonday' | trans ({'%week%' : 'monday next week' | date('d/m/Y')}) }}</a>
+                    </td>
+                {% endif %}
+
                 <td>{{ asset.organization.name }}</td>
-                <td>
-                    <a class="btn btn-secondary" href="{{ path('app_organization_asset_edit', { asset: asset.id, organization: asset.organization.id }) }}">{{ 'action.edit' | trans }}</a>
-                    <a class="btn btn-outline-danger trigger-delete" data-modal="#modal-delete-asset" data-display-name="{{ asset }}" href="#" data-href="{{ path('app_organization_asset_delete', { asset: asset.id, organization: asset.organization.id }) }}">{{ 'action.delete' | trans }}</a>
-                </td>
+                {% if showActions is not defined or showActions %}
+                    <td>
+                        <a class="btn btn-secondary" href="{{ path('app_organization_asset_edit', { asset: asset.id, organization: asset.organization.id }) }}">{{ 'action.edit' | trans }}</a>
+                        {% if withDelete is defined and withDelete %}
+                            <a
+                                class="btn btn-outline-danger trigger-delete"
+                                data-message="{{ 'message.deleteAssetWarning' | trans }}"
+                                data-display-name="{{ asset }}"
+                                data-href="{{ path('app_organization_asset_delete', { asset: asset.id, organization: asset.organization.id }) }}"
+                                href="#"
+                            >
+                                {{ 'action.delete' | trans }}
+                            </a>
+                        {% endif %}
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
 
         </tbody>
     </table>
-</div>
-
-<div class="modal fade" id="modal-delete-asset" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {{ 'message.deleteAssetWarning' | trans ({ '%asset%' : "<span id='to-delete-name'></span>" }) | raw }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">Supprimer</button>
-            </div>
-        </div>
-    </div>
 </div>

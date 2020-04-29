@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-striped mt-5">
+    <table class="table table-striped mt-3">
         <thead  class="thead-light">
         <tr>
             <th>{{ 'user.identificationNumber' | trans }}</th>
@@ -10,7 +10,9 @@
             {% if organization.parent is null %}
                 <th>{{ 'organization.label' | trans }}</th>
             {% endif %}
-            <th>Actions</th>
+            {% if showActions is not defined or showActions %}
+                <th>Actions</th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -28,31 +30,24 @@
                 {% if organization.parent is null %}
                     <td>{{ user.organization.name }}</td>
                 {% endif %}
-                <td>
-                    <a class="btn btn-outline-primary" href="{{ path('app_organization_user_edit', { 'userToEdit': user.id, 'organization': user.organization.id }) }}">{{ 'action.edit' | trans }}</a>
-                    <a class="btn btn-danger trigger-delete" data-modal="#modal-delete-user" data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )" href="#" data-href="{{ path('app_user_delete', { 'userToDelete': user.id, 'organization': user.organization.id }) }}">{{ 'action.delete' | trans }}</a>
-                </td>
+                {% if showActions is not defined or showActions %}
+                    <td>
+                        <a class="btn btn-secondary" href="{{ path('app_organization_user_edit', { 'userToEdit': user.id, 'organization': user.organization.id }) }}">{{ 'action.edit' | trans }}</a>
+                        {% if withDelete is defined and withDelete %}
+                            <a
+                                class="btn btn-outline-danger trigger-delete"
+                                data-message="{{ 'message.deleteUserWarning' | trans }}"
+                                data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )"
+                                data-href="{{ path('app_user_delete', { 'userToDelete': user.id, 'organization': user.organization.id }) }}"
+                                href="#"
+                            >
+                                {{ 'action.delete' | trans }}
+                            </a>
+                        {% endif %}
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
-</div>
-
-<div class="modal fade" id="modal-delete-user" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {{ 'message.deleteUserWarning' | trans ({ '%user%' : "<span id='to-delete-name'></span>" }) | raw }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'action.cancel' | trans }}</button>
-                <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">{{ 'action.delete' | trans }}</button>
-            </div>
-        </div>
-    </div>
 </div>

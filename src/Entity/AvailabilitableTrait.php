@@ -23,6 +23,7 @@ trait AvailabilitableTrait
 
     /**
      * @ORM\Column(type="datetimetz_immutable")
+     * @Assert\GreaterThan(propertyPath="startTime")
      */
     public \DateTimeImmutable $endTime;
 

@@ -4,6 +4,10 @@
 @import "~bootstrap-select/sass/bootstrap-select";
 @import "~daterangepicker/daterangepicker.css";
 
+body {
+  letter-spacing: 0.01em;
+}
+
 label.required:not(.form-check-label)::before {
   color: $red;
   content: "*";

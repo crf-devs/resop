@@ -38,7 +38,7 @@ class UserListController extends AbstractController
         $currentOrganization = $this->getUser();
 
         return $this->render(
-            'organization/user/user-list.html.twig',
+            'organization/user/list.html.twig',
             [
                 'organization' => $organization,
                 'users' => $this->userRepository->findByOrganization($organization),

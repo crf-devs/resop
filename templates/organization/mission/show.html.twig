@@ -1,0 +1,32 @@
+{% extends 'organization/base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('missions') }}
+{% endblock %}
+
+{% block title %}{{ mission }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_organization_mission_index') }}">{{ 'common.backToList' | trans }}</a>
+
+    <h1 class="mt-4 mb-3">
+        {{ 'organization.mission.title' | trans }} - {{ mission }}
+
+        <a class="btn btn-outline-primary" href="{{ path('app_organization_mission_edit', {'id': mission.id}) }}">{{ 'action.edit' | trans }}</a>
+    </h1>
+
+    {% if mission.startTime is defined %}
+        <p>{{ 'common.start' | trans }}: <strong>{{ mission.startTime | format_datetime(date_format='full', time_format='short') }}</strong></p>
+    {% endif %}
+
+    {% if mission.endTime is defined %}
+        <p>{{ 'common.end' | trans }}: <strong>{{ mission.endTime | format_datetime(date_format='full', time_format='short') }}</strong></p>
+    {% endif %}
+
+    <h3 class="mt-4">{{ 'organization.users' | trans }}</h3>
+    {{ include('organization/user/_list.html.twig', {users: mission.users | sortBySkills, organization: mission.organization, showActions: false}) }}
+
+    <h3 class="mt-4">{{ 'organization.assets' | trans }}</h3>
+    {{ include('organization/commissionable_asset/_list.html.twig', {assets: mission.assets, organization: mission.organization, showActions: false}) }}
+{% endblock %}

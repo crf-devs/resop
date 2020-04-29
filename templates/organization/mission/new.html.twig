@@ -1,0 +1,16 @@
+{% extends 'organization/base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('missions') }}
+{% endblock %}
+
+{% block title %}{{ 'organization.mission.addNew' | trans }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_organization_mission_index') }}">{{ 'common.backToList' | trans }}</a>
+
+    <h1>{{ 'organization.mission.addNew' | trans }}</h1>
+
+    {{ include('organization/mission/_form.html.twig') }}
+{% endblock %}

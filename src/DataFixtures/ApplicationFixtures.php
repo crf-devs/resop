@@ -9,6 +9,7 @@ use App\Entity\AssetType;
 use App\Entity\AvailabilityInterface;
 use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
+use App\Entity\Mission;
 use App\Entity\MissionType;
 use App\Entity\Organization;
 use App\Entity\User;
@@ -85,13 +86,17 @@ final class ApplicationFixtures extends Fixture
     /** @var Organization[] */
     private array $organizations = [];
 
-    /** @var User[] */
+    /** @var User[][] */
     private array $users = [];
 
-    /** @var CommissionableAsset[] */
+    /** @var CommissionableAsset[][] */
     private array $assets = [];
 
+    /** @var AssetType[][] */
     private array $assetTypes = [];
+
+    /** @var MissionType[][] */
+    private array $missionTypes = [];
 
     private SkillSetDomain $skillSetDomain;
     private int $nbUsers;
@@ -135,9 +140,10 @@ final class ApplicationFixtures extends Fixture
         $this->loadAssetTypes($manager);
         $this->loadMissionTypes($manager);
         $this->loadCommissionableAssets($manager);
-        $this->loadResourcesAvailabilities($manager, $this->assets, CommissionableAssetAvailability::class);
+        $this->loadResourcesAvailabilities($manager, array_merge(...$this->assets), CommissionableAssetAvailability::class);
         $this->loadUsers($manager);
-        $this->loadResourcesAvailabilities($manager, $this->users, UserAvailability::class);
+        $this->loadResourcesAvailabilities($manager, array_merge(...$this->users), UserAvailability::class);
+        $this->loadMissions($manager);
 
         $manager->flush();
     }
@@ -201,35 +207,37 @@ final class ApplicationFixtures extends Fixture
                 continue;
             }
 
-            $alphaType = new MissionType();
-            $alphaType->name = 'Alpha';
-            $alphaType->organization = $organization;
-            $alphaType->userSkillsRequirement = [
+            $missionType = new MissionType();
+            $missionType->name = 'Alpha';
+            $missionType->organization = $organization;
+            $missionType->userSkillsRequirement = [
                 ['skill' => 'ci_bspp', 'number' => 1],
                 ['skill' => 'ch_vpsp', 'number' => 1],
                 ['skill' => 'pse2', 'number' => 1],
             ];
 
-            $alphaType->assetTypesRequirement = [
+            $missionType->assetTypesRequirement = [
                 ['type' => $this->assetTypes[$organization->id]['VPSP']->id, 'number' => 1],
             ];
 
-            $this->validateAndPersist($manager, $alphaType);
+            $this->validateAndPersist($manager, $missionType);
+            $this->missionTypes[$organization->id]['Alpha'] = $missionType;
 
-            $alphaType = new MissionType();
-            $alphaType->name = 'Maraude';
-            $alphaType->organization = $organization;
-            $alphaType->userSkillsRequirement = [
+            $missionType = new MissionType();
+            $missionType->name = 'Maraude';
+            $missionType->organization = $organization;
+            $missionType->userSkillsRequirement = [
                 ['skill' => 'ce_maraude', 'number' => 1],
                 ['skill' => 'ch_vl', 'number' => 1],
                 ['skill' => 'maraudeur', 'number' => 2],
             ];
 
-            $alphaType->assetTypesRequirement = [
+            $missionType->assetTypesRequirement = [
                 ['type' => $this->assetTypes[$organization->id]['VL']->id, 'number' => 1],
             ];
 
-            $this->validateAndPersist($manager, $alphaType);
+            $this->validateAndPersist($manager, $missionType);
+            $this->missionTypes[$organization->id]['Maraude'] = $missionType;
         }
 
         $manager->flush();
@@ -290,7 +298,7 @@ final class ApplicationFixtures extends Fixture
                 $asset->assetType = $this->assetTypes[$organization->getParentOrganization()->id][$type];
                 $asset->name = $prefix.$ulId.$suffix;
                 $this->validateAndPersist($manager, $asset);
-                $this->assets[] = $asset;
+                $this->assets[$organization->getParentOrganization()->id][] = $asset;
             }
         }
 
@@ -326,7 +334,7 @@ final class ApplicationFixtures extends Fixture
                 $user->fullyEquipped = (bool) random_int(0, 1);
                 $user->drivingLicence = (bool) random_int(0, 1);
 
-                $this->users[$user->getIdentificationNumber()] = $user;
+                $this->users[$organization->getParentOrganization()->id][] = $user;
 
                 $this->validateAndPersist($manager, $user);
                 ++$x;
@@ -339,7 +347,7 @@ final class ApplicationFixtures extends Fixture
     private function loadResourcesAvailabilities(ObjectManager $manager, array $resources, string $class): void
     {
         /** @var EntityManagerInterface $manager */
-        $today = (new \DateTimeImmutable('today'));
+        $today = new \DateTimeImmutable('today');
         $this->availabilitiesId = 1;
 
         // Mixing user
@@ -377,17 +385,89 @@ final class ApplicationFixtures extends Fixture
             implode(', ', $data)
         );
 
-        $manager->getConnection()->exec(sprintf($insert));
-        if (CommissionableAssetAvailability::class === $class) {
-            $sequence = 'commissionable_asset_availability_id_seq';
-        } else {
-            $sequence = 'user_availability_id_seq';
-        }
+        $manager->getConnection()->exec($insert);
 
-        $manager->getConnection()->exec(sprintf('SELECT setval(\''.$sequence.'\', %d, true)', $this->availabilitiesId));
+        $manager->getConnection()->exec(sprintf(
+            'SELECT setval(\'%s\', %d, true)',
+            UserAvailability::class === $class ? 'user_availability_id_seq' : 'commissionable_asset_availability_id_seq',
+            $this->availabilitiesId
+        ));
     }
 
-    private function createAvailabilities(array $objects, \DateTimeInterface $thisWeek, string $globalStatus, bool $partiallyAvailable = false, string $defaultComment = ''): array
+    private function loadMissions(ObjectManager $manager): void
+    {
+        $addMissionPeriod = static function (Mission $mission): void {
+            $mission->startTime = (new \DateTimeImmutable('today'))->modify(sprintf(
+                '+ %d days + %d hours',
+                random_int(0, 5),
+                random_int(6, 12),
+            ));
+            $mission->endTime = $mission->startTime->modify(sprintf('+ %d hours', random_int(2, 8)));
+        };
+
+        $addMissionResources = function (Mission $mission): void {
+            if (null === $mission->organization) {
+                return;
+            }
+
+            for ($j = 0, $jMax = random_int(1, 4); $j < $jMax; ++$j) {
+                $randUserKey = array_rand($this->users[$mission->organization->id], 1);
+                if (!\is_int($randUserKey)) {
+                    continue;
+                }
+                $user = $this->users[$mission->organization->id][$randUserKey];
+                if (!$mission->users->contains($user)) {
+                    $mission->users->add($user);
+                }
+            }
+
+            if (random_int(0, 10) > 6) {
+                return;
+            }
+
+            $randAssetKey = array_rand($this->assets[$mission->organization->id], 1);
+            if (\is_int($randAssetKey)) {
+                $mission->assets->add($this->assets[$mission->organization->id][$randAssetKey]);
+            }
+        };
+
+        foreach ($this->organizations as $organizationNumber => $organization) {
+            if (!$organization->isParent()) {
+                continue;
+            }
+
+            for ($i = 0; $i < 5; ++$i) {
+                $mission = new Mission();
+                $mission->organization = $organization;
+                $mission->type = $this->missionTypes[$organization->id]['Alpha'];
+                $mission->name = sprintf('Alpha %d', random_int(1, 8));
+                $addMissionPeriod($mission);
+                $addMissionResources($mission);
+
+                $this->validateAndPersist($manager, $mission);
+
+                $mission = new Mission();
+                $mission->organization = $organization;
+                $mission->type = $this->missionTypes[$organization->id]['Maraude'];
+                $addMissionPeriod($mission);
+                $mission->name = null !== $mission->startTime ? $mission->startTime->format('d/m h\h') : 'Maraude';
+                $addMissionResources($mission);
+
+                $this->validateAndPersist($manager, $mission);
+            }
+
+            $mission = new Mission();
+            $mission->organization = $organization;
+            $mission->name = 'Logistique';
+            $addMissionResources($mission);
+
+            $this->validateAndPersist($manager, $mission);
+        }
+
+        $manager->flush();
+    }
+
+    private function createAvailabilities(array $objects, \DateTimeImmutable $thisWeek, string $globalStatus, bool $partiallyAvailable = false, string $defaultComment = ''): array
     {
         $data = [];
 
@@ -401,7 +481,7 @@ final class ApplicationFixtures extends Fixture
                     $status = AvailabilityInterface::STATUS_LOCKED;
                 } elseif (AvailabilityInterface::STATUS_AVAILABLE === $globalStatus) {
                     if ($partiallyAvailable) {
-                        // If partially available is active whe check if guesser will return an available slot otherwise we skip.
+                        // If partially available is active we check if guesser will return an available slot otherwise we skip.
                         if ($this->slotAvailabilityGuesser->guessAvailableSlot($slot)) {
                             $status = $this->slotBookingGuesser->guessBookedSlot($slot) ? AvailabilityInterface::STATUS_BOOKED : AvailabilityInterface::STATUS_AVAILABLE;
                         } else {

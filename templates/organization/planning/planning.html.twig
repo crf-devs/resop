@@ -7,13 +7,19 @@
     {{ encore_entry_script_tags('availability-table') }}
 {% endblock %}
 
-{% block title %}{{ 'calendar.schedule' | trans }}{% endblock %}
+{% block title %}{{ 'calendar.planning' | trans }}{% endblock %}
 
 {% block container %}
     <div>
         <div class="container my-4">
             {{ include('misc/flash-messages.html.twig') }}
-            <h1>{{ 'calendar.schedule' | trans }} - {{ 'calendar.period' | trans ({ '%from%' : periodCalculator.from|format_date(pattern="eeee dd MMMM"), '%to%' : periodCalculator.to|format_date(pattern="eeee dd MMMM") }) }}</h1>
+            <h1>
+                {{ 'calendar.planning' | trans }} -
+                {{ 'calendar.period' | trans ({
+                    '%from%' : periodCalculator.from | format_date(pattern="eeee dd MMMM"),
+                    '%to%' : periodCalculator.to | date_modify('- 1 minute') | format_date(pattern="eeee dd MMMM")
+                }) }}
+            </h1>
             {% include 'organization/planning/_search_type.html.twig' %}
         </div>
         {% include 'organization/planning/_results.html.twig' %}

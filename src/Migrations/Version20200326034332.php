@@ -14,7 +14,7 @@ final class Version20200326034332 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Add Vehicle attributes';
+        return 'Add asset attributes';
     }
 
     public function up(Schema $schema): void

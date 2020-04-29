@@ -91,7 +91,7 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
     public string $occupation = '';
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organization", fetch="EAGER")
      * @Assert\NotNull()
      */
     public ?Organization $organization = null;

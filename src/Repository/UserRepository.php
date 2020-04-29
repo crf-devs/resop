@@ -11,6 +11,7 @@ use App\Entity\UserAvailability;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 /**
@@ -65,8 +66,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             ->setParameter('identificationNumber', User::normalizeIdentificationNumber($identifier))
             ->setParameter('emailAddress', User::normalizeEmailAddress($identifier))
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     public function findByIds(array $ids): array
@@ -139,14 +139,29 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     /**
      * @return User[]
      */
-    public function findByOrganization(Organization $organizations): array
+    public function findByOrganization(Organization $organization): array
     {
-        return $this->createQueryBuilder('u')
-            ->where('u.organization IN (:organizations)')
-            ->setParameter('organizations', $organizations)
-            ->addOrderBy('u.lastName', 'ASC')
-            ->addOrderBy('u.firstName', 'ASC')
+        return $this->findByOrganizationAndChildrenQb($organization)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findByOrganizationAndChildrenQb(Organization $organization, bool $searchInChildren = false): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->join('u.organization', 'o');
+
+        if ($searchInChildren) {
+            $qb->andWhere('o = :organization OR o.parent = :organization');
+        } else {
+            $qb->andWhere('o = :organization');
+        }
+
+        $qb->setParameter('organization', $organization)
+            ->addOrderBy('o.name', 'ASC')
+            ->addOrderBy('u.lastName', 'ASC')
+            ->addOrderBy('u.firstName', 'ASC');
+
+        return $qb;
     }
 }

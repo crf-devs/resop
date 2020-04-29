@@ -36,7 +36,7 @@ class MissionTypeType extends AbstractType
                 'entry_type' => MissionTypeAssetTypesType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => 'organization.vehicles',
+                'label' => 'organization.assets',
             ])
         ;
     }
