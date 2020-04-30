@@ -51,7 +51,7 @@ final class TraversingContext extends RawMinkContext
             throw new DriverException('PantherDriver is mandatory for this context. You should use "@javascript" on your scenario.');
         }
 
-        /**
+        /*
          * related to: https://github.com/Guikingone/panther-extension/issues/7
          * @phpstan-ignore-next-line
          */

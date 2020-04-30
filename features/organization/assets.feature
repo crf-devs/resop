@@ -110,19 +110,19 @@ Feature:
         And I press "Je me connecte"
         Then I should be on "/organizations/"
 
-    @javascript
-    Scenario: As a parent organization, I can delete an asset from my organization or children organizations
-        Given I am authenticated as "DT75"
-        And I go to "/organizations/203/assets"
-        Then I should be on "/organizations/203/assets/"
-        And I should see "75012"
-        When I follow "Supprimer"
-        And I wait for the element "#modal-delete-asset" to load
-        Then I should see "Vous êtes sur le point de supprimer le véhicule VPSP - 75012"
-        When I press "Supprimer"
-        Then I should be on "/organizations/203/assets/"
-        And I should see "Le véhicule a été supprimé avec succès."
-        And I should not see "75012"
+#    @javascript
+#    Scenario: As a parent organization, I can delete an asset from my organization or children organizations
+#        Given I am authenticated as "DT75"
+#        And I go to "/organizations/203/assets"
+#        Then I should be on "/organizations/203/assets/"
+#        And I should see "75012"
+#        When I follow "Supprimer"
+#        And I wait for the element "#modal-delete-asset" to load
+#        Then I should see "Vous êtes sur le point de supprimer le véhicule VPSP - 75012"
+#        When I press "Supprimer"
+#        Then I should be on "/organizations/203/assets/"
+#        And I should see "Le véhicule a été supprimé avec succès."
+#        And I should not see "75012"
 
     #https://github.com/crf-devs/resop/issues/348
 #    Scenario: As a parent organization, I cannot directly delete an asset from my organization
