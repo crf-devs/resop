@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use Behat\Behat\Context\Context;
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\ORM\EntityManagerInterface;
 use Hautelook\AliceBundle\LoaderInterface as AliceBundleLoaderInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -28,13 +29,15 @@ final class FixturesContext implements Context
      */
     public function loadFixtures(): void
     {
+        StaticDriver::beginTransaction();
         $this->aliceFixturesLoader->load(
             new Application($this->kernel),
             $this->entityManager,
             [],
-            'test',
+            'panther',
             false,
-            true
+            false
         );
+        StaticDriver::commit();
     }
 }

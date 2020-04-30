@@ -1,13 +1,17 @@
 App\Entity\AssetType:
   AssetType.DT75.VL:
+    id: 301
     organization: '@Organization.DT75'
     name: VL
   AssetType.DT75.VPSP:
+    id: 302
     organization: '@Organization.DT75'
     name: VPSP
   AssetType.DT77.VL:
+    id: 303
     organization: '@Organization.DT77'
     name: VL
   AssetType.DT77.VPSP:
+    id: 304
     organization: '@Organization.DT77'
     name: VPSP

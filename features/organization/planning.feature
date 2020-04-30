@@ -60,9 +60,8 @@ Feature:
         Then I should not see "John DOE"
         And I should see "VPSP - 75992"
         And I should see "VL - 75996 "
-        When I fill in the following:
-            | displayVulnerables | 1    |
-            | assetTypes[]       | VPSP |
+        When I select "VPSP" from "assetTypes[]"
+        And I check "displayVulnerables"
         And I press "search-planning-button"
         Then the response status code should be 200
         And I should see "John DOE"

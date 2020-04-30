@@ -5,12 +5,18 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Behat\Hook\Scope\ScenarioScope;
+use Behat\MinkExtension\Context\MinkContext;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
+use FriendsOfBehat\SymfonyExtension\Context\Environment\InitializedSymfonyExtensionEnvironment;
+use PantherExtension\Driver\PantherDriver;
 
 final class DatabaseContext implements Context
 {
     /**
-     * @BeforeSuite ~@javascript
+     * @BeforeSuite
      */
     public static function beforeSuite(): void
     {
@@ -18,26 +24,44 @@ final class DatabaseContext implements Context
     }
 
     /**
-     * @BeforeScenario ~@javascript
+     * @BeforeScenario
      */
-    public function beforeScenario(): void
+    public function beforeScenario(BeforeScenarioScope $scope): void
     {
+        if (self::isPantherSession($scope)) {
+            return;
+        }
+
         StaticDriver::beginTransaction();
     }
 
     /**
-     * @AfterScenario ~@javascript
+     * @AfterScenario
      */
-    public function afterScenario(): void
+    public function afterScenario(AfterScenarioScope $scope): void
     {
+        if (self::isPantherSession($scope)) {
+            return;
+        }
+
         StaticDriver::rollBack();
     }
 
     /**
-     * @AfterSuite ~@javascript
+     * @AfterSuite
      */
     public static function afterSuite(): void
     {
         StaticDriver::setKeepStaticConnections(false);
+    }
+
+    private static function isPantherSession(ScenarioScope $scope): bool
+    {
+        /** @var InitializedSymfonyExtensionEnvironment $environment */
+        $environment = $scope->getEnvironment();
+        /** @var MinkContext $minkContext */
+        $minkContext = $environment->getContext(MinkContext::class);
+
+        return $minkContext->getSession()->getDriver() instanceof PantherDriver;
     }
 }

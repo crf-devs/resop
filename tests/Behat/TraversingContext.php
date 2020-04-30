@@ -13,6 +13,13 @@ use PantherExtension\Driver\PantherDriver;
 
 final class TraversingContext extends RawMinkContext
 {
+    private string $projectDir;
+
+    public function __construct(string $projectDir)
+    {
+        $this->projectDir = $projectDir;
+    }
+
     /**
      * Click on last link:
      * Example: When I follow the last "link"
@@ -34,9 +41,9 @@ final class TraversingContext extends RawMinkContext
     }
 
     /**
-     * @When I wait for the modal :modal to load
+     * @When I wait for the element :modal to load
      */
-    public function iWaitForTheModalToLoad(string $modal): void
+    public function iWaitForElementVisibility(string $cssElementSelector): void
     {
         $driver = $this->getSession()->getDriver();
 
@@ -44,6 +51,19 @@ final class TraversingContext extends RawMinkContext
             throw new DriverException('PantherDriver is mandatory for this context. You should use "@javascript" on your scenario.');
         }
 
-        $driver->wait(5, WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector($modal)));
+        /**
+         * related to: https://github.com/Guikingone/panther-extension/issues/7
+         * @phpstan-ignore-next-line
+         */
+        $driver->wait(5, WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector($cssElementSelector)));
+    }
+
+    /**
+     * @Then I take a screenshot
+     * @Then I take a screenshot with name :name
+     */
+    public function iTakeAScreenshot(string $name = null): void
+    {
+        $this->saveScreenshot($name ? "$name.png" : null, sprintf('%s/var', $this->projectDir));
     }
 }

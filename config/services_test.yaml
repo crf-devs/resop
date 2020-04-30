@@ -8,3 +8,6 @@ services:
 
     App\Tests\Behat\FixturesContext:
         $aliceFixturesLoader: '@hautelook_alice.loader'
+
+    App\Tests\Behat\TraversingContext:
+        $projectDir: '%kernel.project_dir%'

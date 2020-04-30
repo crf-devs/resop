@@ -6,11 +6,11 @@ namespace App\Tests\Behat;
 
 use App\Entity\Organization;
 use App\Entity\User;
-use App\Entity\UserPasswordInterface;
 use App\Repository\OrganizationRepository;
 use App\Repository\UserRepository;
 use Behat\Behat\Context\Environment\InitializedContextEnvironment;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -20,6 +20,7 @@ use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 final class SecurityContext extends RawMinkContext
 {
@@ -62,6 +63,7 @@ final class SecurityContext extends RawMinkContext
             throw new UsernameNotFoundException(\sprintf('%s is not a valid User or Organization.', $username));
         }
 
+        /** @var BrowserKitDriver|PantherDriver $driver */
         $driver = $this->getSession()->getDriver();
 
         if ($driver instanceof PantherDriver) {
@@ -83,7 +85,7 @@ final class SecurityContext extends RawMinkContext
     /**
      * @throws ExpectationException
      */
-    private function loginForPanther(UserPasswordInterface $user): void
+    private function loginForPanther(UserInterface $user): void
     {
         try {
             if ($user instanceof User) {
@@ -94,11 +96,7 @@ final class SecurityContext extends RawMinkContext
                 $this->loginOrganizationForPantherDriver($user);
             }
         } catch (\Exception $exception) {
-            throw new ExpectationException(
-                sprintf('Impossible to connect user: %s', $exception->getMessage()),
-                $this->getSession(),
-                $exception
-            );
+            throw new ExpectationException(sprintf('Impossible to connect user: %s', $exception->getMessage()), $this->getSession(), $exception);
         }
     }
 

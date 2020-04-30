@@ -4,5 +4,5 @@ imports:
 framework:
     session:
         storage_id: session.storage.native
-        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        handler_id: 'file://%kernel.project_dir%/var/sessions'
     profiler: { collect: false }

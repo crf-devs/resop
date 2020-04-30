@@ -19,33 +19,45 @@ Feature:
         And I should not see "Mission type DT77 1"
         And I should not see "Mission type DT77 2"
 
-    # todo: test collection type with javascript
+    @javascript
     Scenario: As an organization, I can create a mission type
         Given I am authenticated as "DT75"
         And I am on "/organizations/mission_type/"
         When I follow "Ajouter un nouveau type de mission"
         Then I should be on "/organizations/mission_type/new"
-        And the response status code should be 200
-        When I fill in the following:
-            | mission_type[name]                  | mission type name |
-            | mission_type[minimumAvailableHours] | 2                 |
+        When I press "Ajouter un type de bénévole"
+        And I press "Ajouter un type de véhicule"
+        And I fill in the following:
+            | mission_type[name]                             | mission type name |
+            | mission_type[minimumAvailableHours]            | 2                 |
+            | mission_type[userSkillsRequirement][0][skill]  | ci_bspp           |
+            | mission_type[userSkillsRequirement][0][number] | 3                 |
+            | mission_type[assetTypesRequirement][0][type]   | VPSP              |
+            | mission_type[assetTypesRequirement][0][number] | 4                 |
         And I press "Enregistrer"
-        Then the response status code should be 200
-        And I should be on "/organizations/mission_type/"
+        Then I should be on "/organizations/mission_type/"
         And I should see "mission type name"
+        When I follow the last "Modifier"
+        Then the "mission_type_name" field should contain "mission type name"
+        And the "mission_type_minimumAvailableHours" field should contain "2"
+        And the "mission_type_userSkillsRequirement_0_skill" field should contain "ci_bspp"
+        And the "mission_type_userSkillsRequirement_0_number" field should contain "3"
+        And the "mission_type_assetTypesRequirement_0_type" field should contain "302"
+        And the "mission_type_assetTypesRequirement_0_number" field should contain "4"
 
+    # todo: this form has a buggy behavior: https://github.com/crf-devs/resop/issues/361
+    @javascript
     Scenario: As an organization, I can edit a mission type
         Given I am authenticated as "DT75"
         And I am on "/organizations/mission_type/"
         When I follow "Modifier"
-        Then the response status code should be 200
-        And I should be on "/organizations/mission_type/751/edit"
+        Then I should be on "/organizations/mission_type/751/edit"
         When I fill in the following:
-            | mission_type[name]                             | mission type name |
-            | mission_type[userSkillsRequirement][0][skill]  | ci_bspp           |
+            | mission_type[name]                            | mission type name |
+            | mission_type[userSkillsRequirement][0][skill] | ci_bspp           |
+        And I press "delete_mission_type_userSkillsRequirement_1"
         And I press "Enregistrer"
-        Then the response status code should be 200
-        And I should be on "/organizations/mission_type/"
+        Then I should be on "/organizations/mission_type/"
         And I should see "mission type name"
         When I follow "Modifier"
         And I should see "CI Réseau BSPP"
