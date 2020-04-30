@@ -25,10 +25,11 @@
     <p><a class="btn btn-secondary" role="button" href="{{ path('app_organization_user_list', {'organization': app.user.id}) }}">{{ 'organization.showUserList' | trans }}</a></p>
     <p><a class="btn btn-secondary" href="{{ path('app_organization_assets', {'organization': app.user.id}) }}" role="button">{{ 'organization.showCommissionableAssets' | trans }}</a></p>
 
-    {% if app.user.parent == null %}
+    {% if app.user.isParent() %}
         <hr>
         <p><a class="btn btn-info" href="{{ path('planning') }}" role="button">{{ 'organization.showAllUsersAvailability' | trans }}</a></p>
         <p><a class="btn btn-info" href="{{ path('app_organisation_forecast') }}" role="button">{{ 'organization.forecast' | trans }}</a></p>
+        <p><a class="btn btn-info" href="{{ path('app_organization_mission_index') }}" role="button">{{ 'organization.editMission' | trans }}</a></p>
 
         <hr>
         <p><a href="{{ path('app_organization_list') }}" class="btn btn-info">{{ 'organization.editAll' | trans }}</a></p>

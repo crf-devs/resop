@@ -3,14 +3,14 @@
     <div class="row">
         <div class="col-12 col-md-6">
             <label for="fromToRange">{{ 'calendar.displayedPeriod' | trans }}: </label><input type="text" id="fromToRange" class="form-control" readonly>
-            <div class="hidden">
+            <div class="d-none">
                 {{ form_row(form.from) }}
                 {{ form_row(form.to) }}
             </div>
         </div>
         <div class="col-12 col-md-6">
             <label for="availableRange">{{ 'calendar.showAvailableOnly' | trans }}: </label><input type="text" id="availableRange" class="form-control" readonly>
-            <div class="hidden">
+            <div class="d-none">
                 {{ form_row(form.availableFrom) }}
                 {{ form_row(form.availableTo) }}
             </div>

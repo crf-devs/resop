@@ -8,9 +8,17 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'organization.vehicles' | trans }} - {{ organization }}</h1>
+    <h1>{{ 'organization.assets' | trans }} - {{ organization }}</h1>
 
     {{ form(organization_selector_form) }}
 
-    {{ include('organization/commissionable_asset/_list.html.twig') }}
+    <div class="row">
+        <div class="col-12 text-right mb-2">
+            <a class="btn btn-success" href="{{ path('app_organization_commissionable_pre_add_asset', {organization: organization.id | default(app.user.id)}) }}" role="button">
+                {{ 'organization.asset.add' | trans }}
+            </a>
+        </div>
+    </div>
+
+    {{ include('organization/commissionable_asset/_list.html.twig', {withDelete: true}) }}
 {% endblock %}

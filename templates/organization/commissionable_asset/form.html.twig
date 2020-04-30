@@ -2,10 +2,10 @@
 
 {% set actionName = asset.id is defined ? 'Modification' : 'Création' %}
 
-{% block title %}{{ 'organization.vehicle.createEdit' | trans ({ '%action%' : actionName }) }}{% endblock %}
+{% block title %}{{ 'organization.asset.createEdit' | trans ({ '%action%' : actionName }) }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'organization.vehicle.createEdit' | trans ({ '%action%' : actionName }) }}</h1>
+    <h1>{{ 'organization.asset.createEdit' | trans ({ '%action%' : actionName }) }}</h1>
 
     {{ form_start(form) }}
     {% if form.organization is defined %}

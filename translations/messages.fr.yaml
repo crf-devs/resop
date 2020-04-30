@@ -14,6 +14,7 @@ action:
   selectAll: Tout sélectionner
   save: Enregistrer
   submit: Valider
+  show: Afficher
 asset:
   type: Type
   name: Identifiant
@@ -21,7 +22,7 @@ calendar:
   displayedPeriod: Période affichée
   hours: heures
   period: du %from% au %to%
-  schedule: Planning
+  planning: Planning
   showAvailableOnly: Afficher seulement si disponible sur la période
   sortByDayAvailabilities: Trier par nombre de disponibilités sur le jour
   to: à
@@ -42,10 +43,13 @@ common:
   phoneNumberShort: Tél
   type: Type
   yes: Oui
+  start: Début
+  end: Fin
 message:
-  deleteAssetWarning: "Vous êtes sur le point de supprimer le véhicule %asset% et toutes ses disponibilités."
+  confirmDelete: Vous êtes sur le point de supprimer l'élément
+  deleteAssetWarning: Vous êtes sur le point de supprimer le véhicule suivant et toutes ses disponibilités
   deleteSlotWarning: "Vous êtes sur le point de modifier la disponibilité de %nbAssets%"
-  deleteUserWarning: "Vous êtes sur le point de supprimer le bénévole %user% et toutes ses disponibilités."
+  deleteUserWarning: Vous êtes sur le point de supprimer le bénévole suivant et toutes ses disponibilités
   editForbidden: Vous ne pouvez pas modifier les disponibilités saisies pour les prochaines %period% heures
   moreInfoOnHover: Passer la souris sur les cases pour afficher plus d'informations, si celles-ci sont disponibles
   noAvailableData: Aucun enregistrement
@@ -61,7 +65,14 @@ nav:
   welcome: Bienvenue
 organization:
   add: Ajouter une structure
+  assets: Véhicules
   asset:
+    add: Ajouter un nouveau véhicule
+    createEdit: "%action% d'un véhicule"
+    firstAidKit: Lot de secours
+    identificationNumber: Identifiant
+    radio: Radio
+    seat: place
     available: Disponible
     availabilities: Disponibilités de %asset%
     booked: Engagé sur une mission
@@ -79,16 +90,25 @@ organization:
   editAll: Modifier mes structures
   editAssetType: Modifier les types de véhicules
   editMissionType: Modifier les types de missions
+  editMission: Missions
   editUserProfile: Modifier un profil
   forecast: Projections
   label: Structure
   list: Liste des structures
+  mission:
+    title: Mission
+    listTitle: Missions
+    addNew: Ajouter une nouvelle mission
+    confirmDelete: Vous êtes sur le point de supprimer la mission
+    deleteSuccessMessage: La mission a été supprimée avec succès
+    editFormTitle: Modifier une mission
+    name: Identifiant de la mission 
+    duration: Date et durée 
   missionType:
     addNew: Ajouter un nouveau type de mission
     assetTypes:
       number: Nombre
       type: Type
-    confirmDelete: Vous êtes sur le point de supprimer le type de mission
     deleteSuccessMessage: Le type de mission a été supprimé avec succès
     editFormTitle: Modifier un type de mission
     mainTitle: Types de missions
@@ -120,14 +140,6 @@ organization:
   showCommissionableAssets: Afficher la liste de mes véhicules
   showOrganizationList: Afficher la liste de mes structures
   showUserList: Afficher la liste de mes bénévoles inscrits
-  vehicle:
-    add: Ajouter un nouveau véhicule
-    createEdit: "%action% d'un véhicule"
-    firstAidKit: Lot de secours
-    identificationNumber: Identifiant
-    radio: Radio
-    seat: place
-  vehicles: Véhicules
   userAvailabilities: Disponibilité des bénévoles
   userAvailabilityCurrentWeek: Afficher les disponibilités de mes bénévoles pour la semaine actuelle
   userAvailabilityNextWeek: Afficher les disponibilités de mes bénévoles pour la semaine prochaine

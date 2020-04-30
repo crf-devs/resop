@@ -5,12 +5,12 @@
     {{ encore_entry_script_tags('mission-type-form') }}
 {% endblock %}
 
-{% block title %}Nouveau type de mission{% endblock %}
+{% block title %}{{ 'organization.missionType.addNew' | trans }}{% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_organization_mission_type_index') }}">Retourner à la liste</a>
+    <a href="{{ path('app_organization_mission_type_index') }}">{{ 'common.backToList' | trans }}</a>
 
-    <h1>Ajouter un nouveau type de mission</h1>
+    <h1>{{ 'organization.missionType.addNew' | trans }}</h1>
 
     {{ include('organization/mission_type/_form.html.twig') }}
 {% endblock %}

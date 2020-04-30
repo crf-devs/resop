@@ -11,6 +11,7 @@ use App\Entity\Organization;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method CommissionableAsset|null find($id, $lockMode = null, $lockVersion = null)
@@ -61,12 +62,27 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
     public function findByOrganization(Organization $organization): iterable
     {
         return $this
-            ->createQueryBuilder('ca')
-            ->where('ca.organization = :organization')
-            ->setParameter('organization', $organization)
-            ->orderBy('ca.name', 'asc')
+            ->findByOrganizationAndChildrenQb($organization)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findByOrganizationAndChildrenQb(Organization $organization, bool $searchInChildren = false): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->join('a.organization', 'o');
+
+        if ($searchInChildren) {
+            $qb->andWhere('o = :organization OR o.parent = :organization');
+        } else {
+            $qb->andWhere('o = :organization');
+        }
+
+        $qb->setParameter('organization', $organization)
+            ->addOrderBy('o.name', 'ASC')
+            ->addOrderBy('a.name', 'ASC');
+
+        return $qb;
     }
 
     /**

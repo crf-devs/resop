@@ -8,7 +8,6 @@ use App\Entity\MissionType;
 use App\Entity\Organization;
 use App\Repository\MissionTypeRepository;
 use App\Repository\OrganizationRepository;
-use DateTimeImmutable;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -20,7 +19,7 @@ class PlanningForecastType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $organization = $builder->getData()['organization'];
+        $organization = $builder->getData()['organization'] ?? null;
         if (!$organization instanceof Organization || null === $organization->id) {
             throw new \InvalidArgumentException('PlanningForecastType must be initialized with an already persisted organization');
         }
@@ -37,7 +36,6 @@ class PlanningForecastType extends AbstractType
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
                 'label' => 'calendar.to',
-                'data' => (new DateTimeImmutable('today'))->add(new \DateInterval('P1D')),
                 'with_minutes' => false,
                 'required' => true,
             ])

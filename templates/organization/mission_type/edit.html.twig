@@ -8,8 +8,8 @@
 {% block title %}{{ 'organization.missionType.editFormTitle' | trans }}{% endblock %}
 
 {% block body %}
-
     <a href="{{ path('app_organization_mission_type_index') }}">{{ 'common.backToList' | trans }}</a>
+
     <h1>{{ 'organization.missionType.editFormTitle' | trans }}</h1>
 
     {{ include('organization/mission_type/_form.html.twig', {'button_label': 'action.save' | trans}) }}

@@ -26,13 +26,14 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('user-form', './assets/js/user-form.js')
     .addEntry('availability-form', './assets/js/availability-form.js')
+    .addEntry('forecast', './assets/js/forecast.js')
     .addEntry('planning', './assets/js/planning.js')
     .addEntry('planning-update', './assets/js/planning-update.js')
     .addEntry('availability-table', './assets/js/availability-table.js')
     .addEntry('availabilitable-list', './assets/js/availabilitable-list.js')
     .addEntry('mission-type-form', './assets/js/mission-type-form.js')
-    .addEntry('mission-type', './assets/js/mission-type.js')
     .addEntry('asset-type-form', './assets/js/asset-type-form.js')
+    .addEntry('missions', './assets/js/missions.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
