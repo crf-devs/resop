@@ -1,5 +1,4 @@
 export function initDatesRange($picker, $from, $to, withTime) {
-  console.log($picker, $from, $to, withTime);
   if (!$picker.length) {
     return;
   }
