@@ -1,3 +1,6 @@
+import { addPopovers } from './_planning';
+import { fetchMissions, initMissionsEvents } from './_planning-missions';
+
 const $ = require('jquery');
 
 function colorTable() {
@@ -34,11 +37,6 @@ $(document).ready(function () {
     selectDay($(this).closest('.day-title'));
   });
 
-  $table.find('.slot-box input:checkbox[title]').each(function (index, checkbox) {
-    const $checkbox = $(checkbox);
-    $checkbox.closest('.slot-box').attr('title', $checkbox.attr('title')).data('toggle', 'tooltip').tooltip();
-  });
-
   $actions.on('click', 'button.select-all', function () {
     selectAll($table);
   });
@@ -52,4 +50,14 @@ $(document).ready(function () {
       return false;
     }
   });
+
+  // Send the data-comment from the checkboxes to the td
+  $table.find('.slot-box input:checkbox[data-comment]').each(function (index, checkbox) {
+    const $checkbox = $(checkbox);
+    $checkbox.closest('td').attr('data-comment', $checkbox.data('comment'));
+  });
+
+  addPopovers($table);
+  initMissionsEvents();
+  fetchMissions(window.location.pathname + '/missions');
 });

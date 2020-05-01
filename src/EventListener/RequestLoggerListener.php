@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Entity\UserSerializableInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -86,10 +87,10 @@ final class RequestLoggerListener implements EventSubscriberInterface, LoggerAwa
 
     private function logLogIn(UserInterface $user): void
     {
-        if (!$user instanceof \JsonSerializable) {
+        if (!$user instanceof UserSerializableInterface) {
             return;
         }
-        $this->logger->info('User logged in', $user->jsonSerialize());
+        $this->logger->info('User logged in', $user->userSerialize());
     }
 
     private static function isHealthCheck(Request $request): bool

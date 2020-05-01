@@ -40,4 +40,42 @@ class MissionRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    /**
+     * @param int[][] $resourcesIds
+     *
+     * @return Mission[]
+     */
+    public function findByPlanningFilters(array $filters, array $resourcesIds): array
+    {
+        if (2 !== \count($resourcesIds)) {
+            throw new \LogicException('Bad resources ids');
+        }
+
+        [$users, $assets] = $resourcesIds;
+
+        $qb = $this->createQueryBuilder('m');
+
+        $qb
+            ->select('DISTINCT m')
+            ->leftJoin('m.users', 'mu', 'WITH', 'mu.id IN (:users)')
+            ->leftJoin('m.assets', 'ma', 'WITH', 'ma.id IN (:assets)')
+            ->where($qb->expr()->orX('mu.id IS NOT NULL', 'ma.id IS NOT NULL'))
+            ->setParameter('users', $users)
+            ->setParameter('assets', $assets);
+
+        if (!empty($filters['from']) && !empty($filters['to'])) {
+            $qb
+                ->andWhere($qb->expr()->orX(
+                    'm.startTime IS NULL and m.endTime IS NULL',
+                    'm.startTime >= :start and m.endTime <= :end',
+                    'm.startTime <= :start and m.endTime >= :start',
+                    'm.startTime <= :end and m.endTime >= :end',
+                ))
+                ->setParameter('start', $filters['from'])
+                ->setParameter('end', $filters['to']);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

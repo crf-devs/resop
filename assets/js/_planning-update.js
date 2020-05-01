@@ -1,3 +1,5 @@
+import { toggleBoxPopover } from './_planning';
+
 const $ = require('jquery');
 require('bootstrap');
 
@@ -49,13 +51,9 @@ function updatePlanningFromPayload($planning, newStatus, payload) {
       payload[ownerType][objectId].forEach((schedule) => {
         let [from, to] = schedule;
         const $td = $planning.find('tr[data-type="' + ownerType + '"][data-id="' + objectId + '"] td[data-from="' + from + '"][data-to="' + to + '"]');
-        $td.removeClass($td.data('status')).addClass(newStatus).data('status', newStatus);
+        $td.removeClass($td.data('status')).addClass(newStatus).data('status', newStatus).data('comment', payload.comment);
 
-        if (payload.comment) {
-          $td.attr('title', payload.comment).data('toggle', 'tooltip').tooltip();
-        } else {
-          $td.removeAttr('title').data('toggle', false).tooltip('dispose');
-        }
+        toggleBoxPopover($td);
       });
     });
   });
@@ -115,7 +113,7 @@ function checkLastUpdate(forceUpdate) {
   });
 }
 
-$(document).ready(function () {
+export function initUpdateEvents() {
   const $planning = $('.planning');
 
   let urlParams = new URLSearchParams(window.location.search);
@@ -159,6 +157,8 @@ $(document).ready(function () {
     window.location = window.location.origin + window.location.pathname + '?' + newUrlParams.toString();
   });
 
-  checkLastUpdate(true);
+  setTimeout(function () {
+    checkLastUpdate(true);
+  }, 5000);
   setInterval(checkLastUpdate, 30 * 1000);
-});
+}

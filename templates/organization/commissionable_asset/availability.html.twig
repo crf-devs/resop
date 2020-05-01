@@ -11,5 +11,5 @@
 {% block body %}
     <h1>{{ 'organization.asset.availabilities' | trans ({ '%asset%' : asset }) }}</h1>
 
-    {% include 'availability/_table.html.twig' %}
+    {% include 'availability/_table.html.twig' with { availabilityType: 'assets', availabilityId: asset.id } %}
 {% endblock %}

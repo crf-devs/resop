@@ -47,7 +47,7 @@
         </thead>
         <tbody>
         {% for i in 0..nbChoicesPerDay-1 %}
-            <tr>
+            <tr data-type="{{ availabilityType }}" data-id="{{ availabilityId }}">
                 <td class="hour-title">{{ choices[i].date|timeSlot }}-{{ choices[i+1].date|timeSlot }}</td>
                 {% for j in 0..6 %}
                     <td class="slot-box" data-day="{{ j }}" data-from="{{ choices[j*nbChoicesPerDay+i].date|date('U') }}" data-to="{{ choices[j*nbChoicesPerDay+i].date|date_modify(slot_interval)|date('U') }}">
@@ -80,11 +80,14 @@
 
 <h5>Légende</h5>
 <ul class="list-unstyled mt-3 availability-legend-container">
-    <li><span class="availability-legend unknown"></span> <em>Non disponible</em></li>
-    <li><span class="availability-legend available"></span> <em>Disponible</em></li>
-    <li><span class="availability-legend booked"></span> <em>Engagé sur une mission</em></li>
-    <li><span class="availability-legend locked"></span> <em>Bloqué</em></li>
+    <li><span class="availability-legend unknown"></span> <em>{{ 'organization.asset.unavailable'|trans }}</em></li>
+    <li><span class="availability-legend available"></span> <em>{{ 'organization.asset.available'|trans }}</em></li>
+    <li><span class="availability-legend booked"></span> <em>{{ 'organization.asset.booked'|trans }}</em></li>
+    <li><span class="availability-legend engaged"></span> <em>{{ 'organization.asset.engaged'|trans }}</em></li>
+    <li><span class="availability-legend locked"></span> <em>{{ 'organization.asset.locked'|trans }}</em></li>
 </ul>
+
+{% include 'availability/_mission_modal.html.twig' %}
 
 <div class="modal fade" id="modal-confirm" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">

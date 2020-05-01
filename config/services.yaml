@@ -128,3 +128,7 @@ services:
     # declared as public because needed in a migration
     App\Domain\SkillSetDomain:
         public: true
+
+    datetime_normalizer:
+        class: Symfony\Component\Serializer\Normalizer\DateTimeNormalizer
+        tags: [serializer.normalizer]

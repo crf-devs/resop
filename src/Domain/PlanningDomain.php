@@ -96,8 +96,7 @@ class PlanningDomain
 
     public function generateAvailabilities(array $filters, \DatePeriod $datePeriod): array
     {
-        $users = $filters['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($filters, false);
-        $assets = $filters['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($filters, false);
+        [$users, $assets] = $this->getAvailableResources($filters, false);
 
         return [
             'assets' => $this->splitAssets($this->prepareAvailabilities($this->assetAvailabilityRepository, $assets, $datePeriod)),
@@ -105,10 +104,17 @@ class PlanningDomain
         ];
     }
 
+    public function getAvailableResources(array $filters, bool $onlyIds): array
+    {
+        return [
+            $filters['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($filters, $onlyIds),
+            $filters['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($filters, $onlyIds),
+        ];
+    }
+
     public function generateLastUpdateAndCount(array $filters): array
     {
-        $users = $filters['hideUsers'] ?? false ? [] : $this->userRepository->findByFilters($filters, true);
-        $assets = $filters['hideAssets'] ?? false ? [] : $this->assetRepository->findByFilters($filters, true);
+        [$users, $assets] = $this->getAvailableResources($filters, true);
 
         // TODO Handle deleted availabilities
 

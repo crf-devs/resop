@@ -6,11 +6,11 @@ namespace App\Entity;
 
 use App\EntityListener\AddDependantSkillsEntityListener;
 use Doctrine\ORM\Mapping as ORM;
-use JsonSerializable;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use function Symfony\Component\String\u;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,14 +30,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("identificationNumber")
  * @ORM\EntityListeners({AddDependantSkillsEntityListener::class})
  */
-class User implements UserInterface, AvailabilitableInterface, JsonSerializable
+class User implements UserInterface, AvailabilitableInterface, UserSerializableInterface
 {
-    const NIVOL_FORMAT = '#^\d+[A-Z]$#';
+    public const NIVOL_FORMAT = '#^\d+[A-Z]$#';
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
+     * @Groups("mission:ajax")
      */
     public ?int $id = null;
 
@@ -180,7 +181,7 @@ class User implements UserInterface, AvailabilitableInterface, JsonSerializable
         return $this->organization;
     }
 
-    public function jsonSerialize(): array
+    public function userSerialize(): array
     {
         return [
             'id' => $this->id,

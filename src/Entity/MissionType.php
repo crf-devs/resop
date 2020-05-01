@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,12 +17,14 @@ class MissionType
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
+     * @Groups("mission:ajax")
      */
     public ?int $id = null;
 
     /**
      * @ORM\Column
      * @Assert\NotBlank
+     * @Groups("mission:ajax")
      */
     public string $name = '';
 

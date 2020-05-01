@@ -70,7 +70,7 @@ final class PlanningExtension extends AbstractExtension
                 '<td class="slot-box %s" data-status="%s" %s data-day="%s" data-from="%s" data-to="%s">%s</td>',
                 $slot['status'],
                 $slot['status'],
-                empty($slot['comment']) ? '' : sprintf('data-toggle="tooltip" title="%s"', htmlspecialchars($slot['comment'])),
+                empty($slot['comment']) ? '' : sprintf('data-comment="%s"', htmlspecialchars($slot['comment'])),
                 $slot['fromDay'],
                 $slot['fromDate'],
                 $slot['toDate'],
