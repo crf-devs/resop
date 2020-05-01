@@ -215,6 +215,20 @@ user:
   availabilityCurrentWeek: Mes disponibilités pour la semaine courante
   availabilityNextWeek: Mes disponibilités pour la semaine prochaine
   availabilitySpecificWeek: Mes disponibilités pour la semaine du %week%
+  calendar: 
+    currentWeek: Semaine courante
+    defaultAvailabilityTitle: Dispo
+    editAvailabilities: Modifier mes disponibilités
+    edit: Modifier
+    nextWeek: Semaine prochaine
+    shortDays:
+      Mon: lun
+      Tue: mar
+      Wed: mer
+      Thu: jeu
+      Fri: ven
+      Sat: sam
+      Sun: dim
   createMyAccount: Créer mon compte
   detail:
     organization: Votre structure de rattachement

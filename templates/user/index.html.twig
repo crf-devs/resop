@@ -3,10 +3,12 @@
 {% block title %}{{ 'nav.section.volunteer' | trans }}{% endblock %}
 
 {% block body %}
-    {{ include('misc/flash-messages.html.twig') }}
-    <h1>{{ 'user.welcome' | trans({'%name%': app.user.fullName}) }}</h1>
-    <p>{{ 'user.identificationNumber' | trans }} : {{ app.user.identificationNumber }}</p>
-    <p><a class="btn btn-outline-primary" href="{{ path('app_user_edit') }}" role="button">{{ 'user.editMyInfo' | trans }}</a></p>
+    <div class="container my-3 my-xl-5">
+        {{ include('misc/flash-messages.html.twig') }}
+        <h1>{{ 'user.welcome'|trans }} <span class="font-weight-normal">{{ app.user.fullName }}</span></h1>
+        <h2>{{ app.user.organization }} | {{ 'user.identificationNumber' | trans }} : {{ app.user.identificationNumber }}</h2>
+        <p><a class="text-primary font-weight-bold" href="{{ path('app_user_edit') }}">{{ 'user.editMyInfo'|trans }} ></a></p>
+    </div>
 
     <hr class="mt-5">
 
@@ -35,4 +37,21 @@
             {{ 'calendar.week.fromTo' | trans({ '%from%' : 'monday next week +2 week' | format_date('long'), '%to%' : 'sunday next week +2 week' | format_date('long') }) }}
         </a>
     </p>
+
+    <div class="container-xl pt-xl-3">
+        <div class="row">
+            {% include 'user/_home-calendar.html.twig' with {
+                'availabilities': currentWeekAvailabilities,
+                'calendarTitle': 'user.calendar.currentWeek'|trans,
+                'weekType': 'current-week'
+            } %}
+
+            {% include 'user/_home-calendar.html.twig' with {
+                'availabilities': nextWeekAvailabilities,
+                'calendarTitle': 'user.calendar.nextWeek'|trans,
+                'editLinkPath': 'user_availability',
+                'weekType': 'next-week'
+            } %}
+        </div>
+    </div>
 {% endblock %}

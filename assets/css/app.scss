@@ -9,6 +9,54 @@ html {
   background-color: $footerColor;
 }
 
+
+.bg-unknown {
+  background-color: $colorUnknown;
+}
+
+.bg-available {
+  background-color: $colorAvailable;
+}
+
+.bg-booked {
+  background-color: $colorBooked;
+}
+
+.bg-locked {
+  background-color: $colorLocked;
+}
+
+.white-box {
+  @extend .rounded;
+
+  border-radius: 6px;
+  background-color: white;
+  box-shadow: 2px 2px 36px 0 rgba(50, 47, 47, 0.2);
+}
+
+.body-user {
+  background-color: $gray-100 !important;
+
+  div.container {
+    > h1 {
+      font-size: 2.2em;
+      font-weight: 600;
+    }
+
+    > h2 {
+      font-size: 1.3em;
+      color: $gray-500;
+    }
+
+    > form {
+      @extend .white-box;
+      @extend .rounded;
+      @extend .px-4;
+      @extend .py-2;
+    }
+  }
+}
+
 body {
   > nav.navbar {
     background-color: white;
@@ -64,4 +112,10 @@ legend.required::before {
   color: $red;
   content: "*";
   padding-right: 4px;
+}
+
+@media (min-width: 1400px) {
+  div.container-xl {
+    max-width: 1400px;
+  }
 }

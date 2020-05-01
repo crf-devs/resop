@@ -1,0 +1,202 @@
+@import "~bootstrap/scss/bootstrap";
+
+.weekly-calendar {
+  @extend .col-12;
+  @extend .pr-xl-0;
+  @extend .mb-2;
+  @extend .mb-xl-0;
+
+  .white-box {
+    @extend .p-2;
+    @extend .p-xl-3;
+  }
+
+  h3 {
+    @extend .col-12;
+
+    font-size: 1.3em;
+
+    @include media-breakpoint-up(xl) {
+      font-size: 1.4em;
+    }
+  }
+
+  .edit-calendar-link {
+    @extend .text-right;
+    @extend .col-12;
+
+    a {
+      @extend .btn;
+      @extend .btn-primary;
+      @extend .mt-2;
+      @extend .pr-xl-0;
+
+      padding-top: 0.6rem;
+      padding-bottom: 0.6rem;
+      font-weight: bold;
+      width: 100%;
+
+      @include media-breakpoint-up(xl) {
+        padding-top: 0.375rem;
+        padding-bottom: 0.375rem;
+        display: inline;
+        text-align: right;
+        background-color: transparent;
+        border: none;
+        color: $primary;
+
+        &:hover,
+        &:active,
+        &:focus {
+          display: inline;
+          background-color: transparent !important;
+          border-color: transparent !important;
+          color: $link-hover-color !important;
+          text-decoration: underline;
+          box-shadow: none !important;
+        }
+      }
+    }
+  }
+
+  &.current-week {
+    @extend .col-xl-7;
+
+    h3 {
+      @extend .col-xl-6;
+    }
+
+    .edit-calendar-link {
+      @extend .col-xl-6;
+    }
+  }
+
+  &.next-week {
+    @extend .col-xl-5;
+
+    h3 {
+      @extend .col-xl-8;
+    }
+
+    .edit-calendar-link {
+      @extend .col-xl-4;
+    }
+  }
+
+  .user-home-calendar {
+    @extend .mt-3;
+    @extend .row ;
+    @extend .mx-0;
+
+    .calendar-day {
+      padding-left: 0.125rem !important;
+      padding-right: 0.125rem !important;
+
+      @extend .col-12;
+      @extend .col-xl;
+      @extend .p-0;
+      @extend .mb-4;
+      @extend .mb-xl-0;
+    }
+
+    .availability {
+      text-align: left;
+      font-size: 0.9rem;
+      color: white;
+
+      @extend .row;
+      @extend .rounded;
+      @extend .px-0;
+      @extend .m-0;
+      @extend .mb-1;
+
+      .title {
+        @extend .col-6;
+        @extend .col-xl-12;
+        @extend .px-1;
+        @extend .mb-xl-2;
+      }
+
+      .hours {
+        text-align: right;
+
+        @extend .col-6;
+        @extend .col-xl-12;
+        @extend .px-1;
+        @extend .text-xl-left;
+      }
+    }
+
+    .calendar-header {
+      font-weight: normal;
+      text-align: center;
+      text-transform: uppercase;
+      color: $gray-600;
+
+      @include media-breakpoint-up(xl) {
+        margin-bottom: 0.8rem !important;
+      }
+
+      @extend .p-0;
+      @extend .pr-xl-0;
+      @extend .col-2;
+      @extend .col-xl-12;
+
+      .day-text {
+        font-size: 1.1rem;
+        margin-bottom: 0.2em;
+
+        @include media-breakpoint-up(xl) {
+          font-size: 0.9rem;
+        }
+      }
+
+      .day-number {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: normal !important;
+        margin: auto auto auto -0.5em;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        width: auto;
+        padding-top: 0.125em;
+
+        @include media-breakpoint-up(xl) {
+          padding-top: 0.25em;
+          width: fit-content;
+          margin: auto;
+          border-radius: $badge-pill-border-radius;
+        }
+      }
+
+      &.current {
+        .day-text {
+          color: $primary;
+        }
+
+        .day-number {
+          @extend .bg-primary;
+
+          padding-top: 0.25em;
+          color: white;
+        }
+      }
+
+      &.incoming {
+        .day-number {
+          color: black;
+        }
+      }
+    }
+
+    .calendar-availabilities {
+      @extend .col-10;
+      @extend .col-xl-12;
+      @extend .p-0;
+      @extend .mt-2;
+      @extend .mt-xl-0;
+      @extend .pl-2;
+      @extend .pl-xl-0;
+    }
+  }
+}

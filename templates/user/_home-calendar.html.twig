@@ -1,0 +1,62 @@
+{% set editPath = path('user_availability') %}
+{% set editAlt = 'user.availabilityCurrentWeek' %}
+{% if weekType == 'next-week' %}
+    {% set editPath = path('user_availability', {week: 'next week'|date('o-\\WW')}) %}
+    {% set editAlt = 'user.availabilityNextWeek' %}
+{% endif %}
+
+<div class="weekly-calendar {{ weekType }}">
+    <div class="white-box">
+        <div class="row">
+            <h3>{{ calendarTitle }}</h3>
+            <div class="edit-calendar-link ">
+                <a href="{{ editPath }}" title="{{ editAlt|trans }}">
+                    {{ weekType == 'next-week' ? 'user.calendar.edit'| trans : 'user.calendar.editAvailabilities' | trans }}
+                    <img class="d-none d-xl-inline" src="{{ asset('build/images/path-arrow.svg') }}"/>
+                </a>
+            </div>
+        </div>
+
+        <div class="user-home-calendar">
+            {% for day in availabilities %}
+                <div class="calendar-day">
+                    <div class="row m-0">
+                        <div class="calendar-header {{ day.date|calendarDayClass }}">
+                            <p class="day-text">
+                                {% set shortDay = 'user.calendar.shortDays.' ~ day.date|date('D') %}
+                                {{ shortDay|trans }}.
+                            </p>
+                            <p class="day-number badge badge-pill">
+                                {{ day.date|date('j')|trans }}
+                            </p>
+                        </div>
+
+                        <div class="calendar-availabilities">
+                            {% if day.availabilities %}
+                                {% for availability in day.availabilities %}
+                                    <div class="availability bg-{{ availability.status|default('unknown') }}">
+                                        <div class="title">
+                                            {{ availability.comment|default('user.calendar.defaultAvailabilityTitle'|trans) }}
+                                        </div>
+                                        <div class="hours">
+                                            {{ availability.startTime|calendarCustomHours }} - {{ availability.endTime|calendarCustomHours(true) }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="availability bg-light">
+                                    <div class="title">
+                                        &nbsp;
+                                    </div>
+                                    <div class="hours">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 import '../css/app.scss';
+import '../css/user.scss';
 import '../css/app-organization.scss';
 import '../css/availability-form.scss';
 import '../css/login.scss';

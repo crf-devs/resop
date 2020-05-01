@@ -27,8 +27,16 @@
     </div>
 </div>
 
-
 {{ form_start(form) }}
+
+<div class="mb-2 availability-actions">
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <button class="btn-secondary btn mt-3 select-all" type="button">{{ 'action.selectAll' | trans }}</button>
+        </div>
+    </div>
+</div>
+
 <div class="table-responsive">
     <table class="table availability-table availability-form-table">
         {% set choices = form.availabilityDomains.vars.data %}

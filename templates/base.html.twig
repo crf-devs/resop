@@ -11,11 +11,11 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
     </head>
     {% block document_body %}
-    <body class="{% block body_class '' %}">
+    <body class="{% block body_class 'body-user' %}">
         {% include '_navbar.html.twig' %}
 
         <div class="container my-5">
-            {% block body '' %}
+            {% block body %}{% endblock %}
         </div>
 
         {% include '_footer.html.twig' %}
