@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\AvailabilityInterface;
 use App\Entity\Organization;
 use App\Entity\User;
 use App\Entity\UserAvailability;
@@ -109,23 +108,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             $qb->andWhere($qb->expr()->orX(...$skillsQueries));
         }
 
-        if (!empty($formData['availableFrom']) && !empty($formData['availableTo'])) {
-            $availableStatuses = [AvailabilityInterface::STATUS_AVAILABLE];
-            if ($formData['displayAvailableWithBooked'] ?? false) {
-                $availableStatuses[] = AvailabilityInterface::STATUS_BOOKED;
-            }
-
-            $qb = $this->addAvailabilityBetween(
-                $qb,
-                $formData['availableFrom'],
-                $formData['availableTo'],
-                $this->slotInterval,
-                UserAvailability::class,
-                'user',
-                $availableStatuses,
-                $formData['minimumAvailableHours'] ?? null,
-            );
-        }
+        $qb = $this->addAvailabilityCondition($qb, $formData, UserAvailability::class, 'user');
 
         $qb->orderBy('o.name');
         $qb->addOrderBy('u.firstName');

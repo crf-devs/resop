@@ -83,7 +83,7 @@ final class DatePeriodCalculatorTest extends TestCase
     public function testIntervalToSeconds(): void
     {
         $this->assertSame(7200, DatePeriodCalculator::intervalToSeconds(new \DateInterval('PT2H')));
-        $this->assertSame(22080, DatePeriodCalculator::intervalToSeconds(new \DateInterval('P2Y4DT6H8M')));
+        $this->assertSame(1892527680, DatePeriodCalculator::intervalToSeconds(new \DateInterval('P2Y4DT6H8M')));
     }
 
     /** @dataProvider roundToDailyIntervalProvider */
