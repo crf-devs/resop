@@ -75,7 +75,6 @@ class PlanningSearchType extends AbstractType
                 'attr' => [
                     'placeholder' => 'heures',
                     'min' => 0,
-                    'step' => 2,
                 ],
             ])
             ->add('organizations', EntityType::class, [
@@ -134,19 +133,39 @@ class PlanningSearchType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
-            $data = $event->getData();
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'setDefaultFromTo']);
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'setViewDataFromTo']);
+    }
 
-            if (!isset($data['from'])) {
-                $data['from'] = new \DateTimeImmutable('today');
-            }
+    public static function setDefaultFromTo(FormEvent $event): void
+    {
+        $data = $event->getData();
 
-            if (!isset($data['to'])) {
-                $data['to'] = (clone $data['from'])->add(new \DateInterval('P2D'));
-            }
+        if (empty($data['from'])) {
+            $data['from'] = new \DateTimeImmutable('today');
+        }
 
-            $event->setData($data);
-        });
+        if (empty($data['to'])) {
+            $data['to'] = (clone $data['from'])->add(new \DateInterval('P2D'));
+        }
+
+        $event->setData($data);
+    }
+
+    public static function setViewDataFromTo(FormEvent $event): void
+    {
+        $data = $event->getData();
+        $formData = $event->getForm()->getData();
+
+        if (empty($data['from'])) {
+            $data['from'] = $formData['from']->format(\DateTimeInterface::W3C);
+        }
+
+        if (empty($data['to'])) {
+            $data['to'] = $formData['to']->format(\DateTimeInterface::W3C);
+        }
+
+        $event->setData($data);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

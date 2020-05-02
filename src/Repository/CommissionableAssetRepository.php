@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\AvailabilityInterface;
 use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
 use App\Entity\Organization;
@@ -104,23 +103,7 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
             $qb->andWhere('a.organization IN (:organisations)')->setParameter('organisations', $formData['organizations']);
         }
 
-        if (!empty($formData['availableFrom']) && !empty($formData['availableTo'])) {
-            $availableStatuses = [AvailabilityInterface::STATUS_AVAILABLE];
-            if ($formData['displayAvailableWithBooked'] ?? false) {
-                $availableStatuses[] = AvailabilityInterface::STATUS_BOOKED;
-            }
-
-            $qb = $this->addAvailabilityBetween(
-                $qb,
-                $formData['availableFrom'],
-                $formData['availableTo'],
-                $this->slotInterval,
-                CommissionableAssetAvailability::class,
-                'asset',
-                $availableStatuses,
-                $formData['minimumAvailableHours'] ?? null,
-            );
-        }
+        $qb = $this->addAvailabilityCondition($qb, $formData, CommissionableAssetAvailability::class, 'asset');
 
         $qb->orderBy('a.name');
 
