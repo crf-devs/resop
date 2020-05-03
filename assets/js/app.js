@@ -1,6 +1,7 @@
 import '../css/app.scss';
 import '../css/app-organization.scss';
 import '../css/availability-form.scss';
+import '../css/login.scss';
 import '../css/planning.scss';
 import '../css/availability-table.scss';
 import './_delete-item-modal';

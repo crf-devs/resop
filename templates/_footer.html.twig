@@ -1,9 +1,10 @@
-<footer class="page-footer font-small">
-    <div class="footer-copyright text-center">
-        <p class="font-italic text-secondary">
+<footer>
+    <div class="footer-copyright">
+        <p class="text-secondary small mb-0">
             {{ 'project.description' | trans }}<br />
-            {{ 'project.contribute' | trans }} : <a href="https://github.com/crf-devs/resop/" target="_blank" class="text-body">github.com/crf-devs/resop</a><br />
-            {{ build_tag }}
+            {{ 'project.contribute' | trans }} :
+            <a href="https://github.com/crf-devs/resop/" target="_blank" class="font-weight-bold font-italic">github.com/crf-devs/resop</a><br />
+            {{ 'project.version' | trans({'%tag%': build_tag}) }}
         </p>
     </div>
 </footer>

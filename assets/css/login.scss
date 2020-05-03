@@ -1,0 +1,99 @@
+@import "~bootstrap/scss/bootstrap";
+
+@include media-breakpoint-up(sm) {
+  body.login {
+    .navbar-and-body {
+      background: url(../img/login-background.jpg) repeat-x center;
+      background-size: cover;
+
+      .navbar-and-body-image {
+        background: url(../img/login-background-shape.png) no-repeat center;
+        background-size: cover;
+
+        > .navbar {
+          box-shadow: none;
+          padding-top: 2rem;
+          font-size: 0.9rem;
+
+          .navbar-brand {
+            color: white;
+            font-size: 1.4rem;
+          }
+
+          .nav-link {
+            color: white;
+            opacity: 0.8;
+          }
+
+          .btn {
+            color: $light;
+            border-color: $light;
+            border-radius: 1rem;
+            padding: 0.375rem 1rem;
+            margin-left: 3rem;
+            font-size: inherit;
+            opacity: 1;
+            font-weight: 600;
+          }
+        }
+
+        > .container {
+          padding-top: 4rem;
+          padding-bottom: 9rem;
+
+          .login-form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 6px;
+
+            input,
+            select,
+            .custom-control-label::before {
+              border: none;
+              box-shadow: #ddd 2px 2px 4px 2px;
+            }
+
+            select {
+              margin-right: 0.4rem;
+            }
+
+            // Remember me
+            .custom-control {
+              padding-left: 1rem;
+
+              .custom-control-label {
+                padding-left: 1rem;
+
+                &::before,
+                &::after {
+                  left: -1rem;
+                }
+              }
+            }
+
+            h1 {
+              font-size: 2rem;
+              font-weight: bold;
+            }
+
+            label,
+            legend {
+              font-size: 0.9rem;
+            }
+
+            .btn {
+              font-weight: bold;
+              padding: 0.75rem 0;
+            }
+          }
+        }
+      }
+    }
+
+    footer {
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-bottom: 2rem;
+    }
+  }
+}

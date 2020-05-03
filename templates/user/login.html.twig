@@ -2,34 +2,49 @@
 
 {% block title %}{{ 'action.login' | trans }}{% endblock %}
 
-{% block body %}
-<form method="post">
-    <div class="row">
-        <div class="col-12 col-md-6 offset-md-3">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
+{% block document_body %}
+    <body class="login">
 
-            <h1 class="h3 mb-3 font-weight-normal">{{ 'action.login' | trans }}</h1>
+    <div class="navbar-and-body">
+        <div class="navbar-and-body-image">
+            {% include '_navbar.html.twig' %}
 
-            {{ form_start(loginForm) }}
-            {{ form_row(loginForm.identifier) }}
-            {{ form_row(loginForm.birthday) }}
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-lg-7"></div>
+                    <div class="col-lg-5 login-form-container">
+                        <form method="post">
+                            <h1 class="h1 mb-3">{{ 'action.login' | trans }}</h1>
 
-            <div class="mt-4 mb-2 d-flex">
-                <label>
-                    <input type="checkbox" name="_remember_me"> {{ 'action.rememberMe' | trans }}
-                </label>
+                            {% if error %}
+                                <div class="alert alert-danger small">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+
+                            {{ form_start(loginForm) }}
+                            {{ form_row(loginForm.identifier) }}
+                            {{ form_row(loginForm.birthday) }}
+
+                            <div class="custom-control custom-checkbox mt-4 mb-5">
+                                <input type="checkbox" class="custom-control-input" name="_remember_me" id="_remember_me">
+                                <label class="custom-control-label" for="_remember_me">{{ 'action.rememberMe' | trans }}</label>
+                            </div>
+
+                            <button class="btn btn-primary w-100" type="submit">{{ 'action.loginSubmit' | trans }}</button>
+
+                            {{ form_end(loginForm) }}
+                        </form>
+
+                        <p class="mt-3 d-none d-sm-block d-lg-none">
+                            <a class="btn btn-info w-100" href="{{ path('app_user_create') }}">{{ 'user.createMyAccount' | trans }}</a>
+                        </p>
+                    </div>
+                </div>
             </div>
-
-            <button class="btn btn-lg btn-primary w-100" type="submit">{{ 'action.loginSubmit' | trans }}</button>
-
-            {{ form_end(loginForm) }}
-
-            <p class="mt-1">
-                <a class="btn btn-lg btn-info w-100" href="{{ path('app_user_create') }}">{{ 'user.createMyAccount' | trans }}</a>
-            </p>
         </div>
     </div>
-</form>
+
+    {% include '_footer.html.twig' %}
+
+    {{ encore_entry_script_tags('app') }}
+    </body>
 {% endblock %}

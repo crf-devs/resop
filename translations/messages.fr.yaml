@@ -187,6 +187,7 @@ project:
   contribute: Contribuez au projet
   description: Réserve opérationnelle - Croix-Rouge Française à Paris
   name: ResOP
+  version: Version %tag%
 user:
   accountAction: "%action% de compte"
   availabilities: Vos disponibilités
