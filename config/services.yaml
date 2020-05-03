@@ -5,7 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     app.most_important_skills_limit: 6 # used for separing data in the planning
-    app.most_important_skills_to_display: 3 # used for displaying a badge near the user name
+    app.most_important_skills_to_display: [ch_vpsp, ch_vl] # used for displaying a badge near the user name
     app.slot_interval: '%env(APP_SLOT_INTERVAL)%'
     app.available_skills:
         # Caution: the order matters for the planning display
@@ -69,7 +69,7 @@ services:
             $isDebug: '%kernel.debug%'
             $availableSkillSets: "%app.available_skills%"
             $importantSkillsLimit: "%app.most_important_skills_limit%"
-            $importantSkillsToDisplayLimit: "%app.most_important_skills_to_display%"
+            $importantSkillsToDisplay: "%app.most_important_skills_to_display%"
             $slotInterval: '%app.slot_interval%'
 
     # makes classes in src/ available to be used as services
