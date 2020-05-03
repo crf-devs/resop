@@ -10,7 +10,9 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.2",
+    "font-awesome": "^4.7.0",
     "jquery": "^3.5.0",
+    "moment": "^2.24.0",
     "node-sass": "^4.13.1",
     "popper.js": "^1.16.1",
     "prettier": "^2.0.2",
@@ -32,8 +34,5 @@
     "lint:fix": "npx eslint 'assets/js/**/*.js' --cache --max-warnings=0 --fix",
     "lint:css": "npx stylelint 'assets/css/**/*.{css,scss}' --cache --max-warnings=0",
     "lint:css:fix": "npx stylelint 'assets/css/**/*.{css,scss}' --cache --max-warnings=0 --fix"
-  },
-  "dependencies": {
-    "font-awesome": "^4.7.0"
   }
 }

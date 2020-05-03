@@ -1,4 +1,7 @@
 import { initDatesRange } from './_helpers';
+import { fetchMissions, initMissionsEvents } from './_planning-missions';
+import { addPopovers } from './_planning';
+import { initUpdateEvents } from './_planning-update';
 
 const $ = require('jquery');
 
@@ -43,13 +46,18 @@ function dateSortPlanning($clickedTh, $planning) {
 }
 
 $(document).ready(function () {
-  var $planning = $('.planning');
+  const $planning = $('.planning');
 
   // Datepickers
   initDatesRange($('#fromToRange'), $('#from'), $('#to'));
   initDatesRange($('#availableRange'), $('#availableFrom'), $('#availableTo'), true);
 
   hideUselessFilters();
+  addPopovers($planning);
+
+  initUpdateEvents();
+  initMissionsEvents();
+  fetchMissions('/organizations/missions/find' + window.location.search);
 
   $('#hideUsers').on('change', hideUselessFilters);
   $('#hideAssets').on('change', hideUselessFilters);
@@ -60,8 +68,6 @@ $(document).ready(function () {
   $planning.on('click', 'thead tr.days th[data-day]', function () {
     dateSortPlanning($(this), $planning);
   });
-
-  $('td[data-toggle="tooltip"]', $planning).tooltip();
 
   // The table is hidden by default for performances reason
   $planning.css('display', 'table');

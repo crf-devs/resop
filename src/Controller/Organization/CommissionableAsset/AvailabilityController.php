@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\CommissionableAsset;
 
+use App\Controller\User\Availability\UserAvailabityControllerTrait;
 use App\Domain\AvailabilitiesDomain;
 use App\Entity\CommissionableAsset;
 use App\Entity\CommissionableAssetAvailability;
@@ -20,6 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 final class AvailabilityController extends AbstractController
 {
+    use UserAvailabityControllerTrait;
+
     private EntityManagerInterface $entityManager;
     private CommissionableAssetAvailabilityRepository $commissionableAssetAvailabilityRepository;
 
@@ -33,21 +36,7 @@ final class AvailabilityController extends AbstractController
 
     public function __invoke(Request $request, CommissionableAsset $asset, string $slotInterval): Response
     {
-        $week = $request->attributes->get('week');
-
-        try {
-            $start = new \DateTimeImmutable($week ?: 'monday this week');
-        } catch (\Exception $e) {
-            return $this->redirectToRoute('app_organization_assets', ['organization' => $asset->organization->getId()]);
-        }
-
-        $interval = $start->diff(new \DateTimeImmutable());
-        // edit current week and next week only
-        if ($interval->days > 6) {
-            return $this->redirectToRoute('app_organization_assets', ['organization' => $asset->organization->getId()]);
-        }
-
-        $end = $start->add(new \DateInterval('P7D'));
+        [$start, $end] = $this->getDatesByWeek($request->attributes->get('week'));
 
         $availabilitiesDomain = AvailabilitiesDomain::generate(
             $start,

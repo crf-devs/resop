@@ -4,7 +4,7 @@
         <div class="col-md">
             <div class="text-center" id="loader">
                 <div class="spinner-border" role="status">
-                    <span class="sr-only">{{ 'action.loading' | trans }}...</span>
+                    <span class="sr-only">{{ 'action.loading' | trans }}</span>
                 </div>
             </div>
             <div class="display-more-container form-check">
@@ -33,6 +33,7 @@
             <div class="col-md">
                 <ul class="list-unstyled planning-legend-container">
                     <li><span class="availability-legend booked"></span> <em>{{ 'organization.asset.booked' | trans }}</em></li>
+                    <li><span class="availability-legend engaged"></span> <em>{{ 'organization.asset.engaged' | trans }}</em></li>
                     <li><span class="availability-legend locked"></span> <em>{{ 'organization.asset.locked' | trans }}</em></li>
                 </ul>
             </div>
@@ -73,6 +74,8 @@
     {% endif %}
 </div>
 {% endcache %}
+
+{% include 'availability/_mission_modal.html.twig' %}
 
 <div class="modal fade" id="modal-update" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">

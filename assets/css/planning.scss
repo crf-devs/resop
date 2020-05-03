@@ -1,3 +1,5 @@
+@import "variables";
+
 $tableBoxSize: 40px;
 
 .planning-actions-container {
@@ -131,6 +133,11 @@ $tableBoxSize: 40px;
         input[type='checkbox'] {
           visibility: visible;
         }
+      }
+
+      &.mission {
+        outline: 5px solid $colorMission;
+        outline-offset: -15px;
       }
     }
   }

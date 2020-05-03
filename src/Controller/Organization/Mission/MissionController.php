@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/mission")
+ * @Route("/missions")
  * @Security("is_granted('ROLE_PARENT_ORGANIZATION')")
  */
 class MissionController extends AbstractController
@@ -70,7 +70,7 @@ class MissionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_organization_mission_show", methods={"GET"})
+     * @Route("/{id<\d+>}", name="app_organization_mission_show", methods={"GET"})
      * @Security("mission.organization == user")
      */
     public function show(Mission $mission): Response
@@ -81,7 +81,7 @@ class MissionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_organization_mission_edit", methods={"GET","POST"})
+     * @Route("/{id<\d+>}/edit", name="app_organization_mission_edit", methods={"GET","POST"})
      * @Security("mission.organization == user")
      */
     public function edit(Request $request, Mission $mission): Response
@@ -102,7 +102,7 @@ class MissionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="app_organization_mission_delete", methods={"GET"})
+     * @Route("/{id<\d+>}/delete", name="app_organization_mission_delete", methods={"GET"})
      * @Security("mission.organization == user")
      */
     public function delete(Mission $mission): RedirectResponse

@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
  * @ORM\EntityListeners({UserPasswordEntityListener::class})
  */
-class Organization implements UserPasswordInterface, \JsonSerializable
+class Organization implements UserPasswordInterface, UserSerializableInterface
 {
     /**
      * @ORM\Id
@@ -56,7 +56,7 @@ class Organization implements UserPasswordInterface, \JsonSerializable
         return $this->name;
     }
 
-    public function jsonSerialize(): array
+    public function userSerialize(): array
     {
         return [
             'id' => $this->id,

@@ -1,0 +1,23 @@
+{% if app.user == mission.organization %}
+    <a class="btn btn-outline-primary float-right" href="{{ path('app_organization_mission_edit', {'id': mission.id}) }}">{{ 'action.edit' | trans }}</a>
+{% endif %}
+
+<h1 class="mb-5">
+    <span class="badge badge-secondary">{{ mission.type.name | default('organization.mission.title') | trans }}</span>
+    {{ mission }}
+</h1>
+
+{% if mission.startTime is not null %}
+    <p>{{ 'common.start' | trans }}: <strong>{{ mission.startTime | format_datetime(date_format='full', time_format='short') }}</strong></p>
+{% endif %}
+
+{% if mission.endTime is not null %}
+    <p>{{ 'common.end' | trans }}: <strong>{{ mission.endTime | format_datetime(date_format='full', time_format='short') }}</strong></p>
+{% endif %}
+
+<h3 class="mt-4">{{ 'organization.users' | trans }}</h3>
+{{ include('organization/user/_list.html.twig', {users: mission.users | sortBySkills, organization: mission.organization, showActions: false}) }}
+
+<h3 class="mt-4">{{ 'organization.assets' | trans }}</h3>
+{{ include('organization/commissionable_asset/_list.html.twig', {assets: mission.assets, organization: mission.organization, showActions: false}) }}
+

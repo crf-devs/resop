@@ -370,7 +370,8 @@ final class ApplicationFixtures extends Fixture
         $resourcePartiallyAvailable = \array_slice($resourcesRandom, $index, (int) ($resourceCount * $percentPartiallyAvailable));
 
         // Creating slots locked
-        $data = $this->createAvailabilities($resourceLocked, $today, AvailabilityInterface::STATUS_LOCKED, false, 'Raison médicale');
+        $lockReason = UserAvailability::class === $class ? 'Raison médicale' : 'Au garage';
+        $data = $this->createAvailabilities($resourceLocked, $today, AvailabilityInterface::STATUS_LOCKED, false, $lockReason);
 
         // Creating slots available
         $data = array_merge($data, $this->createAvailabilities($resourceAvailable, $today, AvailabilityInterface::STATUS_AVAILABLE));

@@ -20,6 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 final class ManageAvailabilityController extends AbstractController
 {
+    use UserAvailabityControllerTrait;
+
     private EntityManagerInterface $entityManager;
     private UserAvailabilityRepository $userAvailabilityRepository;
 
@@ -39,21 +41,7 @@ final class ManageAvailabilityController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $week = $request->attributes->get('week');
-
-        try {
-            $start = new \DateTimeImmutable($week ?: 'monday this week');
-        } catch (\Exception $e) {
-            return $this->redirectToRoute('app_user_home');
-        }
-
-        $interval = $start->diff(new \DateTimeImmutable());
-        // edit current week and next week only
-        if ($interval->days > 6) {
-            return $this->redirectToRoute('app_user_home');
-        }
-
-        $end = $start->add(new \DateInterval('P7D'));
+        [$start, $end] = $this->getDatesByWeek($request->attributes->get('week'));
 
         $blockedSlotsInterval = new \DateInterval('PT12H');
         $availabilitiesDomain = AvailabilitiesDomain::generate(

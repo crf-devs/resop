@@ -4,7 +4,7 @@ action:
   delete: Supprimer
   displayMore: Afficher plus d'informations
   edit: Modifier
-  loading: Chargement
+  loading: Chargement...
   login: Connexion
   search: Rechercher "%query%"
   loginSubmit: Je me connecte
@@ -75,8 +75,10 @@ organization:
     seat: place
     available: Disponible
     availabilities: Disponibilités de %asset%
-    booked: Engagé sur une mission
+    booked: Réservé
     locked: Bloqué
+    engaged: Engagé sur une mission
+    engage: Engager sur une mission
     markAsAvailable: Marquer comme disponible
     markAsBooked: Marquer comme réservé
     markAsLocked: Marquer comme bloqué

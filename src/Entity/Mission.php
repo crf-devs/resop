@@ -7,6 +7,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,12 +22,14 @@ class Mission
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
+     * @Groups("mission:ajax")
      */
     public ?int $id = null;
 
     /**
      * @ORM\Column
      * @Assert\NotBlank
+     * @Groups("mission:ajax")
      */
     public string $name = '';
 
@@ -38,27 +41,36 @@ class Mission
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\MissionType")
+     * @Groups("mission:ajax")
      */
     public ?MissionType $type = null;
 
     /**
      * @ORM\Column(type="datetimetz_immutable", nullable=true)
+     * @Groups("mission:ajax")
      */
     public ?\DateTimeImmutable $startTime = null;
 
     /**
      * @ORM\Column(type="datetimetz_immutable", nullable=true)
      * @Assert\GreaterThan(propertyPath="startTime")
+     * @Groups("mission:ajax")
      */
     public ?\DateTimeImmutable $endTime = null;
 
     /**
+     * @var User[]|Collection
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\User")
+     * @Groups("mission:ajax")
      */
     public Collection $users;
 
     /**
+     * @var CommissionableAsset[]|Collection
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\CommissionableAsset")
+     * @Groups("mission:ajax")
      */
     public Collection $assets;
 
@@ -70,6 +82,6 @@ class Mission
 
     public function __toString(): string
     {
-        return (null !== $this->type) ? "{$this->type->name} - $this->name" : $this->name;
+        return $this->name;
     }
 }

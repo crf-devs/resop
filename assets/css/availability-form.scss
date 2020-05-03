@@ -31,6 +31,11 @@ table.availability-form-table {
     &.booked {
       background-color: $colorBooked !important;
     }
+
+    &.mission {
+      outline: 5px solid $colorMission;
+      outline-offset: -5px;
+    }
   }
 
   button.select-all {

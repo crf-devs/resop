@@ -29,7 +29,7 @@ final class AvailabilityDomainType extends AbstractType
                     $attr['data-status'] = $data->availability->getStatus();
 
                     if (!empty(trim($data->availability->getComment()))) {
-                        $attr['title'] = $data->availability->getComment();
+                        $attr['data-comment'] = $data->availability->getComment();
                     }
                 }
 
