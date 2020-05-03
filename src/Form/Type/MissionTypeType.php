@@ -9,6 +9,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MissionTypeType extends AbstractType
@@ -39,6 +41,24 @@ class MissionTypeType extends AbstractType
                 'label' => 'organization.assets',
             ])
         ;
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'handleJsonArray']);
+    }
+
+    public static function handleJsonArray(FormEvent $event): void
+    {
+        $data = $event->getData();
+
+        // Can be a json object with numeric keys.
+        if (!empty($data['userSkillsRequirement'])) {
+            $data['userSkillsRequirement'] = array_values($data['userSkillsRequirement']);
+        }
+
+        if (!empty($data['assetTypesRequirement'])) {
+            $data['assetTypesRequirement'] = array_values($data['assetTypesRequirement']);
+        }
+
+        $event->setData($data);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
