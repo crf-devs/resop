@@ -1,0 +1,9 @@
+{% extends 'organization/base.html.twig' %}
+
+{% block title %}{{ user }} - {{ 'organization.mission.listTitle' | trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ user }} - {{ 'organization.mission.listTitle' | trans }}</h1>
+
+    {% include 'organization/mission/_list.html.twig' with {showActions: false} %}
+{% endblock %}
