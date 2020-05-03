@@ -105,7 +105,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
                 $qb->setParameter(sprintf('skill%d', $key), $skill);
             }
 
-            $qb->andWhere($qb->expr()->orX(...$skillsQueries));
+            $qb->andWhere($qb->expr()->andX(...$skillsQueries));
         }
 
         $qb = $this->addAvailabilityCondition($qb, $formData, UserAvailability::class, 'user');
