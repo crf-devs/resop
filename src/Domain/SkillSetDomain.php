@@ -8,14 +8,14 @@ class SkillSetDomain
 {
     private array $availableSkillSets;
     private int $importantSkillsLimit;
-    private int $importantSkillsToDisplayLimit;
+    private array $importantSkillsToDisplay;
 
-    public function __construct(array $availableSkillSets = [], int $importantSkillsLimit = 0, int $importantSkillsToDisplayLimit = 0)
+    public function __construct(array $availableSkillSets = [], int $importantSkillsLimit = 0, array $importantSkillsToDisplay = [])
     {
         // TODO Use objects instead of arrays
         $this->availableSkillSets = $availableSkillSets;
         $this->importantSkillsLimit = $importantSkillsLimit;
-        $this->importantSkillsToDisplayLimit = $importantSkillsToDisplayLimit;
+        $this->importantSkillsToDisplay = $importantSkillsToDisplay;
     }
 
     /**
@@ -38,7 +38,7 @@ class SkillSetDomain
 
     public function getSkillsToDisplay(): array
     {
-        return \array_slice($this->getSkillSetKeys(), 0, $this->importantSkillsToDisplayLimit);
+        return array_values(array_intersect($this->getSkillSetKeys(), $this->importantSkillsToDisplay));
     }
 
     public function getIncludedSkillsFromSkillSet(array $skillSet): array

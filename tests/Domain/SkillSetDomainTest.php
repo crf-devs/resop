@@ -23,7 +23,7 @@ final class SkillSetDomainTest extends TestCase
                 'skill6' => ['label' => 'Skill 6'],
             ],
             3,
-            4
+            ['skill1', 'skill5']
         );
     }
 
@@ -62,7 +62,7 @@ final class SkillSetDomainTest extends TestCase
     {
         $this->assertSame(
             $this->skillSetDomain->getSkillsToDisplay(),
-            ['skill1', 'skill2', 'skill3', 'skill4']
+            ['skill1', 'skill5']
         );
     }
 
