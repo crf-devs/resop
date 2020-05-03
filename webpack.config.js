@@ -1,5 +1,5 @@
 var Encore = require('@symfony/webpack-encore');
-
+var path = require('path');
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
 if (!Encore.isRuntimeEnvironmentConfigured()) {
@@ -76,6 +76,10 @@ Encore
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
+
+    // This alias fixes a bug in the daterangepicker import
+    // See https://github.com/Eonasdan/bootstrap-datetimepicker/issues/1319
+    .addAliases({'jquery': path.join(__dirname, 'node_modules/jquery/src/jquery')})
 ;
 
 module.exports = Encore.getWebpackConfig();
