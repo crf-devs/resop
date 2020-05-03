@@ -1,5 +1,5 @@
 imports:
-    - { resource: ../dev/* }
+    - { resource: ../test/* }
 
 framework:
     session:

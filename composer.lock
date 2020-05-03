@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5f5548ddc942aae2ce5496e0508c428",
+    "content-hash": "2fbc248970a6d0fbc48057b4dbdbda27",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7870,16 +7870,16 @@
         },
         {
             "name": "guikingone/panther-extension",
-            "version": "0.3.0",
+            "version": "0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Guikingone/panther-extension.git",
-                "reference": "bdb5cdcaa95459969e7c9b0a9315ea01b740228b"
+                "reference": "4551f965fa80e04333e1be4d08a9b62c4f322889"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guikingone/panther-extension/zipball/bdb5cdcaa95459969e7c9b0a9315ea01b740228b",
-                "reference": "bdb5cdcaa95459969e7c9b0a9315ea01b740228b",
+                "url": "https://api.github.com/repos/Guikingone/panther-extension/zipball/4551f965fa80e04333e1be4d08a9b62c4f322889",
+                "reference": "4551f965fa80e04333e1be4d08a9b62c4f322889",
                 "shasum": ""
             },
             "require": {
@@ -7926,7 +7926,7 @@
                 "extension",
                 "web"
             ],
-            "time": "2020-04-29T12:31:06+00:00"
+            "time": "2020-05-01T18:49:53+00:00"
         },
         {
             "name": "hautelook/alice-bundle",

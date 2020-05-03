@@ -9,6 +9,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Faker\Provider\Uuid;
 use PantherExtension\Driver\PantherDriver;
 
 final class TraversingContext extends RawMinkContext
@@ -42,8 +43,9 @@ final class TraversingContext extends RawMinkContext
 
     /**
      * @When I wait for the element :modal to load
+     * @Then the :selector should be visible
      */
-    public function iWaitForElementVisibility(string $cssElementSelector): void
+    public function iWaitForElementVisibility(string $selector): void
     {
         $driver = $this->getSession()->getDriver();
 
@@ -55,7 +57,34 @@ final class TraversingContext extends RawMinkContext
          * related to: https://github.com/Guikingone/panther-extension/issues/7
          * @phpstan-ignore-next-line
          */
-        $driver->wait(5, WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector($cssElementSelector)));
+        $driver->wait(5, WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector($selector)));
+    }
+
+    /**
+     * @Then the :selector should not be visible
+     */
+    public function iWaitForElementInvisibility(string $selector): void
+    {
+        $driver = $this->getSession()->getDriver();
+
+        if (!$driver instanceof PantherDriver) {
+            throw new DriverException('PantherDriver is mandatory for this context. You should use "@javascript" on your scenario.');
+        }
+
+        $driver->wait(5, WebDriverExpectedCondition::not(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector($selector))));
+    }
+
+    /**
+     * @When I click on :selector
+     */
+    public function IClickOnElement(string $selector): void
+    {
+        $element = $this->getSession()->getPage()->find('css', $selector);
+        if (null === $element) {
+            throw new ElementNotFoundException($this->getSession()->getDriver(), null, $selector);
+        }
+
+        $element->press();
     }
 
     /**
@@ -64,6 +93,15 @@ final class TraversingContext extends RawMinkContext
      */
     public function iTakeAScreenshot(string $name = null): void
     {
-        $this->saveScreenshot($name ? "$name.png" : null, sprintf('%s/var', $this->projectDir));
+        $path = sprintf('%s/var/screenshots', $this->projectDir);
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        if (!$name) {
+            $name = Uuid::uuid();
+        }
+
+        $this->saveScreenshot("$name.png", $path);
     }
 }

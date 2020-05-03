@@ -28,7 +28,7 @@
     {% if app.user.isParent() %}
         <hr>
         <p><a class="btn btn-info" href="{{ path('planning', {minimumAvailableHours: 1}) }}" role="button">{{ 'organization.showAllUsersAvailability' | trans }}</a></p>
-        <p><a class="btn btn-info" href="{{ path('app_organisation_forecast') }}" role="button">{{ 'organization.forecast' | trans }}</a></p>
+        <p><a class="btn btn-info" href="{{ path('app_organization_forecast') }}" role="button">{{ 'organization.forecast' | trans }}</a></p>
         <p><a class="btn btn-info" href="{{ path('app_organization_mission_index') }}" role="button">{{ 'organization.editMission' | trans }}</a></p>
 
         <hr>

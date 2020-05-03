@@ -51,8 +51,8 @@ trait AvailabilityQueryTrait
         $start = DatePeriodCalculator::roundToDailyInterval($start, $slotInterval);
         $end = DatePeriodCalculator::roundToDailyInterval($end, $slotInterval, false);
 
-        $interval = $start->diff($end);
-        $numberOfInterval = (int) (DatePeriodCalculator::intervalToSeconds($interval) / DatePeriodCalculator::intervalToSeconds($slotInterval));
+        $interval = DatePeriodCalculator::intervalToSeconds($start->diff($end));
+        $numberOfInterval = (int) ($interval / DatePeriodCalculator::intervalToSeconds($slotInterval));
 
         if (!empty($minimalAvailableHours)) { // can be null or 0
             $minimalAvailableIntervals = ceil($minimalAvailableHours * 3600 / DatePeriodCalculator::intervalToSeconds($slotInterval));
