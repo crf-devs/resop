@@ -7,15 +7,13 @@ namespace App\Form\Type;
 use App\Entity\MissionType;
 use App\Entity\Organization;
 use App\Repository\MissionTypeRepository;
-use App\Repository\OrganizationRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PlanningForecastType extends AbstractType
+class MissionsSearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -25,34 +23,19 @@ class PlanningForecastType extends AbstractType
         }
 
         $builder
-            ->add('availableFrom', DateTimeType::class, [
+            ->add('from', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
-                'label' => 'organization.planning.showAssetsFrom',
+                'label' => 'organization.mission.showFrom',
                 'with_minutes' => false,
-                'required' => true,
+                'required' => false,
             ])
-            ->add('availableTo', DateTimeType::class, [
+            ->add('to', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
                 'label' => 'calendar.to',
                 'with_minutes' => false,
-                'required' => true,
-            ])
-            ->add('organizations', EntityType::class, [
-                'label' => 'organization.pluralLabel',
-                'class' => Organization::class,
-                'group_by' => 'parentName',
-                'query_builder' => static function (OrganizationRepository $repository) use ($organization) {
-                    return $repository->findByParentQueryBuilder($organization);
-                },
-                'multiple' => true,
-                'choice_label' => 'name',
                 'required' => false,
-                'attr' => [
-                    'class' => 'selectpicker',
-                    'data-actions-box' => 'true',
-                ],
             ])
             ->add('missionTypes', EntityType::class, [
                 'label' => 'organization.missionType.mainTitle',
@@ -65,20 +48,7 @@ class PlanningForecastType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'class' => 'selectpicker',
-                    'data-actions-box' => 'true',
                 ],
-            ])
-            ->add('onlyFullyEquiped', CheckboxType::class, [
-                'label' => 'organization.planning.uniformOnly',
-                'required' => false,
-            ])
-            ->add('displayAvailableWithBooked', CheckboxType::class, [
-                'label' => 'organization.planning.countAlreadyBooked',
-                'required' => false,
-            ])
-            ->add('displayVulnerables', CheckboxType::class, [
-                'label' => 'organization.planning.countVulnerableUsers',
-                'required' => false,
             ]);
     }
 

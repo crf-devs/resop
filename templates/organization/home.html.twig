@@ -30,6 +30,16 @@
         <p><a class="btn btn-info" href="{{ path('planning', {minimumAvailableHours: 1}) }}" role="button">{{ 'organization.showAllUsersAvailability' | trans }}</a></p>
         <p><a class="btn btn-info" href="{{ path('app_organization_forecast') }}" role="button">{{ 'organization.forecast' | trans }}</a></p>
         <p><a class="btn btn-info" href="{{ path('app_organization_mission_index') }}" role="button">{{ 'organization.editMission' | trans }}</a></p>
+        <p><a class="btn btn-info" href="{{ path('app_organization_forecast') }}" role="button">{{ 'organization.forecast' | trans }}</a></p>
+        <p><a class="btn btn-info" href="{{ path('app_organization_mission_index') }}" role="button">{{ 'organization.mission.title' | trans }}</a></p>
+        <p>
+            <a class="btn btn-info" href="{{ path('app_organization_mission_full_list', {
+                'from': 'today' | date('Y-m-d\\T00:00:00'),
+                'to': 'today' | date_modify('+1 week') | date('Y-m-d\\T00:00:00')
+            }) }}" role="button">
+                {{ 'organization.mission.listFull' | trans }}
+            </a>
+        </p>
 
         <hr>
         <p><a href="{{ path('app_organization_list') }}" class="btn btn-info">{{ 'organization.editAll' | trans }}</a></p>

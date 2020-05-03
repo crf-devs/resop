@@ -1,0 +1,28 @@
+<div class="search shadow-sm p-3 mt-3 mb-5 bg-white rounded">
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <input type="text" id="fromTo" class="form-control" readonly placeholder="{{ 'organization.mission.showFrom'|trans }}">
+            <div class="d-none">
+                {{ form_row(form.from) }}
+                {{ form_row(form.to) }}
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="row">
+                {{ form_label(form.missionTypes, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
+                <div class="col-12 col-md-9">
+                    {{ form_widget(form.missionTypes) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-md-2 align-content-end">
+        <div class="col-12">
+            <button class="btn btn-outline-primary" type="submit">{{ 'action.search'|trans }}</button>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+</div>

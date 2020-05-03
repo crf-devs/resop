@@ -6,7 +6,8 @@ action:
   edit: Modifier
   loading: Chargement...
   login: Connexion
-  search: Rechercher "%query%"
+  search: Rechercher
+  searchQuery: Rechercher "%query%"
   loginSubmit: Je me connecte
   logout: Déconnexion
   rememberMe: Se souvenir de moi
@@ -22,7 +23,7 @@ calendar:
   displayedPeriod: Période affichée
   hours: heures
   period: du %from% au %to%
-  hoursPeriod: de %from% à %to%
+  hoursPeriod: "%from% à %to%"
   planning: Planning
   showAvailableOnly: Afficher seulement si disponible sur la période
   sortByDayAvailabilities: Trier par nombre de disponibilités sur le jour
@@ -66,6 +67,7 @@ nav:
   welcome: Bienvenue
 organization:
   add: Ajouter une structure
+  itemTitle: Structure
   assets: Véhicules
   asset:
     add: Ajouter un nouveau véhicule
@@ -101,13 +103,21 @@ organization:
   mission:
     title: Mission
     listTitle: Missions
+    listTitleLink: Afficher les missions
     addNew: Ajouter une nouvelle mission
     confirmDelete: Vous êtes sur le point de supprimer la mission
     deleteSuccessMessage: La mission a été supprimée avec succès
     editFormTitle: Modifier une mission
     name: Identifiant de la mission 
     comment: Commentaires 
-    duration: Date et durée 
+    duration: Date et durée
+    dates: Date
+    hours: Horaires
+    showFrom: Choisir une période
+    listFullLink: Afficher les équipages
+    listFull: Equipages
+    itemFull: Equipage
+    listFullChooseDate: Choisissez une période pour afficher les équipages.
   missionType:
     addNew: Ajouter un nouveau type de mission
     assetTypes:
@@ -156,6 +166,7 @@ organization:
     isNotVulnerable: ne fait PAS partie des personnes vulnérables
     occupation: Fonction de cadre au sein de la structure d'emploi
     skillset: Compétences Croix-Rouge
+  userTitle: Bénévole
   users: Bénévoles
   asset_type:
     main_title: Types de véhicule

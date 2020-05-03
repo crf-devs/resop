@@ -1,12 +1,30 @@
 {% extends 'organization/base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('missions') }}
+{% endblock %}
+
 {% block title %}{{ 'organization.mission.listTitle' | trans }}{% endblock %}
 
 {% block body %}
     <h1>{{ 'organization.mission.listTitle' | trans }}</h1>
 
-    <div class="row">
-        <div class="col-12 text-right mb-2">
+    {% include 'organization/mission/_search_type.html.twig' %}
+
+    {% set searchOptions = {
+        'from': filters.from | default(false) ? filters.from | date('Y-m-d\\T00:00:00') : null,
+        'to': filters.to | default(false) ? filters.to | date('Y-m-d\\T00:00:00') : null,
+        'missionTypes': filters.missionTypes | default({}) | map(type => type.id),
+    } | filter(val => val) %}
+
+    <div class="row mb-2">
+        <div class="col-lg-6">
+            <a href="{{ path('app_organization_mission_full_list', searchOptions) }}">
+                {{ 'organization.mission.listFullLink' | trans }}
+            </a>
+        </div>
+        <div class="col-lg-6 text-right">
             <a class="btn btn-success" href="{{ path('app_organization_mission_new') }}" role="button">{{ 'organization.mission.addNew' | trans }}</a>
         </div>
     </div>

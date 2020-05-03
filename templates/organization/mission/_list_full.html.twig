@@ -1,0 +1,74 @@
+{% import 'organization/mission/_list.html.twig' as missionMacro %}
+
+<div class="table-responsive">
+    <table class="table table-bordered table-sm">
+        <thead class="thead-light">
+        <tr>
+            <th>{{ 'organization.mission.title' | trans }}</th>
+            <th>{{ 'organization.mission.dates' | trans }}</th>
+            <th>{{ 'organization.mission.hours' | trans }}</th>
+            <th>{{ 'organization.itemTitle' | trans }}</th>
+            <th>{{ 'organization.mission.itemFull' | trans }}</th>
+            <th>{{ 'user.skills' | trans }}</th>
+            <th>{{ 'user.email' | trans }}</th>
+            <th>{{ 'common.phoneNumberShort' | trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for mission in missions %}
+            <tr class="table-primary">
+                <td>
+                    <span class="badge badge-secondary">{{ mission.type.name | default('') }}</span>
+                    <a href="{{ path('app_organization_mission_show', {'id': mission.id}) }}">{{ mission.name }}</a>
+                </td>
+                <td>
+                    {{ missionMacro.missionDates(mission, 'date') }}
+                </td>
+                <td>
+                    {{ missionMacro.missionDates(mission, 'time') }}
+                </td>
+                <td colspan="5"></td>
+            </tr>
+            {% if mission.comment %}
+                <tr>
+                    <td colspan="8">{{ mission.comment | nl2br }}</td>
+                </tr>
+            {% endif %}
+            {% for user in mission.users %}
+                <tr>
+                    <td colspan="3"></td>
+                    <td>{{ user.organization.name }}</td>
+                    <td>{{ user.fullName }}</td>
+                    <td>
+                        {% for skill in getDisplayableSkillsInPlanning(user) -%}
+                            {{ skill|skillBadge }}
+                        {%- endfor %}
+                    </td>
+                    <td>
+                        <a href="mailto:{{ user.emailAddress }}" class="small">{{ user.emailAddress }}</a>
+                    </td>
+                    <td>
+                        <a href="tel:{{ user.phoneNumber|phone_number_format('E164') }}" class="small">
+                            {{ user.phoneNumber|phone_number_format('NATIONAL') }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for asset in mission.assets %}
+                <tr class="text-primary">
+                    <td colspan="3"></td>
+                    <td>{{ asset.organization.name }}</td>
+                    <td>{{ asset }}</td>
+                    <td colspan="3"></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4">
+                    <p class="alert alert-warning">{{ 'organization.planning.noResourceAvailable'|trans }}</p>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -1,16 +1,24 @@
-{% macro missionDates(mission) %}
+{% macro missionDates(mission, only = 'both') %}
     {% if mission.startTime and mission.endTime %}
         {% if mission.startTime.format('Y-m-d') == mission.endTime.format('Y-m-d') %}
-            {{ mission.startTime | format_date('full') }}
-            <br>
-            {{ 'calendar.hoursPeriod' | trans({
-                '%from%':  mission.startTime | format_time('short'),
-                '%to%':  mission.endTime | format_time('short'),
-            }) }}
+            {% if only != 'time' %}
+                {{ mission.startTime | format_date('full') }}
+            {% endif %}
+            {% if only == 'both' %}
+                <br>
+            {% endif %}
+            {% if only != 'date' %}
+                {{ 'calendar.hoursPeriod' | trans({
+                    '%from%':  mission.startTime | format_time('short'),
+                    '%to%':  mission.endTime | format_time('short'),
+                }) }}
+            {% endif %}
         {% else %}
-            {{ mission.startTime | format_datetime(date_format='full', time_format='short') }}
-            <br>
-            {{ mission.endTime | format_datetime(date_format='full', time_format='short') }}
+            {% if only != 'time' %}
+                {{ mission.startTime | format_datetime(date_format='full', time_format='short') }}
+                <br>
+                {{ mission.endTime | format_datetime(date_format='full', time_format='short') }}
+            {% endif %}
         {% endif %}
     {% endif %}
 {% endmacro %}
@@ -39,13 +47,13 @@
                 <td>{{ mission.users | length }}</td>
                 <td>{{ mission.assets | length }}</td>
                 <td>{{ mission.comment | truncate }}</td>
-                    <td>
-                        <a class="btn btn-primary" href="{{ path('app_organization_mission_show', {'id': mission.id}) }}">{{ 'action.show' | trans }}</a>
-                        {% if showActions is not defined or showActions %}
-                            <a class="btn btn-secondary" href="{{ path('app_organization_mission_edit', {'id': mission.id}) }}">{{ 'action.edit' | trans }}</a>
-                            <a class="btn btn-outline-danger trigger-delete" data-display-name="{{ mission.name }}" href="#" data-href="{{ path('app_organization_mission_delete', { id: mission.id }) }}">{{ 'action.delete' | trans }}</a>
-                        {% endif %}
-                    </td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_organization_mission_show', {'id': mission.id}) }}">{{ 'action.show' | trans }}</a>
+                    {% if showActions is not defined or showActions %}
+                        <a class="btn btn-secondary" href="{{ path('app_organization_mission_edit', {'id': mission.id}) }}">{{ 'action.edit' | trans }}</a>
+                        <a class="btn btn-outline-danger trigger-delete" data-display-name="{{ mission.name }}" href="#" data-href="{{ path('app_organization_mission_delete', { id: mission.id }) }}">{{ 'action.delete' | trans }}</a>
+                    {% endif %}
+                </td>
             </tr>
         {% else %}
             <tr>
