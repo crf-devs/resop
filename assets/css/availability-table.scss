@@ -75,3 +75,15 @@ table.availability-table {
     color: white;
   }
 }
+
+@media screen and (min-width: 1001px) {
+  table.availability-table {
+    position: relative;
+    z-index: 0;
+
+    thead {
+      position: sticky;
+      top: 90px;
+    }
+  }
+}

@@ -169,3 +169,15 @@ $tableBoxSize: 40px;
     }
   }
 }
+
+@media screen and (min-width: 1001px) {
+  .planning-actions-container {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    width: 100vw;
+    max-width: 100vw;
+    background-color: white;
+    padding: 10px;
+  }
+}
