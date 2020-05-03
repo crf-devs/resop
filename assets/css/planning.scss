@@ -2,12 +2,17 @@
 
 $tableBoxSize: 40px;
 
-.planning-actions-container {
-  margin-bottom: 20px;
+.planning-actions-container-wrapper {
+  width: 100vw;
+  background-color: white;
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: white;
+}
+
+.planning-actions-container {
+  margin-bottom: 20px;
+  padding: 10px;
 
   .btn:hover {
     opacity: 0.8;
@@ -40,7 +45,7 @@ $tableBoxSize: 40px;
         position: sticky;
         white-space: nowrap;
         z-index: 99;
-        top: 0;
+        top: 90px;
 
         &[data-day] {
           cursor: pointer;
@@ -81,7 +86,7 @@ $tableBoxSize: 40px;
 
       tr.hours {
         th {
-          top: 30px;
+          top: 120px;
         }
       }
     }
@@ -156,6 +161,10 @@ $tableBoxSize: 40px;
 }
 
 @media screen and (max-width: 1000px) {
+  .planning-actions-container-wrapper {
+    position: static;
+  }
+
   .planning-actions-container {
     .display-more-container {
       position: initial;
@@ -172,12 +181,18 @@ $tableBoxSize: 40px;
       th {
         position: relative !important;
       }
-    }
-  }
-}
 
-@media screen and (max-width: 1000px) {
-  .planning-actions-container {
-    position: static;
+      thead {
+        th {
+          top: 0;
+        }
+
+        tr.hours {
+          th {
+            top: 0;
+          }
+        }
+      }
+    }
   }
 }
