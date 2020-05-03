@@ -4,6 +4,10 @@ $tableBoxSize: 40px;
 
 .planning-actions-container {
   margin-bottom: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: white;
 
   .btn:hover {
     opacity: 0.8;
@@ -26,6 +30,8 @@ $tableBoxSize: 40px;
   .planning {
     margin-bottom: 40px;
     width: auto;
+    position: relative;
+    z-index: 0;
 
     thead {
       th {
@@ -170,14 +176,8 @@ $tableBoxSize: 40px;
   }
 }
 
-@media screen and (min-width: 1001px) {
+@media screen and (max-width: 1000px) {
   .planning-actions-container {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    width: 100vw;
-    max-width: 100vw;
-    background-color: white;
-    padding: 10px;
+    position: static;
   }
 }
