@@ -72,4 +72,10 @@ $(document).ready(function () {
   // The table is hidden by default for performances reason
   $planning.css('display', 'table');
   $('#loader').hide();
+
+  const actionContainer = document.querySelector('.planning-actions-container-wrapper');
+
+  window.addEventListener('scroll', () => {
+    actionContainer.style.transform = `translate3d(${document.scrollingElement.scrollLeft}px, 0, 0)`;
+  });
 });
