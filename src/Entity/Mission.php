@@ -66,7 +66,7 @@ class Mission
     /**
      * @var User[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\User")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="missions")
      * @Groups("mission:ajax")
      */
     public Collection $users;

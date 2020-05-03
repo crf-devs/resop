@@ -132,6 +132,11 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
      */
     private iterable $availabilities = [];
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Mission", mappedBy="users")
+     */
+    public iterable $missions = [];
+
     public static function bootstrap(string $identifier = null): self
     {
         $user = new self();
