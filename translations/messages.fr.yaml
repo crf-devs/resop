@@ -22,6 +22,7 @@ calendar:
   displayedPeriod: Période affichée
   hours: heures
   period: du %from% au %to%
+  hoursPeriod: de %from% à %to%
   planning: Planning
   showAvailableOnly: Afficher seulement si disponible sur la période
   sortByDayAvailabilities: Trier par nombre de disponibilités sur le jour
@@ -105,6 +106,7 @@ organization:
     deleteSuccessMessage: La mission a été supprimée avec succès
     editFormTitle: Modifier une mission
     name: Identifiant de la mission 
+    comment: Commentaires 
     duration: Date et durée 
   missionType:
     addNew: Ajouter un nouveau type de mission

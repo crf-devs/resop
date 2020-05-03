@@ -15,6 +15,7 @@ use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -42,6 +43,10 @@ class MissionType extends AbstractType
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
                 'label' => 'common.start',
+                'required' => false,
+            ])
+            ->add('comment', TextareaType::class, [
+                'label' => 'organization.mission.comment',
                 'required' => false,
             ])
             ->add('endTime', DateTimeType::class, [

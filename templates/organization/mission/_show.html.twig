@@ -15,6 +15,11 @@
     <p>{{ 'common.end' | trans }}: <strong>{{ mission.endTime | format_datetime(date_format='full', time_format='short') }}</strong></p>
 {% endif %}
 
+{% if mission.comment %}
+    <h3 class="mt-4">{{ 'organization.mission.comment' | trans }}</h3>
+    {{ mission.comment | nl2br }}
+{% endif %}
+
 <h3 class="mt-4">{{ 'organization.users' | trans }}</h3>
 {{ include('organization/user/_list.html.twig', {users: mission.users | sortBySkills, organization: mission.organization, showActions: false}) }}
 
