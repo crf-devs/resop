@@ -59,6 +59,11 @@ class Mission
     public ?\DateTimeImmutable $endTime = null;
 
     /**
+     * @ORM\Column(type="text", options={"default": ""})
+     */
+    public string $comment = '';
+
+    /**
      * @var User[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\User")

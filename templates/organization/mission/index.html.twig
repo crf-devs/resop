@@ -2,6 +2,23 @@
 
 {% block title %}{{ 'organization.mission.listTitle' | trans }}{% endblock %}
 
+{% macro missionDates(mission) %}
+    {% if mission.startTime and mission.endTime %}
+        {% if mission.startTime.format('Y-m-d') == mission.endTime.format('Y-m-d') %}
+            {{ mission.startTime | format_date('full') }}
+            <br>
+            {{ 'calendar.hoursPeriod' | trans({
+                '%from%':  mission.startTime | format_time('short'),
+                '%to%':  mission.endTime | format_time('short'),
+            }) }}
+        {% else %}
+            {{ mission.startTime | format_datetime(date_format='full', time_format='short') }}
+            <br>
+            {{ mission.endTime | format_datetime(date_format='full', time_format='short') }}
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
 {% block body %}
     <h1>{{ 'organization.mission.listTitle' | trans }}</h1>
 
@@ -20,6 +37,7 @@
                 <th>{{ 'organization.mission.duration' | trans }}</th>
                 <th>{{ 'organization.users' | trans }}</th>
                 <th>{{ 'organization.assets' | trans }}</th>
+                <th>{{ 'organization.mission.comment' | trans }}</th>
                 <th>{{ 'common.actions' | trans }}</th>
             </tr>
             </thead>
@@ -29,11 +47,11 @@
                     <td><span class="badge badge-secondary">{{ mission.type.name | default('') }}</span></td>
                     <td>{{ mission.name }}</td>
                     <td>
-                        {{ mission.startTime ? mission.startTime | format_datetime(date_format='full', time_format='short') : '' }}<br>
-                        {{ mission.endTime ? mission.endTime | format_datetime(date_format='full', time_format='short') : '' }}
+                        {{ _self.missionDates(mission) }}
                     </td>
                     <td>{{ mission.users | length }}</td>
                     <td>{{ mission.assets | length }}</td>
+                    <td>{{ mission.comment | truncate }}</td>
                     <td>
                         <a class="btn btn-primary" href="{{ path('app_organization_mission_show', {'id': mission.id}) }}">{{ 'action.show' | trans }}</a>
                         <a class="btn btn-secondary" href="{{ path('app_organization_mission_edit', {'id': mission.id}) }}">{{ 'action.edit' | trans }}</a>
