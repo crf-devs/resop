@@ -1,0 +1,15 @@
+App\Entity\MissionType:
+  MissionType.DT75.{1..2}:
+    id: 75<current()>
+    name: Mission type DT75 <current()>
+    organization: '@Organization.DT75'
+    minimumAvailableHours: 2
+    userSkillsRequirement: [{"skill":"psc1","number":3},{"skill":"infirmier","number":2}]
+    assetTypesRequirement: <randomAssetTypeRequirement(@AssetType.DT75.VL, @AssetType.DT75.VPSP)>
+  MissionType.DT77.{1..2}:
+    id: 77<current()>
+    name: Mission type DT77 <current()>
+    organization: '@Organization.DT77'
+    minimumAvailableHours: 4
+    userSkillsRequirement: <randomSkillRequirement()>
+    assetTypesRequirement: <randomAssetTypeRequirement(@AssetType.DT77.VL, @AssetType.DT77.VPSP)>

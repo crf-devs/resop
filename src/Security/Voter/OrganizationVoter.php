@@ -11,10 +11,12 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class OrganizationVoter extends Voter
 {
     public const CAN_MANAGE = 'CAN_MANAGE_ORGANIZATION';
+    public const CAN_CREATE = 'CAN_CREATE_ORGANIZATION';
 
     protected function supports($attribute, $subject): bool
     {
-        return self::CAN_MANAGE === $attribute && $subject instanceof Organization;
+        return self::CAN_MANAGE === $attribute && $subject instanceof Organization
+            || self::CAN_CREATE === $attribute && null === $subject;
     }
 
     /**
@@ -29,10 +31,14 @@ class OrganizationVoter extends Voter
             return false;
         }
 
-        return $this->canAccessOrganization($loggedOrganization, $subject);
+        if (self::CAN_CREATE === $attribute) {
+            return $loggedOrganization->isParent();
+        }
+
+        return $this->canManageOrganization($loggedOrganization, $subject);
     }
 
-    private function canAccessOrganization(Organization $loggedOrganization, Organization $organization): bool
+    private function canManageOrganization(Organization $loggedOrganization, Organization $organization): bool
     {
         return $loggedOrganization === $organization || $loggedOrganization === $organization->parent;
     }

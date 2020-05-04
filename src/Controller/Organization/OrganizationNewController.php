@@ -14,24 +14,28 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{organization<\d+>}/edit", name="app_organization_edit", methods={"GET", "POST"})
- * @IsGranted(OrganizationVoter::CAN_MANAGE, subject="organization")
+ * @Route("/new", name="app_organization_new", methods={"GET", "POST"})
+ * @IsGranted(OrganizationVoter::CAN_CREATE)
  */
-class OrganizationEditController extends AbstractController
+class OrganizationNewController extends AbstractController
 {
-    public function __invoke(Request $request, Organization $organization): Response
+    public function __invoke(Request $request): Response
     {
+        /** @var Organization $currentOrganization */
+        $currentOrganization = $this->getUser();
+
+        $organization = new Organization();
+        $organization->parent = $currentOrganization;
+
         $form = $this->createForm(OrganizationType::class, $organization);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $flashMessage = 'La structure a été mise à jour avec succès.';
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($organization);
             $entityManager->flush();
 
-            $this->addFlash('success', $flashMessage);
+            $this->addFlash('success', 'La structure a été ajoutée avec succès.');
 
             return $this->redirectToRoute('app_organization_list');
         }

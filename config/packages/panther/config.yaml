@@ -1,0 +1,8 @@
+imports:
+    - { resource: ../test/* }
+
+framework:
+    session:
+        storage_id: session.storage.native
+        handler_id: 'file://%kernel.project_dir%/var/sessions'
+    profiler: { collect: false }

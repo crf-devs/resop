@@ -5,32 +5,39 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use Behat\Behat\Context\Context;
-use Fidry\AliceDataFixtures\LoaderInterface;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
+use Doctrine\ORM\EntityManagerInterface;
+use Hautelook\AliceBundle\LoaderInterface as AliceBundleLoaderInterface;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 final class FixturesContext implements Context
 {
-    private LoaderInterface $loader;
+    private AliceBundleLoaderInterface $aliceFixturesLoader;
+    private KernelInterface $kernel;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(LoaderInterface $loader)
+    public function __construct(AliceBundleLoaderInterface $aliceFixturesLoader, KernelInterface $kernel, EntityManagerInterface $entityManager)
     {
-        $this->loader = $loader;
+        $this->aliceFixturesLoader = $aliceFixturesLoader;
+        $this->kernel = $kernel;
+        $this->entityManager = $entityManager;
     }
 
     /**
-     * @BeforeScenario @LoadFixtures
+     * @AfterScenario @javascript
      */
     public function loadFixtures(): void
     {
-        $fixtures = Finder::create()
-            ->in(__DIR__.'/../../fixtures/')
-            ->name(['*.yaml', '*.yml'])
-            ->files()
-            ->getIterator();
-
-        $this->loader->load(array_map(function (SplFileInfo $file) {
-            return $file->getPathname();
-        }, iterator_to_array($fixtures)));
+        StaticDriver::beginTransaction();
+        $this->aliceFixturesLoader->load(
+            new Application($this->kernel),
+            $this->entityManager,
+            [],
+            'panther',
+            false,
+            false
+        );
+        StaticDriver::commit();
     }
 }

@@ -1,0 +1,27 @@
+App\Entity\CommissionableAssetAvailability:
+  # VPSP 75012 is locked tuesday next week from 6:00 to 9:59
+  CommissionableAssetAvailability.john_doe.next-week.tuesday.{6..8,2}:
+    __factory:
+      '@App\DataFixtures\Factory\AvailabilitableResourceFactory::create':
+        - '<{app.slot_interval}>'
+        - '@Asset.UL-01-02.VPSP.2'
+        - 'tuesday next week <current()>:00'
+        - 'locked'
+
+  # VPSP 75012 is available tuesday next week from 10:00 to 13:59
+  CommissionableAssetAvailability.john_doe.next-week.tuesday.{10..12,2}:
+    __factory:
+      '@App\DataFixtures\Factory\AvailabilitableResourceFactory::create':
+        - '<{app.slot_interval}>'
+        - '@Asset.UL-01-02.VPSP.2'
+        - 'tuesday next week <current()>:00'
+        - 'available'
+
+  # VPSP 75012 is booked tuesday next week from 14:00 to 17:59
+  CommissionableAssetAvailability.john_doe.next-week.tuesday.{14..16,2}:
+    __factory:
+      '@App\DataFixtures\Factory\AvailabilitableResourceFactory::create':
+        - '<{app.slot_interval}>'
+        - '@Asset.UL-01-02.VPSP.2'
+        - 'tuesday next week <current()>:00'
+        - 'booked'

@@ -16,7 +16,7 @@ function addNewWidget($list) {
 }
 
 function addWidgetDeleteLink($item) {
-  var $removeFormButton = $('<button type="button" class="btn btn-outline-danger float-right">Supprimer</button>');
+  var $removeFormButton = $('<button type="button" id="delete_' + $item.find('> div').attr('id') + '" class="btn btn-outline-danger float-right">Supprimer</button>');
   $item.append($removeFormButton);
 
   $removeFormButton.on('click', function () {

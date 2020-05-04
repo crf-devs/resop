@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5f5548ddc942aae2ce5496e0508c428",
+    "content-hash": "2fbc248970a6d0fbc48057b4dbdbda27",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7870,16 +7870,16 @@
         },
         {
             "name": "guikingone/panther-extension",
-            "version": "0.3.0",
+            "version": "0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Guikingone/panther-extension.git",
-                "reference": "bdb5cdcaa95459969e7c9b0a9315ea01b740228b"
+                "reference": "4551f965fa80e04333e1be4d08a9b62c4f322889"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guikingone/panther-extension/zipball/bdb5cdcaa95459969e7c9b0a9315ea01b740228b",
-                "reference": "bdb5cdcaa95459969e7c9b0a9315ea01b740228b",
+                "url": "https://api.github.com/repos/Guikingone/panther-extension/zipball/4551f965fa80e04333e1be4d08a9b62c4f322889",
+                "reference": "4551f965fa80e04333e1be4d08a9b62c4f322889",
                 "shasum": ""
             },
             "require": {
@@ -7926,7 +7926,7 @@
                 "extension",
                 "web"
             ],
-            "time": "2020-04-29T12:31:06+00:00"
+            "time": "2020-05-01T18:49:53+00:00"
         },
         {
             "name": "hautelook/alice-bundle",
@@ -8502,20 +8502,23 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.18",
+            "version": "0.12.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "1ce27fe29c8660a27926127d350d53d80c4d4286"
+                "reference": "054f6d76b12ba9a6c13a5a8d5fcdf51219615f4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1ce27fe29c8660a27926127d350d53d80c4d4286",
-                "reference": "1ce27fe29c8660a27926127d350d53d80c4d4286",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/054f6d76b12ba9a6c13a5a8d5fcdf51219615f4d",
+                "reference": "054f6d76b12ba9a6c13a5a8d5fcdf51219615f4d",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
             },
             "bin": [
                 "phpstan",
@@ -8551,7 +8554,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-22T16:51:47+00:00"
+            "time": "2020-04-19T20:35:10+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
@@ -8619,16 +8622,16 @@
         },
         {
             "name": "phpstan/phpstan-symfony",
-            "version": "0.12.4",
+            "version": "0.12.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-symfony.git",
-                "reference": "5e4b7ba02f2235271a069deeb88340a210d6c87c"
+                "reference": "ba69dcd8e57c1a8580bf190e0554bea0fc37fe2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/5e4b7ba02f2235271a069deeb88340a210d6c87c",
-                "reference": "5e4b7ba02f2235271a069deeb88340a210d6c87c",
+                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/ba69dcd8e57c1a8580bf190e0554bea0fc37fe2f",
+                "reference": "ba69dcd8e57c1a8580bf190e0554bea0fc37fe2f",
                 "shasum": ""
             },
             "require": {
@@ -8685,7 +8688,7 @@
                 }
             ],
             "description": "Symfony Framework extensions and rules for PHPStan",
-            "time": "2020-01-22T10:19:41+00:00"
+            "time": "2020-04-15T20:26:41+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

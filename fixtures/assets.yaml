@@ -1,33 +1,41 @@
 App\Entity\CommissionableAsset:
   Asset.DT75.VPSP.{2..4,2}:
+    id: 7599<current()>
     organization: '@Organization.DT75'
     assetType: '@AssetType.DT75.VPSP'
     name: '7599<current()>'
   Asset.DT75.VL.{6..8,2}:
+    id: 7599<current()>
     organization: '@Organization.DT75'
     assetType: '@AssetType.DT75.VL'
     name: '7599<current()>'
   Asset.DT77.VPSP.{2..4,2}:
+    id: 7799<current()>
     organization: '@Organization.DT77'
     assetType: '@AssetType.DT77.VPSP'
     name: '7799<current()>'
   Asset.DT77.VL.{6..8,2}:
+    id: 7799<current()>
     organization: '@Organization.DT77'
     assetType: '@AssetType.DT77.VL'
     name: '7799<current()>'
   Asset.UL-01-02.VPSP.{2..4,2}:
+    id: 7501<current()>
     organization: '@Organization.UL-01-02'
     assetType: '@AssetType.DT75.VPSP'
     name: '7501<current()>'
   Asset.UL-01-02.VL.{6..8,2}:
+    id: 7501<current()>
     organization: '@Organization.UL-01-02'
     assetType: '@AssetType.DT75.VL'
     name: '7501<current()>'
   Asset.UL-DE-BRIE-ET-CHANTEREINE.VPSP.{2..4,2}:
+    id: 7710<current()>
     organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
     assetType: '@AssetType.DT77.VPSP'
     name: '7710<current()>'
   Asset.UL-DE-BRIE-ET-CHANTEREINE.VL.{6..8,2}:
+    id: 7710<current()>
     organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
     assetType: '@AssetType.DT77.VL'
     name: '7710<current()>'
