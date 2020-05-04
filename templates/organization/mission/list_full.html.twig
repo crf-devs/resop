@@ -1,0 +1,44 @@
+{% extends 'organization/base.html.twig' %}
+{% import 'organization/mission/_list.html.twig' as missionMacro %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('missions') }}
+{% endblock %}
+
+{% block title %}{{ 'organization.mission.listFull' | trans }}{% endblock %}
+
+{% block container %}
+    <div class="container pt-5">
+
+        <h1>{{ 'organization.mission.listFull' | trans }}</h1>
+
+        {% include 'organization/mission/_search_type.html.twig' %}
+
+        {% set searchOptions = {
+            'from': filters.from | default(false) ? filters.from | date('Y-m-d\\T00:00:00') : null,
+            'to': filters.to | default(false) ? filters.to | date('Y-m-d\\T00:00:00') : null,
+            'missionTypes': filters.missionTypes | default({}) | map(type => type.id),
+        } | filter(val => val) %}
+
+        <div class="row mb-2">
+            <div class="col-lg-6">
+                <a href="{{ path('app_organization_mission_index', searchOptions) }}">
+                    {{ 'organization.mission.listTitleLink' | trans }}
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    {% if filters.from is defined and filters.from is not null %}
+        <div class="container-fluid">
+            {% include 'organization/mission/_list_full.html.twig' %}
+        </div>
+    {% else %}
+        <div class="container">
+            <p class="alert alert-warning">{{ 'organization.mission.listFullChooseDate'|trans }}</p>
+        </div>
+    {% endif %}
+
+{% endblock %}

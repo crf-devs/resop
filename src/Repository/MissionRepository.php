@@ -41,6 +41,22 @@ class MissionRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    public function findByFilters(array $filters): array
+    {
+        $qb = $this->findByOrganizationQb($filters['organization']);
+        $qb = $this->addFromToFilter($qb, $filters);
+
+        if (\count($filters['missionTypes'] ?? []) > 0) {
+            $qb->andWhere('m.type IN (:types)');
+            $qb->setParameter('types', $filters['missionTypes']);
+        }
+
+        $qb->orderBy('m.startTime', 'DESC');
+        $qb->setMaxResults(50); // TODO Paginate
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * @param int[][] $resourcesIds
      *
@@ -64,18 +80,25 @@ class MissionRepository extends ServiceEntityRepository
             ->setParameter('users', $users)
             ->setParameter('assets', $assets);
 
-        if (!empty($filters['from']) && !empty($filters['to'])) {
-            $qb
-                ->andWhere($qb->expr()->orX(
-                    'm.startTime IS NULL and m.endTime IS NULL',
-                    'm.startTime >= :start and m.endTime <= :end',
-                    'm.startTime <= :start and m.endTime >= :start',
-                    'm.startTime <= :end and m.endTime >= :end',
-                ))
-                ->setParameter('start', $filters['from'])
-                ->setParameter('end', $filters['to']);
-        }
+        $qb = $this->addFromToFilter($qb, $filters);
 
         return $qb->getQuery()->getResult();
+    }
+
+    private function addFromToFilter(QueryBuilder $qb, array $filters): QueryBuilder
+    {
+        if (empty($filters['from']) || empty($filters['to'])) {
+            return $qb;
+        }
+
+        return $qb
+            ->andWhere($qb->expr()->orX(
+                'm.startTime IS NULL and m.endTime IS NULL',
+                'm.startTime >= :start and m.endTime <= :end',
+                'm.startTime <= :start and m.endTime >= :start',
+                'm.startTime <= :end and m.endTime >= :end',
+            ))
+            ->setParameter('start', $filters['from'])
+            ->setParameter('end', $filters['to']);
     }
 }

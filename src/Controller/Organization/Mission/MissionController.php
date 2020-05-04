@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\Mission;
 
+use App\Domain\PlanningDomain;
 use App\Entity\Mission;
 use App\Entity\Organization;
+use App\Form\Type\MissionsSearchType;
 use App\Form\Type\MissionType;
 use App\Repository\MissionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -22,10 +24,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class MissionController extends AbstractController
 {
     private MissionRepository $missionRepository;
+    private PlanningDomain $planningDomain;
 
-    public function __construct(MissionRepository $missionRepository)
+    public function __construct(MissionRepository $missionRepository, PlanningDomain $planningDomain)
     {
         $this->missionRepository = $missionRepository;
+        $this->planningDomain = $planningDomain;
     }
 
     /**
@@ -33,12 +37,28 @@ class MissionController extends AbstractController
      */
     public function index(): Response
     {
-        /** @var Organization $organization */
-        $organization = $this->getUser();
-        $missions = $this->missionRepository->findByOrganization($organization);
+        $form = $this->planningDomain->generateForm(MissionsSearchType::class);
+        $filters = $form->getData();
 
         return $this->render('organization/mission/index.html.twig', [
-            'missions' => $missions,
+            'filters' => $filters,
+            'form' => $form->createView(),
+            'missions' => $this->missionRepository->findByFilters($filters),
+        ]);
+    }
+
+    /**
+     * @Route("/full", name="app_organization_mission_full_list", methods={"GET"})
+     */
+    public function fullList(): Response
+    {
+        $form = $this->planningDomain->generateForm(MissionsSearchType::class);
+        $filters = $form->getData();
+
+        return $this->render('organization/mission/list_full.html.twig', [
+            'filters' => $filters,
+            'form' => $form->createView(),
+            'missions' => $this->missionRepository->findByFilters($filters),
         ]);
     }
 

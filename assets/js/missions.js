@@ -4,4 +4,5 @@ const $ = require('jquery');
 
 $(document).ready(function () {
   initDatesRange($('#fromToRange'), $('#mission_startTime'), $('#mission_endTime'), true);
+  initDatesRange($('#fromTo'), $('#from'), $('#to'));
 });

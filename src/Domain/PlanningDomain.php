@@ -81,13 +81,15 @@ class PlanningDomain
         }
 
         $filters = $form->getData();
+
         // $filters['organizations'] is an ArrayCollection
-        if (!\array_key_exists('organizations', $filters) || !(\count($filters['organizations']) > 0)) {
+        // TODO Move this function into a form type event
+        if ($form->has('organizations') && empty($filters['organizations'])) {
             $filters['organizations'] = $this->organizationRepository->findByParent($organization);
         }
 
         // $filters['missionTypes'] is an ArrayCollection
-        if (!\array_key_exists('missionTypes', $filters) || !(\count($filters['missionTypes']) > 0)) {
+        if ($form->has('missionTypes') && empty($filters['missionTypes'])) {
             $filters['missionTypes'] = $this->missionTypeRepository->findByOrganization($organization);
         }
 

@@ -106,6 +106,7 @@ test-advanced:
 	bin/tools vendor/bin/phpstan analyse --configuration phpstan.neon --level max --no-progress .
 
 test-behat:
+	bin/tools sh -c "APP_ENV=test bin/console c:c"
 	bin/tools sh -c "APP_DEBUG=1 APP_ENV=test bin/post-install-test.sh"
 	bin/tools vendor/bin/behat --format=progress
 
