@@ -106,6 +106,10 @@ class PlanningSearchType extends AbstractType
                     'data-actions-box' => 'true',
                 ],
             ])
+            ->add('usersWithAllSkills', CheckboxType::class, [
+                'label' => 'organization.planning.allSkills',
+                'required' => false,
+            ])
             ->add('onlyFullyEquiped', CheckboxType::class, [
                 'label' => 'organization.planning.uniformOnly',
                 'required' => false,

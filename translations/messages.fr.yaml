@@ -133,6 +133,7 @@ organization:
     showAvailabilitesFrom: "Rechercher les disponibilités de "
     showDaysFrom: "Visualiser les jours de "
     showVulnerableUsers: Afficher aussi les personnes signalées comme vulnérables
+    allSkills: Bénévoles avec toutes les compétences
     uniformOnly: Avec uniforme seulement
   pluralLabel: Structures
   search:
