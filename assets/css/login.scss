@@ -41,6 +41,16 @@
           padding-top: 4rem;
           padding-bottom: 9rem;
 
+          @media screen and (min-height: 920px) {
+            padding-top: 5rem;
+            padding-bottom: 10rem;
+          }
+
+          @media screen and (min-height: 1020px) {
+            padding-top: 6rem;
+            padding-bottom: 12rem;
+          }
+
           .login-form-container {
             background: white;
             padding: 2rem;
