@@ -74,8 +74,11 @@ $(document).ready(function () {
   $('#loader').hide();
 
   const actionContainer = document.querySelector('.planning-actions-container-wrapper');
+  const [planning] = $planning;
 
-  window.addEventListener('scroll', () => {
-    actionContainer.style.transform = `translate3d(${document.scrollingElement.scrollLeft}px, 0, 0)`;
-  });
+  if (planning?.clientWidth > window.innerWidth) {
+    window.addEventListener('scroll', () => {
+      actionContainer.style.transform = `translate3d(${document.scrollingElement.scrollLeft}px, 0, 0)`;
+    });
+  }
 });
