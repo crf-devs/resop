@@ -1,3 +1,4 @@
+@availability
 Feature:
     In order to fill in my availabilities
     As a user
@@ -10,17 +11,17 @@ Feature:
     Scenario: As authenticated user, I can navigate through the planning weeks
         Given I am authenticated as "john.doe@resop.com"
         And I am on "/"
-        When I follow "Mes disponibilités pour la semaine prochaine"
+        When I follow "Semaine prochaine"
         Then the url should match "/user/availability"
         And the response status code should be 200
-        When I follow "Semaine actuelle"
+        When I follow "Semaine précédente"
         Then the url should match "/user/availability"
         And the response status code should be 200
 
     Scenario Outline: As authenticated user, I cannot add an availability on a booked/locked slot
         Given I am authenticated as "john.doe@resop.com"
         And I am on "/"
-        When I follow "Mes disponibilités pour la semaine prochaine"
+        When I follow "Semaine prochaine"
         Then the url should match "/user/availability"
         And the response status code should be 200
         And the "<time>" availability checkbox should not exists
@@ -34,7 +35,7 @@ Feature:
     Scenario Outline: As authenticated user, I can add and remove an availability at any free slot in the future
         Given I am authenticated as "john.doe@resop.com"
         And I am on "/"
-        When I follow "Mes disponibilités pour la semaine prochaine"
+        When I follow "Semaine prochaine"
         # TODO Check the full url /user/availability/2020-W18
         Then the url should match "/user/availability"
         And the response status code should be 200
@@ -43,7 +44,7 @@ Feature:
         Then I should be on "/"
         And the response status code should be 200
         And I should see "Vos disponibilités ont été mises à jour avec succès."
-        Then I follow "Mes disponibilités pour la semaine prochaine"
+        Then I follow "Semaine prochaine"
         And the url should match "/user/availability"
         And the response status code should be 200
         And the availability checkbox "<time>" should be checked
@@ -52,7 +53,7 @@ Feature:
         Then I should be on "/"
         And the response status code should be 200
         And I should see "Vos disponibilités ont été mises à jour avec succès."
-        Then I follow "Mes disponibilités pour la semaine prochaine"
+        Then I follow "Semaine prochaine"
         And the url should match "/user/availability"
         And the response status code should be 200
         And the availability checkbox "<time>" should be unchecked
@@ -70,7 +71,7 @@ Feature:
     Scenario Outline: As authenticated user, I can remove an availability at any available slot in the future
         Given I am authenticated as "john.doe@resop.com"
         And I am on "/"
-        When I follow "Mes disponibilités pour la semaine prochaine"
+        When I follow "Semaine prochaine"
         Then the url should match "/user/availability"
         And the response status code should be 200
         And the availability checkbox "<time>" should be checked
@@ -79,7 +80,7 @@ Feature:
         Then I should be on "/"
         And the response status code should be 200
         And I should see "Vos disponibilités ont été mises à jour avec succès."
-        Then I follow "Mes disponibilités pour la semaine prochaine"
+        Then I follow "Semaine prochaine"
         And the url should match "/user/availability"
         And the response status code should be 200
         And the availability checkbox "<time>" should be unchecked
