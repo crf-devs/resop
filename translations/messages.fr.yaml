@@ -31,10 +31,14 @@ calendar:
   week:
     current: Semaine actuelle
     next: Semaine prochaine
+    previousOne: Semaine précédente
+    nextOne: Semaine suivante
     startMonday: Semaine du lundi %week%
+    fromTo: Semaine du %from% au %to%
 common:
   actions: Actions
   availabilities: Disponibilités
+  myAvailabilities: Mes disponibilités
   backToList: Retourner à la liste
   informations: Informations
   manager: Cadre
