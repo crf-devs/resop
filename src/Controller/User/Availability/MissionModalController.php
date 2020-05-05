@@ -20,6 +20,7 @@ class MissionModalController extends AbstractController
     {
         return $this->render('organization/mission/show-modal-content.html.twig', [
             'mission' => $mission,
+            'showLinks' => false,
         ]);
     }
 }

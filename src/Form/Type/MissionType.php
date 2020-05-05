@@ -48,6 +48,7 @@ class MissionType extends AbstractType
             ->add('comment', TextareaType::class, [
                 'label' => 'organization.mission.comment',
                 'required' => false,
+                'empty_data' => '',
             ])
             ->add('endTime', DateTimeType::class, [
                 'widget' => 'single_text',

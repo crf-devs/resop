@@ -10,7 +10,9 @@
             {% if organization.parent is null %}
                 <th>{{ 'organization.label' | trans }}</th>
             {% endif %}
-            <th></th>
+            {% if showLinks is not defined or showLinks %}
+                <th></th>
+            {% endif %}
             {% if showActions is not defined or showActions %}
                 <th>Actions</th>
             {% endif %}
@@ -31,9 +33,11 @@
                 {% if organization.parent is null %}
                     <td>{{ user.organization.name }}</td>
                 {% endif %}
-                <td>
-                    <a href="{{ path('app_organization_user_missions_list', { 'item': user.id, 'organization': user.organization.id }) }}">{{ 'organization.mission.listTitle' | trans }}</a>
-                </td>
+                {% if showLinks is not defined or showLinks %}
+                    <td>
+                        <a href="{{ path('app_organization_user_missions_list', { 'item': user.id, 'organization': user.organization.id }) }}">{{ 'organization.mission.listTitle' | trans }}</a>
+                    </td>
+                {% endif %}
                 {% if showActions is not defined or showActions %}
                     <td>
                         <a class="btn btn-secondary" href="{{ path('app_organization_user_edit', { 'userToEdit': user.id, 'organization': user.organization.id }) }}">{{ 'action.edit' | trans }}</a>

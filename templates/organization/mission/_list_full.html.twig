@@ -1,5 +1,7 @@
 {% import 'organization/mission/_list.html.twig' as missionMacro %}
 
+{% set columnsCount = 9 %}
+
 <div class="table-responsive">
     <table class="table table-bordered table-sm">
         <thead class="thead-light">
@@ -10,6 +12,7 @@
             <th>{{ 'organization.itemTitle' | trans }}</th>
             <th>{{ 'organization.mission.itemFull' | trans }}</th>
             <th>{{ 'user.skills' | trans }}</th>
+            <th>{{ 'user.identificationNumber' | trans }}</th>
             <th>{{ 'user.email' | trans }}</th>
             <th>{{ 'common.phoneNumberShort' | trans }}</th>
         </tr>
@@ -27,11 +30,11 @@
                 <td>
                     {{ missionMacro.missionDates(mission, 'time') }}
                 </td>
-                <td colspan="5"></td>
+                <td colspan="{{ columnsCount - 3 }}"></td>
             </tr>
             {% if mission.comment %}
                 <tr>
-                    <td colspan="8">{{ mission.comment | nl2br }}</td>
+                    <td colspan="{{ columnsCount }}">{{ mission.comment | nl2br }}</td>
                 </tr>
             {% endif %}
             {% for user in mission.users %}
@@ -44,6 +47,7 @@
                             {{ skill|skillBadge }}
                         {%- endfor %}
                     </td>
+                    <td><small>{{ user.identificationNumber }}</small></td>
                     <td>
                         <a href="mailto:{{ user.emailAddress }}" class="small">{{ user.emailAddress }}</a>
                     </td>
@@ -59,12 +63,12 @@
                     <td colspan="3"></td>
                     <td>{{ asset.organization.name }}</td>
                     <td>{{ asset }}</td>
-                    <td colspan="3"></td>
+                    <td colspan="4"></td>
                 </tr>
             {% endfor %}
         {% else %}
             <tr>
-                <td colspan="4">
+                <td colspan="{{ columnsCount }}">
                     <p class="alert alert-warning">{{ 'organization.planning.noResourceAvailable'|trans }}</p>
                 </td>
             </tr>
