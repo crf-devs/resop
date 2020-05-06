@@ -7,6 +7,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContext;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MissionTypeRepository")
@@ -89,4 +90,32 @@ class MissionType
      * })
      */
     public array $assetTypesRequirement = [];
+
+    /**
+     * @Assert\Callback()
+     */
+    public function validateUserSkillsRequirement(ExecutionContext $context): void
+    {
+        $userSkills = array_column($this->userSkillsRequirement, 'skill');
+        if (\count(array_unique($userSkills)) !== \count($userSkills)) {
+            $context
+                ->buildViolation('organization.mission_type.user_skill_unique_error')
+                ->atPath('userSkillsRequirement')
+                ->addViolation();
+        }
+    }
+
+    /**
+     * @Assert\Callback()
+     */
+    public function validateAssetTypesRequirements(ExecutionContext $context): void
+    {
+        $assetType = array_column($this->assetTypesRequirement, 'type');
+        if (\count(array_unique($assetType)) !== \count($assetType)) {
+            $context
+                ->buildViolation('organization.mission_type.asset_type_unique_error')
+                ->atPath('assetTypesRequirement')
+                ->addViolation();
+        }
+    }
 }

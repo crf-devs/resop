@@ -1,3 +1,6 @@
 organization:
   asset_type:
     property_unique_error: Au moins un identifiant unique est dupliqué
+  mission_type:
+    user_skill_unique_error: Au moins une compétence de bénévole est dupliquée
+    asset_type_unique_error: Au moins un type de véhicule est dupliqué

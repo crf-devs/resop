@@ -45,6 +45,32 @@ Feature:
 #        And the "mission_type_assetTypesRequirement_0_type" field should contain "302"
 #        And the "mission_type_assetTypesRequirement_0_number" field should contain "4"
 
+    @javascript
+    Scenario: As an organization, I cannot create a mission type with duplicate requirements
+        Given I am authenticated as "DT75"
+        And I am on "/organizations/mission_type/"
+        When I follow "Ajouter un nouveau type de mission"
+        Then I should be on "/organizations/mission_type/new"
+        When I press "Ajouter un type de bénévole"
+        And I press "Ajouter un type de bénévole"
+        And I press "Ajouter un type de véhicule"
+        And I press "Ajouter un type de véhicule"
+        And I fill in the following:
+            | mission_type[name]                             | mission type name |
+            | mission_type[minimumAvailableHours]            | 2                 |
+            | mission_type[userSkillsRequirement][0][skill]  | ci_bspp           |
+            | mission_type[userSkillsRequirement][0][number] | 3                 |
+            | mission_type[userSkillsRequirement][1][skill]  | ci_bspp           |
+            | mission_type[userSkillsRequirement][1][number] | 3                 |
+            | mission_type[assetTypesRequirement][0][type]   | VPSP              |
+            | mission_type[assetTypesRequirement][0][number] | 4                 |
+            | mission_type[assetTypesRequirement][1][type]   | VPSP              |
+            | mission_type[assetTypesRequirement][1][number] | 4                 |
+        And I press "Enregistrer"
+        Then I should be on "/organizations/mission_type/new"
+        And I should see "Au moins une compétence de bénévole est dupliquée"
+        And I should see "Au moins un type de véhicule est dupliqué"
+
 #    # todo: this form has a buggy behavior: https://github.com/crf-devs/resop/issues/361
 #    @javascript
 #    Scenario: As an organization, I can edit a mission type
