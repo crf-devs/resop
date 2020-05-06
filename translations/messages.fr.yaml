@@ -122,6 +122,7 @@ organization:
     listFull: Equipages
     itemFull: Equipage
     listFullChooseDate: Choisissez une période pour afficher les équipages.
+    newType: Ajouter un nouveau type de mission (cela fermera la page courante)
   missionType:
     addNew: Ajouter un nouveau type de mission
     assetTypes:
