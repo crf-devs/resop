@@ -21,4 +21,4 @@ $.fn.selectpicker.Constructor.DEFAULTS.deselectAllText = 'Tout déselectionner';
 $.fn.selectpicker.Constructor.DEFAULTS.doneButtonText = 'Fermer';
 $.fn.selectpicker.Constructor.DEFAULTS.mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
 
-browserUpdate({ required: { e: -2, f: -2, o: -2, s: -2, c: -4 }, insecure: true, unsupported: true, api: 2020.04 });
+browserUpdate({ required: { e: -2, f: -2, o: -2, s: -2, c: -10 }, insecure: true, unsupported: true, api: 2020.04 });
