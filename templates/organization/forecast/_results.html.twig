@@ -12,10 +12,12 @@
         'availableTo': filters.availableTo | date('Y-m-d\\TH:i:00'),
         'organizations': filters.organizations | map(orga => orga.id),
         'userSkills': missionType.userSkillsRequirement | map(skillRequirement => skillRequirement.skill),
+        'hideUsers': missionType.userSkillsRequirement | length == 0,
         'onlyFullyEquiped': filters.onlyFullyEquiped,
         'displayAvailableWithBooked': filters.displayAvailableWithBooked,
         'displayVulnerables': filters.displayVulnerables,
         'assetTypes': missionType.assetTypesRequirement | map(assetRequirement => assetRequirement.type),
+        'hideAssets': missionType.assetTypesRequirement | length == 0,
     } | filter(val => val) %}
 
 
