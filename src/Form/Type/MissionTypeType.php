@@ -33,12 +33,14 @@ class MissionTypeType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => 'organization.users',
+                'error_bubbling' => false,
             ])
             ->add('assetTypesRequirement', CollectionType::class, [
                 'entry_type' => MissionTypeAssetTypesType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => 'organization.assets',
+                'error_bubbling' => false,
             ])
         ;
 
