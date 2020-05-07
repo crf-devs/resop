@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fbc248970a6d0fbc48057b4dbdbda27",
+    "content-hash": "8b3bcfa39b72b3daa37852dba4dc26eb",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7870,16 +7870,16 @@
         },
         {
             "name": "guikingone/panther-extension",
-            "version": "0.3.1",
+            "version": "0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Guikingone/panther-extension.git",
-                "reference": "4551f965fa80e04333e1be4d08a9b62c4f322889"
+                "reference": "849fd2c87ed7ecd760c99784cf83984f376058dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guikingone/panther-extension/zipball/4551f965fa80e04333e1be4d08a9b62c4f322889",
-                "reference": "4551f965fa80e04333e1be4d08a9b62c4f322889",
+                "url": "https://api.github.com/repos/Guikingone/panther-extension/zipball/849fd2c87ed7ecd760c99784cf83984f376058dc",
+                "reference": "849fd2c87ed7ecd760c99784cf83984f376058dc",
                 "shasum": ""
             },
             "require": {
@@ -7888,12 +7888,13 @@
                 "behat/mink-extension": "^2.0",
                 "ext-zip": "*",
                 "php": ">=7.1",
-                "symfony/config": "^2.7|^3.0|^4.0|^5.0",
+                "symfony/config": "^3.0|^4.0|^5.0",
                 "symfony/panther": "^0.7.1"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.16",
                 "infection/infection": "^0.13.6",
+                "phpstan/phpstan": "^0.12.23",
                 "phpunit/phpunit": "^7.5"
             },
             "type": "library",
@@ -7904,6 +7905,7 @@
                     "PantherExtension\\Driver\\": "src/Driver/",
                     "PantherExtension\\Driver\\Element\\": "src/Driver/Element/",
                     "PantherExtension\\Driver\\Exception\\": "src/Driver/Exception/",
+                    "PantherExtension\\Driver\\Helper\\": "src/Driver/Helper/",
                     "PantherExtension\\Extension\\": "src/Extension/"
                 }
             },
@@ -7926,7 +7928,7 @@
                 "extension",
                 "web"
             ],
-            "time": "2020-05-01T18:49:53+00:00"
+            "time": "2020-05-06T19:31:23+00:00"
         },
         {
             "name": "hautelook/alice-bundle",

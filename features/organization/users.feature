@@ -73,22 +73,22 @@ Feature:
         Given I am authenticated as "DT75"
         When I go to "/organizations/204/users/103/edit"
         Then the response status code should be 403
-#
-#    @javascript
-#    Scenario Outline: As an admin of an organization, I can delete a user from my organization or children organizations
-#        Given I am authenticated as "<login>"
-#        When I go to "/organizations/3/users"
-#        And I press "Supprimer"
-#        Then I should see "Vous êtes sur le point de supprimer le bénévole : Jill DOE ( 990003A ) et toutes ses disponibilités."
-#        When I press "Supprimer"
-#        Then I should be on "/organizations/3/users"
-#        And the response status code should be 200
-#        And I should see "Le bénévole a été supprimé avec succès."
-#        And I should not see "jill.doe@resop.com"
-#        Examples:
-#            | login              |
-#            | john.doe@resop.com |
-#            | jane.doe@resop.com |
+
+    @javascript
+    Scenario Outline: As an organization, I can delete a user from my organization or children organizations
+        Given I am authenticated as "<login>"
+        When I go to "/organizations/203/users"
+        And I follow "Supprimer"
+        And I wait for "#delete-item-modal" to be visible
+        Then I should see "Vous êtes sur le point de supprimer le bénévole suivant et toutes ses disponibilités : Jane DOE ( 990002A )."
+        When I press "Supprimer"
+        Then I should be on "/organizations/203/users/"
+        And I should see "Le bénévole a été supprimé avec succès."
+        And I should not see "jill.doe@resop.com"
+        Examples:
+            | login    |
+            | DT75     |
+            | UL 01-02 |
 #
 #    Scenario: As an admin of an organization, I cannot directly delete a user from my organization
 #        Given I am authenticated as "john.doe@resop.com"

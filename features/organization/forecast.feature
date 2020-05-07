@@ -27,11 +27,11 @@ Feature:
         Given I am authenticated as "DT75"
         And I am on "/organizations/forecast"
         When I click on "#availableRange"
-        Then the ".daterangepicker" should be visible
+        Then I wait for ".daterangepicker" to be visible
         When I click on ".daterangepicker .left table tbody td[data-title=r1c0]"
         And I click on ".daterangepicker .left table tbody td[data-title=r1c6]"
         And I press "Valider"
-        Then the ".daterangepicker" should not be visible
+        Then I wait for ".daterangepicker" to be invisible
         When I press "Calculer"
         Then I should be on "/organizations/forecast"
         And I should not see "Choisissez une plage horaire pour calculer les équipages possibles."
