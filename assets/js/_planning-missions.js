@@ -75,10 +75,13 @@ function displayMissionModal($modal, id) {
     return;
   }
 
+  const url = window.location.pathname.indexOf('organizations') >= 0 ? `/organizations/missions/${id}/modal` : `/user/availability/missions/${id}/modal`;
+  displayAjaxModal($modal, url);
+}
+
+function displayAjaxModal($modal, url) {
   const $loading = $modal.find('.loading').show();
   const $content = $modal.find('.content').html('');
-
-  const url = window.location.pathname.indexOf('organizations') >= 0 ? `/organizations/missions/${id}/modal` : `/user/availability/missions/${id}/modal`;
 
   $.ajax({
     method: 'GET',
@@ -96,7 +99,33 @@ function displayMissionModal($modal, id) {
   $modal.modal('show');
 }
 
-export function fetchMissions(url) {
+function addUserToMission(url) {
+  $('.mission-choose').prop('disabled', true);
+
+  $.ajax({
+    method: 'POST',
+    dataType: 'json',
+    url,
+    success: function () {
+      $('#modal-add-mission').modal('hide');
+      fetchMissions();
+    },
+    error: function () {
+      window.alert('Une erreur est survenue pendant la requête');
+      $('.mission-choose').prop('disabled', false);
+    },
+  });
+}
+
+export function fetchMissions() {
+  let url;
+
+  if ($('.planning').length) {
+    url = '/organizations/missions/find' + window.location.search;
+  } else {
+    url = window.location.pathname + '/missions';
+  }
+
   $.ajax({
     method: 'GET',
     dataType: 'json',
@@ -122,4 +151,34 @@ export function initMissionsEvents() {
       $modal.find('.loading').show();
       $modal.find('.content').html('');
     });
+
+  $('#modal-add-mission')
+    .on('show.bs.modal', function (event) {
+      const $modal = $(this);
+      const $link = $(event.relatedTarget);
+      const url = $link.data('href');
+
+      displayAjaxModal($modal, url);
+    })
+    .on('hidden.bs.modal', function () {
+      const $modal = $(this);
+      $modal.find('.loading').show();
+      $modal.find('.content').html('');
+    });
+
+  $(document).on('click', '.mission-choose', function () {
+    addUserToMission($(this).data('href'));
+  });
+
+  // Allow modals stacking
+  $(document).on('show.bs.modal', '.modal', function () {
+    const zIndex = 1040 + 10 * $('.modal:visible').length;
+    $(this).css('z-index', zIndex);
+    setTimeout(function () {
+      $('.modal-backdrop')
+        .not('.modal-stack')
+        .css('z-index', zIndex - 1)
+        .addClass('modal-stack');
+    });
+  });
 }

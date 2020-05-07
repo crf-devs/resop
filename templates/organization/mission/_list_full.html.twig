@@ -42,11 +42,7 @@
                     <td colspan="3"></td>
                     <td>{{ user.organization.name }}</td>
                     <td>{{ user.fullName }}</td>
-                    <td>
-                        {% for skill in getDisplayableSkillsInPlanning(user) -%}
-                            {{ skill|skillBadge }}
-                        {%- endfor %}
-                    </td>
+                    <td>{{ user|userBadges }}</td>
                     <td><small>{{ user.identificationNumber }}</small></td>
                     <td>
                         <a href="mailto:{{ user.emailAddress }}" class="small">{{ user.emailAddress }}</a>

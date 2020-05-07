@@ -25,9 +25,7 @@
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>
-                    {% for skill in getDisplayableSkillsInPlanning(user) -%}
-                        {{ skill|skillBadge }}
-                    {%- endfor %}
+                    {{ user|userBadges }}
                 </td>
                 <td><small>{{ user.emailAddress }}</small></td>
                 {% if organization.parent is null %}

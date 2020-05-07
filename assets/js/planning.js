@@ -57,7 +57,7 @@ $(document).ready(function () {
 
   initUpdateEvents();
   initMissionsEvents();
-  fetchMissions('/organizations/missions/find' + window.location.search);
+  fetchMissions();
 
   $('#hideUsers').on('change', hideUselessFilters);
   $('#hideAssets').on('change', hideUselessFilters);

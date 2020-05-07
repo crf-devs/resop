@@ -2,6 +2,7 @@
 <tr class="days">
     <th rowspan="2"></th>
     <th colspan="{{ itemDataRow }}" class="item-data"></th>
+    <th></th>
     {% for item in periodCalculator.days %}
         <th colspan="{{ item.slots }}" data-day="{{ item.date|date("Y-m-d") }}" title="{{ 'calendar.sortByDayAvailabilities' | trans }}">
             {{ item.date|format_date(pattern="eeee dd MMMM") }}
@@ -10,6 +11,7 @@
 </tr>
 <tr class="hours">
     <th class="item-data" colspan="{{ itemDataRow }}"></th>
+    <th></th>
 
     {% for item in periodCalculator.slots %}
         {% set selected =
@@ -36,7 +38,7 @@
         </th>
         {% block itemDataHeader %}{% endblock itemDataHeader %}
 
-        <td colspan="{{ periodCalculator.slots|length }}"></td>
+        <td colspan="{{ 1 + periodCalculator.slots|length }}"></td>
     </tr>
     </tbody>
 

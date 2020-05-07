@@ -48,7 +48,18 @@
                 <td>{{ mission.assets | length }}</td>
                 <td>{{ mission.comment | truncate }}</td>
                 <td>
-                    <a class="btn btn-primary" href="{{ path('app_organization_mission_show', {'id': mission.id}) }}">{{ 'action.show' | trans }}</a>
+                    {% if userToAdd is defined %}
+                        <button class="btn btn-danger mission-choose" data-href="{{ path('app_organization_mission_add_user', {mission: mission.id, userToAdd: userToAdd.id}) }}">
+                            {{ 'organization.asset.engageThis' | trans }}
+                        </button>
+                    {% endif %}
+
+                    {% if modalLinks is not defined or modalLinks %}
+                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-mission" data-mission-id="{{ mission.id }}">{{ 'action.show' | trans }}</button>
+                    {% else %}
+                        <a class="btn btn-primary" href="{{ path('app_organization_mission_show', {'id': mission.id}) }}">{{ 'action.show' | trans }}</a>
+                    {% endif %}
+
                     {% if showActions is not defined or showActions %}
                         <a class="btn btn-secondary" href="{{ path('app_organization_mission_edit', {'id': mission.id}) }}">{{ 'action.edit' | trans }}</a>
                         <a class="btn btn-outline-danger trigger-delete" data-display-name="{{ mission.name }}" href="#" data-href="{{ path('app_organization_mission_delete', { id: mission.id }) }}">{{ 'action.delete' | trans }}</a>

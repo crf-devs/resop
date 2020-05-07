@@ -26,12 +26,22 @@
     <td class="item-data">{{ item.entity.emailAddress }}</td>
     <td class="item-data" title="{{ item.entity.occupation | emptyIfSmaller(50) }}">{{ item.entity.occupation | truncate(50) }}</td>
     <td class="item-data" title="{{ item.entity.occupation | emptyIfSmaller(50) }}">{{ item.entity.organizationOccupation | truncate(50) }}</td>
-    <td class="item-data">
-        {% for skill in getDisplayableSkillsInPlanning(item.entity) -%}
-            {{ skill|skillBadge }}
-        {%- endfor %}
-    </td>
+    <td class="item-data">{{ item.entity|userBadges }}</td>
     <td class="item-data">{{ item.entity.fullyEquipped ? 'common.yes' | trans : '-' }}</td>
     <td class="item-data">{{ item.entity.drivingLicence ? 'common.yes' | trans : '-' }}</td>
     <td class="item-data">{{ item.entity.vulnerable ? 'common.yes' | trans : '-' }}</td>
+    <td>
+        <button
+            class="btn btn-sm btn-block btn-outline-light engaged trigger-add-mission nowrap"
+            data-toggle="modal"
+            data-target="#modal-add-mission"
+            data-href="{{ path('app_organization_user_add_to_mission_modal', {
+                from: periodCalculator.from | date('Y-m-d\\T00:00:00'),
+                to: periodCalculator.to | date_modify('- 1 minute') | date('Y-m-d\\T00:00:00'),
+                organization: item.entity.organization.id,
+                userToAdd: item.entity.id
+            }) }}"
+            title="{{ 'organization.asset.engage' | trans }}"
+        ><span class="fa fa-plus"></span> {{ 'organization.mission.title' | trans }}</button>
+    </td>
 {% endblock itemDataDetails %}
