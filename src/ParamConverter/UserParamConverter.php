@@ -26,16 +26,18 @@ class UserParamConverter implements ParamConverterInterface
     public function apply(Request $request, ParamConverter $configuration): bool
     {
         $name = $configuration->getName();
+        $userId = $request->attributes->getInt($name);
+        $search = ['id' => $userId];
 
-        $user = $this->userRepository->findOneBy(
-            [
-                'id' => $assetId = $request->attributes->getInt($name),
-                'organization' => $organizationId = $request->attributes->getInt('organization'),
-            ]
-        );
+        $organizationId = $request->attributes->get('organization', null);
+        if (null !== $organizationId) {
+            $search += ['organization' => $organizationId];
+        }
+
+        $user = $this->userRepository->findOneBy($search);
 
         if (null === $user) {
-            throw new NotFoundHttpException(sprintf('User with id "%d" and organization id "%d" does not exist.', $assetId, $organizationId));
+            throw new NotFoundHttpException(sprintf('User with id "%d" and organization id "%d" does not exist.', $userId, $organizationId));
         }
 
         $request->attributes->set($name, $user);

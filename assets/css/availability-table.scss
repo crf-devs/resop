@@ -68,6 +68,12 @@ table.availability-table {
   .engaged {
     background-color: $colorMission;
     color: $colorMissionText;
+
+    &.btn-outline-light {
+      background-color: white;
+      border-color: $colorMission;
+      color: $colorMissionOutlineText;
+    }
   }
 
   .locked {

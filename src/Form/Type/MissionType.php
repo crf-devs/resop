@@ -75,10 +75,7 @@ class MissionType extends AbstractType
                 'required' => false,
                 'choice_attr' => function (User $user) {
                     return [
-                        'data-content' => $user.' '.implode('', array_map(
-                            fn (string $skill) => $this->userExtension->formatBadge($skill),
-                            $this->userExtension->filterInludedSkills($user->skillSet)
-                        )),
+                        'data-content' => $user.' '.$this->userExtension->userBadges($user),
                     ];
                 },
                 'attr' => [

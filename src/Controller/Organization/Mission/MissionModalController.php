@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/missions/{id<\d+>}/modal", name="app_organization_mission_modal", methods={"GET"})
+ * @Route("/{id<\d+>}/modal", name="app_organization_mission_modal", methods={"GET"})
  */
 class MissionModalController extends AbstractController
 {

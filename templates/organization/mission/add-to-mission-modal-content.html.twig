@@ -1,0 +1,9 @@
+<div>
+    <h3>{{ userToAdd }} {{ userToAdd|userBadges }}</h3>
+    <h5 class="mt-3">{{ 'organization.mission.periodList' | trans({ '%from%' : filters.from | format_date('long'), '%to%' : filters.to | format_date('long') }) }}</h5>
+
+    <div class="text-right mb-3">
+        <a class="btn btn-link" href="{{ path('app_organization_mission_new') }}" role="button">{{ 'organization.mission.addNewNewPage' | trans }}</a>
+    </div>
+    {% include 'organization/mission/_list.html.twig' with {showActions: false, modalLinks: true} %}
+</div>

@@ -6,8 +6,6 @@ namespace App\Twig\Extension;
 
 use App\Domain\DatePeriodCalculator;
 use App\Domain\PlanningDomain;
-use App\Domain\SkillSetDomain;
-use App\Entity\User;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -15,13 +13,11 @@ use Twig\TwigFunction;
 final class PlanningExtension extends AbstractExtension
 {
     private PlanningDomain $planningDomain;
-    private SkillSetDomain $skillSetDomain;
     private string $slotInterval;
 
-    public function __construct(PlanningDomain $planningDomain, SkillSetDomain $skillSetDomain, string $slotInterval)
+    public function __construct(PlanningDomain $planningDomain, string $slotInterval)
     {
         $this->planningDomain = $planningDomain;
-        $this->skillSetDomain = $skillSetDomain;
         $this->slotInterval = $slotInterval;
     }
 
@@ -33,7 +29,6 @@ final class PlanningExtension extends AbstractExtension
         return [
             new TwigFunction('renderPlanningTable', [$this, 'renderTable']),
             new TwigFunction('getAvailabilities', [$this, 'getAvailabilities']),
-            new TwigFunction('getDisplayableSkillsInPlanning', [$this, 'getDisplayableSkills']),
         ];
     }
 
@@ -55,11 +50,6 @@ final class PlanningExtension extends AbstractExtension
     public function getAvailabilities(DatePeriodCalculator $periodCalculator, array $filters): array
     {
         return $this->planningDomain->generateAvailabilities($filters, $periodCalculator->getPeriod());
-    }
-
-    public function getDisplayableSkills(User $user): array
-    {
-        return $this->skillSetDomain->filterIncludedSkills($user->skillSet);
     }
 
     public function renderTable(array $availabilities, bool $displayActions): string

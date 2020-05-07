@@ -66,7 +66,7 @@
             {% endif %}
             <tfoot>
             <tr>
-                <td colspan="{{ 1 + itemDataRow + periodCalculator.slots|length }}" class="separator"></td>
+                <td colspan="{{ 2 + itemDataRow + periodCalculator.slots|length }}" class="separator"></td>
             </tr>
             </tfoot>
         </table>
@@ -99,6 +99,20 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'action.cancel' | trans }}</button>
                 <button id="confirm-update" data-url="" data-status="" type="button" class="btn btn-primary">{{ 'action.edit' | trans }}</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-add-mission" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body loading">{{ 'action.loading'|trans }}</div>
+            <div class="modal-body content"></div>
         </div>
     </div>
 </div>

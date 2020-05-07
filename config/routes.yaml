@@ -8,6 +8,12 @@ _organizations_planning:
     type: annotation
     prefix: /organizations/planning
 
+_organizations_missions:
+    resource: ../src/Controller/Organization/Mission
+    type: annotation
+    # TODO Use organization ID
+    prefix: /organizations/missions
+
 _organizations_assets:
     resource: ../src/Controller/Organization/CommissionableAsset
     type: annotation

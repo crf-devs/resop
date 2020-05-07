@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/missions")
+ * @Route("/")
  * @Security("is_granted('ROLE_PARENT_ORGANIZATION')")
  */
 class MissionController extends AbstractController

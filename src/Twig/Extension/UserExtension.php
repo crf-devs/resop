@@ -25,6 +25,7 @@ final class UserExtension extends AbstractExtension
     {
         return [
             new TwigFilter('skillBadge', [$this, 'formatBadge'], ['is_safe' => ['html']]),
+            new TwigFilter('userBadges', [$this, 'userBadges'], ['is_safe' => ['html']]),
             new TwigFilter('sortBySkills', [$this, 'sortBySkills']),
             new TwigFilter('filterSkillsToDisplay', [$this, 'filterSkillsToDisplay']),
             new TwigFilter('filterInludedSkills', [$this, 'filterInludedSkills']),
@@ -39,6 +40,14 @@ final class UserExtension extends AbstractExtension
     public function filterInludedSkills(array $skills): array
     {
         return $this->skillSetDomain->filterIncludedSkills($skills);
+    }
+
+    public function userBadges(User $user): string
+    {
+        return implode('', array_map(
+            fn (string $skill) => $this->formatBadge($skill),
+            $this->filterInludedSkills($user->skillSet)
+        ));
     }
 
     public function formatBadge(string $skill): string

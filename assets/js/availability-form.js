@@ -59,5 +59,5 @@ $(document).ready(function () {
 
   addPopovers($table);
   initMissionsEvents();
-  fetchMissions(window.location.pathname + '/missions');
+  fetchMissions();
 });

@@ -86,6 +86,7 @@ organization:
     locked: Bloqué
     engaged: Engagé sur une mission
     engage: Engager sur une mission
+    engageThis: Engager sur cette mission
     markAsAvailable: Marquer comme disponible
     markAsBooked: Marquer comme réservé
     markAsLocked: Marquer comme bloqué
@@ -109,6 +110,7 @@ organization:
     listTitle: Missions
     listTitleLink: Afficher les missions
     addNew: Ajouter une nouvelle mission
+    addNewNewPage: Ajouter une nouvelle mission (cela fermera la page courante)
     confirmDelete: Vous êtes sur le point de supprimer la mission
     deleteSuccessMessage: La mission a été supprimée avec succès
     editFormTitle: Modifier une mission
@@ -123,6 +125,7 @@ organization:
     itemFull: Equipage
     listFullChooseDate: Choisissez une période pour afficher les équipages.
     newType: Ajouter un nouveau type de mission (cela fermera la page courante)
+    periodList: Missions du %from% au %to%
   missionType:
     addNew: Ajouter un nouveau type de mission
     assetTypes:

@@ -99,6 +99,6 @@ class MissionRepository extends ServiceEntityRepository
                 'm.startTime <= :end and m.endTime >= :end',
             ))
             ->setParameter('start', $filters['from'])
-            ->setParameter('end', $filters['to']);
+            ->setParameter('end', $filters['to']->modify('tomorrow'));
     }
 }
