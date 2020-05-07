@@ -12,6 +12,7 @@ use App\Entity\User;
 use App\Repository\CommissionableAssetRepository;
 use App\Repository\MissionTypeRepository;
 use App\Repository\UserRepository;
+use App\Twig\Extension\UserExtension;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -21,6 +22,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MissionType extends AbstractType
 {
+    private UserExtension $userExtension;
+
+    public function __construct(UserExtension $userExtension)
+    {
+        $this->userExtension = $userExtension;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $organization = $builder->getData()->organization ?? null;
@@ -65,6 +73,14 @@ class MissionType extends AbstractType
                 'choice_label' => fn (User $user) => (string) $user,
                 'multiple' => true,
                 'required' => false,
+                'choice_attr' => function (User $user) {
+                    return [
+                        'data-content' => $user.' '.implode('', array_map(
+                            fn (string $skill) => $this->userExtension->formatBadge($skill),
+                            $this->userExtension->filterInludedSkills($user->skillSet)
+                        )),
+                    ];
+                },
                 'attr' => [
                     'class' => 'selectpicker',
                     'data-live-search' => 'true',
@@ -83,8 +99,7 @@ class MissionType extends AbstractType
                     'class' => 'selectpicker',
                     'data-live-search' => 'true',
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
