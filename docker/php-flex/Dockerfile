@@ -110,7 +110,13 @@ FROM node:13-alpine AS withsources-npm
 WORKDIR /srv
 
 COPY package.json webpack.config.js yarn.lock ./
-RUN yarn install --pure-lockfile
+
+RUN apk --no-cache --update --virtual build-dependencies add \
+    python \
+    make \
+    g++ \
+    && yarn install --pure-lockfile \
+    && apk del build-dependencies
 
 COPY assets assets/
 RUN yarn encore production
