@@ -40,7 +40,6 @@ Feature:
         When I go to "/organizations/202/assets"
         Then the response status code should be 403
 
-    # todo: add some properties in asset_type fixtures
     Scenario Outline: As an authenticated parent organization, I can add an asset on my organization or children organizations
         Given I am authenticated as "<login>"
         When I go to "/organizations/203/assets"
@@ -84,7 +83,7 @@ Feature:
         And the "commissionable_asset_name" field should contain "new name"
         Examples:
             | login    |
-#            todo: there is a bug when using parent organization
+#            todo: there is a bug when using parent organization: https://github.com/crf-devs/resop/issues/360
 #            | DT75     |
             | UL 01-02 |
 
@@ -110,19 +109,19 @@ Feature:
         And I press "Je me connecte"
         Then I should be on "/organizations/"
 
-#    @javascript
-#    Scenario: As a parent organization, I can delete an asset from my organization or children organizations
-#        Given I am authenticated as "DT75"
-#        And I go to "/organizations/203/assets"
-#        Then I should be on "/organizations/203/assets/"
-#        And I should see "75012"
-#        When I follow "Supprimer"
-#        And I wait for the element "#modal-delete-asset" to load
-#        Then I should see "Vous êtes sur le point de supprimer le véhicule VPSP - 75012"
-#        When I press "Supprimer"
-#        Then I should be on "/organizations/203/assets/"
-#        And I should see "Le véhicule a été supprimé avec succès."
-#        And I should not see "75012"
+    @javascript
+    Scenario: As a parent organization, I can delete an asset from my organization or children organizations
+        Given I am authenticated as "DT75"
+        And I go to "/organizations/203/assets"
+        Then I should be on "/organizations/203/assets/"
+        And I should see "75012"
+        When I follow "Supprimer"
+        And I wait for "#delete-item-modal" to be visible
+        Then I should see "Vous êtes sur le point de supprimer le véhicule suivant et toutes ses disponibilités : VPSP - 75012"
+        When I press "Supprimer"
+        Then I should be on "/organizations/203/assets/"
+        And I should see "Le véhicule a été supprimé avec succès."
+        And I should not see "75012"
 
     #https://github.com/crf-devs/resop/issues/348
 #    Scenario: As a parent organization, I cannot directly delete an asset from my organization
