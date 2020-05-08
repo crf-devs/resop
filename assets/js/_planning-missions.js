@@ -12,7 +12,7 @@ function setSlotMisssion(mission, $slot) {
 
   missionsText += $('<span class="badge badge-secondary">').text(mission.type ? mission.type.name : 'mission')[0].outerHTML;
   missionsText += ' ';
-  missionsText += $(`<button type="button" class="btn btn-link" data-toggle="modal" data-target="#modal-mission" data-mission-id="${mission.id}">`).text(mission.name)[0].outerHTML;
+  missionsText += $(`<button type="button" class="btn btn-link" data-toggle="modal" data-target="#modal-ajax" data-mission-id="${mission.id}">`).text(mission.name)[0].outerHTML;
 
   $slot.addClass('mission').data('mission-text', missionsText);
 }
@@ -137,21 +137,7 @@ export function fetchMissions() {
   });
 }
 
-export function initMissionsEvents() {
-  $('#modal-mission')
-    .on('show.bs.modal', function (event) {
-      const $modal = $(this);
-      const $link = $(event.relatedTarget);
-      const missionId = $link.data('mission-id');
-
-      displayMissionModal($modal, missionId);
-    })
-    .on('hidden.bs.modal', function () {
-      const $modal = $(this);
-      $modal.find('.loading').show();
-      $modal.find('.content').html('');
-    });
-
+export function initMissionsPlanningEvents() {
   $('#modal-add-mission')
     .on('show.bs.modal', function (event) {
       const $modal = $(this);
@@ -169,16 +155,24 @@ export function initMissionsEvents() {
   $(document).on('click', '.mission-choose', function () {
     addUserToMission($(this).data('href'));
   });
+}
 
-  // Allow modals stacking
-  $(document).on('show.bs.modal', '.modal', function () {
-    const zIndex = 1040 + 10 * $('.modal:visible').length;
-    $(this).css('z-index', zIndex);
-    setTimeout(function () {
-      $('.modal-backdrop')
-        .not('.modal-stack')
-        .css('z-index', zIndex - 1)
-        .addClass('modal-stack');
+export function initMissionsEvents() {
+  $('#modal-ajax')
+    .on('show.bs.modal', function (event) {
+      const $modal = $(this);
+      const $link = $(event.relatedTarget);
+      const missionId = $link.data('mission-id');
+
+      if (!missionId) {
+        return;
+      }
+
+      displayMissionModal($modal, missionId);
+    })
+    .on('hidden.bs.modal', function () {
+      const $modal = $(this);
+      $modal.find('.loading').show();
+      $modal.find('.content').html('');
     });
-  });
 }

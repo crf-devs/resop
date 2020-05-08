@@ -22,7 +22,7 @@
             <tr class="table-primary">
                 <td>
                     <span class="badge badge-secondary">{{ mission.type.name | default('') }}</span>
-                    <a href="{{ path('app_organization_mission_show', {'id': mission.id}) }}">{{ mission.name }}</a>
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modal-ajax" data-mission-id="{{ mission.id }}">{{ mission.name }}</button>
                 </td>
                 <td>
                     {{ missionMacro.missionDates(mission, 'date') }}

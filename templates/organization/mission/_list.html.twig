@@ -55,9 +55,7 @@
                     {% endif %}
 
                     {% if modalLinks is not defined or modalLinks %}
-                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-mission" data-mission-id="{{ mission.id }}">{{ 'action.show' | trans }}</button>
-                    {% else %}
-                        <a class="btn btn-primary" href="{{ path('app_organization_mission_show', {'id': mission.id}) }}">{{ 'action.show' | trans }}</a>
+                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-ajax" data-mission-id="{{ mission.id }}">{{ 'action.show' | trans }}</button>
                     {% endif %}
 
                     {% if showActions is not defined or showActions %}
