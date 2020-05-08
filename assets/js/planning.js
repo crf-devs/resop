@@ -1,7 +1,7 @@
 import { initDatesRange } from './_helpers';
-import { fetchMissions, initMissionsEvents } from './_planning-missions';
 import { addPopovers } from './_planning';
 import { initUpdateEvents } from './_planning-update';
+import { fetchMissions, initMissionsPlanningEvents } from './_planning-missions';
 
 const $ = require('jquery');
 
@@ -56,7 +56,7 @@ $(document).ready(function () {
   addPopovers($planning);
 
   initUpdateEvents();
-  initMissionsEvents();
+  initMissionsPlanningEvents();
   fetchMissions();
 
   $('#hideUsers').on('change', hideUselessFilters);

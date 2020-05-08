@@ -1,5 +1,5 @@
 import { addPopovers } from './_planning';
-import { fetchMissions, initMissionsEvents } from './_planning-missions';
+import { fetchMissions } from './_planning-missions';
 
 const $ = require('jquery');
 
@@ -58,6 +58,5 @@ $(document).ready(function () {
   });
 
   addPopovers($table);
-  initMissionsEvents();
   fetchMissions();
 });
