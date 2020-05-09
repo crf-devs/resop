@@ -46,6 +46,7 @@ footer {
 
   @include media-breakpoint-down(sm) {
     margin-top: 3rem;
+    padding-left: 1rem;
   }
 }
 
