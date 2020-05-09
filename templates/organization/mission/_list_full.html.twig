@@ -22,7 +22,10 @@
             <tr class="table-primary">
                 <td>
                     <span class="badge badge-secondary">{{ mission.type.name | default('') }}</span>
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modal-ajax" data-mission-id="{{ mission.id }}">{{ mission.name }}</button>
+
+                    <button type="button" class="btn btn-link p-0" data-toggle="ajax-modal" data-href="{{ path('app_organization_mission_modal', {id: mission.id}) }}">
+                        <span class="fa fa-copy"></span> {{ mission.name }}
+                    </button>
                 </td>
                 <td>
                     {{ missionMacro.missionDates(mission, 'date') }}
@@ -41,7 +44,11 @@
                 <tr>
                     <td colspan="3"></td>
                     <td>{{ user.organization.name }}</td>
-                    <td>{{ user.fullName }}</td>
+                    <td>
+                        <button type="button" class="btn btn-link p-0" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', {userToShow: user.id, organization: user.organization.id}) }}">
+                            <span class="fa fa-copy"></span> {{ user.fullName }}
+                        </button>
+                    </td>
                     <td>{{ user|userBadges }}</td>
                     <td><small>{{ user.identificationNumber }}</small></td>
                     <td>
@@ -55,10 +62,14 @@
                 </tr>
             {% endfor %}
             {% for asset in mission.assets %}
-                <tr class="text-primary">
+                <tr class="table-secondary">
                     <td colspan="3"></td>
                     <td>{{ asset.organization.name }}</td>
-                    <td>{{ asset }}</td>
+                    <td>
+                        <button type="button" class="btn btn-link p-0" data-toggle="ajax-modal" data-href="{{ path('app_organization_asset_show_modal', {asset: asset.id, organization: asset.organization.id}) }}">
+                            <span class="fa fa-copy"></span> {{ asset }}
+                        </button>
+                    </td>
                     <td colspan="4"></td>
                 </tr>
             {% endfor %}

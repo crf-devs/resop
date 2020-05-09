@@ -8,6 +8,8 @@
 {% block title %}{{ 'organization.mission.editFormTitle' | trans }}{% endblock %}
 
 {% block body %}
+    <a class="btn btn-outline-danger trigger-delete float-right" data-display-name="{{ mission.name }}" href="#" data-href="{{ path('app_organization_mission_delete', { id: mission.id }) }}">{{ 'action.delete' | trans }}</a>
+
     <a href="{{ path('app_organization_mission_index') }}">{{ 'common.backToList' | trans }}</a>
 
     <h1>{{ 'organization.mission.editFormTitle' | trans }}</h1>

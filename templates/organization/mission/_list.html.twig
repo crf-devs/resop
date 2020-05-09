@@ -27,20 +27,21 @@
     <table class="table">
         <thead class="thead-light">
         <tr>
-            <th>{{ 'common.type' | trans }}</th>
             <th>{{ 'common.name' | trans }}</th>
             <th>{{ 'organization.mission.duration' | trans }}</th>
             <th>{{ 'organization.users' | trans }}</th>
             <th>{{ 'organization.assets' | trans }}</th>
             <th>{{ 'organization.mission.comment' | trans }}</th>
-            <th>{{ 'common.actions' | trans }}</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         {% for mission in missions %}
             <tr>
-                <td><span class="badge badge-secondary">{{ mission.type.name | default('') }}</span></td>
-                <td>{{ mission.name }}</td>
+                <td>
+                    <span class="badge badge-secondary">{{ mission.type.name | default('') }}</span>
+                    {{ mission.name }}
+                </td>
                 <td>
                     {{ _self.missionDates(mission) }}
                 </td>
@@ -55,12 +56,9 @@
                     {% endif %}
 
                     {% if modalLinks is not defined or modalLinks %}
-                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-ajax" data-mission-id="{{ mission.id }}">{{ 'action.show' | trans }}</button>
-                    {% endif %}
-
-                    {% if showActions is not defined or showActions %}
-                        <a class="btn btn-secondary" href="{{ path('app_organization_mission_edit', {'id': mission.id}) }}">{{ 'action.edit' | trans }}</a>
-                        <a class="btn btn-outline-danger trigger-delete" data-display-name="{{ mission.name }}" href="#" data-href="{{ path('app_organization_mission_delete', { id: mission.id }) }}">{{ 'action.delete' | trans }}</a>
+                        <button type="button" class="btn btn-outline-primary" data-toggle="ajax-modal" data-href="{{ path('app_organization_mission_modal', {id: mission.id}) }}">
+                            <span class="fa fa-copy"></span> {{ 'action.show' | trans }}
+                        </button>
                     {% endif %}
                 </td>
             </tr>

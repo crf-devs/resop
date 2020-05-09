@@ -5,5 +5,6 @@
     <div class="text-right mb-3">
         <a class="btn btn-link" href="{{ path('app_organization_mission_new') }}" role="button">{{ 'organization.mission.addNewNewPage' | trans }}</a>
     </div>
-    {% include 'organization/mission/_list.html.twig' with {showActions: false, modalLinks: true} %}
+
+    {% include 'organization/mission/_list.html.twig' with {modalLinks: true} %}
 </div>

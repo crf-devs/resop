@@ -1,4 +1,5 @@
 {% extends 'organization/planning/_availabilities_base.html.twig' %}
+{% import 'organization/commissionable_asset/_show.html.twig' as assetsMacro %}
 
 {% block type %}{{ type | assetTypeName }}{% endblock type %}
 
@@ -10,21 +11,16 @@
 {% endblock itemDataHeader %}
 
 {% block itemDataRowHeader %}
-    {{ item.entity }}
+    <button type="button" class="btn btn-link p-0" data-toggle="ajax-modal" data-href="{{ path('app_organization_asset_show_modal', {asset: item.entity.id, organization: item.entity.organization.id}) }}">
+        <span class="fa fa-copy"></span> {{ item.entity }}
+    </button>
 {% endblock itemDataRowHeader %}
 
 {% block itemDataDetails %}
     {% for prop in type | assetTypeProperties(itemDataRow) %}
         <td class="item-data">
             {% if prop != null %}
-                {%  set currentValue = item.entity.properties[prop.key] | default('') %}
-                {% if currentValue is same as(true) %}
-                    {{ 'common.yes'|trans }}
-                {% elseif currentValue is same as(false) %}
-                    {{ 'common.no'|trans }}
-                {% else %}
-                    {{ currentValue | truncate(75) }}
-                {% endif %}
+                {{ assetsMacro.assetPropValue(item.entity.properties[prop.key] | default('')) }}
             {% endif %}
         </td>
     {% endfor %}

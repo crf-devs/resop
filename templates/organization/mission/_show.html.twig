@@ -1,5 +1,5 @@
 {% if app.user == mission.organization %}
-    <a class="btn btn-outline-primary float-right" href="{{ path('app_organization_mission_edit', {'id': mission.id}) }}">{{ 'action.edit' | trans }}</a>
+    <a class="btn btn-primary float-right" href="{{ path('app_organization_mission_edit', {'id': mission.id}) }}">{{ 'action.edit' | trans }}</a>
 {% endif %}
 
 <h1 class="mb-5">
@@ -21,8 +21,8 @@
 {% endif %}
 
 <h3 class="mt-4">{{ 'organization.users' | trans }}</h3>
-{{ include('organization/user/_list.html.twig', {users: mission.users | sortBySkills, organization: mission.organization, showActions: false}) }}
+{{ include('organization/user/_list.html.twig', {users: mission.users | sortBySkills, organization: mission.organization}) }}
 
 <h3 class="mt-4">{{ 'organization.assets' | trans }}</h3>
-{{ include('organization/commissionable_asset/_list.html.twig', {assets: mission.assets, organization: mission.organization, showActions: false}) }}
+{{ include('organization/commissionable_asset/_list.html.twig', {assets: mission.assets, organization: mission.organization}) }}
 

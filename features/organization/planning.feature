@@ -1,4 +1,5 @@
 # todo: test javascript behaviors (mark slot as ...)
+@planning
 Feature:
     In order to know the availability of the resources in my organization,
     As an organization

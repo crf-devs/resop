@@ -41,11 +41,9 @@ common:
   myAvailabilities: Mes disponibilités
   backToList: Retourner à la liste
   informations: Informations
-  manager: Cadre
   name: Nom
   number: Nombre
   no: Non
-  occupation: Profession
   phoneNumberShort: Tél
   type: Type
   yes: Oui
@@ -236,6 +234,7 @@ user:
       yes: Je fais partie des personnes vulnérables
   dob: Date de naissance
   drivingLicence: Permis
+  info: Informations
   editMyInfo: Modifier mes informations
   email: E-mail
   firstName: Prénom
@@ -243,6 +242,7 @@ user:
   lastName: Nom
   login: Numéro NIVOL ou Adresse e-mail
   mobile: Numéro de téléphone portable
+  occupationTitle: Profession
   occupation:
     firefighter: Pompier
     gp: Médecin
@@ -259,7 +259,8 @@ user:
   selectOrganization: Choisissez votre structure
   skill: Compétence
   skills: Compétences
-  uniform: Uniforme
+  fullyEquipped: Uniforme
+  organizationOccupation: Cadre
   welcome: Bienvenue, %name%
 
 # Symfony default translations

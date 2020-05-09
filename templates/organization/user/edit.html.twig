@@ -11,7 +11,7 @@
         set labels = {
         'fullyEquipped': 'organization.user.isFullyEquipped' | trans,
         'drivingLicence': 'organization.user.hasDrivingLicence' | trans,
-        'occupation': 'common.occupation' | trans,
+        'occupation': 'user.occupationTitle' | trans,
         'organizationOccupation': 'organization.user.occupation' | trans,
         'skillSet': 'organization.user.skillset' | trans
     } %}
@@ -20,6 +20,14 @@
         'occupation': null,
         'organization': null
     } %}
+
+    <a
+        class="btn btn-outline-danger trigger-delete float-right"
+        data-message="{{ 'message.deleteUserWarning' | trans }}"
+        data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )"
+        data-href="{{ path('app_user_delete', { 'userToDelete': user.id, 'organization': user.organization.id }) }}"
+        href="#"
+    >{{ 'action.delete' | trans }}</a>
 
     {% include '/user/_user_form.html.twig' with { 'labels': labels, 'helps': helps } %}
 {% endblock %}
