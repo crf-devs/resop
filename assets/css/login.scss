@@ -27,8 +27,12 @@ body.login {
         background-position: 0 0;
       }
 
-      @media (max-width: $xs) {
-        background-size: 150% 15rem;
+      @media (max-width: 380px) {
+        background-size: 175% 15rem !important;
+      }
+
+      @media (max-width: 475px) {
+        background-size: 160% 20rem;
       }
     }
 
