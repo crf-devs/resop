@@ -27,6 +27,13 @@
                     {{ 'organization.mission.listTitleLink' | trans }}
                 </a>
             </div>
+            <div class="col-lg-6 text-right">
+                {% if filters.from is defined and filters.from is not null %}
+                    <a href="{{ path('app_organization_mission_full_list_export', searchOptions) }}" class="btn btn-outline-secondary">
+                        {{ 'action.exportCsv' | trans }}
+                    </a>
+                {% endif %}
+            </div>
         </div>
 
     </div>
