@@ -1,15 +1,18 @@
 <div class="table-responsive">
-    <table class="table table-striped mt-3">
+    <table class="table table-striped text-nowrap mt-3">
         <thead  class="thead-light">
         <tr>
-            <th>{{ 'user.identificationNumber' | trans }}</th>
-            <th>{{ 'user.firstName' | trans }}</th>
-            <th>{{ 'user.lastName' | trans }}</th>
-            <th>{{ 'organization.user.skillset' | trans }}</th>
-            <th>{{ 'user.email' | trans }}</th>
-            {% if organization.parent is null %}
+            {% if organization.isParent %}
                 <th>{{ 'organization.label' | trans }}</th>
             {% endif %}
+            <th>{{ 'user.firstName' | trans }}</th>
+            <th>{{ 'user.lastName' | trans }}</th>
+            <th>{{ 'user.skills' | trans }}</th>
+            <th>{{ 'user.identificationNumber' | trans }}</th>
+            {% if showLinks is not defined or showLinks %}
+                <th>{{ 'user.email' | trans }}</th>
+            {% endif %}
+            <th>{{ 'common.phoneNumberShort' | trans }}</th>
             {% if showLinks is not defined or showLinks %}
                 <th></th>
             {% endif %}
@@ -18,17 +21,24 @@
         <tbody>
         {% for user in users %}
             <tr>
-                <td><small>{{ user.identificationNumber }}</small></td>
+                {% if organization.isParent %}
+                    <td>{{ user.organization.name }}</td>
+                {% endif %}
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user|userBadges }}</td>
-                <td><small>{{ user.emailAddress }}</small></td>
-                {% if organization.parent is null %}
-                    <td>{{ user.organization.name }}</td>
+                <td><small>{{ user.identificationNumber }}</small></td>
+                {% if showLinks is not defined or showLinks %}
+                    <td><small>{{ user.emailAddress }}</small></td>
                 {% endif %}
+                <td>
+                    <a href="tel:{{ user.phoneNumber|phone_number_format('E164') }}" class="small">
+                        {{ user.phoneNumber|phone_number_format('NATIONAL') }}
+                    </a>
+                </td>
                 {% if showLinks is not defined or showLinks %}
                     <td>
-                        <button class="btn btn-outline-primary" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', { 'userToShow': user.id, 'organization': user.organization.id }) }}">
+                        <button class="btn btn-outline-primary text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', { 'userToShow': user.id, 'organization': user.organization.id }) }}">
                             <span class="fa fa-copy"></span> {{ 'action.show' | trans }}
                         </button>
                     </td>

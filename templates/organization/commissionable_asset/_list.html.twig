@@ -2,12 +2,12 @@
     <table class="table table-stripped mt-3">
         <thead class="thead-light">
         <tr>
+            <th>{{ 'organization.label' | trans }}</th>
             <th>{{ 'common.type' | trans }}</th>
             <th>{{ 'organization.asset.identificationNumber' | trans }}</th>
             {% if showLinks is not defined or showLinks %}
                 <th>{{ 'common.availabilities' | trans }}</th>
             {% endif %}
-            <th>{{ 'organization.label' | trans }}</th>
             {% if showLinks is not defined or showLinks %}
                 <th></th>
             {% endif %}
@@ -16,6 +16,8 @@
         <tbody>
         {% for asset in assets %}
             <tr>
+                <td>{{ asset.organization.name }}</td>
+
                 <td>{{ asset.assetType.name }}</td>
                 <td class="text-nowrap">
                     {{ asset.name }}
@@ -28,10 +30,9 @@
                     </td>
                 {% endif %}
 
-                <td>{{ asset.organization.name }}</td>
                 {% if showLinks is not defined or showLinks %}
                     <td>
-                        <button class="btn btn-outline-primary" data-toggle="ajax-modal" data-href="{{ path('app_organization_asset_show_modal', { 'asset': asset.id, 'organization': asset.organization.id }) }}" title="{{ 'action.show' | trans }}">
+                        <button class="btn btn-outline-primary text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_asset_show_modal', { 'asset': asset.id, 'organization': asset.organization.id }) }}" title="{{ 'action.show' | trans }}">
                             <span class="fa fa-copy"></span> {{ 'action.show' | trans }}
                         </button>
                     </td>

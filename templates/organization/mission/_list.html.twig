@@ -58,7 +58,7 @@
                     {% endif %}
 
                     {% if modalLinks is not defined or modalLinks %}
-                        <button type="button" class="btn btn-outline-primary" data-toggle="ajax-modal" data-href="{{ path('app_organization_mission_modal', {id: mission.id}) }}">
+                        <button type="button" class="btn btn-outline-primary text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_mission_modal', {id: mission.id}) }}">
                             <span class="fa fa-copy"></span> {{ 'action.show' | trans }}
                         </button>
                     {% endif %}

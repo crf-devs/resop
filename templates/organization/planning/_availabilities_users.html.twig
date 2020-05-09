@@ -17,7 +17,7 @@
 
 {% block itemDataRowHeader %}
     <button type="button" class="btn btn-link p-0" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', {userToShow: item.entity.id, organization: item.entity.organization.id}) }}">
-        <span class="fa fa-copy"></span> {{ item.entity }}
+        {{ item.entity }}
     </button>
 
     {{ item.entity.skillSet | filterSkillsToDisplay | filterInludedSkills | map(skill => skill|skillBadge) | join | raw }}
