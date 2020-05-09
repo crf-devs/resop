@@ -7,9 +7,9 @@
 
     <div class="navbar-and-body">
         <div class="navbar-and-body-image">
-            {% include '_navbar.html.twig' %}
+            {% include '_navbar.html.twig' with {navbarClass: 'navbar-dark'} %}
 
-            <div class="container mt-5">
+            <div class="container">
                 <div class="row">
                     <div class="col-lg-7"></div>
                     <div class="col-lg-5 login-form-container">
