@@ -253,7 +253,7 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     {
     }
 
-    public function getBirthday(): ?string
+    public function getBirthday(): string
     {
         return $this->birthday;
     }

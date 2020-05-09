@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\Mission;
 
+use App\Domain\MissionDomain;
 use App\Domain\PlanningDomain;
 use App\Entity\Mission;
 use App\Entity\Organization;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -60,6 +62,49 @@ class MissionController extends AbstractController
             'form' => $form->createView(),
             'missions' => $this->missionRepository->findByFilters($filters),
         ]);
+    }
+
+    /**
+     * @Route("/full/export", name="app_organization_mission_full_list_export", methods={"GET"})
+     */
+    public function fullListExport(MissionDomain $missionDomain): Response
+    {
+        $form = $this->planningDomain->generateForm(MissionsSearchType::class);
+        $filters = $form->getData();
+        $query = $this->missionRepository->findByFiltersQb($filters)->getQuery();
+        $em = $this->getDoctrine()->getManager();
+
+        $response = new StreamedResponse(static function () use ($query, $em, $missionDomain): void {
+            $results = $query->iterate();
+            $handle = fopen('php://output', 'rb+');
+
+            if (false === $handle) {
+                throw new \RuntimeException('Unable to stream the response');
+            }
+
+            fputcsv($handle, $missionDomain->getCsvHeaders());
+            while (false !== ($row = $results->next())) {
+                /** @var Mission $mission */
+                $mission = $row[0];
+                $missionRows = $missionDomain->toCsvArray($mission);
+                foreach ($missionRows as $missionRow) {
+                    fputcsv($handle, $missionRow);
+                }
+                $em->clear();
+            }
+
+            fclose($handle);
+        });
+
+        $filename = 'resop-mission.csv';
+        if (!empty($filters['from']) && !empty($filters['to'])) {
+            $filename = sprintf('resop-missions-%s-%s-%s.csv', $filters['from']->format('Y-m-d'), $filters['to']->format('Y-m-d'), time());
+        }
+
+        $response->headers->set('Content-Type', 'application/force-download');
+        $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $filename));
+
+        return $response;
     }
 
     /**
