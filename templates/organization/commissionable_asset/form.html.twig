@@ -5,6 +5,17 @@
 {% block title %}{{ 'organization.asset.createEdit' | trans ({ '%action%' : actionName }) }}{% endblock %}
 
 {% block body %}
+
+    {% if asset.id %}
+        <a
+            class="btn btn-outline-danger trigger-delete float-right"
+            data-message="{{ 'message.deleteAssetWarning' | trans }}"
+            data-display-name="{{ asset }}"
+            data-href="{{ path('app_organization_asset_delete', { asset: asset.id, organization: asset.organization.id }) }}"
+            href="#"
+        >{{ 'action.delete' | trans }}</a>
+    {% endif %}
+
     <h1>{{ 'organization.asset.createEdit' | trans ({ '%action%' : actionName }) }}</h1>
 
     {{ form_start(form) }}

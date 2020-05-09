@@ -1,3 +1,4 @@
+@users
 Feature:
     In order to manage the users in my organization,
     As an organization,
@@ -38,11 +39,20 @@ Feature:
         When I go to "/organizations/202/users"
         Then the response status code should be 403
 
+#    TODO Fix this test
+#    @javascript
+#    Scenario: As an organization, I can display a user modal
+#        Given I am authenticated as "DT75"
+#        When I go to "/organizations/203/users"
+#        And I follow "Afficher"
+#        And I wait for ".ajax-modal-content" to be visible
+#        Then I should see "Modifier"
+#        And I follow "Modifier"
+#        Then I should be on "/organizations/203/users/102/edit"
+
     Scenario Outline: As an organization, I can update a user from my organization or children organizations
         Given I am authenticated as "<login>"
-        When I go to "/organizations/203/users"
-        And I follow "Modifier"
-        Then I should be on "/organizations/203/users/102/edit"
+        When I go to "/organizations/203/users/102/edit"
         And the response status code should be 200
         And the "user_identificationNumber" field should contain "990002A"
         And the "user_emailAddress" field should contain "jane.doe@resop.com"
@@ -77,7 +87,7 @@ Feature:
     @javascript
     Scenario Outline: As an organization, I can delete a user from my organization or children organizations
         Given I am authenticated as "<login>"
-        When I go to "/organizations/203/users"
+        When I go to "/organizations/203/users/102/edit"
         And I follow "Supprimer"
         And I wait for "#delete-item-modal" to be visible
         Then I should see "Vous êtes sur le point de supprimer le bénévole suivant et toutes ses disponibilités : Jane DOE ( 990002A )."

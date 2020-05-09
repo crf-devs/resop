@@ -1,4 +1,5 @@
 import { addPopovers } from './_planning';
+import { displayAjaxModal } from './_helpers';
 
 const $ = require('jquery');
 const moment = require('moment');
@@ -12,7 +13,9 @@ function setSlotMisssion(mission, $slot) {
 
   missionsText += $('<span class="badge badge-secondary">').text(mission.type ? mission.type.name : 'mission')[0].outerHTML;
   missionsText += ' ';
-  missionsText += $(`<button type="button" class="btn btn-link" data-toggle="modal" data-target="#modal-ajax" data-mission-id="${mission.id}">`).text(mission.name)[0].outerHTML;
+
+  const url = window.location.pathname.indexOf('organizations') >= 0 ? `/organizations/missions/${mission.id}/modal` : `/user/availability/missions/${mission.id}/modal`;
+  missionsText += $(`<button type="button" class="btn btn-link" data-toggle="ajax-modal" data-href="${url}">`).text(mission.name)[0].outerHTML;
 
   $slot.addClass('mission').data('mission-text', missionsText);
 }
@@ -68,35 +71,6 @@ function handleMissions(data) {
   });
 
   addPlanningMissions(data);
-}
-
-function displayMissionModal($modal, id) {
-  if (!id) {
-    return;
-  }
-
-  const url = window.location.pathname.indexOf('organizations') >= 0 ? `/organizations/missions/${id}/modal` : `/user/availability/missions/${id}/modal`;
-  displayAjaxModal($modal, url);
-}
-
-function displayAjaxModal($modal, url) {
-  const $loading = $modal.find('.loading').show();
-  const $content = $modal.find('.content').html('');
-
-  $.ajax({
-    method: 'GET',
-    url,
-    success: function (data) {
-      $loading.hide();
-      $content.html(data);
-    },
-    error: function () {
-      $loading.hide();
-      $content.text('Une erreur est survenue pendant la récupération de la mission');
-    },
-  });
-
-  $modal.modal('show');
 }
 
 function addUserToMission(url) {
@@ -155,24 +129,4 @@ export function initMissionsPlanningEvents() {
   $(document).on('click', '.mission-choose', function () {
     addUserToMission($(this).data('href'));
   });
-}
-
-export function initMissionsEvents() {
-  $('#modal-ajax')
-    .on('show.bs.modal', function (event) {
-      const $modal = $(this);
-      const $link = $(event.relatedTarget);
-      const missionId = $link.data('mission-id');
-
-      if (!missionId) {
-        return;
-      }
-
-      displayMissionModal($modal, missionId);
-    })
-    .on('hidden.bs.modal', function () {
-      const $modal = $(this);
-      $modal.find('.loading').show();
-      $modal.find('.content').html('');
-    });
 }

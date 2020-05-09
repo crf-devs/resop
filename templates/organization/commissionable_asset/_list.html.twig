@@ -4,12 +4,12 @@
         <tr>
             <th>{{ 'common.type' | trans }}</th>
             <th>{{ 'organization.asset.identificationNumber' | trans }}</th>
-            {% if showActions is not defined or showActions %}
+            {% if showLinks is not defined or showLinks %}
                 <th>{{ 'common.availabilities' | trans }}</th>
             {% endif %}
             <th>{{ 'organization.label' | trans }}</th>
-            {% if showActions is not defined or showActions %}
-                <th>{{ 'common.actions' | trans }}</th>
+            {% if showLinks is not defined or showLinks %}
+                <th></th>
             {% endif %}
         </tr>
         </thead>
@@ -21,7 +21,7 @@
                     {{ asset.name }}
                 </td>
 
-                {% if showActions is not defined or showActions %}
+                {% if showLinks is not defined or showLinks %}
                     <td>
                         <a class="btn btn-outline-primary" href="{{ path('app_organization_asset_availability', { asset: asset.id, organization: asset.organization.id }) }}">{{ 'calendar.week.current' | trans }}</a>
                         <a class="btn btn-outline-primary" href="{{ path('app_organization_asset_availability', { asset: asset.id, organization: asset.organization.id, week: 'next week' | date('o-\\WW') }) }}">{{ 'calendar.week.startMonday' | trans ({'%week%' : 'monday next week' | date('d/m/Y')}) }}</a>
@@ -29,20 +29,11 @@
                 {% endif %}
 
                 <td>{{ asset.organization.name }}</td>
-                {% if showActions is not defined or showActions %}
+                {% if showLinks is not defined or showLinks %}
                     <td>
-                        <a class="btn btn-secondary" href="{{ path('app_organization_asset_edit', { asset: asset.id, organization: asset.organization.id }) }}">{{ 'action.edit' | trans }}</a>
-                        {% if withDelete is defined and withDelete %}
-                            <a
-                                class="btn btn-outline-danger trigger-delete"
-                                data-message="{{ 'message.deleteAssetWarning' | trans }}"
-                                data-display-name="{{ asset }}"
-                                data-href="{{ path('app_organization_asset_delete', { asset: asset.id, organization: asset.organization.id }) }}"
-                                href="#"
-                            >
-                                {{ 'action.delete' | trans }}
-                            </a>
-                        {% endif %}
+                        <button class="btn btn-outline-primary" data-toggle="ajax-modal" data-href="{{ path('app_organization_asset_show_modal', { 'asset': asset.id, 'organization': asset.organization.id }) }}" title="{{ 'action.show' | trans }}">
+                            <span class="fa fa-copy"></span> {{ 'action.show' | trans }}
+                        </button>
                     </td>
                 {% endif %}
             </tr>

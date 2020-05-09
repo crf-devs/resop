@@ -19,7 +19,7 @@ final class OrganizationPlanningContext extends RawMinkContext
      */
     public function checkResourceAvailability(string $resourceType, string $username, string $expectedAvailability, string $date, string $time): void
     {
-        $thResource = $this->getSession()->getPage()->find('xpath', sprintf('//*[contains(text(), "%s")]', $username));
+        $thResource = $this->getSession()->getPage()->find('css', sprintf('th:contains("%s")', $username));
 
         if (null === $thResource || $thResource->getParent()->getAttribute('data-type') !== sprintf('%ss', $resourceType)) {
             throw new ExpectationException(sprintf('%s "%s" not found in the planning', ucfirst($resourceType), $username), $this->getSession());

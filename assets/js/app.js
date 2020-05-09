@@ -6,7 +6,7 @@ import '../css/planning.scss';
 import '../css/availability-table.scss';
 import './_delete-item-modal';
 
-import { initMissionsEvents } from './_planning-missions';
+import { displayAjaxModal } from './_helpers';
 
 const $ = require('jquery');
 require('util');
@@ -26,6 +26,10 @@ $.fn.selectpicker.Constructor.DEFAULTS.mobile = /Android|webOS|iPhone|iPad|iPod|
 browserUpdate({ required: { e: -2, f: -2, o: -2, s: -2, c: -10 }, insecure: true, unsupported: true, api: 2020.04 });
 
 $(document).ready(function () {
+  $(document).on('click', '[data-toggle="ajax-modal"]', function () {
+    $('#modal-ajax').clone().attr('id', false).data('href', $(this).data('href')).appendTo('body').modal('show');
+  });
+
   // Allow modals stacking
   $(document).on('show.bs.modal', '.modal', function () {
     const zIndex = 1040 + 10 * $('.modal:visible').length;
@@ -38,5 +42,18 @@ $(document).ready(function () {
     });
   });
 
-  initMissionsEvents();
+  $(document)
+    .on('show.bs.modal', '.ajax-modal', function (event) {
+      const $modal = $(this);
+      const url = $modal.data('href') || $(event.relatedTarget).data('href');
+
+      if (!url) {
+        return;
+      }
+
+      displayAjaxModal($modal, url);
+    })
+    .on('hidden.bs.modal', function () {
+      $(this).remove();
+    });
 });

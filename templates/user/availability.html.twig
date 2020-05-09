@@ -10,5 +10,5 @@
 
 {% block body %}
     {% include 'availability/_table.html.twig' with { availabilityType: 'users', availabilityId: app.user.id } %}
-    {% include 'availability/_mission_modal.html.twig' %}
+    {% include '_ajax_modal.html.twig' %}
 {% endblock %}

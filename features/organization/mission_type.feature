@@ -1,3 +1,4 @@
+@mission_type
 Feature:
     In order to manage my mission types,
     As an organization,

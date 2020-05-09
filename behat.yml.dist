@@ -27,4 +27,4 @@ default:
         FriendsOfBehat\SymfonyExtension:
             kernel:
                 environment: test
-                debug: false
+                debug: true

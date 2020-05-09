@@ -1,3 +1,5 @@
+const $ = require('jquery');
+
 export function initDatesRange($picker, $from, $to, withTime) {
   if (!$picker.length) {
     return;
@@ -50,4 +52,24 @@ export function initDatesRange($picker, $from, $to, withTime) {
     $from.val('').trigger('change');
     $to.val('');
   });
+}
+
+export function displayAjaxModal($modal, url) {
+  const $loading = $modal.find('.loading').show();
+  const $content = $modal.find('.content').html('');
+
+  $.ajax({
+    method: 'GET',
+    url,
+    success: function (data) {
+      $loading.hide();
+      $content.html(data).show();
+    },
+    error: function () {
+      $loading.hide();
+      $content.text('Une erreur est survenue pendant la récupération de la page');
+    },
+  });
+
+  $modal.modal('show');
 }
