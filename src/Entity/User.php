@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *   @ORM\Index(name="user_lastname_idx", columns={"last_name"}),
  *   @ORM\Index(name="user_skill_set_idx", columns={"skill_set"}),
  *   @ORM\Index(name="user_vulnerable_idx", columns={"vulnerable"}),
- *   @ORM\Index(name="user_fully_equipped_idx", columns={"fully_equipped"}),
  * }))
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("emailAddress")
@@ -111,11 +110,6 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
      * @ORM\Column(type="boolean")
      */
     public bool $vulnerable = false;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    public bool $fullyEquipped = false;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})

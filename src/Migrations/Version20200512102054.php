@@ -24,6 +24,8 @@ final class Version20200512102054 extends AbstractMigration
 
         $this->addSql('ALTER TABLE users ADD properties JSON NOT NULL');
         $this->addSql('ALTER TABLE users DROP organization_occupation');
+        $this->addSql('DROP INDEX user_fully_equipped_idx');
+        $this->addSql('ALTER TABLE users DROP fully_equipped');
     }
 
     public function down(Schema $schema) : void
@@ -31,8 +33,9 @@ final class Version20200512102054 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE users ADD organization_occupation VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE users DROP properties');
+        $this->addSql('ALTER TABLE users ADD fully_equipped BOOLEAN NOT NULL');
+        $this->addSql('CREATE INDEX user_fully_equipped_idx ON users (fully_equipped)');
     }
 }
