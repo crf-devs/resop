@@ -1,0 +1,95 @@
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    app.most_important_skills_limit: 6 # used for separing data in the planning
+    app.most_important_skills_to_display: [ch_vpsp, ch_vl] # used for displaying a badge near the user name
+    app.slot_interval: '%env(APP_SLOT_INTERVAL)%'
+    app.available_skills:
+        # Caution: the order matters for the planning display
+        ci_bspp:
+            label: CI Réseau BSPP
+            includes: [ci_samu]
+        ci_samu:
+            label: CI Réseau Samu
+            includes: [ci]
+        ch_vpsp:
+            label: Chauffeur VPSP
+            includes: [pse2, ch_vl]
+        ci:
+            label: CI
+            includes: [pse2]
+        pse2:
+            label: PSE2
+            includes: [pse1]
+        pse1:
+            label: PSE1
+            includes: [psc1]
+        ch_vl:
+            label: Chauffeur VL
+            includes: [benevole]
+        infirmier:
+            label: Infirmier.e local.e
+            includes: [benevole]
+        ce_maraude:
+            label: Chef.fe d'équipe maraudes
+            includes: [solidar]
+        solidar:
+            label: Solidar
+            includes: [maraudeur]
+        maraudeur:
+            label: Maraudeur.se
+            includes: [benevole]
+        tsa_coreg:
+            label: TSA / Coreg
+            includes: [pse2]
+        logisticien:
+            label: Logisticien.ne Croix-Rouge
+            includes: [benevole]
+        resp_perm_soc:
+            label: Responsable Permanence Sociale
+            includes: [benevole]
+        anim_fle:
+            label: Animateur.rice de cours de FLE
+            includes: [benevole]
+        psc1:
+            label: PSC1
+            includes: [benevole]
+        benevole:
+            label: Bénévole
+    app.user_properties:
+#        - key: vulnerable
+#          # todo: boolean_expanded?        
+#          type: boolean
+#          label: user.detail.vulnerable.label
+#          # todo: fix choices labels contextualized: organization.user.isNotVulnerable / user.detail.vulnerable.no
+#          help: user.detail.vulnerable.help
+#          required: false
+#          hidden: false
+        - key: organizationOccupation
+          type: smallText
+          label: Quelles sont vos fonctions de cadre au sein de votre structure d'emploi ?
+          help: ~
+          required: false
+          hidden: false
+#        - key: fullyEquipped
+#          type: boolean
+#          # todo: fix label contextualized: organization.user.isFullyEquipped / user.detail.fullyEquipped
+#          label: user.detail.fullyEquipped
+#          help: ~
+#          required: false
+#          hidden: false
+#        - key: drivingLicence
+#          type: boolean
+#          # todo: fix label contextualized: organization.user.isFullyEquipped / user.detail.fullyEquipped
+#          label: user.detail.drivingLicence
+#          help: ~
+#          required: false
+#          hidden: false
+#        - key: occupation
+#          #todo: choice with other
+#          type: smallText
+#          # todo: fix label contextualized: user.occupationTitle / user.detail.occupation
+#          label: user.occupationTitle
+#          help: ~
+#          required: false
+#          hidden: false

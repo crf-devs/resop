@@ -98,11 +98,6 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     public ?Organization $organization = null;
 
     /**
-     * @ORM\Column(nullable=true)
-     */
-    public ?string $organizationOccupation = null;
-
-    /**
      * @ORM\Column(type="text[]", nullable=true)
      * @Assert\NotBlank
      * @Assert\All({
@@ -136,6 +131,11 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
      * @ORM\ManyToMany(targetEntity="App\Entity\Mission", mappedBy="users")
      */
     public iterable $missions = [];
+
+    /**
+     * @ORM\Column(type="json", nullable=false)
+     */
+    public array $properties = [];
 
     public static function bootstrap(string $identifier = null): self
     {
