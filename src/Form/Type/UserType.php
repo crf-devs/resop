@@ -70,6 +70,7 @@ class UserType extends AbstractType
 
                     return $qb;
                 },
+                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.default' : 'user.detail.organization'
             ])
             ->add('firstName', TextType::class, [
                 'empty_data' => '',
@@ -91,9 +92,11 @@ class UserType extends AbstractType
                 'placeholder' => false,
                 'required' => false,
                 'attr' => ['class' => 'js-occupation'],
+                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'user.occupationTitle' : 'user.detail.occupation'
             ])
             ->add('organizationOccupation', TextType::class, [
                 'required' => false,
+                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.occupation' : 'user.detail.organizationOccupation'
             ])
             ->add('fullyEquipped', ChoiceType::class, [
                 'choices' => [
@@ -103,6 +106,7 @@ class UserType extends AbstractType
                 'required' => true,
                 'expanded' => true,
                 'placeholder' => false,
+                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.isFullyEquipped' : 'user.detail.fullyEquipped'
             ])
             ->add('drivingLicence', ChoiceType::class, [
                 'choices' => [
@@ -112,11 +116,14 @@ class UserType extends AbstractType
                 'required' => true,
                 'expanded' => true,
                 'placeholder' => false,
+                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.drivingLicence' : 'user.detail.drivingLicence'
             ])
             ->add('skillSet', ChoiceType::class, [
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),
                 'multiple' => true,
                 'expanded' => true,
+                'help' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? null : 'user.detail.skillSet.help',
+                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.skillset' : 'user.detail.skillSet.label'
             ])
             ->add('vulnerable', ChoiceType::class, [
                 'choices' => [
