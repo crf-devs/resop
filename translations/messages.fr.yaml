@@ -169,7 +169,6 @@ organization:
   userList: Liste des bénévoles
   user:
     hasDrivingLicence: Permis B depuis plus de 3 ans ?
-    isFullyEquipped: Uniforme en dotation ?
     isVulnerable: fait partie des personnes vulnérables
     isNotVulnerable: ne fait PAS partie des personnes vulnérables
     skillset: Compétences Croix-Rouge
@@ -215,7 +214,6 @@ user:
   createMyAccount: Créer mon compte
   detail:
     drivingLicence: Avez-vous le permis B depuis plus de 3 ans ?
-    fullyEquipped: Avez-vous un uniforme en dotation chez vous ?
     occupation: Quelle est votre profession ?
     organization: Votre structure de rattachement
     skillSet:
@@ -259,7 +257,6 @@ user:
   selectOrganization: Choisissez votre structure
   skill: Compétence
   skills: Compétences
-  fullyEquipped: Uniforme
   organizationOccupation: Cadre
   welcome: Bienvenue, %name%
 

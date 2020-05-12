@@ -1,3 +1,5 @@
+{% import 'misc/dynamic_properties_macro.html.twig' as dynamic_properties %}
+
 {% if app.user == user.organization or app.user == user.organization.parent %}
     <a class="btn btn-primary float-right" href="{{ path('app_organization_user_edit', {userToEdit: user.id}) }}">{{ 'action.edit' | trans }}</a>
 {% endif %}
@@ -22,13 +24,11 @@
     <dd class="col-8">{{ user.vulnerable  ? 'common.yes' | trans : '-' }}</dd>
     <dt class="col-4">{{ 'user.drivingLicence'|trans }}</dt>
     <dd class="col-8">{{ user.drivingLicence  ? 'common.yes' | trans : '-' }}</dd>
-    <dt class="col-4">{{ 'user.fullyEquipped'|trans }}</dt>
-    <dd class="col-8">{{ user.fullyEquipped  ? 'common.yes' | trans : '-' }}</dd>
     <dt class="col-4">{{ 'user.occupationTitle'|trans }}</dt>
     <dd class="col-8">{{ user.occupation }}</dd>
     {% for property_name, property_value in user.properties %}
         <dt class="col-4">{{ property_name }}</dt>
-        <dd class="col-8">{{ property_value }}</dd>
+        <dd class="col-8">{{ dynamic_properties.dynamicProperty(property_value) }}</dd>
     {% endfor %}
 </dl>
 

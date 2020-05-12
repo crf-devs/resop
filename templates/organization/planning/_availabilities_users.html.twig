@@ -1,5 +1,7 @@
 {% extends 'organization/planning/_availabilities_base.html.twig' %}
 
+{% import 'misc/dynamic_properties_macro.html.twig' as dynamic_properties %}
+
 {% block type %}{{ usersSkills[type] | default('organization.users' | trans) }}{% endblock type %}
 
 {# CAUTION: columns number of blocks itemDataHeader and itemDataDetails should be the same than in _availabilities_assets.html.twig #}
@@ -9,7 +11,6 @@
     <th class="item-data">{{ 'user.email' | trans }}</th>
     <th class="item-data">{{ 'user.occupationTitle' | trans }}</th>
     <th class="item-data">{{ 'user.skills' | trans }}</th>
-    <th class="item-data">{{ 'user.fullyEquipped' | trans }}</th>
     <th class="item-data">{{ 'user.drivingLicence' | trans }}</th>
     <th class="item-data">{{ 'user.detail.vulnerable.label' | trans }}</th>
     {% for user_property in user_properties %}
@@ -31,13 +32,12 @@
     <td class="item-data">{{ item.entity.emailAddress }}</td>
     <td class="item-data" title="{{ item.entity.occupation | emptyIfSmaller(50) }}">{{ item.entity.occupation | truncate(50) }}</td>
     <td class="item-data">{{ item.entity|userBadges }}</td>
-    <td class="item-data">{{ item.entity.fullyEquipped ? 'common.yes' | trans : '-' }}</td>
     <td class="item-data">{{ item.entity.drivingLicence ? 'common.yes' | trans : '-' }}</td>
     <td class="item-data">{{ item.entity.vulnerable ? 'common.yes' | trans : '-' }}</td>
     {% for property_name, property_value in item.entity.properties %}
         {# todo: grab property name #}
         <td class="item-data" title="{{ property_name }}">
-            {{ property_value }}
+            {{ dynamic_properties.dynamicProperty(property_value) }}
         </td>
     {% endfor %}
     <td>

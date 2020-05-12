@@ -72,16 +72,16 @@ parameters:
           help: ~
           required: false
           hidden: false
-#        - key: fullyEquipped
-#          type: boolean
-#          # todo: fix label contextualized: organization.user.isFullyEquipped / user.detail.fullyEquipped
-#          label: user.detail.fullyEquipped
-#          help: ~
-#          required: false
-#          hidden: false
+        - key: fullyEquipped
+          type: boolean
+          label: Avez-vous un uniforme en dotation chez vous ?
+          columnLabel: Uniforme
+          help: ~
+          required: true
+          hidden: false
 #        - key: drivingLicence
 #          type: boolean
-#          # todo: fix label contextualized: organization.user.isFullyEquipped / user.detail.fullyEquipped
+#          # todo: fix label contextualized: user.detail.hasDrivingLicence / user.detail.drivingLicence
 #          label: user.detail.drivingLicence
 #          help: ~
 #          required: false

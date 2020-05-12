@@ -28,7 +28,6 @@ final class UserTest extends TestCase
         $user->occupation = 'Pharmacien';
         $user->skillSet = ['foo', 'bar'];
         $user->vulnerable = true;
-        $user->fullyEquipped = true;
 
         $this->assertSame(1, $user->id);
         $this->assertSame('Alain', $user->firstName);
@@ -45,6 +44,5 @@ final class UserTest extends TestCase
         $this->assertSame('Pharmacien', $user->occupation);
         $this->assertSame(['foo', 'bar'], $user->skillSet);
         $this->assertTrue($user->vulnerable);
-        $this->assertTrue($user->fullyEquipped);
     }
 }
