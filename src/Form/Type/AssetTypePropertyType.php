@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
-use App\Entity\AssetType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,10 +24,10 @@ class AssetTypePropertyType extends AbstractType
                 'required' => true,
                 'label' => 'organization.asset_type.properties.format',
                 'choices' => array_flip([
-                    AssetType::TYPE_NUMBER => 'organization.asset_type.properties.formats.number',
-                    AssetType::TYPE_BOOLEAN => 'organization.asset_type.properties.formats.boolean',
-                    AssetType::TYPE_SMALL_TEXT => 'organization.asset_type.properties.formats.small_text',
-                    AssetType::TYPE_TEXT => 'organization.asset_type.properties.formats.text',
+                    DynamicPropertiesType::TYPE_NUMBER => 'organization.asset_type.properties.formats.number',
+                    DynamicPropertiesType::TYPE_BOOLEAN => 'organization.asset_type.properties.formats.boolean',
+                    DynamicPropertiesType::TYPE_SMALL_TEXT => 'organization.asset_type.properties.formats.small_text',
+                    DynamicPropertiesType::TYPE_TEXT => 'organization.asset_type.properties.formats.text',
                 ]),
                 'placeholder' => '',
                 'attr' => ['class' => 'disable-on-edit'],

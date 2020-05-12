@@ -57,14 +57,19 @@ parameters:
         benevole:
             label: Bénévole
     app.user_properties:
-#        - key: vulnerable
-#          # todo: boolean_expanded?        
-#          type: boolean
-#          label: user.detail.vulnerable.label
-#          # todo: fix choices labels contextualized: organization.user.isNotVulnerable / user.detail.vulnerable.no
-#          help: user.detail.vulnerable.help
-#          required: false
-#          hidden: false
+        - key: vulnerable
+          type: boolean
+          label: Je fais partie des personnes vulnérables
+          columnLabel: Vulnérable
+          help: |
+              - malade chronique<br>
+              - obésité morbide<br>
+              - syndrome grippal<br>
+              - immunodéprimé<br>
+              - personne mineure ou personne de plus de 70 ans<br>
+              - avis défavorable de votre unité locale ou du pole santé (local ou territorial)
+          required: true
+          hidden: false
         - key: organizationOccupation
           type: smallText
           label: Quelles sont vos fonctions de cadre au sein de votre structure d'emploi ?

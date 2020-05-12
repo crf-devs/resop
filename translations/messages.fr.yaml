@@ -217,17 +217,6 @@ user:
     skillSet:
       label: Quelles sont vos compétences Croix-Rouge ?
       help: Cochez toutes vos compétences
-    vulnerable:
-      help: |
-               - malade chronique
-               - obésité morbide
-               - syndrome grippal
-               - immunodéprimé
-               - personne mineure ou personne de plus de 70 ans
-               - avis défavorable de votre unité locale ou du pole santé (local ou territorial)
-      label: Vulnérable
-      no: Je ne fais PAS partie des personnes vulnérables
-      yes: Je fais partie des personnes vulnérables
   dob: Date de naissance
   info: Informations
   editMyInfo: Modifier mes informations

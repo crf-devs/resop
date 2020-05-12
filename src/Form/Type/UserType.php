@@ -103,15 +103,6 @@ class UserType extends AbstractType
                 'help' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? null : 'user.detail.skillSet.help',
                 'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.skillset' : 'user.detail.skillSet.label'
             ])
-            ->add('vulnerable', ChoiceType::class, [
-                'choices' => [
-                    self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.isNotVulnerable' : 'user.detail.vulnerable.no' => 0,
-                    self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.isVulnerable' : 'user.detail.vulnerable.yes' => 1,
-                ],
-                'expanded' => true,
-                'help' => 'user.detail.vulnerable.help',
-                'help_html' => true,
-            ])
             ->add('properties', DynamicPropertiesType::class, [
                 'label' => false,
                 'config' => $this->userProperties,

@@ -1,9 +1,0 @@
-{% macro dynamicProperty(value) %}
-    {% if value is same as(true) %}
-        {{ 'common.yes'|trans }}
-    {% elseif value is same as(false) %}
-        {{ 'common.no'|trans }}
-    {% else %}
-        {{ value | truncate(75) }}
-    {% endif %}
-{% endmacro %}

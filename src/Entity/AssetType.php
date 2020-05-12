@@ -16,13 +16,6 @@ use Symfony\Component\Validator\Context\ExecutionContext;
  */
 class AssetType
 {
-    public const TYPE_NUMBER = 'number';
-    public const TYPE_BOOLEAN = 'boolean';
-    public const TYPE_SMALL_TEXT = 'smallText';
-    public const TYPE_TEXT = 'text';
-
-    public const TYPES = [self::TYPE_NUMBER, self::TYPE_BOOLEAN, self::TYPE_SMALL_TEXT, self::TYPE_TEXT];
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
