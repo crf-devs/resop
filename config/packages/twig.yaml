@@ -4,3 +4,4 @@ twig:
     globals:
         build_tag: '%env(IMAGE_BUILD_TAG)%'
         slot_interval: '%app.slot_interval%'
+        user_properties: '%app.user_properties%'
