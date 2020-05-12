@@ -330,11 +330,11 @@ final class ApplicationFixtures extends Fixture
                 $user->occupation = $occupations[array_rand($occupations)];
                 $user->properties = [
                     'organizationOccupation' => 'Secouriste',
-                    'fullyEquipped' => (bool) random_int(0, 1)
+                    'fullyEquipped' => (bool) random_int(0, 1),
+                    'drivingLicence' => (bool) random_int(0, 1)
                 ];
                 $user->skillSet = (array) array_rand($availableSkillSet, random_int(1, 3));
                 $user->vulnerable = (bool) random_int(0, 1);
-                $user->drivingLicence = (bool) random_int(0, 1);
 
                 $this->users[$organization->getParentOrganization()->id][] = $user;
 

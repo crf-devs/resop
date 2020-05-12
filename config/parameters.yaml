@@ -79,13 +79,13 @@ parameters:
           help: ~
           required: true
           hidden: false
-#        - key: drivingLicence
-#          type: boolean
-#          # todo: fix label contextualized: user.detail.hasDrivingLicence / user.detail.drivingLicence
-#          label: user.detail.drivingLicence
-#          help: ~
-#          required: false
-#          hidden: false
+        - key: drivingLicence
+          type: boolean
+          label: Avez-vous le permis B depuis plus de 3 ans ?
+          columnLabel: Permis
+          help: ~
+          required: true
+          hidden: false
 #        - key: occupation
 #          #todo: choice with other
 #          type: smallText

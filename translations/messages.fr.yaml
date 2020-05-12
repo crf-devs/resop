@@ -168,7 +168,6 @@ organization:
   userAvailabilityNextWeek: Afficher les disponibilités de mes bénévoles pour la semaine prochaine
   userList: Liste des bénévoles
   user:
-    hasDrivingLicence: Permis B depuis plus de 3 ans ?
     isVulnerable: fait partie des personnes vulnérables
     isNotVulnerable: ne fait PAS partie des personnes vulnérables
     skillset: Compétences Croix-Rouge
@@ -213,7 +212,6 @@ user:
   availabilitySpecificWeek: Mes disponibilités pour la semaine du %week%
   createMyAccount: Créer mon compte
   detail:
-    drivingLicence: Avez-vous le permis B depuis plus de 3 ans ?
     occupation: Quelle est votre profession ?
     organization: Votre structure de rattachement
     skillSet:
@@ -231,7 +229,6 @@ user:
       no: Je ne fais PAS partie des personnes vulnérables
       yes: Je fais partie des personnes vulnérables
   dob: Date de naissance
-  drivingLicence: Permis
   info: Informations
   editMyInfo: Modifier mes informations
   email: E-mail
