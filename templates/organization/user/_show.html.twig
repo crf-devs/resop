@@ -22,8 +22,6 @@
     <dd class="col-8">{{ user.birthday|format_date('long') }}</dd>
     <dt class="col-4">{{ 'user.detail.vulnerable.label'|trans }}</dt>
     <dd class="col-8">{{ user.vulnerable  ? 'common.yes' | trans : '-' }}</dd>
-    <dt class="col-4">{{ 'user.drivingLicence'|trans }}</dt>
-    <dd class="col-8">{{ user.drivingLicence  ? 'common.yes' | trans : '-' }}</dd>
     <dt class="col-4">{{ 'user.occupationTitle'|trans }}</dt>
     <dd class="col-8">{{ user.occupation }}</dd>
     {% for property_name, property_value in user.properties %}

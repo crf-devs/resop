@@ -96,16 +96,6 @@ class UserType extends AbstractType
                 'attr' => ['class' => 'js-occupation'],
                 'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'user.occupationTitle' : 'user.detail.occupation'
             ])
-            ->add('drivingLicence', ChoiceType::class, [
-                'choices' => [
-                    'common.yes' => 1,
-                    'common.no' => 0,
-                ],
-                'required' => true,
-                'expanded' => true,
-                'placeholder' => false,
-                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.hasDrivingLicence' : 'user.detail.drivingLicence'
-            ])
             ->add('skillSet', ChoiceType::class, [
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),
                 'multiple' => true,

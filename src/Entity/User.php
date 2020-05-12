@@ -112,11 +112,6 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     public bool $vulnerable = false;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    public bool $drivingLicence = false;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\UserAvailability", mappedBy="user")
      */
     private iterable $availabilities = [];

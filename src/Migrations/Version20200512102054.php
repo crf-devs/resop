@@ -26,6 +26,7 @@ final class Version20200512102054 extends AbstractMigration
         $this->addSql('ALTER TABLE users DROP organization_occupation');
         $this->addSql('DROP INDEX user_fully_equipped_idx');
         $this->addSql('ALTER TABLE users DROP fully_equipped');
+        $this->addSql('ALTER TABLE users DROP driving_licence');
     }
 
     public function down(Schema $schema) : void
@@ -37,5 +38,6 @@ final class Version20200512102054 extends AbstractMigration
         $this->addSql('ALTER TABLE users DROP properties');
         $this->addSql('ALTER TABLE users ADD fully_equipped BOOLEAN NOT NULL');
         $this->addSql('CREATE INDEX user_fully_equipped_idx ON users (fully_equipped)');
+        $this->addSql('ALTER TABLE users ADD driving_licence BOOLEAN DEFAULT \'false\' NOT NULL');
     }
 }
