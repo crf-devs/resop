@@ -17,8 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 
@@ -58,9 +56,6 @@ class UserType extends AbstractType
         $occupationChoices = (array) array_combine(self::DEFAULT_OCCUPATIONS, self::DEFAULT_OCCUPATIONS);
         $occupationChoices += ['Autre' => '-'];
         $builder
-            ->add('identificationNumber', TextType::class, [
-                'empty_data' => '',
-            ])
             ->add('organization', OrganizationEntityType::class, [
                 'placeholder' => '',
                 'query_builder' => static function (OrganizationRepository $repository) use ($organization) {
@@ -89,10 +84,6 @@ class UserType extends AbstractType
             ])
             ->add('emailAddress', EmailType::class, [
                 'empty_data' => '',
-            ])
-            ->add('birthday', BirthdayType::class, [
-                'format' => 'dd MMMM yyyy',
-                'input' => 'string',
             ])
             ->add('occupation', ChoiceWithOtherType::class, [
                 'choices' => $occupationChoices,
@@ -127,44 +118,34 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
             ])
+            ->add('vulnerable', ChoiceType::class, [
+                'choices' => [
+                    self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.isNotVulnerable' : 'user.detail.vulnerable.no' => 0,
+                    self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.isVulnerable' : 'user.detail.vulnerable.yes' => 1,
+                ],
+                'expanded' => true,
+                'help' => 'user.detail.vulnerable.help',
+                'help_html' => true,
+            ])
             ->add('submit', SubmitType::class);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
-            $form = $event->getForm();
-            if (self::DISPLAY_ORGANIZATION === $options['display_type']) {
-                $form->add('vulnerable', ChoiceType::class, [
-                    'choices' => [
-                        'organization.user.isNotVulnerable' => 0,
-                        'organization.user.isVulnerable' => 1,
-                    ],
-                    'expanded' => true,
-                    'help' => 'user.detail.vulnerable.help',
-                    'help_html' => true,
-                ]);
-            } else {
-                $form->add('vulnerable', ChoiceType::class, [
-                    'choices' => [
-                        'user.detail.vulnerable.no' => 0,
-                        'user.detail.vulnerable.yes' => 1,
-                    ],
-                    'expanded' => true,
-                    'help' => 'user.detail.vulnerable.help',
-                    'help_html' => true,
-                ]);
+        if (self::DISPLAY_EDIT === $options['display_type']) {
+            return;
+        }
 
-                if (self::DISPLAY_EDIT === $options['display_type']) {
-                    $form
-                        ->remove('birthday')
-                        ->remove('identificationNumber');
-                }
-            }
-        });
+        $builder
+            ->add('identificationNumber', TextType::class, [
+                'empty_data' => '',
+            ])
+            ->add('birthday', BirthdayType::class, [
+                'format' => 'dd MMMM yyyy',
+                'input' => 'string',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setDefined('display_type')
             ->setRequired('display_type')
             ->addAllowedValues('display_type', [self::DISPLAY_NEW, self::DISPLAY_EDIT, self::DISPLAY_ORGANIZATION])
             ->setDefaults([
