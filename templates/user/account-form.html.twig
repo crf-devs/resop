@@ -11,23 +11,9 @@
 {% block body %}
     <h1>{{ 'user.accountAction' | trans({ '%action%' : actionName }) }}</h1>
 
-    {% set labels = {
-        'fullyEquipped': 'user.detail.fullyEquipped' | trans,
-        'drivingLicence': 'user.detail.drivingLicence' | trans,
-        'occupation': 'user.detail.occupation' | trans,
-        'organizationOccupation': 'user.detail.organizationOccupation' | trans,
-        'organization': 'user.detail.organization' | trans,
-        'skillSet': 'user.detail.skillSet.label' | trans
-    } %}
-    {% set helps = {
-        'skillSet': 'user.detail.skillSet.help' | trans,
-        'occupation': null,
-        'organization': null
-    } %}
-
     {% if user is not defined or user.id is not defined or user.id is null %}
         {% include '/user/_introduction.html.twig' %}
     {% endif %}
 
-    {% include '/user/_user_form.html.twig' with { 'form': form, 'labels': labels, 'helps': helps } %}
+    {% include '/user/_user_form.html.twig' with { 'form': form } %}
 {% endblock %}
