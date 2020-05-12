@@ -35,7 +35,6 @@
 {% endif %}
 
 {{ form_row(form.vulnerable, { 'label': 'user.detail.vulnerable.label' | trans, 'help_attr': {'class': 'nowrap'} }) }}
-{{ form_row(form.organizationOccupation) }}
 
 <div class="row">
     <div class="col-12 col-xl-6">
@@ -50,8 +49,12 @@
 
 {{ form_row(form.drivingLicence) }}
 
+{{ form_row(form.properties) }}
+
 <div class="float-right">
-    {{ form_row(form.submit, {label: 'action.submit' | trans }) }}
+    <div class="form-group">
+        <button type="submit" id="user_submit" name="user[submit]" class="btn-primary btn">{{ 'action.submit'|trans }}</button>
+    </div>
 </div>
 <div class="clearfix"></div>
 {{ form_end(form) }}

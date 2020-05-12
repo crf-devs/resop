@@ -41,11 +41,13 @@ class UserType extends AbstractType
         'Logisticien',
     ];
 
-    protected SkillSetDomain $skillSetDomain;
+    private SkillSetDomain $skillSetDomain;
+    private array $userProperties;
 
-    public function __construct(SkillSetDomain $skillSetDomain)
+    public function __construct(SkillSetDomain $skillSetDomain, array $userProperties)
     {
         $this->skillSetDomain = $skillSetDomain;
+        $this->userProperties = $userProperties;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -94,10 +96,6 @@ class UserType extends AbstractType
                 'attr' => ['class' => 'js-occupation'],
                 'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'user.occupationTitle' : 'user.detail.occupation'
             ])
-            ->add('organizationOccupation', TextType::class, [
-                'required' => false,
-                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.occupation' : 'user.detail.organizationOccupation'
-            ])
             ->add('fullyEquipped', ChoiceType::class, [
                 'choices' => [
                     'common.yes' => 1,
@@ -116,7 +114,7 @@ class UserType extends AbstractType
                 'required' => true,
                 'expanded' => true,
                 'placeholder' => false,
-                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.drivingLicence' : 'user.detail.drivingLicence'
+                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.hasDrivingLicence' : 'user.detail.drivingLicence'
             ])
             ->add('skillSet', ChoiceType::class, [
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),
@@ -134,7 +132,10 @@ class UserType extends AbstractType
                 'help' => 'user.detail.vulnerable.help',
                 'help_html' => true,
             ])
-            ->add('submit', SubmitType::class);
+            ->add('properties', DynamicPropertiesType::class, [
+                'label' => false,
+                'config' => $this->userProperties,
+            ]);
 
         if (self::DISPLAY_EDIT === $options['display_type']) {
             return;

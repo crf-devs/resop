@@ -328,7 +328,7 @@ final class ApplicationFixtures extends Fixture
                 $user->phoneNumber = $this->phoneNumberUtil->parse('0102030405', 'FR');
                 $user->birthday = '1990-01-01';
                 $user->occupation = $occupations[array_rand($occupations)];
-                $user->organizationOccupation = 'Secouriste';
+                $user->properties = ['organizationOccupation' => 'Secouriste'];
                 $user->skillSet = (array) array_rand($availableSkillSet, random_int(1, 3));
                 $user->vulnerable = (bool) random_int(0, 1);
                 $user->fullyEquipped = (bool) random_int(0, 1);

@@ -172,7 +172,6 @@ organization:
     isFullyEquipped: Uniforme en dotation ?
     isVulnerable: fait partie des personnes vulnérables
     isNotVulnerable: ne fait PAS partie des personnes vulnérables
-    occupation: Fonction de cadre au sein de la structure d'emploi
     skillset: Compétences Croix-Rouge
   userTitle: Bénévole
   users: Bénévoles
@@ -219,7 +218,6 @@ user:
     fullyEquipped: Avez-vous un uniforme en dotation chez vous ?
     occupation: Quelle est votre profession ?
     organization: Votre structure de rattachement
-    organizationOccupation: Quelles sont vos fonctions de cadre au sein de votre structure d'emploi ?
     skillSet:
       label: Quelles sont vos compétences Croix-Rouge ?
       help: Cochez toutes vos compétences
