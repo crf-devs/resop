@@ -68,6 +68,7 @@ parameters:
         - key: organizationOccupation
           type: smallText
           label: Quelles sont vos fonctions de cadre au sein de votre structure d'emploi ?
+          columnLabel: Cadre
           help: ~
           required: false
           hidden: false

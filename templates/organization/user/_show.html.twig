@@ -26,8 +26,10 @@
     <dd class="col-8">{{ user.fullyEquipped  ? 'common.yes' | trans : '-' }}</dd>
     <dt class="col-4">{{ 'user.occupationTitle'|trans }}</dt>
     <dd class="col-8">{{ user.occupation }}</dd>
-    <dt class="col-4">{{ 'user.organizationOccupation'|trans }}</dt>
-    <dd class="col-8">{{ user.organizationOccupation }}</dd>
+    {% for property_name, property_value in user.properties %}
+        <dt class="col-4">{{ property_name }}</dt>
+        <dd class="col-8">{{ property_value }}</dd>
+    {% endfor %}
 </dl>
 
 <h5>{{ 'organization.mission.listTitle'|trans }}</h5>
