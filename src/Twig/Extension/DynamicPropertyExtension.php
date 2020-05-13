@@ -30,16 +30,16 @@ class DynamicPropertyExtension extends AbstractExtension
 
     public function dynamicPropertyValue($value, array $propertyDefinition): string
     {
-        if (is_bool($value)) {
-            return $this->translator->trans(sprintf('common.%s', $value ? 'yes' : 'no'));
-        }
-
         if (\in_array($propertyDefinition['type'], [DynamicPropertiesType::TYPE_CHOICE, DynamicPropertiesType::TYPE_CHOICE_WITH_OTHER], true)) {
-            return array_flip($propertyDefinition['choices'])[$value] ?? $value;
+            return array_flip($propertyDefinition['choices'] ?? [])[$value] ?? $value;
         }
 
-        if (!\is_string($value)) {
-            return $value;
+        if (DynamicPropertiesType::TYPE_BOOLEAN === $propertyDefinition['type']) {
+            return $this->translator->trans(sprintf('common.%s', (bool) $value ? 'yes' : 'no'));
+        }
+
+        if (DynamicPropertiesType::TYPE_NUMBER === $propertyDefinition['type']) {
+            return (string) $value;
         }
 
         if (\strlen($value) <= 75) {
