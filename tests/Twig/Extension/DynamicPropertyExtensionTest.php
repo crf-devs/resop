@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Twig\Extension;
 
 use App\Form\Type\DynamicPropertiesType;
@@ -11,6 +13,8 @@ class DynamicPropertyExtensionTest extends TestCase
 {
     /**
      * @dataProvider dynamicPropertyValueProvider
+     *
+     * @param bool|string|int $value
      */
     public function testDynamicPropertyValue($value, array $propertyDefinition, string $expected): void
     {
@@ -28,52 +32,52 @@ class DynamicPropertyExtensionTest extends TestCase
             'boolean_true' => [
                 'value' => true,
                 'propertyDefinition' => ['type' => 'boolean'],
-                'expected' => 'common.yes'
+                'expected' => 'common.yes',
             ],
             'boolean_false' => [
                 'value' => false,
                 'propertyDefinition' => ['type' => 'boolean'],
-                'expected' => 'common.no'
+                'expected' => 'common.no',
             ],
             'boolean_wrong_type' => [
                 'value' => 'foo',
                 'propertyDefinition' => ['type' => 'boolean'],
-                'expected' => 'common.yes'
+                'expected' => 'common.yes',
             ],
             'choice' => [
                 'value' => 'foo',
                 'propertyDefinition' => ['type' => DynamicPropertiesType::TYPE_CHOICE, 'choices' => ['bar' => 'foo']],
-                'expected' => 'bar'
+                'expected' => 'bar',
             ],
             'choice_not_in_choices' => [
                 'value' => 'bar',
                 'propertyDefinition' => ['type' => DynamicPropertiesType::TYPE_CHOICE, 'choices' => ['foo' => 'foo']],
-                'expected' => 'bar'
+                'expected' => 'bar',
             ],
             'choices_with_other' => [
                 'value' => 'bar',
                 'propertyDefinition' => ['type' => DynamicPropertiesType::TYPE_CHOICE_WITH_OTHER, 'choices' => ['foo' => 'foo']],
-                'expected' => 'bar'
+                'expected' => 'bar',
             ],
             'number' => [
                 'value' => 5,
                 'propertyDefinition' => ['type' => DynamicPropertiesType::TYPE_NUMBER],
-                'expected' => '5'
+                'expected' => '5',
             ],
             'number_wrong_type' => [
                 'value' => 'foo',
                 'propertyDefinition' => ['type' => DynamicPropertiesType::TYPE_NUMBER],
-                'expected' => 'foo'
+                'expected' => 'foo',
             ],
             'text' => [
                 'value' => 'foo',
                 'propertyDefinition' => ['type' => DynamicPropertiesType::TYPE_SMALL_TEXT],
-                'expected' => 'foo'
+                'expected' => 'foo',
             ],
             'text_truncated' => [
                 'value' => 'this is a very long text which will be truncated because it is sooo long it will break display',
                 'propertyDefinition' => ['type' => DynamicPropertiesType::TYPE_SMALL_TEXT],
-                'expected' => 'this is a very long text which will be truncated because it is sooo long...'
+                'expected' => 'this is a very long text which will be truncated because it is sooo long...',
             ],
         ];
     }

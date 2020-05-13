@@ -14,7 +14,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,21 +24,6 @@ class UserType extends AbstractType
     public const DISPLAY_NEW = 'new';
     public const DISPLAY_EDIT = 'edit';
     public const DISPLAY_ORGANIZATION = 'organization';
-
-    protected const DEFAULT_OCCUPATIONS = [
-        'Compétences pédiatriques',
-        'Infirmier.e',
-        'Médecin',
-        'Ambulancier.e',
-        'Aide soignant.e',
-        'Infirmier.e anesthésiste',
-        'Sage femme',
-        'Pharmacien',
-        'Autre personnel de santé',
-        'Pompier',
-        'Gendarme / Policier',
-        'Logisticien',
-    ];
 
     private SkillSetDomain $skillSetDomain;
     private array $userProperties;
@@ -70,7 +54,7 @@ class UserType extends AbstractType
 
                     return $qb;
                 },
-                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.default' : 'user.detail.organization'
+                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.default' : 'user.detail.organization',
             ])
             ->add('firstName', TextType::class, [
                 'empty_data' => '',
@@ -91,7 +75,7 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'help' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? null : 'user.detail.skillSet.help',
-                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.skillset' : 'user.detail.skillSet.label'
+                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.skillset' : 'user.detail.skillSet.label',
             ])
             ->add('properties', DynamicPropertiesType::class, [
                 'label' => false,

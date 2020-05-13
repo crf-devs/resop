@@ -333,7 +333,7 @@ final class ApplicationFixtures extends Fixture
                     'fullyEquipped' => (bool) random_int(0, 1),
                     'drivingLicence' => (bool) random_int(0, 1),
                     'vulnerable' => (bool) random_int(0, 1),
-                    'occupation' => $occupations[array_rand($occupations)]
+                    'occupation' => $occupations[array_rand($occupations)],
                 ];
                 $user->skillSet = (array) array_rand($availableSkillSet, random_int(1, 3));
 

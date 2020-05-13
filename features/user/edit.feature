@@ -10,19 +10,19 @@ Feature:
     Scenario: As a user, I can see my account
         Given I am authenticated as "john.doe@resop.com"
         When I go to "/user/edit"
-        Then the "user_identificationNumber" field should contain "990001A"
-        And the "user_emailAddress" field should contain "john.doe@resop.com"
-        And the "user_firstName" field should contain "John"
-        And the "user_lastName" field should contain "DOE"
-        And the "user_phoneNumber" field should contain "06 12 34 56 78"
-        And the "user_birthday_day" field should contain "1"
-        And the "user_birthday_month" field should contain "1"
-        And the "user_birthday_year" field should contain "1990"
-        And the "user_organizationOccupation" field should contain "Secouriste"
-        And the "user[vulnerable]" field should contain "1"
-        And the "user[fullyEquipped]" field should contain "1"
-        And the "user[drivingLicence]" field should contain "1"
-        And the "user[occupation][choice]" field should contain "Pharmacien"
+        Then the "user[identificationNumber]" field should contain "990001A"
+        And the "user[emailAddress]" field should contain "john.doe@resop.com"
+        And the "user[firstName]" field should contain "John"
+        And the "user[lastName]" field should contain "DOE"
+        And the "user[phoneNumber]" field should contain "06 12 34 56 78"
+        And the "user[birthday][day]" field should contain "1"
+        And the "user[birthday][month]" field should contain "1"
+        And the "user[birthday][year]" field should contain "1990"
+        And the "user[properties][organizationOccupation]" field should contain "Secouriste"
+        And the "user[properties][vulnerable]" field should contain "1"
+        And the "user[properties][fullyEquipped]" field should contain "1"
+        And the "user[properties][drivingLicence]" field should contain "1"
+        And the "user[properties][occupation][choice]" field should contain "Pharmacien"
 
     Scenario: As a user, I cannot update my account with empty data
         Given I am authenticated as "john.doe@resop.com"
@@ -56,7 +56,57 @@ Feature:
         And I should see "Cette valeur n'est pas une adresse email valide." in the "label[for=user_emailAddress] .form-error-message" element
         And I should see "Cette valeur n'est pas un numéro de téléphone valide." in the "label[for=user_phoneNumber] .form-error-message" element
 
-    Scenario Outline: As a user, I can update my account
+    Scenario: As a user, I can update my account
+        Given I am authenticated as "john.doe@resop.com"
+        And I am on "/user/edit"
+        When I fill in the following:
+            | user[identificationNumber]               | 899999A                |
+            | user[emailAddress]                       | vincent@resop.com      |
+            | user[phoneNumber]                        | 0611111111             |
+            | user[firstName]                          | firstName              |
+            | user[lastName]                           | lastName               |
+            | user[birthday][day]                      | 2                      |
+            | user[birthday][month]                    | 2                      |
+            | user[birthday][year]                     | 1980                   |
+            | user[properties][organizationOccupation] | organizationOccupation |
+            | user[properties][vulnerable]             | 0                      |
+            | user[properties][fullyEquipped]          | 0                      |
+            | user[properties][drivingLicence]         | 0                      |
+            | user[properties][occupation][choice]     | Pompier                |
+        And I press "Valider"
+        Then I should be on "/"
+        And the response status code should be 200
+        And I should see "Vos informations ont été mises à jour avec succès."
+        When I go to "/user/edit"
+        Then the "user[identificationNumber]" field should contain "899999A"
+        And the "user[emailAddress]" field should contain "vincent@resop.com"
+        And the "user[firstName]" field should contain "firstName"
+        And the "user[lastName]" field should contain "lastName"
+        And the "user[phoneNumber]" field should contain "06 11 11 11 11"
+        And the "user[birthday][day]" field should contain "2"
+        And the "user[birthday][month]" field should contain "2"
+        And the "user[birthday][year]" field should contain "1980"
+        And the "user[properties][organizationOccupation]" field should contain "organizationOccupation"
+        And the "user[properties][vulnerable]" field should contain "0"
+        And the "user[properties][fullyEquipped]" field should contain "0"
+        And the "user[properties][drivingLicence]" field should contain "0"
+        And the "user[properties][occupation][choice]" field should contain "Pompier"
+
+    @javascript
+    Scenario: As a user, I can update my occupation with a free text
+        Given I am authenticated as "john.doe@resop.com"
+        And I am on "/user/edit"
+        When I check "Autre"
+        Then I wait for "#user_properties_occupation_other" to be visible
+        And I fill in "user[properties][occupation][other]" with "Plombier"
+        And I press "Valider"
+        Then I should be on "/"
+        And I should see "Vos informations ont été mises à jour avec succès."
+        When I go to "/user/edit"
+        Then I wait for "#user_properties_occupation_other" to be visible
+        And the "user[properties][occupation][other]" field should contain "Plombier"
+
+    Scenario Outline: As a user, I can update my email and login using the new email
         Given I am authenticated as "john.doe@resop.com"
         And I am on "/user/edit"
         When I fill in the following:
