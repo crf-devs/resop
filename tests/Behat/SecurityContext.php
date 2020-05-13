@@ -102,7 +102,10 @@ final class SecurityContext extends RawMinkContext
 
     private function loginUserForPantherDriver(User $user): void
     {
-        throw new \Exception('Impossible to connect an User yet.');
+        $this->minkContext->visit('/login');
+        $this->minkContext->fillField('user_login[identifier]', $user->getIdentificationNumber());
+        $this->minkContext->pressButton('Je me connecte');
+        $this->minkContext->assertPageAddress('/');
     }
 
     private function loginOrganizationForPantherDriver(Organization $user): void

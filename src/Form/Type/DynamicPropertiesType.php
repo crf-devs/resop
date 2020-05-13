@@ -62,12 +62,13 @@ class DynamicPropertiesType extends AbstractType
                 case self::TYPE_CHOICE_WITH_OTHER:
                     $property['choices'][$this->translator->trans('common.other')] = '-';
                     $options['attr'] = ['class' => 'js-choice-with-other'];
+                    // no break
                 case self::TYPE_CHOICE:
-                    $formClass = $property['type'] === self::TYPE_CHOICE ? ChoiceType::class : ChoiceWithOtherType::class;
+                    $formClass = self::TYPE_CHOICE === $property['type'] ? ChoiceType::class : ChoiceWithOtherType::class;
                     $options['expanded'] = true;
                     $options['placeholder'] = false;
 
-                    if (!isset($property['choices']) || !is_array($property['choices']) || count($property['choices']) < 2) {
+                    if (!isset($property['choices']) || !\is_array($property['choices']) || \count($property['choices']) < 2) {
                         throw new \InvalidArgumentException('Invalid property "%s". Key "choices" is mandatory and at least two choices should be provided.');
                     }
                     $options['choices'] = $property['choices'];

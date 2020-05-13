@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Twig\Extension;
-
 
 use App\Form\Type\DynamicPropertiesType;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -28,6 +28,9 @@ class DynamicPropertyExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @param bool|string|int $value
+     */
     public function dynamicPropertyValue($value, array $propertyDefinition): string
     {
         if (\in_array($propertyDefinition['type'], [DynamicPropertiesType::TYPE_CHOICE, DynamicPropertiesType::TYPE_CHOICE_WITH_OTHER], true)) {
@@ -42,6 +45,7 @@ class DynamicPropertyExtension extends AbstractExtension
             return (string) $value;
         }
 
+        $value = (string) $value;
         if (\strlen($value) <= 75) {
             return $value;
         }

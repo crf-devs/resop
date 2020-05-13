@@ -8,12 +8,8 @@ App\Entity\User:
     emailAddress (unique): john.doe@resop.com
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
-    occupation: Pharmacien
-    organizationOccupation: Secouriste
     skillSet: '<randomSkillSet()>'
-    vulnerable: true
-    fullyEquipped: true
-    drivingLicence: true
+    properties: {"occupation": "Pharmacien", "organizationOccupation": "Secouriste", "vulnerable": true, "fullyEquipped": true, "drivingLicence": true}
   User.jane_doe:
     id: 102
     firstName: Jane
@@ -23,12 +19,8 @@ App\Entity\User:
     emailAddress (unique): jane.doe@resop.com
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
-    occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
-    organizationOccupation: Secouriste
     skillSet: '<randomSkillSet()>'
-    vulnerable: '<boolean(50)>'
-    fullyEquipped: '<boolean(50)>'
-    drivingLicence: '<boolean(50)>'
+    properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
   User.chuck_norris:
     id: 103
     firstName: Chuck
@@ -38,9 +30,5 @@ App\Entity\User:
     emailAddress (unique): chuck.norris@resop.com
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
-    occupation: '<randomElement(["Pharmacien", "Pompier", "Ambulancier.e", "Logisticien", "Infirmier.e"])>'
-    organizationOccupation: Secouriste
     skillSet: '<randomSkillSet()>'
-    vulnerable: '<boolean(50)>'
-    fullyEquipped: '<boolean(50)>'
-    drivingLicence: '<boolean(50)>'
+    properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
