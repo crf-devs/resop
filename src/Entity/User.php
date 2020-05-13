@@ -85,11 +85,6 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     public string $birthday = '';
 
     /**
-     * @ORM\Column
-     */
-    public string $occupation = '';
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", fetch="EAGER")
      * @Assert\NotNull()
      */
@@ -124,9 +119,6 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     {
         $user = new self();
         $user->birthday = '1990-01-01';
-
-        // todo: wtf?
-//        $user->vulnerable = true;
 
         if (empty($identifier)) {
             return $user;

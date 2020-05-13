@@ -70,6 +70,7 @@ parameters:
               - avis défavorable de votre unité locale ou du pole santé (local ou territorial)
           required: true
           hidden: false
+          container_class: col-xl-6
         - key: organizationOccupation
           type: smallText
           label: Quelles sont vos fonctions de cadre au sein de votre structure d'emploi ?
@@ -77,6 +78,7 @@ parameters:
           help: ~
           required: false
           hidden: false
+          container_class: col-xl-6
         - key: fullyEquipped
           type: boolean
           label: Avez-vous un uniforme en dotation chez vous ?
@@ -84,6 +86,7 @@ parameters:
           help: ~
           required: true
           hidden: false
+          container_class: col-xl-6
         - key: drivingLicence
           type: boolean
           label: Avez-vous le permis B depuis plus de 3 ans ?
@@ -91,11 +94,24 @@ parameters:
           help: ~
           required: true
           hidden: false
-#        - key: occupation
-#          #todo: choice with other
-#          type: smallText
-#          # todo: fix label contextualized: user.occupationTitle / user.detail.occupation
-#          label: user.occupationTitle
-#          help: ~
-#          required: false
-#          hidden: false
+          container_class: col-xl-6
+        - key: occupation
+          type: choice_with_other
+          label: Quelle est votre profession ?
+          columnLabel: Profession
+          help: ~
+          required: false
+          hidden: false
+          choices:
+            Compétences pédiatriques: Compétences pédiatriques
+            Infirmier.e: Infirmier.e
+            Médecin: Médecin
+            Ambulancier.e: Ambulancier.e
+            Aide soignant.e: Aide soignant.e
+            Infirmier.e anesthésiste: Infirmier.e anesthésiste
+            Sage femme: Sage femme
+            Pharmacien: Pharmacien
+            Autre personnel de santé: Autre personnel de santé
+            Pompier: Pompier
+            Gendarme / Policier: Gendarme / Policier
+            Logisticien: Logisticien

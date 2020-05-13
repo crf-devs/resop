@@ -328,12 +328,12 @@ final class ApplicationFixtures extends Fixture
                 $user->setEmailAddress('user'.$x.'@resop.com');
                 $user->phoneNumber = $this->phoneNumberUtil->parse('0102030405', 'FR');
                 $user->birthday = '1990-01-01';
-                $user->occupation = $occupations[array_rand($occupations)];
                 $user->properties = [
                     'organizationOccupation' => 'Secouriste',
                     'fullyEquipped' => (bool) random_int(0, 1),
                     'drivingLicence' => (bool) random_int(0, 1),
-                    'vulnerable' => (bool) random_int(0, 1)
+                    'vulnerable' => (bool) random_int(0, 1),
+                    'occupation' => $occupations[array_rand($occupations)]
                 ];
                 $user->skillSet = (array) array_rand($availableSkillSet, random_int(1, 3));
 

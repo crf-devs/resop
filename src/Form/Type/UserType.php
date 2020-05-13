@@ -55,8 +55,6 @@ class UserType extends AbstractType
         /** @var Organization|null $organization */
         $organization = $builder->getData()->organization;
 
-        $occupationChoices = (array) array_combine(self::DEFAULT_OCCUPATIONS, self::DEFAULT_OCCUPATIONS);
-        $occupationChoices += ['Autre' => '-'];
         $builder
             ->add('organization', OrganizationEntityType::class, [
                 'placeholder' => '',
@@ -87,14 +85,6 @@ class UserType extends AbstractType
             ])
             ->add('emailAddress', EmailType::class, [
                 'empty_data' => '',
-            ])
-            ->add('occupation', ChoiceWithOtherType::class, [
-                'choices' => $occupationChoices,
-                'expanded' => true,
-                'placeholder' => false,
-                'required' => false,
-                'attr' => ['class' => 'js-occupation'],
-                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'user.occupationTitle' : 'user.detail.occupation'
             ])
             ->add('skillSet', ChoiceType::class, [
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),

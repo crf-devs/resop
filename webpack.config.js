@@ -31,7 +31,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
-    .addEntry('user-form', './assets/js/user-form.js')
+    .addEntry('form-choice-with-other', './assets/js/form-choice-with-other.js')
     .addEntry('availability-form', './assets/js/availability-form.js')
     .addEntry('forecast', './assets/js/forecast.js')
     .addEntry('planning', './assets/js/planning.js')

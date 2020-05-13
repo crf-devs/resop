@@ -7,7 +7,6 @@
     <th class="item-data">{{ 'user.identificationNumber' | trans }}</th>
     <th class="item-data">{{ 'common.phoneNumberShort' | trans }}</th>
     <th class="item-data">{{ 'user.email' | trans }}</th>
-    <th class="item-data">{{ 'user.occupationTitle' | trans }}</th>
     <th class="item-data">{{ 'user.skills' | trans }}</th>
     {% for user_property in user_properties %}
         <th class="item-data">{{ user_property.columnLabel|default(user_property.label)|default }}</th>
@@ -26,7 +25,6 @@
     <td class="item-data">{{ item.entity.identificationNumber }}</td>
     <td class="item-data">{{ item.entity.phoneNumber|phone_number_format('NATIONAL') }}</td>
     <td class="item-data">{{ item.entity.emailAddress }}</td>
-    <td class="item-data" title="{{ item.entity.occupation | emptyIfSmaller(50) }}">{{ item.entity.occupation | truncate(50) }}</td>
     <td class="item-data">{{ item.entity|userBadges }}</td>
     {% for user_property in user_properties %}
         <td class="item-data" title="{{ user_property.columnLabel|default(user_property.label)|default }}">
