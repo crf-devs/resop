@@ -18,8 +18,6 @@
     </dd>
     <dt class="col-4">{{ 'user.dob'|trans }}</dt>
     <dd class="col-8">{{ user.birthday|format_date('long') }}</dd>
-    <dt class="col-4">{{ 'user.occupationTitle'|trans }}</dt>
-    <dd class="col-8">{{ user.occupation }}</dd>
     {% for user_property in user_properties %}
         <dt class="col-4">{{ user_property.columnLabel|default(user_property.label)|default }}</dt>
         <dd class="col-8">{{ dynamicPropertyValue(user.properties[user_property.key]|default('-'), user_property) }}</dd>

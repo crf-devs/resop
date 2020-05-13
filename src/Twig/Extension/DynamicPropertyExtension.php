@@ -4,6 +4,7 @@
 namespace App\Twig\Extension;
 
 
+use App\Form\Type\DynamicPropertiesType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -33,8 +34,8 @@ class DynamicPropertyExtension extends AbstractExtension
             return $this->translator->trans(sprintf('common.%s', $value ? 'yes' : 'no'));
         }
 
-        if ($propertyDefinition['type'] === 'choice') {
-            return array_flip($propertyDefinition['choices'])[$value] ?? '';
+        if (\in_array($propertyDefinition['type'], [DynamicPropertiesType::TYPE_CHOICE, DynamicPropertiesType::TYPE_CHOICE_WITH_OTHER], true)) {
+            return array_flip($propertyDefinition['choices'])[$value] ?? $value;
         }
 
         if (!\is_string($value)) {

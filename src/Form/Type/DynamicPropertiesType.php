@@ -10,7 +10,10 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DynamicPropertiesType extends AbstractType
 {
@@ -19,6 +22,14 @@ class DynamicPropertiesType extends AbstractType
     public const TYPE_NUMBER = 'number';
     public const TYPE_TEXT = 'text';
     public const TYPE_CHOICE = 'choice';
+    public const TYPE_CHOICE_WITH_OTHER = 'choice_with_other';
+
+    private TranslatorInterface $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -48,9 +59,13 @@ class DynamicPropertiesType extends AbstractType
                     $options['expanded'] = true;
                     $options['choices'] = ['common.yes' => true, 'common.no' => false];
                     break;
+                case self::TYPE_CHOICE_WITH_OTHER:
+                    $property['choices'][$this->translator->trans('common.other')] = '-';
+                    $options['attr'] = ['class' => 'js-choice-with-other'];
                 case self::TYPE_CHOICE:
-                    $formClass = ChoiceType::class;
+                    $formClass = $property['type'] === self::TYPE_CHOICE ? ChoiceType::class : ChoiceWithOtherType::class;
                     $options['expanded'] = true;
+                    $options['placeholder'] = false;
 
                     if (!isset($property['choices']) || !is_array($property['choices']) || count($property['choices']) < 2) {
                         throw new \InvalidArgumentException('Invalid property "%s". Key "choices" is mandatory and at least two choices should be provided.');
@@ -64,6 +79,17 @@ class DynamicPropertiesType extends AbstractType
             $options['help_html'] = true;
 
             $builder->add($property['key'], $formClass, $options);
+        }
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options): void
+    {
+        foreach ($options['config'] as $property) {
+            if (!isset($property['container_class'])) {
+                continue;
+            }
+
+            $view->children[$property['key']]->vars['container_class'] = $property['container_class'];
         }
     }
 

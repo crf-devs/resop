@@ -50,6 +50,7 @@ common:
   yes: Oui
   start: Début
   end: Fin
+  other: Autre
 message:
   confirmDelete: Vous êtes sur le point de supprimer l'élément
   deleteAssetWarning: Vous êtes sur le point de supprimer le véhicule suivant et toutes ses disponibilités
@@ -212,7 +213,6 @@ user:
   availabilitySpecificWeek: Mes disponibilités pour la semaine du %week%
   createMyAccount: Créer mon compte
   detail:
-    occupation: Quelle est votre profession ?
     organization: Votre structure de rattachement
     skillSet:
       label: Quelles sont vos compétences Croix-Rouge ?
