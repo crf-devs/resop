@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/", name="app_organization_user_list", methods={"GET"})
+ * @Route(name="app_organization_user_list", methods={"GET"})
  * @IsGranted(OrganizationVoter::CAN_MANAGE, subject="organization")
  */
 class UserListController extends AbstractController

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Organization;
+namespace App\Controller\Organization\Children;
 
+use App\Controller\Organization\AbstractOrganizationController;
 use App\Entity\Organization;
 use App\Form\Type\OrganizationType;
 use App\Security\Voter\OrganizationVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/new", name="app_organization_new", methods={"GET", "POST"})
  * @IsGranted(OrganizationVoter::CAN_CREATE)
  */
-class OrganizationNewController extends AbstractController
+class NewController extends AbstractOrganizationController
 {
     public function __invoke(Request $request): Response
     {

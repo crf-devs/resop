@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -101,7 +102,10 @@ final class OrganizationLoginFormAuthenticator extends AbstractFormLoginAuthenti
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('app_organization_index'));
+        /** @var Organization $user */
+        $user = $token->getUser();
+
+        return new RedirectResponse($this->urlGenerator->generate('app_organization_dashboard', ['organization' => $user->getId()]));
     }
 
     protected function getLoginUrl(): string

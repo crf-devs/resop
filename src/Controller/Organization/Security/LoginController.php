@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\Security;
 
+use App\Controller\Organization\AbstractOrganizationController;
+use App\Entity\Organization;
 use App\Entity\User;
 use App\Repository\OrganizationRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -14,7 +15,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 /**
  * @Route("/login", name="app_organization_login")
  */
-final class LoginController extends AbstractController
+final class LoginController extends AbstractOrganizationController
 {
     private AuthenticationUtils $authenticationUtils;
     private OrganizationRepository $organizationRepository;
@@ -27,8 +28,14 @@ final class LoginController extends AbstractController
 
     public function __invoke(): Response
     {
-        if (\is_object($this->getUser())) {
-            return $this->redirectToRoute($this->getUser() instanceof User ? 'app_user_home' : 'app_organization_index');
+        /** @var Organization|User|null $user */
+        $user = $this->getUser();
+        if (\is_object($user)) {
+            if ($user instanceof User) {
+                return $this->redirectToRoute('app_user_home');
+            }
+
+            return $this->redirectToRoute('app_organization_dashboard', ['organization' => $user->getId()]);
         }
 
         return $this->render('organization/login.html.twig', [

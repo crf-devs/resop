@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/", name="app_organization_index", methods={"GET"})
+ * @Route(name="app_organization_index", methods={"GET"})
  */
-final class IndexController extends AbstractController
+final class IndexController extends AbstractOrganizationController
 {
     public function __invoke(): Response
     {
-        return $this->render('organization/home.html.twig');
+        return $this->redirectToRoute('app_organization_dashboard');
     }
 }

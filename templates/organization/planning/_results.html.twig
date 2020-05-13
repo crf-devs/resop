@@ -16,12 +16,12 @@
         </div>
         {% if displayActions %}
             <div class="col-md">
-                <button class="btn btn-sm btn-block trigger-update booked" action="book" data-status="booked" data-status-with-comment data-href="{{ path('planning_update', { action: 'book' }) }}">{{ 'organization.asset.markAsBooked' | trans }}</button>
-                <button class="btn btn-sm btn-block trigger-update available" action="allow" data-status="available" data-href="{{ path('planning_update', { action: 'allow' }) }}">{{ 'organization.asset.markAsAvailable' | trans }}</button>
+                <button class="btn btn-sm btn-block trigger-update booked" action="book" data-status="booked" data-status-with-comment data-href="{{ path('app_organization_planning_update', { action: 'book' }) }}">{{ 'organization.asset.markAsBooked' | trans }}</button>
+                <button class="btn btn-sm btn-block trigger-update available" action="allow" data-status="available" data-href="{{ path('app_organization_planning_update', { action: 'allow' }) }}">{{ 'organization.asset.markAsAvailable' | trans }}</button>
             </div>
             <div class="col-md">
-                <button class="btn btn-sm btn-block trigger-update locked" action="lock" data-status="locked" data-status-with-comment data-href="{{ path('planning_update', { action: 'lock' }) }}">{{ 'organization.asset.markAsLocked' | trans }}</button>
-                <button class="btn btn-sm btn-block trigger-update unknown" action="delete" data-status="unknown" data-href="{{ path('planning_update', { action: 'delete' }) }}">{{ 'organization.asset.markAsUnavailable' | trans }}</button>
+                <button class="btn btn-sm btn-block trigger-update locked" action="lock" data-status="locked" data-status-with-comment data-href="{{ path('app_organization_planning_update', { action: 'lock' }) }}">{{ 'organization.asset.markAsLocked' | trans }}</button>
+                <button class="btn btn-sm btn-block trigger-update unknown" action="delete" data-status="unknown" data-href="{{ path('app_organization_planning_update', { action: 'delete' }) }}">{{ 'organization.asset.markAsUnavailable' | trans }}</button>
             </div>
         {% else %}
             <div class="col-md">

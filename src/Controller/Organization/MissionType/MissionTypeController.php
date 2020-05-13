@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\MissionType;
 
+use App\Controller\Organization\AbstractOrganizationController;
 use App\Entity\MissionType;
 use App\Entity\Organization;
 use App\Form\Type\MissionTypeType;
 use App\Repository\MissionTypeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/mission_type")
+ * @Route("/")
  * @Security("is_granted('ROLE_PARENT_ORGANIZATION')")
  */
-class MissionTypeController extends AbstractController
+class MissionTypeController extends AbstractOrganizationController
 {
     private MissionTypeRepository $missionTypeRepository;
 
@@ -28,7 +28,7 @@ class MissionTypeController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_organization_mission_type_index", methods={"GET"})
+     * @Route(name="app_organization_mission_type_index", methods={"GET"})
      */
     public function index(): Response
     {

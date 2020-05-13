@@ -13,12 +13,13 @@ Feature:
         When I select "<identifier>" from "identifier"
         And I fill in "password" with "covid19"
         And I press "Je me connecte"
-        Then I should be on "/organizations/"
+        Then the response status code should be 200
+        And I should be on "/organizations/<id>"
         And I should see "<name>"
         Examples:
-            | identifier | name            |
-            | DT75       | DT75            |
-            | UL 01-02   | DT75 - UL 01-02 |
+            | identifier | name            | id  |
+            | DT75       | DT75            | 201 |
+            | UL 01-02   | DT75 - UL 01-02 | 203 |
 
     Scenario: As an authenticated organization, I can log out
         Given I am authenticated as "UL 01-02"

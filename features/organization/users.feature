@@ -11,7 +11,7 @@ Feature:
 
     Scenario: As an organization, I can list the users from my organization
         Given I am authenticated as "DT75"
-        And I am on "/organizations"
+        And I am on "/organizations/201"
         When I follow "Afficher la liste de mes bénévoles inscrits"
         Then I should be on "/organizations/201/users/"
         And the response status code should be 200
@@ -23,9 +23,9 @@ Feature:
 
     Scenario: As a parent organization, I can list the users from my children organizations
         Given I am authenticated as "DT75"
-        And I am on "/organizations"
+        And I am on "/organizations/201"
         When I follow "Modifier mes structures"
-        Then I should be on "/organizations/children"
+        Then I should be on "/organizations/201/children/"
         And the response status code should be 200
         When I follow "Liste des bénévoles"
         Then I should be on "/organizations/203/users/"
@@ -43,7 +43,7 @@ Feature:
 #    @javascript
 #    Scenario: As an organization, I can display a user modal
 #        Given I am authenticated as "DT75"
-#        When I go to "/organizations/203/users"
+#        When I go to "/organizations/203/users/"
 #        And I follow "Afficher"
 #        And I wait for ".ajax-modal-content" to be visible
 #        Then I should see "Modifier"
@@ -102,7 +102,7 @@ Feature:
 #
 #    Scenario: As an admin of an organization, I cannot directly delete a user from my organization
 #        Given I am authenticated as "john.doe@resop.com"
-#        When I go to "/organizations/3/users/3/delete"
+#        When I go to "/organizations/203/users/3/delete"
 #        Then the response status code should be 405
 #
     Scenario: As an admin of an organization, I cannot delete a user from another organization

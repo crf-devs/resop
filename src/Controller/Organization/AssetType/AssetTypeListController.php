@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/assetTypes", name="app_organization_assetType_list", methods={"GET"})
+ * @Route(name="app_organization_assetType_list", methods={"GET"})
  * @Security("is_granted('ROLE_PARENT_ORGANIZATION')")
  */
 class AssetTypeListController extends AbstractController

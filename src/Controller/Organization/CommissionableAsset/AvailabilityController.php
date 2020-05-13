@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\CommissionableAsset;
 
+use App\Controller\Organization\AbstractOrganizationController;
 use App\Controller\User\Availability\UserAvailabityControllerTrait;
 use App\Domain\AvailabilitiesDomain;
 use App\Entity\CommissionableAsset;
@@ -11,7 +12,6 @@ use App\Entity\CommissionableAssetAvailability;
 use App\Form\Type\AvailabilitiesDomainType;
 use App\Repository\CommissionableAssetAvailabilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/{asset<\d+>}/availability/{week<\d{4}-W\d{2}>?}", name="app_organization_asset_availability", methods={"GET", "POST"})
  */
-final class AvailabilityController extends AbstractController
+final class AvailabilityController extends AbstractOrganizationController
 {
     use UserAvailabityControllerTrait;
 

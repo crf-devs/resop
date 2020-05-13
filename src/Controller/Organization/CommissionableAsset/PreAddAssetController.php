@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("preAdd",  name="app_organization_commissionable_pre_add_asset" , methods={"GET"})
+ * @Route("/preAdd",  name="app_organization_commissionable_pre_add_asset" , methods={"GET"})
  */
 class PreAddAssetController extends AbstractController
 {

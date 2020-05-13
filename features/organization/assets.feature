@@ -10,7 +10,7 @@ Feature:
 
     Scenario: As an organization, I can list the assets from my organization
         Given I am authenticated as "DT75"
-        And I am on "/organizations"
+        And I am on "/organizations/201"
         When I follow "Afficher la liste de mes véhicules"
         Then I should be on "/organizations/201/assets/"
         And the response status code should be 200
@@ -22,9 +22,9 @@ Feature:
 
     Scenario: As a parent organization, I can list the assets from my children organizations
         Given I am authenticated as "DT75"
-        And I am on "/organizations"
+        And I am on "/organizations/201"
         When I follow "Modifier mes structures"
-        Then I should be on "/organizations/children"
+        Then I should be on "/organizations/201/children/"
         And the response status code should be 200
         When I follow "Liste des véhicules"
         Then I should be on "/organizations/203/assets/"
@@ -106,13 +106,6 @@ Feature:
         Given I am authenticated as "DT75"
         When I go to "/organizations/201/assets/75012/edit"
         Then the response status code should be 404
-
-    Scenario: As a parent organization, I can delete an asset from my organization or children organizations
-        Given I am on "/organizations/login"
-        When I select "DT75" from "identifier"
-        And I fill in "password" with "covid19"
-        And I press "Je me connecte"
-        Then I should be on "/organizations/"
 
     @javascript
     Scenario: As a parent organization, I can delete an asset from my organization or children organizations

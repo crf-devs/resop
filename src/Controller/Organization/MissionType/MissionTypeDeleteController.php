@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\MissionType;
 
+use App\Controller\Organization\AbstractOrganizationController;
 use App\Entity\MissionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @Route("/mission_type/{id}/delete", name="app_organization_mission_type_delete", methods={"GET"})
+ * @Route("/{id}/delete", name="app_organization_mission_type_delete", methods={"GET"})
  * @Security("missionType.organization == user")
  */
-class MissionTypeDeleteController extends AbstractController
+class MissionTypeDeleteController extends AbstractOrganizationController
 {
     private TranslatorInterface $translator;
     private EntityManagerInterface $entityManager;
