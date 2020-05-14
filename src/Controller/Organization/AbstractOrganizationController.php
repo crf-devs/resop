@@ -18,7 +18,11 @@ abstract class AbstractOrganizationController extends AbstractController
         if (preg_match('/^app_organization_.*$/', $route)) {
             /** @var Organization $user */
             $user = $this->getUser();
-            $parameters = array_merge(['organization' => $user->getId()], $parameters);
+            $organization = $parameters['organization'] ?? null;
+            $parameters = array_merge($parameters, ['organization' => $user->getId()]);
+            if (null !== $organization && $user->getId() !== $organization) {
+                $parameters['organizationId'] = $organization;
+            }
         }
 
         return parent::generateUrl($route, $parameters, $referenceType);

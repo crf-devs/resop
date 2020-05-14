@@ -25,7 +25,7 @@
         class="btn btn-outline-danger trigger-delete float-right"
         data-message="{{ 'message.deleteUserWarning' | trans }}"
         data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )"
-        data-href="{{ path('app_user_delete', { 'userToDelete': user.id, 'organization': user.organization.id }) }}"
+        data-href="{{ path('app_organization_user_delete', { 'userToDelete': user.id }) }}"
         href="#"
     >{{ 'action.delete' | trans }}</a>
 

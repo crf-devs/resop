@@ -41,8 +41,7 @@ class AssetsListController extends AbstractController
                 'assets' => $this->assetRepository->findByOrganization($organization),
                 'organization_selector_form' => $this->organizationSelectorFormFactory->createForm(
                     $organization,
-                    $currentOrganization,
-                    $request->attributes->get('_route')
+                    $currentOrganization
                 )->createView(),
             ]
         );

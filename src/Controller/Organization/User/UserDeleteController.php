@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{userToDelete<\d+>}/delete", name="app_user_delete", methods={"GET"})
+ * @Route("/{userToDelete<\d+>}/delete", name="app_organization_user_delete", methods={"GET"})
  * @IsGranted(UserVoter::CAN_EDIT, subject="userToDelete")
  */
 class UserDeleteController extends AbstractOrganizationController

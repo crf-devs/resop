@@ -9,6 +9,7 @@ use App\Entity\Organization;
 use App\Repository\AssetTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,6 +28,7 @@ class PreAddAssetType extends AbstractType
                 'query_builder' => fn (AssetTypeRepository $assetTypeRepository) => $assetTypeRepository->findByOrganizationQB($parentOrganization),
             ])
             ->add('submit', SubmitType::class, ['label' => 'Continuer'])
+            ->add('organizationId', HiddenType::class)
         ;
     }
 

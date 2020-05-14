@@ -18,12 +18,12 @@ class OrganizationSelectorFormFactory
         $this->formFactory = $formFactory;
     }
 
-    public function createForm(Organization $organization, Organization $loggedOrganization, string $routeToRedirect): FormInterface
+    public function createForm(Organization $organization, Organization $loggedOrganization): FormInterface
     {
         return $this->formFactory->create(
             OrganizationSelectorType::class,
             ['organization' => $organization],
-            ['currentOrganization' => $loggedOrganization, 'route_to_redirect' => $routeToRedirect]
+            ['currentOrganization' => $loggedOrganization]
         );
     }
 }

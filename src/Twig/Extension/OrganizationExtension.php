@@ -35,23 +35,28 @@ final class OrganizationExtension extends AbstractExtension
 
     public function getOrganizationPath(string $name, array $parameters = []): string
     {
-        /** @var Organization|User|null $user */
-        $user = $this->security->getUser();
-        if (preg_match('/^app_organization_.*$/', $name) && null !== $user) {
-            $parameters = array_merge(['organization' => $user->getId()], $parameters);
-        }
-
-        return $this->routingExtension->getPath($name, $parameters);
+        return $this->routingExtension->getPath($name, $this->buildParameters($name, $parameters));
     }
 
     public function getOrganizationUrl(string $name, array $parameters = [], bool $schemeRelative = false): string
     {
+        return $this->routingExtension->getUrl($name, $this->buildParameters($name, $parameters), $schemeRelative);
+    }
+
+    private function buildParameters(string $name, array $parameters): array
+    {
         /** @var Organization|User|null $user */
         $user = $this->security->getUser();
-        if (preg_match('/^app_organization_.*$/', $name) && null !== $user) {
-            $parameters = array_merge(['organization' => $user->getId()], $parameters);
+        if (!preg_match('/^app_organization_.*$/', $name) || !$user instanceof Organization) {
+            return $parameters;
         }
 
-        return $this->routingExtension->getUrl($name, $parameters, $schemeRelative);
+        $organization = $parameters['organization'] ?? null;
+        $parameters = array_merge($parameters, ['organization' => $user->getId()]);
+        if (null !== $organization && $parameters['organization'] !== $organization) {
+            $parameters['organizationId'] = $organization;
+        }
+
+        return $parameters;
     }
 }

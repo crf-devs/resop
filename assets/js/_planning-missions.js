@@ -97,13 +97,9 @@ function addUserToMission(url) {
 export function fetchMissions() {
   let url;
 
-  if ($('.planning').length) {
-    url = Routing.generate('app_organization_mission_find_by_filters', {
-      organization: window.location.pathname.replace(/^\/organizations\/(\d+).*$/, '$1'),
-    });
-  } else {
-    url = window.location.pathname + '/missions';
-  }
+  url = Routing.generate('app_organization_mission_find_by_filters', {
+    organization: window.location.pathname.replace(/^\/organizations\/(\d+).*$/, '$1'),
+  });
 
   $.ajax({
     method: 'GET',

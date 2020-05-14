@@ -45,7 +45,6 @@ class UserListController extends AbstractController
                 'organization_selector_form' => $this->organizationSelectorFormFactory->createForm(
                     $organization,
                     $currentOrganization,
-                    $request->attributes->get('_route')
                 )->createView(),
             ]
         );

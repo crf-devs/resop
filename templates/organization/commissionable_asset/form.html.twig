@@ -1,6 +1,6 @@
 {% extends 'organization/base.html.twig' %}
 
-{% set actionName = asset.id is defined ? 'Modification' : 'Création' %}
+{% set actionName = asset.id is not empty ? 'Modification' : 'Création' %}
 
 {% block title %}{{ 'organization.asset.createEdit' | trans ({ '%action%' : actionName }) }}{% endblock %}
 

@@ -27,7 +27,7 @@ Feature:
         Then I should be on "/organizations/201/children/"
         And the response status code should be 200
         When I follow "Liste des véhicules"
-        Then I should be on "/organizations/203/assets/"
+        Then I should be on "/organizations/201/assets/?organizationId=203"
         And the response status code should be 200
         And I should see "75012"
         And I should see "75016"
@@ -104,7 +104,7 @@ Feature:
 
     Scenario: As a parent organization, I cannot update an invalid asset
         Given I am authenticated as "DT75"
-        When I go to "/organizations/201/assets/75012/edit"
+        When I go to "/organizations/201/assets/77102/edit"
         Then the response status code should be 404
 
     @javascript
@@ -115,7 +115,7 @@ Feature:
         And I wait for "#delete-item-modal" to be visible
         Then I should see "Vous êtes sur le point de supprimer le véhicule suivant et toutes ses disponibilités : VPSP - 75012"
         When I press "Supprimer"
-        Then I should be on "/organizations/203/assets/"
+        Then I should be on "/organizations/201/assets/?organizationId=203"
         And I should see "Le véhicule a été supprimé avec succès."
         And I should not see "75012"
 
