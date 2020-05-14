@@ -213,6 +213,7 @@ project:
   version: Version %tag%
 user:
   accountAction: "%action% de compte"
+  passwordAction: Mon mot de passe
   availabilities: Vos disponibilités
   availabilityCurrentWeek: Mes disponibilités pour la semaine courante
   availabilityNextWeek: Mes disponibilités pour la semaine prochaine
@@ -231,11 +232,14 @@ user:
   dob: Date de naissance
   info: Informations
   editMyInfo: Modifier mes informations
+  editMyPassword: Modifier mon mot de passe
+  createMyPassword: Renseigner mon mot de passe
   email: E-mail
   firstName: Prénom
   identificationNumber: NIVOL
   lastName: Nom
   login: Numéro NIVOL ou Adresse e-mail
+  password: Mot de passe
   mobile: Numéro de téléphone portable
   occupationTitle: Profession
   occupation:

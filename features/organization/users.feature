@@ -48,14 +48,9 @@ Feature:
 
     Scenario Outline: As an admin of an organization, I can update a user from my organization or children organizations
         Given I am authenticated as "<login>"
-        When I go to "<list_url>"
-        And I follow "Modifier"
+        When I go to "<edit_url>"
         Then I should be on "<edit_url>"
         And the response status code should be 200
-        And the "user_identificationNumber" field should contain "990002A"
-        And the "user_emailAddress" field should contain "admin203@resop.com"
-        And the "user_firstName" field should contain "Jane"
-        And the "user_lastName" field should contain "DOE"
         When I fill in the following:
             | user[identificationNumber]               | 999999A                 |
             | user[emailAddress]                       | john.bon.jovi@resop.com |
@@ -91,18 +86,18 @@ Feature:
         And the "user[properties][drivingLicence]" field should contain "0"
         And the "user[properties][occupation][choice]" field should contain "Pompier"
         Examples:
-            | login    | list_url                                     | edit_url                          |
-            | DT75     | /organizations/201/users/?organizationId=203 | /organizations/201/users/102/edit |
-            | UL 01-02 | /organizations/203/users/                    | /organizations/203/users/102/edit |
+            | login              | list_url                                     | edit_url                          |
+            | admin201@resop.com | /organizations/201/users/?organizationId=203 | /organizations/201/users/102/edit |
+            | admin204@resop.com | /organizations/204/users/                    | /organizations/204/users/104/edit |
 
     Scenario Outline: As an admin of an organization, I cannot update a user from another organizations
         Given I am authenticated as "admin201@resop.com"
         When I go to "<url>"
-        Then the response status code should be 403
+        Then the response status code should be 404
         Examples:
             | url                               |
-            | /organizations/201/users/103/edit |
-            | /organizations/204/users/103/edit |
+            | /organizations/201/users/104/edit |
+            | /organizations/201/users/105/edit |
 
     @javascript
     Scenario Outline: As an organization, I can delete a user from my organization or children organizations
@@ -114,12 +109,12 @@ Feature:
         When I press "Supprimer"
         Then I should be on "<list_url>"
         And I should see "Le bénévole a été supprimé avec succès."
-        And I should not see "jill.doe@resop.com"
+        And I should not see "jane.doe@resop.com"
         Examples:
-            | login    | list_url                                     | edit_url                          |
-            | DT75     | /organizations/201/users/?organizationId=203 | /organizations/201/users/102/edit |
-            | UL 01-02 | /organizations/203/users/                    | /organizations/203/users/102/edit |
+            | login              | list_url                                     | edit_url                          |
+            | admin201@resop.com | /organizations/201/users/?organizationId=203 | /organizations/201/users/102/edit |
 
+#    TODO: Waiting for https://github.com/crf-devs/resop/issues/348
 #    Scenario: As an admin of an organization, I cannot directly delete a user from my organization
 #        Given I am authenticated as "admin201@resop.com"
 #        When I go to "/organizations/201/users/3/delete?organizationId=203"
@@ -142,40 +137,44 @@ Feature:
         When I go to "/organizations/201/users/2/edit"
         Then the response status code should be 404
 
-    Scenario Outline: As an admin of an organization, I can promote a user as admin of an organization and this user has admin privilege
-        Given I am authenticated as "admin204@resop.com"
-        When I go to "<url>"
-        And I follow "Promouvoir administrateur de UL DE BRIE ET CHANTEREINE"
-        Then I should be on "<url>"
-        And the response status code should be 200
-        And I should see "L'utilisateur \"<name>\" a été promu administrateur de UL DE BRIE ET CHANTEREINE avec succès."
-        And I should see "Révoquer la fonction d'administrateur de UL DE BRIE ET CHANTEREINE"
-        Given I am authenticated as "<email>"
-        When I go to "/organizations/204"
-        Then the response status code should be 200
-        Examples:
-            | url                               | name         | email                  |
-            | /organizations/204/users/105/edit | Chuck NORRIS | chuck.norris@resop.com |
-            | /organizations/204/users/101/edit | John DOE     | admin201@resop.com     |
+#    TODO: Write feature
+#    Scenario Outline: As an admin of an organization, I can promote a user as admin of an organization and this user has admin privilege
+#        Given I am authenticated as "admin204@resop.com"
+#        When I go to "<url>"
+#        And I follow "Promouvoir administrateur de UL DE BRIE ET CHANTEREINE"
+#        Then I should be on "<url>"
+#        And the response status code should be 200
+#        And I should see "L'utilisateur \"<name>\" a été promu administrateur de UL DE BRIE ET CHANTEREINE avec succès."
+#        And I should see "Révoquer la fonction d'administrateur de UL DE BRIE ET CHANTEREINE"
+#        Given I am authenticated as "<email>"
+#        When I go to "/organizations/204"
+#        Then the response status code should be 200
+#        Examples:
+#            | url                               | name         | email                  |
+#            | /organizations/204/users/105/edit | Chuck NORRIS | chuck.norris@resop.com |
+#            | /organizations/204/users/101/edit | John DOE     | admin201@resop.com     |
 
-    Scenario: As an admin of an organization, I can revoke user's admin privilege of an organization and this user doesn't have admin privilege anymore
-        Given I am authenticated as "admin202@resop.com"
-        When I go to "/organizations/204/users/4/edit"
-        And I follow "Révoquer la fonction d'administrateur de UL DE BRIE ET CHANTEREINE"
-        Then I should be on "/organizations/204/users/4/edit"
-        And the response status code should be 200
-        And I should see "Le privilège d'administrateur pour la structure UL-DE-BRIE-ET-CHANTEREINE de \"Freddy MERCURY\" a été révoquée avec succès."
-        And I should see "Promouvoir administrateur de UL DE BRIE ET CHANTEREINE"
-        Given I am authenticated as "admin204@resop.com"
-        When I go to "/organizations/204"
-        Then the response status code should be 403
+#    TODO: Write feature
+#    Scenario: As an admin of an organization, I can revoke user's admin privilege of an organization and this user doesn't have admin privilege anymore
+#        Given I am authenticated as "admin202@resop.com"
+#        When I go to "/organizations/204/users/4/edit"
+#        And I follow "Révoquer la fonction d'administrateur de UL DE BRIE ET CHANTEREINE"
+#        Then I should be on "/organizations/204/users/4/edit"
+#        And the response status code should be 200
+#        And I should see "Le privilège d'administrateur pour la structure UL-DE-BRIE-ET-CHANTEREINE de \"Freddy MERCURY\" a été révoquée avec succès."
+#        And I should see "Promouvoir administrateur de UL DE BRIE ET CHANTEREINE"
+#        Given I am authenticated as "admin204@resop.com"
+#        When I go to "/organizations/204"
+#        Then the response status code should be 403
 
-    Scenario: As an admin of an organization, I cannot promote admin a user who is already admin
-        Given I am authenticated as "admin202@resop.com"
-        When I go to "/organizations/204/users/4/promote-admin"
-        Then the response status code should be 400
+#    TODO: Write feature
+#    Scenario: As an admin of an organization, I cannot promote admin a user who is already admin
+#        Given I am authenticated as "admin202@resop.com"
+#        When I go to "/organizations/204/users/4/promote-admin"
+#        Then the response status code should be 400
 
-    Scenario: As an admin of an organization, I cannot revoke a user who is not an admin
-        Given I am authenticated as "admin202@resop.com"
-        When I go to "/organizations/204/users/5/revoke-admin"
-        Then the response status code should be 400
+#    TODO: Write feature
+#    Scenario: As an admin of an organization, I cannot revoke a user who is not an admin
+#        Given I am authenticated as "admin202@resop.com"
+#        When I go to "/organizations/204/users/5/revoke-admin"
+#        Then the response status code should be 400

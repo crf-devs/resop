@@ -8,22 +8,19 @@ use App\Entity\Organization;
 use App\Repository\CommissionableAssetRepository;
 use App\Repository\OrganizationRepository;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * {organization} parameter is useless for the moment, but will be useful in ticket https://github.com/crf-devs/resop/issues/338
- *
  * @Route("/{organization<\d+>}/search", name="app_organization_search", methods={"GET"}, requirements={"id"="\d+"})
+ * @Security("is_granted('ROLE_ORGANIZATION', organization)")
  */
 final class SearchController extends AbstractOrganizationController
 {
-    public function __invoke(Request $request, UserRepository $userRepository, CommissionableAssetRepository $commissionableAssetRepository, OrganizationRepository $organizationRepository): Response
+    public function __invoke(Request $request, Organization $organization, UserRepository $userRepository, CommissionableAssetRepository $commissionableAssetRepository, OrganizationRepository $organizationRepository): Response
     {
-        /** @var Organization $organization */
-        $organization = $this->getUser();
-
         /** @var string $query */
         $query = preg_replace('/\s+/', ' ', trim($request->query->get('query')));
         if (empty($query)) {
@@ -31,6 +28,7 @@ final class SearchController extends AbstractOrganizationController
         }
 
         return $this->render('organization/search.html.twig', [
+            'organization' => $organization,
             'query' => $query,
             'users' => $userRepository->search($organization, $query),
             'assets' => $commissionableAssetRepository->search($organization, $query),

@@ -8,7 +8,6 @@ use App\Entity\Organization;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 /**
  * @method Organization|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,23 +15,11 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
  * @method Organization[]    findAll()
  * @method Organization[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class OrganizationRepository extends ServiceEntityRepository implements UserLoaderInterface
+class OrganizationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Organization::class);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function loadUserByUsername(string $username): ?Organization
-    {
-        return $this->createQueryBuilder('o')
-            ->where('o.name = :value')
-            ->setParameter('value', $username)
-            ->getQuery()
-            ->getOneOrNullResult();
     }
 
     /**

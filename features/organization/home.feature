@@ -21,21 +21,20 @@ Feature:
         When I go to "<url>"
         Then the response status code should be 403
         Examples:
-            | url                     |
-            | /organizations/203        |
-            | /organizations/203/new    |
-            | /organizations/203/search |
-            | /organizations/203/edit   |
-            | /organizations/203/assets |
-            | /organizations/203/users  |
-            | /organizations/planning |
+            | url                             |
+            | /organizations/203              |
+            | /organizations/203/children/new |
+            | /organizations/203/search       |
+            | /organizations/203/assets/      |
+            | /organizations/203/users/       |
+            | /organizations/203/planning     |
 
     Scenario Outline: As an admin of an organization, I cannot go to the homepage of another organization
         Given I am authenticated as "admin201@resop.com"
         When I go to "<url>"
         Then the response status code should be 403
         Examples:
-            | url              |
-            | /organizations/2 |
+            | url                |
+            | /organizations/202 |
             | /organizations/203 |
             | /organizations/204 |

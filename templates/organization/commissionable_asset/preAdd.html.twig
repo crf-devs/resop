@@ -1,7 +1,7 @@
 {% extends 'organization/base.html.twig' %}
 
 {% block body %}
-    {{ form_start(form, { method: 'GET', action: path('app_organization_asset_add', {organization: organization.id | default(app.user.id)})}) }}
+    {{ form_start(form, { method: 'GET', action: path('app_organization_asset_add')}) }}
     {{ form_rest(form) }}
     {{ form_end(form) }}
 {% endblock %}

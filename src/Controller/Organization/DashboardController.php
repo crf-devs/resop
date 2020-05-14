@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization;
 
+use App\Entity\Organization;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * {organization} parameter is useless for the moment, but will be useful in ticket https://github.com/crf-devs/resop/issues/338
- *
  * @Route("/{organization<\d+>}", name="app_organization_dashboard", methods={"GET"})
+ * @Security("is_granted('ROLE_ORGANIZATION', organization)")
  */
 final class DashboardController extends AbstractController
 {
-    public function __invoke(): Response
+    public function __invoke(Organization $organization): Response
     {
-        return $this->render('organization/home.html.twig');
+        return $this->render('organization/home.html.twig', [
+            'organization' => $organization,
+        ]);
     }
 }

@@ -14,7 +14,7 @@
 
     <div class="row">
         <div class="col-12 text-right mb-2">
-            <a class="btn btn-success" href="{{ path('app_organization_commissionable_pre_add_asset', {organization: organization.id | default(app.user.id)}) }}" role="button">
+            <a class="btn btn-success" href="{{ path('app_organization_commissionable_pre_add_asset', {organization: organization.id}) }}" role="button">
                 {{ 'organization.asset.add' | trans }}
             </a>
         </div>

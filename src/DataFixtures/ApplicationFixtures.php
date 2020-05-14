@@ -20,7 +20,6 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use libphonenumber\PhoneNumberUtil;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ApplicationFixtures extends Fixture
@@ -82,8 +81,6 @@ final class ApplicationFixtures extends Fixture
 
     private ValidatorInterface $validator;
 
-    private EncoderFactoryInterface $encoders;
-
     /** @var Organization[] */
     private array $organizations = [];
 
@@ -111,7 +108,6 @@ final class ApplicationFixtures extends Fixture
     private PhoneNumberUtil $phoneNumberUtil;
 
     public function __construct(
-        EncoderFactoryInterface $encoders,
         ValidatorInterface $validator,
         SkillSetDomain $skillSetDomain,
         SlotBookingGuesser $slotBookingGuesser,
@@ -121,7 +117,6 @@ final class ApplicationFixtures extends Fixture
         int $nbUsers = null,
         int $nbAvailabilities = null
     ) {
-        $this->encoders = $encoders;
         $this->validator = $validator;
         $this->skillSetDomain = $skillSetDomain;
         $this->nbUsers = $nbUsers ?: random_int(10, 20);
@@ -246,16 +241,11 @@ final class ApplicationFixtures extends Fixture
 
     private function loadOrganizations(ObjectManager $manager): void
     {
-        // Yield same password for all organizations.
-        // Password generation can be expensive and time consuming.
-        $encoder = $this->encoders->getEncoder(Organization::class);
-        $password = $encoder->encodePassword('covid19', null);
-
         foreach (self::ORGANIZATIONS as $parentName => $organizations) {
-            $this->addOrganization($this->makeOrganization($parentName, $password));
+            $this->addOrganization($this->makeOrganization($parentName));
 
             foreach ($organizations as $name) {
-                $this->addOrganization($this->makeOrganization($name, $password, $this->organizations[$parentName]));
+                $this->addOrganization($this->makeOrganization($name, $this->organizations[$parentName]));
             }
         }
 
@@ -322,6 +312,9 @@ final class ApplicationFixtures extends Fixture
                 $user->firstName = $firstNames[array_rand($firstNames)];
                 $user->lastName = $lastNames[array_rand($lastNames)];
                 $user->organization = $organization;
+                // Set encoded password directly for performances on fixtures loading
+                // Plain password is: covid19
+                $user->password = '$argon2id$v=19$m=65536,t=4,p=1$cEjk39WnLC+QRVJfNI5nmw$eM0J3UZ75hwFJRGQmph2OiBGRzJU6/NGVWcj0j+WVYw';
 
                 // e.g. 990001A
                 $user->setIdentificationNumber(str_pad(''.++$startIdNumber.'', 10, '0', \STR_PAD_LEFT).'A');
@@ -538,15 +531,11 @@ final class ApplicationFixtures extends Fixture
         return $dateTime->add(\DateInterval::createFromDateString($this->slotInterval));
     }
 
-    private function makeOrganization(string $name, string $password = null, Organization $parent = null): Organization
+    private function makeOrganization(string $name, Organization $parent = null): Organization
     {
         $organization = new Organization();
         $organization->name = $name;
         $organization->parent = $parent;
-
-        if ($password) {
-            $organization->password = $password;
-        }
 
         return $organization;
     }

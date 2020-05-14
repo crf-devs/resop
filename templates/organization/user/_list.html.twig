@@ -38,7 +38,7 @@
                 </td>
                 {% if showLinks is not defined or showLinks %}
                     <td>
-                        <button class="btn btn-outline-primary text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', { 'userToShow': user.id }) }}">
+                        <button class="btn btn-outline-primary text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', { user: user.id }) }}">
                             <span class="fa fa-copy"></span> {{ 'action.show' | trans }}
                         </button>
                     </td>

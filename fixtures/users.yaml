@@ -7,7 +7,7 @@ App\Entity\User:
     lastName: DOE
     organization: '@Organization.DT75'
     identificationNumber: 990001A
-    emailAddress (unique): admin201@resop.com
+    emailAddress: admin201@resop.com
     plainPassword: covid19
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
@@ -24,7 +24,7 @@ App\Entity\User:
     lastName: DOE
     organization: '@Organization.UL-01-02'
     identificationNumber: 990002A
-    emailAddress (unique): admin203@resop.com
+    emailAddress: admin203@resop.com
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
     skillSet: '<randomSkillSet()>'
@@ -40,7 +40,7 @@ App\Entity\User:
     lastName: DOE
     organization: '@Organization.UL-01-02'
     identificationNumber: 990003A
-    emailAddress (unique): jill.doe@resop.com
+    emailAddress: jill.doe@resop.com
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
     skillSet: '<randomSkillSet()>'
@@ -56,7 +56,7 @@ App\Entity\User:
     lastName: MERCURY
     organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
     identificationNumber: 990004A
-    emailAddress (unique): admin204@resop.com
+    emailAddress: admin204@resop.com
     plainPassword: covid19
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
@@ -73,7 +73,7 @@ App\Entity\User:
     lastName: NORRIS
     organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
     identificationNumber: 990005A
-    emailAddress (unique): chuck.norris@resop.com
+    emailAddress: chuck.norris@resop.com
     plainPassword: covid19
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
@@ -89,7 +89,7 @@ App\Entity\User:
     lastName: GAGA
     organization: '@Organization.DT77'
     identificationNumber: 990006A
-    emailAddress (unique): admin202@resop.com
+    emailAddress: admin202@resop.com
     plainPassword: covid19
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'

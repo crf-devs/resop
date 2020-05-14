@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{%  set actionName = (user is defined and user.id is not null) ? 'Modification' : 'Création' %}
+{% set actionName = (user is defined and user.id is not null) ? 'Modification' : 'Création' %}
 {% block title %}{{ 'user.accountAction' | trans({ '%action%' : actionName }) }}{% endblock %}
 
 {% block javascripts %}

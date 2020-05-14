@@ -9,14 +9,22 @@
         <span class="navbar-text navbar-separator d-none d-lg-block"></span>
 
         <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_user_home') }}">{{ 'nav.section.volunteer' | trans }}</a>
-                </li>
-            </ul>
-            <div class="navbar-nav">
+            {% if app.user %}
+                {% set organizationsCount = app.user.organizations.count %}
+                {% if 1 == organizationsCount %}
+                    <a class="nav-link active" href="{{ path('app_organization_dashboard', {organization: app.user.organizations.first.id}) }}">Gérer ma structure</a>
+                {% else %}
+                    <ul>Gérer ma structure :
+                        {% for organization in app.user.organizations %}
+                            <li>
+                                <a class="nav-link active" href="{{ path('app_organization_dashboard', {organization: organization.id}) }}">{{ organization.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endif %}
+            <div class="navbar-nav ml-auto">
                 {% if not app.user %}
-                    <a class="nav-link" href="{{ path('app_organization_login') }}">{{ 'nav.section.organization' | trans }}</a>
                     <a class="btn btn-outline-primary" href="{{ path('app_user_create') }}">{{ 'user.createMyAccount' | trans }}</a>
                 {% else %}
                     <a class="nav-link active" href="{{ path('app_user_edit') }}">{{ 'nav.profile' | trans }}</a>

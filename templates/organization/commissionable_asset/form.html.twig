@@ -11,7 +11,7 @@
             class="btn btn-outline-danger trigger-delete float-right"
             data-message="{{ 'message.deleteAssetWarning' | trans }}"
             data-display-name="{{ asset }}"
-            data-href="{{ path('app_organization_asset_delete', { asset: asset.id, organization: asset.organization.id }) }}"
+            data-href="{{ path('app_organization_asset_delete', { asset: asset.id }) }}"
             href="#"
         >{{ 'action.delete' | trans }}</a>
     {% endif %}

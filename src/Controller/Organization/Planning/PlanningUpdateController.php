@@ -10,15 +10,16 @@ use App\Repository\CommissionableAssetAvailabilityRepository;
 use App\Repository\CommissionableAssetRepository;
 use App\Repository\UserAvailabilityRepository;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/update/{action}", name="app_organization_planning_update", methods={"POST"})
+ * @Security("organization.isParent()")
  */
 class PlanningUpdateController extends AbstractController
 {
@@ -35,13 +36,8 @@ class PlanningUpdateController extends AbstractController
         $this->assetAvailabilityRepository = $assetAvailabilityRepository;
     }
 
-    public function __invoke(Request $request, string $action): JsonResponse
+    public function __invoke(Request $request, Organization $organization, string $action): JsonResponse
     {
-        $organization = $this->getUser();
-        if (!($organization instanceof Organization) || !empty($organization->parent)) {
-            throw new AccessDeniedException('Organization is required and must not have a parent');
-        }
-
         try {
             $json = json_decode($request->getContent(), true, 512, \JSON_THROW_ON_ERROR);
         } catch (\Exception $e) {

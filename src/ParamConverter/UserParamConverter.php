@@ -15,12 +15,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class UserParamConverter implements ParamConverterInterface
 {
     private UserRepository $userRepository;
-    private OrganizationParamConverter $organizationParamConverter;
 
-    public function __construct(UserRepository $userRepository, OrganizationParamConverter $organizationParamConverter)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->organizationParamConverter = $organizationParamConverter;
     }
 
     /**
@@ -31,15 +29,9 @@ class UserParamConverter implements ParamConverterInterface
         $name = $configuration->getName();
         $id = $request->attributes->getInt($name);
 
-        /** @var Organization|int|null $organization */
+        /** @var Organization|null $organization */
         $organization = $request->attributes->get('organization');
         if (null !== $organization) {
-            // Force OrganizationParamConverter to retrieve the organization
-            if (!\is_object($organization)) {
-                $this->organizationParamConverter->apply($request, new ParamConverter(['name' => 'organization']));
-                $organization = $request->attributes->get('organization');
-            }
-
             $user = $this->userRepository->findOneByIdAndOrganization($id, $organization);
         } else {
             $user = $this->userRepository->find($id);

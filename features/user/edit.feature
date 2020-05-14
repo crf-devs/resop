@@ -117,12 +117,11 @@ Feature:
         And I press "Valider"
         Then I should be on "/"
         And I should see "Vos informations ont été mises à jour avec succès."
+        And I should see "NIVOL : 899999A"
         When I follow "Déconnexion"
         And I fill in the following:
-            | user_login[identifier]      | <login> |
-            | user_login[birthday][day]   | 01      |
-            | user_login[birthday][month] | 01      |
-            | user_login[birthday][year]  | 1990    |
+            | user_login[identifier] | <login> |
+            | user_login[password]   | covid19 |
         And I press "Je me connecte"
         Then I should be on "/"
         And I should see "NIVOL : 899999A"

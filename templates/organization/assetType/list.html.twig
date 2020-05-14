@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'organization.asset_type.main_title' | trans }} - {{ app.user }}</h1>
+    <h1>{{ 'organization.asset_type.main_title' | trans }} - {{ organization }}</h1>
 
     <div class="row">
         <div class="col-12 text-right mb-2">
@@ -28,7 +28,7 @@
                 <tr>
                     <td>{{ assetType.name }}</td>
                     <td>
-                        <a href="{{ path('app_organization_assetType_edit', { id: assetType.id }) }}" class="btn btn-outline-secondary">{{ 'action.edit' | trans }}</a>
+                        <a href="{{ path('app_organization_assetType_edit', { assetType: assetType.id }) }}" class="btn btn-outline-secondary">{{ 'action.edit' | trans }}</a>
                     </td>
                 </tr>
             {% endfor %}

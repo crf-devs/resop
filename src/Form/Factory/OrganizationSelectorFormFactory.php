@@ -18,12 +18,12 @@ class OrganizationSelectorFormFactory
         $this->formFactory = $formFactory;
     }
 
-    public function createForm(Organization $organization, Organization $loggedOrganization): FormInterface
+    public function createForm(Organization $organization, Organization $currentOrganization): FormInterface
     {
         return $this->formFactory->create(
             OrganizationSelectorType::class,
             ['organization' => $organization],
-            ['currentOrganization' => $loggedOrganization]
+            ['currentOrganization' => $currentOrganization]
         );
     }
 }

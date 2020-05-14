@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
@@ -31,13 +32,15 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private RouterInterface $router;
     private CsrfTokenManagerInterface $csrfTokenManager;
     private ValidatorInterface $validator;
+    private UserPasswordEncoderInterface $userPasswordEncoder;
 
-    public function __construct(UserRepository $userRepository, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, ValidatorInterface $validator)
+    public function __construct(UserRepository $userRepository, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, ValidatorInterface $validator, UserPasswordEncoderInterface $userPasswordEncoder)
     {
         $this->userRepository = $userRepository;
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->validator = $validator;
+        $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
     public function supports(Request $request)
@@ -52,6 +55,7 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $credentials = [
             'identifier' => $loginCredentials['identifier'] ?? null,
             'birthday' => $loginCredentials['birthday'] ?? false ? $this->formatBirthday($loginCredentials['birthday']) : null,
+            'password' => $loginCredentials['password'] ?? null,
             'csrf_token' => $loginCredentials['_token'] ?? null,
         ];
 
@@ -78,13 +82,18 @@ final class UserLoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $this->userRepository->loadUserByUsername($credentials['identifier']);
     }
 
-    public function checkCredentials($credentials, UserInterface $user)
+    /**
+     * @param array              $credentials
+     * @param UserInterface|User $user
+     */
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
-        if (!$user instanceof User) {
-            throw new \RuntimeException('Bad user type');
+        /** @var User $user */
+        if (null === $user->getPassword()) {
+            return $credentials['birthday'] === $user->birthday;
         }
 
-        return $credentials['birthday'] === $user->getBirthday();
+        return !empty($credentials['password']) && $this->userPasswordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)

@@ -10,7 +10,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class LoadOrganizationsCommand extends Command
 {
@@ -41,14 +40,11 @@ class LoadOrganizationsCommand extends Command
 
     private EntityManagerInterface $entityManager;
 
-    private EncoderFactoryInterface $encoders;
-
     private array $outputTable = [];
 
-    public function __construct(EntityManagerInterface $entityManager, EncoderFactoryInterface $encoders)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->encoders = $encoders;
 
         parent::__construct();
     }
@@ -115,19 +111,10 @@ class LoadOrganizationsCommand extends Command
         $organization->name = $organizationName;
         $organization->parent = $parentOrganization;
 
-        $encoder = $this->encoders->getEncoder(Organization::class);
-        $plainPassword = $this->getPlainPassword();
-        $organization->setPassword($encoder->encodePassword($plainPassword, null));
-
         $this->entityManager->persist($organization);
 
-        $this->outputTable[] = [$organization->getName(), $plainPassword];
+        $this->outputTable[] = [$organization->getName()];
 
         return $organization;
-    }
-
-    private function getPlainPassword(): string
-    {
-        return substr(sha1(random_bytes(6)), 0, 6);
     }
 }

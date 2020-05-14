@@ -16,7 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/")
- * @Security("is_granted('ROLE_PARENT_ORGANIZATION')")
  */
 class MissionTypeController extends AbstractOrganizationController
 {
@@ -29,11 +28,10 @@ class MissionTypeController extends AbstractOrganizationController
 
     /**
      * @Route(name="app_organization_mission_type_index", methods={"GET"})
+     * @Security("is_granted('ROLE_PARENT_ORGANIZATION', organization)")
      */
-    public function index(): Response
+    public function index(Organization $organization): Response
     {
-        /** @var Organization $organization */
-        $organization = $this->getUser();
         $missionTypes = $this->missionTypeRepository->findByOrganization($organization);
 
         return $this->render('organization/mission_type/index.html.twig', [
@@ -43,12 +41,10 @@ class MissionTypeController extends AbstractOrganizationController
 
     /**
      * @Route("/new", name="app_organization_mission_type_new", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_PARENT_ORGANIZATION', organization)")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Organization $organization): Response
     {
-        /** @var Organization $organization */
-        $organization = $this->getUser();
-
         $missionType = new MissionType();
         $missionType->organization = $organization;
         $form = $this->createForm(MissionTypeType::class, $missionType);
@@ -70,7 +66,7 @@ class MissionTypeController extends AbstractOrganizationController
 
     /**
      * @Route("/{id}/edit", name="app_organization_mission_type_edit", methods={"GET","POST"})
-     * @Security("missionType.organization == user")
+     * @Security("is_granted('ROLE_PARENT_ORGANIZATION', missionType.organization)")
      */
     public function edit(Request $request, MissionType $missionType): Response
     {
