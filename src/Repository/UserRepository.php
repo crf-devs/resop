@@ -106,14 +106,26 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             $qb->andWhere('u.organization IN (:organisations)')->setParameter('organisations', $formData['organizations']);
         }
 
-        if ($formData['onlyFullyEquiped'] ?? false) {
-            $qb->andWhere('u.fullyEquipped = TRUE');
-        }
+        foreach ($formData['userPropertyFilters'] ?? [] as $field => $value) {
+            if (null === $value || '' === $value) {
+                continue;
+            }
 
-        // todo: handle vulnerable
-//        if (!($formData['displayVulnerables'] ?? false)) {
-//            $qb->andWhere('u.vulnerable = FALSE');
-//        }
+            // $field is a user input, we must proceed to a sanity check
+            if (!preg_match('/^[A-Za-z][A-Za-z0-9_]*$/', $field)) {
+                throw new \InvalidArgumentException("Possible SQL injection attempt.");
+            }
+
+            $qb->andWhere(
+                sprintf(
+                    'JSON_GET_FIELD_AS_TEXT(u.properties, %s) = :filter_%s',
+                    // $field needs to be provided with quotes
+                    $this->getEntityManager()->getConnection()->quote($field),
+                    $field
+                ))
+                // the boolean values must be cast to string value
+                ->setParameter("filter_$field", (bool) $value ? 'true' : 'false');
+        }
 
         if (\count($formData['userSkills'] ?? []) > 0) {
             $skillsQueries = [];

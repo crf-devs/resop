@@ -24,10 +24,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PlanningSearchType extends AbstractType
 {
     private SkillSetDomain $skillSetDomain;
+    private array $userProperties;
 
-    public function __construct(SkillSetDomain $skillSetDomain)
+    public function __construct(SkillSetDomain $skillSetDomain, array $userProperties)
     {
         $this->skillSetDomain = $skillSetDomain;
+        $this->userProperties = $userProperties;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -110,14 +112,6 @@ class PlanningSearchType extends AbstractType
                 'label' => 'organization.planning.allSkills',
                 'required' => false,
             ])
-            ->add('onlyFullyEquiped', CheckboxType::class, [
-                'label' => 'organization.planning.uniformOnly',
-                'required' => false,
-            ])
-            ->add('displayVulnerables', CheckboxType::class, [
-                'label' => 'organization.planning.showVulnerableUsers',
-                'required' => false,
-            ])
             ->add('hideAssets', CheckboxType::class, [
                 'label' => 'organization.planning.hideAssets',
                 'required' => false,
@@ -135,6 +129,13 @@ class PlanningSearchType extends AbstractType
                     'data-actions-box' => 'true',
                 ],
             ])
+            ->add('userPropertyFilters', PlanningDynamicFiltersType::class, [
+                    'config' => array_filter(
+                        $this->userProperties,
+                        fn(array $userProperty) => DynamicPropertiesType::TYPE_BOOLEAN === $userProperty['type']
+                    ),
+                ]
+            )
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'setDefaultFromTo']);

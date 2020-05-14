@@ -62,11 +62,11 @@ parameters:
           label: Je fais partie des personnes vulnérables
           columnLabel: Vulnérable
           help: |
-              - malade chronique<br>
-              - obésité morbide<br>
-              - syndrome grippal<br>
-              - immunodéprimé<br>
-              - personne mineure ou personne de plus de 70 ans<br>
+              - malade chronique
+              - obésité morbide
+              - syndrome grippal
+              - immunodéprimé
+              - personne mineure ou personne de plus de 70 ans
               - avis défavorable de votre unité locale ou du pole santé (local ou territorial)
           required: true
           hidden: false

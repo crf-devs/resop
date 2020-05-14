@@ -19,6 +19,7 @@ doctrine:
                 IN_ARRAY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\InArray
                 CONTAINS: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Contains
                 ARRAY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Arr
+                JSON_GET_FIELD_AS_TEXT: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\JsonGetFieldAsText
         mappings:
             App:
                 is_bundle: false
