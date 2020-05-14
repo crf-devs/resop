@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\CacheExtension\CacheStrategyInterface;
 
 /**
- * @Route("/", name="planning", methods={"GET"})
+ * @Route(name="app_organization_planning", methods={"GET"})
  */
 class PlanningController extends AbstractController
 {

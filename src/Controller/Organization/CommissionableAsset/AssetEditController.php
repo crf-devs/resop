@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\CommissionableAsset;
 
+use App\Controller\Organization\AbstractOrganizationController;
 use App\Entity\CommissionableAsset;
 use App\Form\Type\CommissionableAssetType;
 use App\Security\Voter\CommissionableAssetVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/{asset<\d+>}/edit", name="app_organization_asset_edit", methods={"GET", "POST"})
  * @IsGranted(CommissionableAssetVoter::CAN_EDIT, subject="asset")
  */
-class AssetEditController extends AbstractController
+class AssetEditController extends AbstractOrganizationController
 {
     public function __invoke(Request $request, CommissionableAsset $asset): Response
     {

@@ -31,6 +31,22 @@ class CommissionableAssetRepository extends ServiceEntityRepository implements A
         $this->slotInterval = $slotInterval;
     }
 
+    public function findOneByIdAndOrganization(int $id, Organization $organization): ?CommissionableAsset
+    {
+        $organization = $organization->getParentOrganization();
+        $organizations = [
+            $organization->getId(),
+            ...$organization->getChildren()->map(fn (Organization $child) => $child->getId())->getValues(),
+        ];
+
+        $qb = $this->createQueryBuilder('ca');
+        $qb->where('ca.id = :id')->setParameter('id', $id);
+        $qb->andWhere($qb->expr()->in('ca.organization', ':organizations'))
+            ->setParameter('organizations', $organizations);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
     /**
      * @return CommissionableAsset[]
      */

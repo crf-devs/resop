@@ -32,6 +32,22 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $this->slotInterval = $slotInterval;
     }
 
+    public function findOneByIdAndOrganization(int $id, Organization $organization): ?User
+    {
+        $organization = $organization->getParentOrganization();
+        $organizations = [
+            $organization->getId(),
+            ...$organization->getChildren()->map(fn (Organization $child) => $child->getId())->getValues(),
+        ];
+
+        $qb = $this->createQueryBuilder('u');
+        $qb->where('u.id = :id')->setParameter('id', $id);
+        $qb->andWhere($qb->expr()->in('u.organization', ':organizations'))
+            ->setParameter('organizations', $organizations);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
     /**
      * @return User[]
      */

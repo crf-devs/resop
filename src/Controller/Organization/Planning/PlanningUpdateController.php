@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/update/{action}", name="planning_update", methods={"POST"})
+ * @Route("/update/{action}", name="app_organization_planning_update", methods={"POST"})
  */
 class PlanningUpdateController extends AbstractController
 {

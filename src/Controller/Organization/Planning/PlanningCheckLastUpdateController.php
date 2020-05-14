@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/last-update", name="planning_last_update", methods={"GET"})
+ * @Route("/last-update", name="app_organization_planning_last_update", methods={"GET"})
  */
 class PlanningCheckLastUpdateController
 {

@@ -6,16 +6,16 @@ Feature:
     I must have access to the planning and I can filter what is displayed.
 
     Scenario: As an anonymous, I cannot access the planning
-        Given I go to "/organizations/planning"
+        Given I go to "/organizations/201/planning/"
         Then I should be on "/organizations/login"
         And the response status code should be 200
 
     Scenario: As an organization, I have access to the planning and I can see my resources
         Given I am authenticated as "UL 01-02"
-        And I am on "/organizations"
+        And I am on "/organizations/203"
         When I follow "Afficher les disponibilités de mes bénévoles pour la semaine prochaine"
         Then the response status code should be 200
-        And I should be on "/organizations/planning/"
+        And I should be on "/organizations/203/planning/"
         And I should see "VPSP - 75012"
         And I should see "VPSP - 75014"
         And I should see "VL - 75016"
@@ -28,7 +28,7 @@ Feature:
 
     Scenario: As an organization, I have access to the planning and I can see my resources' availability
         Given I am authenticated as "UL 01-02"
-        And I am on "/organizations"
+        And I am on "/organizations/203"
         When I follow "Afficher les disponibilités de mes bénévoles pour la semaine prochaine"
         Then the response status code should be 200
         And availability of user "Jane DOE" should be "unknown" on "next monday" at 02:00
@@ -42,22 +42,22 @@ Feature:
 
     Scenario: As a parent organization, I have access to the planning of my children organizations
         Given I am authenticated as "DT75"
-        And I am on "/organizations"
+        And I am on "/organizations/201"
         When I follow "Afficher les disponibilités de mes bénévoles pour la semaine prochaine"
         Then the response status code should be 200
-        And I should be on "/organizations/planning/"
+        And I should be on "/organizations/201/planning/"
         And I should not see "Jane DOE"
         When I fill in the following:
             | organizations[] | 201 |
             | organizations[] | 203 |
         And I press "search-planning-button"
         Then the response status code should be 200
-        And I should be on "/organizations/planning/"
+        And I should be on "/organizations/201/planning/"
         And I should see "Jane DOE"
 
     Scenario: As an organization, I can filter the resources displayed on planing
         Given I am authenticated as "DT75"
-        And I am on "/organizations/planning"
+        And I am on "/organizations/201/planning/"
         Then I should not see "John DOE"
         And I should see "VPSP - 75992"
         And I should see "VL - 75996 "

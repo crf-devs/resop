@@ -11,7 +11,7 @@ Feature:
 
     Scenario: As an organization, I can list the users from my organization
         Given I am authenticated as "DT75"
-        And I am on "/organizations"
+        And I am on "/organizations/201"
         When I follow "Afficher la liste de mes bénévoles inscrits"
         Then I should be on "/organizations/201/users/"
         And the response status code should be 200
@@ -23,12 +23,12 @@ Feature:
 
     Scenario: As a parent organization, I can list the users from my children organizations
         Given I am authenticated as "DT75"
-        And I am on "/organizations"
+        And I am on "/organizations/201"
         When I follow "Modifier mes structures"
-        Then I should be on "/organizations/children"
+        Then I should be on "/organizations/201/children/"
         And the response status code should be 200
         When I follow "Liste des bénévoles"
-        Then I should be on "/organizations/203/users/"
+        Then I should be on "/organizations/201/users/?organizationId=203"
         And the response status code should be 200
         And I should see "jane.doe@resop.com"
         And I should not see "john.doe@resop.com"
@@ -43,16 +43,16 @@ Feature:
 #    @javascript
 #    Scenario: As an organization, I can display a user modal
 #        Given I am authenticated as "DT75"
-#        When I go to "/organizations/203/users"
+#        When I go to "/organizations/201/users/?organizationId=203"
 #        And I follow "Afficher"
 #        And I wait for ".ajax-modal-content" to be visible
 #        Then I should see "Modifier"
 #        And I follow "Modifier"
-#        Then I should be on "/organizations/203/users/102/edit"
+#        Then I should be on "/organizations/201/users/102/edit"
 
     Scenario Outline: As an organization, I can update a user from my organization or children organizations
         Given I am authenticated as "<login>"
-        When I go to "/organizations/203/users/102/edit"
+        When I go to "<edit_url>"
         And the response status code should be 200
         And the "user_identificationNumber" field should contain "990002A"
         And the "user_emailAddress" field should contain "jane.doe@resop.com"
@@ -64,20 +64,20 @@ Feature:
             | user[firstName]            | John                    |
             | user[lastName]             | BON JOVI                |
         And I press "Valider"
-        Then I should be on "/organizations/203/users/"
+        Then I should be on "<list_url>"
         And the response status code should be 200
         And I should see "Les informations ont été mises à jour avec succès."
-        When I go to "/organizations/203/users/102/edit"
-        Then I should be on "/organizations/203/users/102/edit"
+        When I go to "<edit_url>"
+        Then I should be on "<edit_url>"
         And the response status code should be 200
         And the "user_identificationNumber" field should contain "999999A"
         And the "user_emailAddress" field should contain "john.bon.jovi@resop.com"
         And the "user_firstName" field should contain "John"
         And the "user_lastName" field should contain "BON JOVI"
         Examples:
-            | login    |
-            | DT75     |
-            | UL 01-02 |
+            | login    | list_url                                     | edit_url                          |
+            | DT75     | /organizations/201/users/?organizationId=203 | /organizations/201/users/102/edit |
+            | UL 01-02 | /organizations/203/users/                    | /organizations/203/users/102/edit |
 
     Scenario: As an admin of an organization, I cannot update a user from another organizations
         Given I am authenticated as "DT75"
@@ -87,24 +87,24 @@ Feature:
     @javascript
     Scenario Outline: As an organization, I can delete a user from my organization or children organizations
         Given I am authenticated as "<login>"
-        When I go to "/organizations/203/users/102/edit"
+        When I go to "<edit_url>"
         And I follow "Supprimer"
         And I wait for "#delete-item-modal" to be visible
         Then I should see "Vous êtes sur le point de supprimer le bénévole suivant et toutes ses disponibilités : Jane DOE ( 990002A )."
         When I press "Supprimer"
-        Then I should be on "/organizations/203/users/"
+        Then I should be on "<list_url>"
         And I should see "Le bénévole a été supprimé avec succès."
         And I should not see "jill.doe@resop.com"
         Examples:
-            | login    |
-            | DT75     |
-            | UL 01-02 |
-#
+            | login    | list_url                                     | edit_url                          |
+            | DT75     | /organizations/201/users/?organizationId=203 | /organizations/201/users/102/edit |
+            | UL 01-02 | /organizations/203/users/                    | /organizations/203/users/102/edit |
+
 #    Scenario: As an admin of an organization, I cannot directly delete a user from my organization
 #        Given I am authenticated as "john.doe@resop.com"
-#        When I go to "/organizations/3/users/3/delete"
+#        When I go to "/organizations/201/users/3/delete?organizationId=203"
 #        Then the response status code should be 405
-#
+
     Scenario: As an admin of an organization, I cannot delete a user from another organization
         Given I am authenticated as "DT75"
         When I go to "/organizations/204/users"
@@ -114,5 +114,5 @@ Feature:
 
     Scenario: As an admin of an organization, I cannot access an invalid user
         Given I am authenticated as "DT75"
-        When I go to "/organizations/201/users/102/edit"
+        When I go to "/organizations/201/users/108/edit"
         Then the response status code should be 404

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Organization;
+namespace App\Controller\Organization\Children;
 
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
@@ -12,9 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/children", name="app_organization_list", methods={"GET"})
+ * @Route(name="app_organization_list", methods={"GET"})
  */
-class OrganizationListController extends AbstractController
+class ListController extends AbstractController
 {
     protected OrganizationRepository $organizationRepository;
 

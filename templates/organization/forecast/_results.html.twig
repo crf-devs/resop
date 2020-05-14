@@ -80,14 +80,14 @@
                 <th>Equipages complets</th>
                 <th></th>
                 <th>
-                    <a href="{{ path('planning',  planningOptions) }}">
+                    <a href="{{ path('app_organization_planning',  planningOptions) }}">
                         Voir sur le planning
                     </a>
                 </th>
                 <th>{{ forecast[missionType.id].fully_available.potential_missions_number }}</th>
                 {% if forecast[missionType.id].partially_available is defined %}
                     <th>
-                        <a href="{{ path('planning',  planningOptions | merge({'minimumAvailableHours': missionType.minimumAvailableHours}) ) }}">
+                        <a href="{{ path('app_organization_planning',  planningOptions | merge({'minimumAvailableHours': missionType.minimumAvailableHours}) ) }}">
                             Voir sur le planning
                         </a>
                     </th>

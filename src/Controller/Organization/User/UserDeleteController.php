@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\User;
 
+use App\Controller\Organization\AbstractOrganizationController;
 use App\Entity\User;
 use App\Repository\UserAvailabilityRepository;
 use App\Security\Voter\UserVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{userToDelete<\d+>}/delete", name="app_user_delete", methods={"GET"})
+ * @Route("/{userToDelete<\d+>}/delete", name="app_organization_user_delete", methods={"GET"})
  * @IsGranted(UserVoter::CAN_EDIT, subject="userToDelete")
  */
-class UserDeleteController extends AbstractController
+class UserDeleteController extends AbstractOrganizationController
 {
     private UserAvailabilityRepository $userAvailabilityRepository;
 

@@ -36,6 +36,7 @@
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
+/assets/js/fos_js_routes.json
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###

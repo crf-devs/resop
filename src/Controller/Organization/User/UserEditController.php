@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\User;
 
+use App\Controller\Organization\AbstractOrganizationController;
 use App\Entity\User;
 use App\Form\Type\UserType;
 use App\Security\Voter\UserVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/{userToEdit<\d+>}/edit", name="app_organization_user_edit", methods={"GET", "POST"})
  * @IsGranted(UserVoter::CAN_EDIT, subject="userToEdit")
  */
-class UserEditController extends AbstractController
+class UserEditController extends AbstractOrganizationController
 {
     public function __invoke(Request $request, User $userToEdit): Response
     {

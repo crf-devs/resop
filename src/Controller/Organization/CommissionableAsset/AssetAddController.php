@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\CommissionableAsset;
 
+use App\Controller\Organization\AbstractOrganizationController;
 use App\Entity\CommissionableAsset;
 use App\Entity\Organization;
 use App\Form\Type\CommissionableAssetType;
 use App\Repository\AssetTypeRepository;
 use App\Security\Voter\OrganizationVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
  * @Route("/add", name="app_organization_asset_add", methods={"GET", "POST"})
  * @IsGranted(OrganizationVoter::CAN_MANAGE, subject="organization")
  */
-class AssetAddController extends AbstractController
+class AssetAddController extends AbstractOrganizationController
 {
     private AssetTypeRepository $assetTypeRepository;
 

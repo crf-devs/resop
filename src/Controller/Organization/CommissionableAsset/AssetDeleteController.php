@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\CommissionableAsset;
 
+use App\Controller\Organization\AbstractOrganizationController;
 use App\Entity\CommissionableAsset;
 use App\Repository\CommissionableAssetAvailabilityRepository;
 use App\Security\Voter\CommissionableAssetVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/{asset<\d+>}/delete", name="app_organization_asset_delete", methods={"GET"})
  * @IsGranted(CommissionableAssetVoter::CAN_EDIT, subject="asset")
  */
-class AssetDeleteController extends AbstractController
+class AssetDeleteController extends AbstractOrganizationController
 {
     private CommissionableAssetAvailabilityRepository $commissionableAvailabilityRepository;
 

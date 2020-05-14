@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\EntityListener\UserPasswordEntityListener;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -23,6 +26,7 @@ class Organization implements UserPasswordInterface, UserSerializableInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
+     * @Groups("mission:ajax")
      */
     public ?int $id = null;
 
@@ -43,9 +47,19 @@ class Organization implements UserPasswordInterface, UserSerializableInterface
     public ?string $plainPassword = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="children")
      */
     public ?self $parent = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Organization", mappedBy="parent", fetch="EXTRA_LAZY")
+     */
+    public Collection $children;
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
 
     public function __toString(): string
     {
@@ -137,6 +151,26 @@ class Organization implements UserPasswordInterface, UserSerializableInterface
         }
 
         return $this->parent->getName();
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    public function addChild(self $organization): void
+    {
+        if (!$this->children->contains($organization)) {
+            $this->children[] = $organization;
+        }
+    }
+
+    public function removeChild(self $organization): void
+    {
+        $this->children->removeElement($organization);
     }
 
     public function setPassword(?string $password): void

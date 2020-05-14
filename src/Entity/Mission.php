@@ -36,6 +36,7 @@ class Mission
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
      * @Assert\NotNull
+     * @Groups("mission:ajax")
      */
     public ?Organization $organization = null;
 

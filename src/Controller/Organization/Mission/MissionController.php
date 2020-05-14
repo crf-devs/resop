@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Organization\Mission;
 
+use App\Controller\Organization\AbstractOrganizationController;
 use App\Domain\MissionDomain;
 use App\Domain\PlanningDomain;
 use App\Entity\Mission;
@@ -12,7 +13,6 @@ use App\Form\Type\MissionsSearchType;
 use App\Form\Type\MissionType;
 use App\Repository\MissionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/")
  * @Security("is_granted('ROLE_PARENT_ORGANIZATION')")
  */
-class MissionController extends AbstractController
+class MissionController extends AbstractOrganizationController
 {
     private MissionRepository $missionRepository;
     private PlanningDomain $planningDomain;
@@ -35,7 +35,7 @@ class MissionController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_organization_mission_index", methods={"GET"})
+     * @Route(name="app_organization_mission_index", methods={"GET"})
      */
     public function index(): Response
     {

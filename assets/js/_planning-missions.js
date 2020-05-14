@@ -1,5 +1,6 @@
 import { addPopovers } from './_planning';
 import { displayAjaxModal } from './_helpers';
+import Routing from './_routing';
 
 const $ = require('jquery');
 const moment = require('moment');
@@ -14,7 +15,14 @@ function setSlotMisssion(mission, $slot) {
   missionsText += $('<span class="badge badge-secondary">').text(mission.type ? mission.type.name : 'mission')[0].outerHTML;
   missionsText += ' ';
 
-  const url = window.location.pathname.indexOf('organizations') >= 0 ? `/organizations/missions/${mission.id}/modal` : `/user/availability/missions/${mission.id}/modal`;
+  // User part
+  let url = Routing.generate('app_user_availability_mission_modal', { id: mission.id });
+
+  if (window.location.pathname.indexOf('organizations') >= 0 && !!mission?.organization?.id) {
+    // Organization part
+    url = Routing.generate('app_organization_mission_modal', { organization: mission.organization.id, id: mission.id });
+  }
+
   missionsText += $(`<button type="button" class="btn btn-link" data-toggle="ajax-modal" data-href="${url}">`).text(mission.name)[0].outerHTML;
 
   $slot.addClass('mission').data('mission-text', missionsText);
@@ -95,8 +103,16 @@ export function fetchMissions() {
   let url;
 
   if ($('.planning').length) {
-    url = '/organizations/missions/find' + window.location.search;
+    // Organization part
+    url = Routing.generate('app_organization_mission_find_by_filters', {
+      organization: window.location.pathname.replace(/^\/organizations\/(\d+).*$/, '$1'),
+    });
+
+    // Add the form search filters to the request
+    url += window.location.search;
   } else {
+    // User part
+    // Route: app_user_availability_missions or app_user_availability_missions_week
     url = window.location.pathname + '/missions';
   }
 

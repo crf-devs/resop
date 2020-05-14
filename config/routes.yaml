@@ -1,18 +1,22 @@
+# {organization} parameter is useless for the moment, but will be useful in ticket https://github.com/crf-devs/resop/issues/338
 _organizations:
     resource: ../src/Controller/Organization/
     type: annotation
     prefix: /organizations
 
-_organizations_planning:
-    resource: ../src/Controller/Organization/Planning
+_organizations_asset_types:
+    resource: ../src/Controller/Organization/AssetType
     type: annotation
-    prefix: /organizations/planning
+    prefix: /organizations/{organization}/assetTypes
+    requirements:
+        organization: '\d+'
 
-_organizations_missions:
-    resource: ../src/Controller/Organization/Mission
+_organizations_children:
+    resource: ../src/Controller/Organization/Children
     type: annotation
-    # TODO Use organization ID
-    prefix: /organizations/missions
+    prefix: /organizations/{organization}/children
+    requirements:
+        organization: '\d+'
 
 _organizations_assets:
     resource: ../src/Controller/Organization/CommissionableAsset
@@ -20,7 +24,35 @@ _organizations_assets:
     prefix: /organizations/{organization}/assets
     requirements:
         organization: '\d+'
-    
+
+_organizations_forecast:
+    resource: ../src/Controller/Organization/Forecast
+    type: annotation
+    prefix: /organizations/{organization}/forecast
+    requirements:
+        organization: '\d+'
+
+_organizations_missions:
+    resource: ../src/Controller/Organization/Mission
+    type: annotation
+    prefix: /organizations/{organization}/missions
+    requirements:
+        organization: '\d+'
+
+_organizations_mission_types:
+    resource: ../src/Controller/Organization/MissionType
+    type: annotation
+    prefix: /organizations/{organization}/mission_type
+    requirements:
+        organization: '\d+'
+
+_organizations_planning:
+    resource: ../src/Controller/Organization/Planning
+    type: annotation
+    prefix: /organizations/{organization}/planning
+    requirements:
+        organization: '\d+'
+
 _organizations_users:
     resource: ../src/Controller/Organization/User
     type: annotation

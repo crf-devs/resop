@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * @Route("/find", name="app_organization_mission_find_by_filters", methods={"GET"})
+ * @Route("/find", name="app_organization_mission_find_by_filters", methods={"GET"}, options={"expose"=true})
  */
 class MissionsFindByFiltersController
 {

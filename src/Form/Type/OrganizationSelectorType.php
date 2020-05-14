@@ -10,17 +10,14 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class OrganizationSelectorType extends AbstractType
 {
     private OrganizationRepository $organizationRepository;
-    private UrlGeneratorInterface $router;
 
-    public function __construct(OrganizationRepository $organizationRepository, UrlGeneratorInterface $router)
+    public function __construct(OrganizationRepository $organizationRepository)
     {
         $this->organizationRepository = $organizationRepository;
-        $this->router = $router;
     }
 
     /**
@@ -40,17 +37,12 @@ final class OrganizationSelectorType extends AbstractType
                     'class' => Organization::class,
                     'label' => 'organization.childrenSelector.label',
                     'query_builder' => $this->organizationRepository->findByParentQueryBuilder($options['currentOrganization']),
-                    'choice_attr' => function (Organization $choice) use ($options) {
-                        return [
-                            'data-url' => $this->router->generate($options['route_to_redirect'], ['organization' => $choice->getId()]),
-                        ];
-                    },
                 ]
             );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired(['currentOrganization', 'route_to_redirect']);
+        $resolver->setRequired(['currentOrganization']);
     }
 }

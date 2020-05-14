@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/", name="app_organization_assets", methods={"GET"})
+ * @Route(name="app_organization_assets", methods={"GET"})
  * @IsGranted(OrganizationVoter::CAN_MANAGE, subject="organization")
  */
 class AssetsListController extends AbstractController
@@ -41,8 +41,7 @@ class AssetsListController extends AbstractController
                 'assets' => $this->assetRepository->findByOrganization($organization),
                 'organization_selector_form' => $this->organizationSelectorFormFactory->createForm(
                     $organization,
-                    $currentOrganization,
-                    $request->attributes->get('_route')
+                    $currentOrganization
                 )->createView(),
             ]
         );

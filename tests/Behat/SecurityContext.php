@@ -111,6 +111,6 @@ final class SecurityContext extends RawMinkContext
         $this->minkContext->selectOption('identifier', $user->getUsername());
         $this->minkContext->fillField('password', 'covid19');
         $this->minkContext->pressButton('Je me connecte');
-        $this->minkContext->assertPageAddress('/organizations/');
+        $this->minkContext->assertPageAddress('/organizations/'.$user->getId());
     }
 }

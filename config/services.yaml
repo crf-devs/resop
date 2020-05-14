@@ -125,6 +125,10 @@ services:
         arguments:
             $cacheStrategy: '@Twig\CacheExtension\CacheStrategyInterface'
 
+    App\Twig\Extension\OrganizationExtension:
+        arguments:
+            $routingExtension: '@twig.extension.routing'
+
     # declared as public because needed in a migration
     App\Domain\SkillSetDomain:
         public: true
