@@ -38,6 +38,10 @@ class DynamicPropertyExtension extends AbstractExtension
         }
 
         if (DynamicPropertiesType::TYPE_BOOLEAN === $propertyDefinition['type']) {
+            // false value will be sent by `default` twig filter as an empty string or an hyphen
+            if (\in_array($value, ['', '-'], true)) {
+                $value = false;
+            }
             return $this->translator->trans(sprintf('common.%s', (bool) $value ? 'yes' : 'no'));
         }
 

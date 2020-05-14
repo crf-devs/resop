@@ -58,16 +58,23 @@ Feature:
     Scenario: As an organization, I can filter the resources displayed on planing
         Given I am authenticated as "DT75"
         And I am on "/organizations/201/planning/"
-        Then I should not see "John DOE"
+        Then I should see "Jane DOE"
+        And I should see "John DOE"
         And I should see "VPSP - 75992"
-        And I should see "VL - 75996 "
+        And I should see "VL - 75996"
         When I select "VPSP" from "assetTypes[]"
-        And I check "displayVulnerables"
+        And I select "1" from "userPropertyFilters[vulnerable]"
         And I press "search-planning-button"
         Then the response status code should be 200
         And I should see "John DOE"
+        And I should not see "Jane DOE"
         And I should see "VPSP - 75992"
         And I should not see "VL - 75996"
+        And I select "0" from "userPropertyFilters[vulnerable]"
+        And I press "search-planning-button"
+        Then the response status code should be 200
+        And I should not see "John DOE"
+        And I should see "Jane DOE"
         When I fill in the following:
             | hideUsers  | 1 |
             | hideAssets | 1 |

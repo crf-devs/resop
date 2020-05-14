@@ -154,6 +154,8 @@ organization:
     showVulnerableUsers: Afficher aussi les personnes signalées comme vulnérables
     allSkills: Bénévoles avec toutes les compétences
     uniformOnly: Avec uniforme seulement
+    minimumAvailableHours: Afficher si disponible au moins
+    booleanFilterPlaceholder: Tout afficher
   pluralLabel: Structures
   search:
     noAssets: Aucun véhicule ne correspond à votre recherche.

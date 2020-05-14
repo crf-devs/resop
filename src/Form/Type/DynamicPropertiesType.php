@@ -38,10 +38,11 @@ class DynamicPropertiesType extends AbstractType
                 continue;
             }
 
-            $options = [
+            $fieldOptions = [
                 'label' => $property['label'],
-                'help' => $property['help'] ?: '',
+                'help' => $property['help'] ? nl2br($property['help']) : null,
                 'required' => $property['required'],
+                'help_html' => true
             ];
 
             switch ($property['type']) {
@@ -56,30 +57,28 @@ class DynamicPropertiesType extends AbstractType
                     break;
                 case self::TYPE_BOOLEAN:
                     $formClass = ChoiceType::class;
-                    $options['expanded'] = true;
-                    $options['choices'] = ['common.yes' => true, 'common.no' => false];
+                    $fieldOptions['expanded'] = true;
+                    $fieldOptions['choices'] = ['common.yes' => true, 'common.no' => false];
                     break;
                 case self::TYPE_CHOICE_WITH_OTHER:
                     $property['choices'][$this->translator->trans('common.other')] = '-';
-                    $options['attr'] = ['class' => 'js-choice-with-other'];
+                    $fieldOptions['attr'] = ['class' => 'js-choice-with-other'];
                     // no break
                 case self::TYPE_CHOICE:
                     $formClass = self::TYPE_CHOICE === $property['type'] ? ChoiceType::class : ChoiceWithOtherType::class;
-                    $options['expanded'] = true;
-                    $options['placeholder'] = false;
+                    $fieldOptions['expanded'] = true;
+                    $fieldOptions['placeholder'] = false;
 
                     if (!isset($property['choices']) || !\is_array($property['choices']) || \count($property['choices']) < 2) {
                         throw new \InvalidArgumentException('Invalid property "%s". Key "choices" is mandatory and at least two choices should be provided.');
                     }
-                    $options['choices'] = $property['choices'];
+                    $fieldOptions['choices'] = $property['choices'];
                     break;
                 default:
                     throw new \InvalidArgumentException('Unsupported property.type');
             }
 
-            $options['help_html'] = true;
-
-            $builder->add($property['key'], $formClass, $options);
+            $builder->add($property['key'], $formClass, $fieldOptions);
         }
     }
 

@@ -2,6 +2,14 @@
 
 $tableBoxSize: 40px;
 
+#planning-form {
+  .dynamic_planning_filter {
+    display: inline;
+    width: auto;
+    margin-left: 10px;
+  }
+}
+
 .planning-actions-container {
   margin-bottom: 20px;
 
@@ -170,3 +178,5 @@ $tableBoxSize: 40px;
     }
   }
 }
+
+
