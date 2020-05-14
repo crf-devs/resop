@@ -21,12 +21,16 @@
                     {{ form_widget(form.missionTypes) }}
                 </div>
             </div>
-
-            {{ form_row(form.displayAvailableWithBooked) }}
         </div>
         <div class="col-12 col-md-6">
             {{ form_widget(form.userPropertyFilters) }}
-
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            {{ form_row(form.displayAvailableWithBooked) }}
+        </div>
+        <div class="col-12 col-md-6">
             <button class="btn btn-outline-primary btn-block" type="submit">{{ 'organization.forecast.submitButton'|trans }}</button>
         </div>
     </div>

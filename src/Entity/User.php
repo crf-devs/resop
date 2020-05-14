@@ -36,7 +36,7 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
-     * @Groups("mission:ajax")
+     * @Groups({"mission:ajax", "Default"})
      */
     public ?int $id = null;
 

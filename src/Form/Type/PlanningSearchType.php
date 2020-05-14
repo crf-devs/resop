@@ -130,10 +130,10 @@ class PlanningSearchType extends AbstractType
                 ],
             ])
             ->add('userPropertyFilters', PlanningDynamicFiltersType::class, [
-                    'config' => array_filter(
-                        $this->userProperties,
-                        fn (array $userProperty) => DynamicPropertiesType::TYPE_BOOLEAN === $userProperty['type']
-                    ),
+                'config' => array_filter(
+                    $this->userProperties,
+                    fn (array $userProperty) => DynamicPropertiesType::TYPE_BOOLEAN === $userProperty['type']
+                ),
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'setDefaultFromTo']);
