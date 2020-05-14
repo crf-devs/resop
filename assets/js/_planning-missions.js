@@ -17,7 +17,7 @@ function setSlotMisssion(mission, $slot) {
   missionsText += $('<span class="badge badge-secondary">').text(mission.type ? mission.type.name : 'mission')[0].outerHTML;
   missionsText += ' ';
 
-  const url = window.location.pathname.indexOf('organizations') >= 0 ? Routing.generate('app_organization_mission_modal', { organization: mission.id }) : Routing.generate('app_user_availability_mission_modal', { organization: mission.id });
+  const url = window.location.pathname.indexOf('organizations') >= 0 ? Routing.generate('app_organization_mission_modal', { organization: mission.organization.id, id: mission.id }) : Routing.generate('app_user_availability_mission_modal', { organization: mission.organization.id, id: mission.id });
   missionsText += $(`<button type="button" class="btn btn-link" data-toggle="ajax-modal" data-href="${url}">`).text(mission.name)[0].outerHTML;
 
   $slot.addClass('mission').data('mission-text', missionsText);
