@@ -42,6 +42,7 @@ class DynamicPropertyExtension extends AbstractExtension
             if (\in_array($value, ['', '-'], true)) {
                 $value = false;
             }
+
             return $this->translator->trans(sprintf('common.%s', (bool) $value ? 'yes' : 'no'));
         }
 

@@ -7,44 +7,27 @@
                 {{ form_row(form.availableFrom) }}
                 {{ form_row(form.availableTo) }}
             </div>
-        </div>
-    </div>
 
-    <div class="row mt-md-2">
-        <div class="col-12 col-md-6">
-            <div class="row">
+            <div class="row mt-md-2">
                 {{ form_label(form.organizations, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
                 <div class="col-12 col-md-9">
                     {{ form_widget(form.organizations) }}
                 </div>
             </div>
-        </div>
-        <div class="col-12 col-md-6">
-            {{ form_row(form.displayVulnerables) }}
-        </div>
-    </div>
 
-    <div class="row mt-md-2">
-        <div class="col-12 col-md-6">
-            <div class="row">
+            <div class="row mt-md-2">
                 {{ form_label(form.missionTypes, null, {'label_attr': {'class': 'col-12 col-md-3'}}) }}
                 <div class="col-12 col-md-9">
                     {{ form_widget(form.missionTypes) }}
                 </div>
             </div>
-        </div>
-        <div class="col-12 col-md-4">
-            {{ form_row(form.onlyFullyEquiped) }}
-        </div>
-    </div>
 
-    <div class="row mt-md-2">
-        <div class="col-12 col-md-6">
             {{ form_row(form.displayAvailableWithBooked) }}
         </div>
+        <div class="col-12 col-md-6">
+            {{ form_widget(form.userPropertyFilters) }}
 
-        <div class="col-12 col-md-4">
-            <button class="btn btn-outline-primary btn-block" type="submit">Calculer</button>
+            <button class="btn btn-outline-primary btn-block" type="submit">{{ 'organization.forecast.submitButton'|trans }}</button>
         </div>
     </div>
     {{ form_end(form) }}

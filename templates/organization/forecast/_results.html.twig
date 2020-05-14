@@ -5,20 +5,12 @@
 {% for missionType in filters.missionTypes %}
     <h3><a href="{{ path('app_organization_mission_type_edit', {id: missionType.id}) }}">{{ missionType.name }}</a></h3>
 
-    {% set planningOptions = {
-        'from': filters.availableFrom |date_modify('-1 day') | date('Y-m-d\\T00:00:00'),
-        'to': filters.availableTo |date_modify('+1 day') | date('Y-m-d\\T00:00:00'),
-        'availableFrom': filters.availableFrom | date('Y-m-d\\TH:i:00'),
-        'availableTo': filters.availableTo | date('Y-m-d\\TH:i:00'),
-        'organizations': filters.organizations | map(orga => orga.id),
+    {% set planningUrlOptions = planningUrlOptions | merge({
         'userSkills': missionType.userSkillsRequirement | map(skillRequirement => skillRequirement.skill),
         'hideUsers': missionType.userSkillsRequirement | length == 0,
-        'onlyFullyEquiped': filters.onlyFullyEquiped,
-        'displayAvailableWithBooked': filters.displayAvailableWithBooked,
-        'displayVulnerables': filters.displayVulnerables,
         'assetTypes': missionType.assetTypesRequirement | map(assetRequirement => assetRequirement.type),
         'hideAssets': missionType.assetTypesRequirement | length == 0,
-    } | filter(val => val) %}
+    } | filter(val => val)) %}
 
 
     <div class="table-responsive">
@@ -80,14 +72,14 @@
                 <th>Equipages complets</th>
                 <th></th>
                 <th>
-                    <a href="{{ path('app_organization_planning',  planningOptions) }}">
+                    <a href="{{ path('app_organization_planning',  planningUrlOptions) }}">
                         Voir sur le planning
                     </a>
                 </th>
                 <th>{{ forecast[missionType.id].fully_available.potential_missions_number }}</th>
                 {% if forecast[missionType.id].partially_available is defined %}
                     <th>
-                        <a href="{{ path('app_organization_planning',  planningOptions | merge({'minimumAvailableHours': missionType.minimumAvailableHours}) ) }}">
+                        <a href="{{ path('app_organization_planning',  planningUrlOptions | merge({'minimumAvailableHours': missionType.minimumAvailableHours}) ) }}">
                             Voir sur le planning
                         </a>
                     </th>

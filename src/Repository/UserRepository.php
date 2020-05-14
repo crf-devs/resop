@@ -113,7 +113,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
 
             // $field is a user input, we must proceed to a sanity check
             if (!preg_match('/^[A-Za-z][A-Za-z0-9_]*$/', $field)) {
-                throw new \InvalidArgumentException("Possible SQL injection attempt.");
+                throw new \InvalidArgumentException('Possible SQL injection attempt.');
             }
 
             $qb->andWhere(
@@ -122,7 +122,8 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
                     // $field needs to be provided with quotes
                     $this->getEntityManager()->getConnection()->quote($field),
                     $field
-                ))
+                )
+            )
                 // the boolean values must be cast to string value
                 ->setParameter("filter_$field", (bool) $value ? 'true' : 'false');
         }
