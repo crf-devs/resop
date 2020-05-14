@@ -103,7 +103,6 @@ organization:
   editMissionType: Modifier les types de missions
   editMission: Missions
   editUserProfile: Modifier un profil
-  forecast: Projections
   label: Structure
   list: Liste des structures
   mission:
@@ -202,6 +201,9 @@ organization:
     edit_form_title: Modifier un type de mission
   children_selector:
     label: Structure
+  forecast:
+    title: Projections
+    submitButton: Calculer
 project:
   contribute: Contribuez au projet
   description: Réserve opérationnelle - Croix-Rouge Française à Paris

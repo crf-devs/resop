@@ -42,7 +42,7 @@ class DynamicPropertiesType extends AbstractType
                 'label' => $property['label'],
                 'help' => $property['help'] ? nl2br($property['help']) : null,
                 'required' => $property['required'],
-                'help_html' => true
+                'help_html' => true,
             ];
 
             switch ($property['type']) {
