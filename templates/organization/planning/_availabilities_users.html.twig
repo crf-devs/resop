@@ -27,8 +27,8 @@
     <td class="item-data">{{ item.entity.emailAddress }}</td>
     <td class="item-data">{{ item.entity|userBadges }}</td>
     {% for user_property in user_properties %}
-        <td class="item-data" title="{{ user_property.columnLabel|default(user_property.label)|default }}">
-            {{ dynamicPropertyValue(item.entity.properties[user_property.key]|default('-'), user_property) }}
+        <td class="item-data" title="{{ dynamicPropertyValue(item.entity.properties[user_property.key]|default('-'), user_property) }}">
+            {{ dynamicPropertyValue(item.entity.properties[user_property.key]|default('-'), user_property)|truncate(75) }}
         </td>
     {% endfor %}
     <td>

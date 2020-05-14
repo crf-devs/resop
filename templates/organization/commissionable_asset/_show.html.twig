@@ -12,7 +12,9 @@
         <dt class="col-4">{{ prop.label | default('') }}</dt>
         <dd class="col-8">
             {% if prop != null %}
-                {{ dynamicPropertyValue(asset.properties[prop.key]|default('-'), prop) }}
+                <span title="{{ dynamicPropertyValue(asset.properties[prop.key]|default('-'), prop) }}">
+                    {{ dynamicPropertyValue(asset.properties[prop.key]|default('-'), prop)|truncate(75) }}
+                </span>
             {% else %}
                 -
             {% endif %}

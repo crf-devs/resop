@@ -74,11 +74,6 @@ class DynamicPropertyExtensionTest extends TestCase
                 'propertyDefinition' => ['type' => DynamicPropertiesType::TYPE_SMALL_TEXT],
                 'expected' => 'foo',
             ],
-            'text_truncated' => [
-                'value' => 'this is a very long text which will be truncated because it is sooo long it will break display',
-                'propertyDefinition' => ['type' => DynamicPropertiesType::TYPE_SMALL_TEXT],
-                'expected' => 'this is a very long text which will be truncated because it is sooo long...',
-            ],
         ];
     }
 }

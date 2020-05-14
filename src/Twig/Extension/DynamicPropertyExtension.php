@@ -46,15 +46,6 @@ class DynamicPropertyExtension extends AbstractExtension
             return $this->translator->trans(sprintf('common.%s', (bool) $value ? 'yes' : 'no'));
         }
 
-        if (DynamicPropertiesType::TYPE_NUMBER === $propertyDefinition['type']) {
-            return (string) $value;
-        }
-
-        $value = (string) $value;
-        if (\strlen($value) <= 75) {
-            return $value;
-        }
-
-        return substr($value, 0, 72).'...';
+        return (string) $value;
     }
 }

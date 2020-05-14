@@ -20,7 +20,9 @@
     <dd class="col-8">{{ user.birthday|format_date('long') }}</dd>
     {% for user_property in user_properties %}
         <dt class="col-4">{{ user_property.columnLabel|default(user_property.label)|default }}</dt>
-        <dd class="col-8">{{ dynamicPropertyValue(user.properties[user_property.key]|default('-'), user_property) }}</dd>
+        <dd class="col-8" title="{{ dynamicPropertyValue(user.properties[user_property.key]|default('-'), user_property) }}">
+            {{ dynamicPropertyValue(user.properties[user_property.key]|default('-'), user_property)|truncate(75) }}
+        </dd>
     {% endfor %}
 </dl>
 
