@@ -87,6 +87,7 @@ Encore
     // This alias fixes a bug in the daterangepicker import
     // See https://github.com/Eonasdan/bootstrap-datetimepicker/issues/1319
     .addAliases({'jquery': path.join(__dirname, 'node_modules/jquery/src/jquery')})
+    .addAliases({'fos_router': path.join(__dirname, 'node_modules/FOSJsRoutingBundle/Resources/public/js/router')})
 ;
 
 module.exports = Encore.getWebpackConfig();

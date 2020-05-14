@@ -12,6 +12,7 @@ parameters:
         - public/
         - features/
         - var/
+        - node_modules/
         - vendor/
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/test/App_KernelTestDebugContainer.xml

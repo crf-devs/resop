@@ -82,8 +82,6 @@ jobs:
 
             - run: yarn install --frozen-lockfile
 
-            - run: bin/console fos:js-routing:dump --format=json --target=assets/js/fos_js_routes.json
-
             - run: yarn encore production
 
             # PHPStan needs the var/cache/test/App_KernelTestContainer.xml file to exist

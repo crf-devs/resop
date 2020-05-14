@@ -71,7 +71,6 @@ webpack-build-dev:
 	bin/node-tools yarn encore dev
 
 webpack-watch-dev:
-	bin/tools bin/console fos:js-routing:dump --format=json --target=assets/js/fos_js_routes.json
 	bin/node-tools yarn encore dev --watch
 
 webpack-build-prod:
