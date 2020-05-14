@@ -61,16 +61,15 @@ Feature:
 #            | DT75     |
             | UL 01-02 |
 
-#    TODO Fix this test
-#    @javascript
-#    Scenario: As an organization, I can display an asset modal
-#        Given I am authenticated as "DT75"
-#        When I go to "/organizations/203/assets"
-#        And I follow "Afficher"
-#        And I wait for ".ajax-modal-content" to be visible
-#        Then I should see "Modifier"
-#        And I follow "Modifier"
-#        Then I should be on "/organizations/203/assets/75012/edit"
+    @javascript
+    Scenario: As an organization, I can display an asset modal
+        Given I am authenticated as "DT75"
+        When I go to "/organizations/203/assets"
+        And I press "Afficher"
+        And I wait for ".modal-show-asset-inner" to be visible
+        Then I should see "Modifier"
+        And I follow "Modifier"
+        Then I should be on "/organizations/201/assets/75012/edit?organizationId=203"
 
     Scenario Outline: As an organization, I can update an asset from my organization or children organizations
         Given I am authenticated as "<login>"
