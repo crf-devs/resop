@@ -8,6 +8,7 @@ use App\EntityListener\UserPasswordEntityListener;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -25,6 +26,7 @@ class Organization implements UserPasswordInterface, UserSerializableInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
+     * @Groups("mission:ajax")
      */
     public ?int $id = null;
 
