@@ -37,7 +37,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $organization = $organization->getParentOrganization();
         $organizations = [
             $organization->getId(),
-            ...$organization->getChildren()->map(fn (Organization $child)  => $child->getId())->getValues(),
+            ...$organization->getChildren()->map(fn (Organization $child) => $child->getId())->getValues(),
         ];
 
         $qb = $this->createQueryBuilder('u');
