@@ -74,7 +74,7 @@ parameters:
         - key: organizationOccupation
           type: smallText
           label: Quelles sont vos fonctions de cadre au sein de votre structure d'emploi ?
-          columnLabel: Cadre
+          columnLabel: Fonction cadre
           help: ~
           required: false
           hidden: false
@@ -90,7 +90,7 @@ parameters:
         - key: drivingLicence
           type: boolean
           label: Avez-vous le permis B depuis plus de 3 ans ?
-          columnLabel: Permis
+          columnLabel: Permis depuis 3 ans
           help: ~
           required: true
           hidden: false

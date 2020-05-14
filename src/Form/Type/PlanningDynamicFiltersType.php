@@ -33,7 +33,8 @@ class PlanningDynamicFiltersType extends AbstractType
                         'common.no' => 0,
                         'common.yes' => 1,
                     ],
-                    'attr' => ['class' => 'dynamic_planning_filter'],
+                    'attr' => ['class' => 'dynamic_planning_filter ml-2'],
+                    'row_attr' => ['class' => 'form-inline mb-2'],
                 ]
             );
         }
