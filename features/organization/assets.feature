@@ -85,7 +85,7 @@ Feature:
             | admin203@resop.com | /organizations/203/assets | /organizations/203/assets/preAdd | /organizations/203/assets/add |
 
     @javascript
-    Scenario: As an admin of an organization, I can display an asset modal
+    Scenario: As an admin of an admin of an organization, I can display an asset modal
         Given I am authenticated as "admin201@resop.com"
         When I go to "/organizations/201/assets"
         And I press "Afficher"

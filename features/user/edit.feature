@@ -1,20 +1,17 @@
 @profile
 Feature:
-    In order to update my account,
-    As a user,
-    I must be able to edit my personal information.
+    In order to update my account
+    As a user
+    I must be able to edit my personal information
 
     Scenario: As anonymous, I cannot update an account
         When I go to "/user/edit"
         Then I should be on "/login"
-        And the response status code should be 200
 
     Scenario: As a user, I can see my account
         Given I am authenticated as "admin201@resop.com"
         When I go to "/user/edit"
-        Then I should be on "/user/edit"
-        And the response status code should be 200
-        And the "user[identificationNumber]" field should contain "990001A"
+        Then the "user[identificationNumber]" field should contain "990001A"
         And the "user[emailAddress]" field should contain "admin201@resop.com"
         And the "user[firstName]" field should contain "John"
         And the "user[lastName]" field should contain "DOE"
@@ -119,7 +116,6 @@ Feature:
             | user[phoneNumber]          | <phoneNumber>     |
         And I press "Valider"
         Then I should be on "/"
-        And the response status code should be 200
         And I should see "Vos informations ont été mises à jour avec succès."
         When I follow "Déconnexion"
         And I fill in the following:
@@ -129,7 +125,6 @@ Feature:
             | user_login[birthday][year]  | 1990    |
         And I press "Je me connecte"
         Then I should be on "/"
-        And the response status code should be 200
         And I should see "NIVOL : 899999A"
         Examples:
             | login             | phoneNumber  |
