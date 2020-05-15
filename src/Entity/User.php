@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("identificationNumber")
  * @ORM\EntityListeners({AddDependantSkillsEntityListener::class})
  */
-class User implements UserInterface, AvailabilitableInterface, UserSerializableInterface
+class User implements UserInterface, AvailabilitableInterface, UserSerializableInterface, \Serializable
 {
     public const NIVOL_FORMAT = '#^\d+[A-Z]$#';
 
@@ -192,6 +192,31 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
             'id' => $this->id,
             'identificationNumber' => $this->identificationNumber,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize(): string
+    {
+        return serialize([
+            $this->id,
+            $this->identificationNumber,
+            $this->emailAddress,
+            $this->birthday,
+        ]);
+    }
+
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized): void
+    {
+        list(
+            $this->id,
+            $this->identificationNumber,
+            $this->emailAddress,
+            $this->birthday) = unserialize($serialized);
     }
 
     public function getId(): ?int
