@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Monolog\Processor;
 
+use App\Entity\UserSerializableInterface;
 use Monolog\Processor\ProcessorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -23,11 +24,25 @@ class ContextNormalizerProcessor implements ProcessorInterface
         }
 
         foreach ($record['context'] as $key => $value) {
-            if ($this->normalizer->supportsNormalization($value, 'json')) {
+            if (\is_object($value) && method_exists($value, '__toString')) {
+                $record['context'][$key] = $value->__toString();
+            } elseif ($value instanceof UserSerializableInterface) {
+                $record['context'][$key] = json_encode($value->userSerialize()); // TODO use a custom normalizer
+            } elseif ($this->normalizer->supportsNormalization($value, 'json')) {
                 try {
                     $record['context'][$key] = $this->normalizer->normalize($value, 'json', [
                         'circular_reference_handler' => static function ($object) {
-                            return (string) $object;
+                            if (!\is_object($object)) {
+                                return null;
+                            }
+                            if (method_exists($object, '__toString')) {
+                                return $object->__toString();
+                            }
+                            if (!empty($object->id)) {
+                                return (string) $object->id;
+                            }
+
+                            return null;
                         },
                     ]);
                 } catch (\Throwable $e) {
