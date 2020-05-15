@@ -4,10 +4,6 @@ Feature:
     As an organization,
     I must be able to search for available users and assets.
 
-    Scenario: As anonymous, I cannot access to the forecast page
-        When I go to "/organizations/201/forecast/"
-        Then I should be on "/organizations/login"
-
     Scenario: As an authenticated children organization, I cannot use the forecast search form
         Given I am authenticated as "UL 01-02"
         When I go to "/organizations/201/forecast/"
