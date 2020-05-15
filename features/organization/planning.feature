@@ -5,11 +5,6 @@ Feature:
     As an organization
     I must have access to the planning and I can filter what is displayed.
 
-    Scenario: As an anonymous, I cannot access the planning
-        Given I go to "/organizations/201/planning/"
-        Then I should be on "/organizations/login"
-        And the response status code should be 200
-
     Scenario: As an organization, I have access to the planning and I can see my resources
         Given I am authenticated as "UL 01-02"
         And I am on "/organizations/203"
