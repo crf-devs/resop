@@ -66,15 +66,16 @@ vendors:
 	bin/tools composer install -n -v --profile --apcu-autoloader --prefer-dist --ignore-platform-reqs
 	bin/node-tools yarn install --pure-lockfile
 
-webpack-build-dev:
+build-js-routes:
 	bin/tools bin/console fos:js-routing:dump --format=json --target=assets/js/fos_js_routes.json
+
+webpack-build-dev:
 	bin/node-tools yarn encore dev
 
 webpack-watch-dev:
 	bin/node-tools yarn encore dev --watch
 
 webpack-build-prod:
-	bin/tools bin/console fos:js-routing:dump --format=json --target=assets/js/fos_js_routes.json
 	bin/node-tools yarn encore production
 
 init-db: start-db
