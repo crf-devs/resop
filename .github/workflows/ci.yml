@@ -133,7 +133,8 @@ jobs:
             - name: Run Behat tests
               run: |
                   bin/post-install-test.sh
-                  vendor/bin/behat --format=progress --out=std --format=junit --out=var/behat
+                  vendor/bin/behat ./features/organization --format=progress --out=std --format=junit --out=var/behat
+                  vendor/bin/behat ./features/user --format=progress --out=std --format=junit --out=var/behat
               if: always()
 
             - uses: codecov/codecov-action@v1
