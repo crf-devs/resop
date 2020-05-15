@@ -9,13 +9,13 @@ Feature:
         And the response status code should be 200
 
     Scenario: As an admin of an organization with no password set, I see a warning
-        Given I am authenticated as "jane.doe@resop.com"
+        Given I am authenticated as "admin203@resop.com"
         When I go to "/"
         Then I should see "Vous devez renseigner votre mot de passe afin d'administrer votre structure."
         And the response status code should be 400
 
     Scenario: As a user, I cannot update my password with empty data
-        Given I am authenticated as "jane.doe@resop.com"
+        Given I am authenticated as "admin203@resop.com"
         And I am on "/user/password"
         When I fill in the following:
             | password[password][first]  |  |
@@ -27,7 +27,7 @@ Feature:
         And I should see "Cette valeur ne doit pas être vide." in the "label[for=password_password_second] .form-error-message" element
 
     Scenario: As a user, I cannot update my password with invalid data
-        Given I am authenticated as "jane.doe@resop.com"
+        Given I am authenticated as "admin203@resop.com"
         And I am on "/user/password"
         When I fill in the following:
             | password[password][first]  | foo |
@@ -38,7 +38,7 @@ Feature:
         And I should see "Les mots de passe ne correspondent pas." in the "label[for=password_password_first] .form-error-message" element
 
     Scenario Outline: As a user with a password, I cannot update it with an empty or invalid current one
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/user/password"
         When I fill in the following:
             | password[current]          | <value> |
@@ -54,7 +54,7 @@ Feature:
             | invalid | Cette valeur est invalide.          |
 
     Scenario Outline: As a user with a password, I can update it
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/user/password"
         When I fill in the following:
             | password[current]          | covid19 |
@@ -74,11 +74,11 @@ Feature:
         And I should see "NIVOL : 990001A"
         Examples:
             | login              |
-            | john.doe@resop.com |
+            | admin201@resop.com |
             | 990001A            |
 
     Scenario Outline: As a user without a password, I can set it
-        Given I am authenticated as "jane.doe@resop.com"
+        Given I am authenticated as "admin203@resop.com"
         And I am on "/user/password"
         When I fill in the following:
             | password[current]          |         |
@@ -98,5 +98,5 @@ Feature:
         And I should see "NIVOL : 990002A"
         Examples:
             | login              |
-            | jane.doe@resop.com |
+            | admin203@resop.com |
             | 990002A            |

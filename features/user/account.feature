@@ -9,12 +9,12 @@ Feature:
         And the response status code should be 200
 
     Scenario: As a user, I can see my account
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         When I go to "/user/edit"
         Then I should be on "/user/edit"
         And the response status code should be 200
         And the "user_identificationNumber" field should contain "990001A"
-        And the "user_emailAddress" field should contain "john.doe@resop.com"
+        And the "user_emailAddress" field should contain "admin201@resop.com"
         And the "user_firstName" field should contain "John"
         And the "user_lastName" field should contain "DOE"
         And the "user_phoneNumber" field should contain "06 12 34 56 78"
@@ -28,7 +28,7 @@ Feature:
         And the "user[occupation][choice]" field should contain "Pharmacien"
 
     Scenario: As a user, I cannot update my account with empty data
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/user/edit"
         When I fill in the following:
             | user[identificationNumber] |  |
@@ -46,7 +46,7 @@ Feature:
         And I should see "Cette valeur ne doit pas être nulle." in the "label[for=user_phoneNumber] .form-error-message" element
 
     Scenario: As a user, I cannot update my account with invalid data
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/user/edit"
         When I fill in the following:
             | user[identificationNumber] | invalid |
@@ -60,7 +60,7 @@ Feature:
         And I should see "Cette valeur n'est pas un numéro de téléphone valide." in the "label[for=user_phoneNumber] .form-error-message" element
 
     Scenario Outline: As a user, I can update my account
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/user/edit"
         When I fill in the following:
             | user[identificationNumber] | 899999A           |

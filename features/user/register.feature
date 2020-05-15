@@ -4,7 +4,7 @@ Feature:
     I must be able to create my account.
 
     Scenario: As authenticated user, I cannot create an account
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         When I go to "/user/new"
         Then I should be on "/"
         And the response status code should be 200
@@ -15,7 +15,7 @@ Feature:
             | user[identificationNumber] | 999999A            |
             | user[firstName]            | John               |
             | user[lastName]             | DOE                |
-            | user[emailAddress]         | john.doe@resop.com |
+            | user[emailAddress]         | admin201@resop.com |
             | user[phoneNumber]          | 0612345678         |
         And I select "UL 01-02" from "user[organization]"
         And I check "Maraudeur.se"

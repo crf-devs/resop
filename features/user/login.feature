@@ -19,7 +19,7 @@ Feature:
         And I should see "NIVOL : 990001A"
         Examples:
             | login              |
-            | john.doe@resop.com |
+            | admin201@resop.com |
             | 990001A            |
 
     Scenario Outline: As a user with a password, I cannot log in with an invalid one
@@ -33,7 +33,7 @@ Feature:
         And I should see "Veuillez saisir un numéro NIVOL ou une adresse e-mail valide, ou la date de naissance ne corresponds pas à ce NIVOL/email."
         Examples:
             | login              |
-            | john.doe@resop.com |
+            | admin201@resop.com |
             | 990001A            |
 
     Scenario Outline: As a user with a password, I cannot log in with my birth date
@@ -49,7 +49,7 @@ Feature:
         And I should see "Veuillez saisir un numéro NIVOL ou une adresse e-mail valide, ou la date de naissance ne corresponds pas à ce NIVOL/email."
         Examples:
             | login              |
-            | john.doe@resop.com |
+            | admin201@resop.com |
             | 990001A            |
 
     Scenario Outline: As a user without a password, I can log in with my birth date
@@ -65,7 +65,7 @@ Feature:
         And I should see "NIVOL : 990002A"
         Examples:
             | login              |
-            | jane.doe@resop.com |
+            | admin203@resop.com |
             | 990001A            |
 
     Scenario Outline: As a user without a password, I cannot log in with an invalid birth date
@@ -81,11 +81,11 @@ Feature:
         And I should see "Veuillez saisir un numéro NIVOL ou une adresse e-mail valide, ou la date de naissance ne corresponds pas à ce NIVOL/email."
         Examples:
             | login              |
-            | jane.doe@resop.com |
+            | admin203@resop.com |
             | 990001A            |
 
     Scenario: As an authenticated user, I can log out
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/"
         When I follow "Déconnexion"
         Then I should be on "/login"

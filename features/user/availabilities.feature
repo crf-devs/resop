@@ -10,7 +10,7 @@ Feature:
         And the response status code should be 200
 
     Scenario: As authenticated user, I can navigate through the planning weeks
-        Given I am authenticated as "jane.doe@resop.com"
+        Given I am authenticated as "admin203@resop.com"
         And I am on "/"
         When I follow "Semaine prochaine"
         Then the url should match "/user/availability"
@@ -20,7 +20,7 @@ Feature:
         And the response status code should be 200
 
     Scenario Outline: As authenticated user, I cannot add an availability on a booked/locked slot
-        Given I am authenticated as "jane.doe@resop.com"
+        Given I am authenticated as "admin203@resop.com"
         And I am on "/"
         When I follow "Semaine prochaine"
         Then the url should match "/user/availability"
@@ -34,7 +34,7 @@ Feature:
             | next week monday 8 am |
 
     Scenario Outline: As authenticated user, I can add and remove an availability at any free slot in the future
-        Given I am authenticated as "jane.doe@resop.com"
+        Given I am authenticated as "admin203@resop.com"
         And I am on "/"
         When I follow "Semaine prochaine"
         # TODO Check the full url /user/availability/2020-W18
@@ -70,7 +70,7 @@ Feature:
             | next week sunday 10pm     |
 
     Scenario Outline: As authenticated user, I can remove an availability at any available slot in the future
-        Given I am authenticated as "jane.doe@resop.com"
+        Given I am authenticated as "admin203@resop.com"
         And I am on "/"
         When I follow "Semaine prochaine"
         Then the url should match "/user/availability"
