@@ -131,7 +131,7 @@ jobs:
             - name: Run Behat tests
               run: |
                   bin/post-install-test.sh
-                  vendor/bin/behat --format=progress --out=std --format=junit --out=var/behat
+                  vendor/bin/behat --format=progress --out=std --format=junit --out=var/behat --tags '~@javascript'
               if: always()
 
             - uses: codecov/codecov-action@v1
