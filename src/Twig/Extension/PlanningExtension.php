@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Twig\Extension;
 
+use App\Domain\AvailabilityDomain;
 use App\Domain\DatePeriodCalculator;
 use App\Domain\PlanningDomain;
+use App\Entity\Mission;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -14,11 +17,13 @@ final class PlanningExtension extends AbstractExtension
 {
     private PlanningDomain $planningDomain;
     private string $slotInterval;
+    private TranslatorInterface $translator;
 
-    public function __construct(PlanningDomain $planningDomain, string $slotInterval)
+    public function __construct(PlanningDomain $planningDomain, string $slotInterval, TranslatorInterface $translator)
     {
         $this->planningDomain = $planningDomain;
         $this->slotInterval = $slotInterval;
+        $this->translator = $translator;
     }
 
     /**
@@ -29,6 +34,8 @@ final class PlanningExtension extends AbstractExtension
         return [
             new TwigFunction('renderPlanningTable', [$this, 'renderTable']),
             new TwigFunction('getAvailabilities', [$this, 'getAvailabilities']),
+            new TwigFunction('getFakeNow', [$this, 'getFakeNow']),
+            new TwigFunction('calendarTimeSlot', [$this, 'calendarTimeSlot']),
         ];
     }
 
@@ -39,12 +46,35 @@ final class PlanningExtension extends AbstractExtension
     {
         return [
             new TwigFilter('timeSlot', [$this, 'getTimeSlot']),
+            new TwigFilter('filterMissionsByDate', [$this, 'filterMissionsByDate']),
         ];
+    }
+
+    public function isFullHourInterval(): bool
+    {
+        return 0 === DatePeriodCalculator::intervalToSeconds(\DateInterval::createFromDateString($this->slotInterval)) % 3600;
     }
 
     public function getTimeSlot(\DateTimeInterface $time): string
     {
         return 0 === \DateInterval::createFromDateString($this->slotInterval)->i ? $time->format('H') : $time->format('H:i');
+    }
+
+    public function calendarTimeSlot(\DateTimeImmutable $start, \DateTimeImmutable $end): string
+    {
+        $hourFormat = fn (\DateTimeImmutable $date) => '0' === $date->format('G') ? '00' : $date->format('G');
+
+        if ($this->isFullHourInterval()) {
+            if ('00' === $start->format('H') && '00' === $end->format('H')) {
+                return $this->translator->trans('calendar.fullDay');
+            }
+
+            return sprintf('%sh - %sh', $hourFormat($start), $hourFormat($end));
+        }
+
+        $end = $end->sub(new \DateInterval('PT1M'));
+
+        return sprintf('%sh - %sh', $start->format('H:i'), $end->format('H:i'));
     }
 
     public function getAvailabilities(DatePeriodCalculator $periodCalculator, array $filters): array
@@ -69,5 +99,21 @@ final class PlanningExtension extends AbstractExtension
         }
 
         return $res;
+    }
+
+    public function getFakeNow(): \DateTimeImmutable
+    {
+        return AvailabilityDomain::getFakeUtcNow();
+    }
+
+    public function filterMissionsByDate(array $missions, \DateTimeImmutable $start, \DateTimeImmutable $end): array
+    {
+        return array_filter($missions, static function (Mission $mission) use ($start, $end) {
+            return
+                (null === $mission->startTime && null === $mission->endTime) ||
+                ($mission->startTime >= $start && $mission->endTime <= $end) ||
+                ($mission->startTime <= $start && $mission->endTime >= $start) ||
+                ($mission->startTime <= $end && $mission->endTime >= $end);
+        });
     }
 }

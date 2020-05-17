@@ -18,9 +18,8 @@ class AvailabilitiesHelper
         $this->slotInterval = $slotInterval;
     }
 
-    public function getUserWeeklyAvailabilities(User $user, string $dateStartString): iterable
+    public function getUserWeeklyAvailabilities(User $user, \DateTimeImmutable $start): iterable
     {
-        $start = new \DateTimeImmutable($dateStartString);
         $end = $start->add(new \DateInterval('P7D'));
 
         $availabilitiesDomain = AvailabilitiesDomain::generate(
@@ -30,11 +29,11 @@ class AvailabilitiesHelper
             $this->userAvailabilityRepository->findBetweenDates($user, $start, $end)
         );
 
-        $currentDay = new \DateTime($dateStartString);
+        $currentDay = $start;
         $availabilitiesPerDay = [];
         while ($currentDay < $end) {
-            $availabilitiesPerDay[$currentDay->format('Ymd')] = ['date' => clone $currentDay, 'availabilities' => []];
-            $currentDay->add(new \DateInterval('P1D'));
+            $availabilitiesPerDay[$currentDay->format('Ymd')] = ['date' => $currentDay, 'availabilities' => []];
+            $currentDay = $currentDay->add(new \DateInterval('P1D'));
         }
 
         foreach ($availabilitiesDomain->availabilityDomains as $availabilityDomain) {

@@ -14,11 +14,13 @@
     <body class="{% block body_class 'body-user' %}">
         {% include '_navbar.html.twig' %}
 
-        <div class="container my-5">
+        <div class="{% block container_class 'container my-5' %}">
             {% block body %}{% endblock %}
         </div>
 
         {% include '_footer.html.twig' %}
+
+        {% include '_ajax_modal.html.twig' %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}

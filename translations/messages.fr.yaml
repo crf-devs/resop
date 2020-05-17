@@ -22,6 +22,7 @@ asset:
   name: Identifiant
 calendar:
   displayedPeriod: Période affichée
+  fullDay: Jour entier
   hours: heures
   period: du %from% au %to%
   hoursPeriod: "%from% à %to%"
@@ -51,6 +52,7 @@ common:
   start: Début
   end: Fin
   other: Autre
+  legend: Légende
 message:
   confirmDelete: Vous êtes sur le point de supprimer l'élément
   deleteAssetWarning: Vous êtes sur le point de supprimer le véhicule suivant et toutes ses disponibilités
@@ -115,7 +117,7 @@ organization:
     deleteSuccessMessage: La mission a été supprimée avec succès
     editFormTitle: Modifier une mission
     name: Identifiant de la mission 
-    comment: Commentaires 
+    comment: Commentaires
     duration: Date et durée
     dates: Date
     hours: Horaires
@@ -217,18 +219,9 @@ user:
   availabilitySpecificWeek: Mes disponibilités pour la semaine du %week%
   calendar: 
     currentWeek: Semaine courante
-    defaultAvailabilityTitle: Dispo
     editAvailabilities: Modifier mes disponibilités
     edit: Modifier
     nextWeek: Semaine prochaine
-    shortDays:
-      Mon: lun
-      Tue: mar
-      Wed: mer
-      Thu: jeu
-      Fri: ven
-      Sat: sam
-      Sun: dim
   createMyAccount: Créer mon compte
   detail:
     organization: Votre structure de rattachement
@@ -262,7 +255,7 @@ user:
   skill: Compétence
   skills: Compétences
   organizationOccupation: Cadre
-  welcome: Bienvenue, %name%
+  welcome: Bienvenue, 
 
 # Symfony default translations
 Submit: Enregistrer

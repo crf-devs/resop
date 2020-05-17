@@ -1,62 +1,98 @@
-{% set editPath = path('user_availability') %}
-{% set editAlt = 'user.availabilityCurrentWeek' %}
-{% if weekType == 'next-week' %}
-    {% set editPath = path('user_availability', {week: 'next week'|date('o-\\WW')}) %}
-    {% set editAlt = 'user.availabilityNextWeek' %}
-{% endif %}
+{% macro editLink(path, title) -%}
+    <a href="{{ path }}" title="{{ title|default('') }}" class="btn btn-link d-none d-md-inline-block text-nowrap">
+        {{ 'user.calendar.edit'|trans }}
+        <span class="fa fa-angle-right"></span>
+    </a>
+    <a href="{{ path }}" class="btn btn-primary d-block d-md-none mb-4">{{ 'user.calendar.editAvailabilities'|trans }}</a>
+{%- endmacro %}
 
-<div class="weekly-calendar {{ weekType }}">
-    <div class="white-box">
-        <div class="row">
-            <h3>{{ calendarTitle }}</h3>
-            <div class="edit-calendar-link ">
-                <a href="{{ editPath }}" title="{{ editAlt|trans }}">
-                    {{ weekType == 'next-week' ? 'user.calendar.edit'| trans : 'user.calendar.editAvailabilities' | trans }}
-                    <img class="d-none d-xl-inline" src="{{ asset('build/images/path-arrow.svg') }}"/>
-                </a>
-            </div>
-        </div>
+{% macro dayClass(date) %}
+    {% set date = date|date('Ymd', timezone=false) %}
+    {% set now = getFakeNow()|date('Ymd', timezone=false) %}
+    {{- date == now ? 'current' -}}
+    {{- date < now ? 'previous' -}}
+    {{- date > now ? 'incoming' -}}
+{% endmacro %}
 
-        <div class="user-home-calendar">
-            {% for day in availabilities %}
-                <div class="calendar-day">
-                    <div class="row m-0">
-                        <div class="calendar-header {{ day.date|calendarDayClass }}">
-                            <p class="day-text">
-                                {% set shortDay = 'user.calendar.shortDays.' ~ day.date|date('D') %}
-                                {{ shortDay|trans }}.
-                            </p>
-                            <p class="day-number badge badge-pill">
-                                {{ day.date|date('j')|trans }}
-                            </p>
-                        </div>
+{% macro slotClass(endDate) %}
+    {% set now = getFakeNow() %}
+    {{- endDate < now ? 'previous' -}}
+{% endmacro %}
 
-                        <div class="calendar-availabilities">
-                            {% if day.availabilities %}
-                                {% for availability in day.availabilities %}
-                                    <div class="availability bg-{{ availability.status|default('unknown') }}">
+{% set maxMissionsPerDay = 0 %}
+{% for day in availabilities %}
+    {% set maxMissionsPerDay = max(maxMissionsPerDay, missions|filterMissionsByDate(day.date|date_modify('today'), day.date|date_modify('tomorrow'))|length) %}
+{% endfor %}
+
+{% set calendarClass = random(null, 999999) %}
+
+<style>
+    @media (min-width: 1200px) {
+        .cal-{{ calendarClass }} .missions {
+            min-height: {{ maxMissionsPerDay * 80 }}px !important;
+        }
+    }
+</style>
+
+<div class="weekly-calendar white-box cal-{{ calendarClass}} {{ weekClass|default('') }}">
+    <div class="calendar-title">
+        <h3>{{ calendarTitle }}</h3>
+        {{ link|raw }}
+    </div>
+
+    <div class="user-home-calendar">
+        {% for day in availabilities %}
+            <div class="calendar-day">
+                <div class="row m-0">
+                    <div class="calendar-header {{- _self.dayClass(day.date) -}}">
+                        <p class="day-text">
+                            {{- day.date|format_date(pattern="eee", timezone=false) -}}
+                        </p>
+                        <p class="day-number badge badge-pill">
+                            {{- day.date|date('j', timezone=false)|trans -}}
+                        </p>
+                    </div>
+
+                    <div class="calendar-availabilities">
+                        {% if missions|length %}
+                            <div class="missions">
+                                {%- for mission in missions|filterMissionsByDate(day.date|date_modify('today'), day.date|date_modify('tomorrow')) %}
+                                    <a
+                                        class="availability bg-mission {{ _self.slotClass(mission.endTime) }}"
+                                        data-toggle="ajax-modal"
+                                        data-href="{{ path('app_user_availability_mission_modal', {id: mission.id}) }}"
+                                        title="{{ mission.name }}"
+                                    >
                                         <div class="title">
-                                            {{ availability.comment|default('user.calendar.defaultAvailabilityTitle'|trans) }}
+                                            <span class="badge badge-light">{{ mission.type.name | default('') }}</span>
+                                            <span class="d-xl-block">{{ mission.name }}</span>
                                         </div>
                                         <div class="hours">
-                                            {{ availability.startTime|calendarCustomHours }} - {{ availability.endTime|calendarCustomHours(true) }}
+                                            {{- calendarTimeSlot(mission.startTime, mission.endTime) -}}
                                         </div>
-                                    </div>
-                                {% endfor %}
-                            {% else %}
-                                <div class="availability bg-light">
-                                    <div class="title">
-                                        &nbsp;
-                                    </div>
-                                    <div class="hours">
-                                        &nbsp;
-                                    </div>
+                                    </a>
+                                {% endfor -%}
+                            </div>
+                        {% endif %}
+
+                        {% for availability in day.availabilities %}
+                            <div class="availability bg-{{ availability.status|default('unknown') }} {{ _self.slotClass(availability.endTime) }}">
+                                <div class="title">
+                                    {{- availability.comment|default(('organization.asset.'~availability.status)|trans) -}}
                                 </div>
-                            {% endif %}
-                        </div>
+                                <div class="hours">
+                                    {{- calendarTimeSlot(availability.startTime, availability.endTime) -}}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="availability bg-light">
+                                <div class="title">&nbsp;</div>
+                                <div class="hours">&nbsp;</div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
 </div>

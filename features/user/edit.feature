@@ -1,3 +1,4 @@
+@profile
 Feature:
     In order to update my account
     As a user
