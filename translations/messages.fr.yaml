@@ -252,3 +252,39 @@ user:
 
 # Symfony default translations
 Submit: Enregistrer
+
+register:
+  introduction: |
+    Dans le cadre du dispositif COVID-75, nous avons besoin de votre engagement à tous et nous savons pouvoir
+    compter sur vous.<br>
+    <br>
+    Pour mener à bien les missions confiées par nos partenaires, nous avons besoin de connaître le plus précisément
+    possible les ressources que nous pouvons solliciter, pour avoir de la visibilité sur les engagements à
+    réaliser.<br>
+    Nous ne pouvons pas vous garantir la mobilisation de toutes les personnes qui se rendent disponibles. Votre
+    déclenchement se fera en fonction de l'accord préalable de vos unités locales (accord recueilli par la Cellule
+    Ressources et Anticipation), de vos compétences et des besoins attendus. Il est donc possible que vous ne soyez
+    pas engagés sur les créneaux où vous vous êtes portés disponibles.<br>
+    <br>
+    Si vous n'êtes pas disponibles ou que vous faites partie des personnes qui ne peuvent pas être engagées
+    (mineurs, + de 70 ans, etc.), nous vous demandons également de répondre (question dédiée) afin que l'on ne vous
+    relance pas.<br>
+    <br>
+    Voici quelques informations complémentaires :<br>
+    - la disponibilité commence au point de rendez-vous à l'heure de début du créneau ;<br>
+    - dans le cas où vos disponibilités évoluent, vous pourrez les mettre à jour en permanence sur l'interface ;<br>
+    - dans le cas où vous seriez engagé, vous recevrez une notification vous précisant le lieu, les numéros de
+    contacts utiles, l'objet de la mission ;<br>
+    - en fin de mission, vous serez contactés individuellement par la Cellule Ressources &amp; Anticipation afin
+    d'effectuer un suivi.<br>
+    <br>
+    Vos disponibilités seront partagées avec vos <abbr title="Directeur/trice local(e) de l'Action Sociale">DLAS</abbr>
+    et <abbr title="Directeur/trice local(e) de l'Urgence et du Secourisme">DLUS</abbr> (à qui nous demanderons leur accord de principe)<br>
+    Nous mettons à votre disposition un numéro de téléphone pour toute question concernant la réserve opérationnelle
+    : <a href="tel:+33144146880">01 44 14 68 80</a> (9h-21h).<br>
+    N'hésitez pas non plus à solliciter vos cadres pour toute autre question.<br>
+    <br>
+    Nous vous remercions par avance pour vos retours.<br>
+    Et un grand merci pour votre engagement !<br>
+    <br>
+    Cellule Ressources &amp; Anticipation

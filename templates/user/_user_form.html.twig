@@ -2,12 +2,18 @@
 {{ form_errors(form) }}
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-12 col-md-6">
         {{ form_row(form.identificationNumber, { 'label': 'user.identificationNumber' | trans }) }}
     </div>
+    <div class="col-12 col-md-6">
+        {% if form.birthday is defined %}
+            {{ form_row(form.birthday, { 'label': 'user.dob' | trans }) }}
+        {% endif %}
+    </div>
 </div>
+
 <div class="row">
-    <div class="col-6">
+    <div class="col-12 col-md-6">
         {{ form_row(form.organization) }}
     </div>
 </div>
@@ -29,10 +35,6 @@
         {{ form_row(form.phoneNumber, { 'label' : 'user.mobile' | trans }) }}
     </div>
 </div>
-
-{% if form.birthday is defined %}
-    {{ form_row(form.birthday, { 'label': 'user.dob' | trans }) }}
-{% endif %}
 
 <div class="row">
     <div class="col-12 col-xl-6">
