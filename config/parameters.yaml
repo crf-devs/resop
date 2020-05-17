@@ -1,0 +1,117 @@
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    app.most_important_skills_limit: 6 # used for separing data in the planning
+    app.most_important_skills_to_display: [ch_vpsp, ch_vl] # used for displaying a badge near the user name
+    app.slot_interval: '%env(APP_SLOT_INTERVAL)%'
+    app.available_skills:
+        # Caution: the order matters for the planning display
+        ci_bspp:
+            label: CI Réseau BSPP
+            includes: [ci_samu]
+        ci_samu:
+            label: CI Réseau Samu
+            includes: [ci]
+        ch_vpsp:
+            label: Chauffeur VPSP
+            includes: [pse2, ch_vl]
+        ci:
+            label: CI
+            includes: [pse2]
+        pse2:
+            label: PSE2
+            includes: [pse1]
+        pse1:
+            label: PSE1
+            includes: [psc1]
+        ch_vl:
+            label: Chauffeur VL
+            includes: [benevole]
+        infirmier:
+            label: Infirmier.e local.e
+            includes: [benevole]
+        ce_maraude:
+            label: Chef.fe d'équipe maraudes
+            includes: [solidar]
+        solidar:
+            label: Solidar
+            includes: [maraudeur]
+        maraudeur:
+            label: Maraudeur.se
+            includes: [benevole]
+        tsa_coreg:
+            label: TSA / Coreg
+            includes: [pse2]
+        logisticien:
+            label: Logisticien.ne Croix-Rouge
+            includes: [benevole]
+        resp_perm_soc:
+            label: Responsable Permanence Sociale
+            includes: [benevole]
+        anim_fle:
+            label: Animateur.rice de cours de FLE
+            includes: [benevole]
+        psc1:
+            label: PSC1
+            includes: [benevole]
+        benevole:
+            label: Bénévole
+    app.user_properties:
+        - key: vulnerable
+          type: boolean
+          label: Je fais partie des personnes vulnérables
+          columnLabel: Vulnérable
+          help: |
+              - malade chronique
+              - obésité morbide
+              - syndrome grippal
+              - immunodéprimé
+              - personne mineure ou personne de plus de 70 ans
+              - avis défavorable de votre unité locale ou du pole santé (local ou territorial)
+          required: true
+          hidden: false
+          container_class: col-xl-6
+        - key: organizationOccupation
+          type: smallText
+          label: Quelles sont vos fonctions de cadre au sein de votre structure d'emploi ?
+          columnLabel: Fonction cadre
+          help: ~
+          required: false
+          hidden: false
+          container_class: col-xl-6
+        - key: fullyEquipped
+          type: boolean
+          label: Avez-vous un uniforme en dotation chez vous ?
+          columnLabel: Uniforme
+          help: ~
+          required: true
+          hidden: false
+          container_class: col-xl-6
+        - key: drivingLicence
+          type: boolean
+          label: Avez-vous le permis B depuis plus de 3 ans ?
+          columnLabel: Permis depuis 3 ans
+          help: ~
+          required: true
+          hidden: false
+          container_class: col-xl-6
+        - key: occupation
+          type: choice_with_other
+          label: Quelle est votre profession ?
+          columnLabel: Profession
+          help: ~
+          required: false
+          hidden: false
+          choices:
+            Compétences pédiatriques: Compétences pédiatriques
+            Infirmier.e: Infirmier.e
+            Médecin: Médecin
+            Ambulancier.e: Ambulancier.e
+            Aide soignant.e: Aide soignant.e
+            Infirmier.e anesthésiste: Infirmier.e anesthésiste
+            Sage femme: Sage femme
+            Pharmacien: Pharmacien
+            Autre personnel de santé: Autre personnel de santé
+            Pompier: Pompier
+            Gendarme / Policier: Gendarme / Policier
+            Logisticien: Logisticien

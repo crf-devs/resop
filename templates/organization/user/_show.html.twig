@@ -18,16 +18,12 @@
     </dd>
     <dt class="col-4">{{ 'user.dob'|trans }}</dt>
     <dd class="col-8">{{ user.birthday|format_date('long') }}</dd>
-    <dt class="col-4">{{ 'user.detail.vulnerable.label'|trans }}</dt>
-    <dd class="col-8">{{ user.vulnerable  ? 'common.yes' | trans : '-' }}</dd>
-    <dt class="col-4">{{ 'user.drivingLicence'|trans }}</dt>
-    <dd class="col-8">{{ user.drivingLicence  ? 'common.yes' | trans : '-' }}</dd>
-    <dt class="col-4">{{ 'user.fullyEquipped'|trans }}</dt>
-    <dd class="col-8">{{ user.fullyEquipped  ? 'common.yes' | trans : '-' }}</dd>
-    <dt class="col-4">{{ 'user.occupationTitle'|trans }}</dt>
-    <dd class="col-8">{{ user.occupation }}</dd>
-    <dt class="col-4">{{ 'user.organizationOccupation'|trans }}</dt>
-    <dd class="col-8">{{ user.organizationOccupation }}</dd>
+    {% for user_property in user_properties %}
+        <dt class="col-4">{{ user_property.columnLabel|default(user_property.label)|default }}</dt>
+        <dd class="col-8" title="{{ dynamicPropertyValue(user.properties[user_property.key]|default('-'), user_property) }}">
+            {{ dynamicPropertyValue(user.properties[user_property.key]|default('-'), user_property)|truncate(75) }}
+        </dd>
+    {% endfor %}
 </dl>
 
 <h5>{{ 'organization.mission.listTitle'|trans }}</h5>

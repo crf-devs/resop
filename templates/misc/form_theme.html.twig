@@ -1,0 +1,9 @@
+{% block dynamic_properties_widget %}
+    <div id="{{ form.vars.id }}" class="row">
+        {% for child in form.children %}
+            <div class="col-12 {{ child.vars.container_class|default }}">
+                {{ form_row(child) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock dynamic_properties_widget %}

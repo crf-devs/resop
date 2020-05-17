@@ -102,7 +102,7 @@ function addUserToMission(url) {
 export function fetchMissions() {
   let url;
 
-  if ($('.planning').length) {
+  if ($('.planning-container').length) {
     // Organization part
     url = Routing.generate('app_organization_mission_find_by_filters', {
       organization: window.location.pathname.replace(/^\/organizations\/(\d+).*$/, '$1'),

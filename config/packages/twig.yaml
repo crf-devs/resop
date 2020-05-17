@@ -1,6 +1,7 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
-    form_themes: ['bootstrap_4_layout.html.twig']
+    form_themes: ['bootstrap_4_layout.html.twig', 'misc/form_theme.html.twig']
     globals:
         build_tag: '%env(IMAGE_BUILD_TAG)%'
         slot_interval: '%app.slot_interval%'
+        user_properties: '%app.user_properties%'

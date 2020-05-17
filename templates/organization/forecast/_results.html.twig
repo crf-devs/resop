@@ -13,13 +13,11 @@
         'organizations': filters.organizations | map(orga => orga.id),
         'userSkills': missionType.userSkillsRequirement | map(skillRequirement => skillRequirement.skill),
         'hideUsers': missionType.userSkillsRequirement | length == 0,
-        'onlyFullyEquiped': filters.onlyFullyEquiped,
-        'displayAvailableWithBooked': filters.displayAvailableWithBooked,
-        'displayVulnerables': filters.displayVulnerables,
         'assetTypes': missionType.assetTypesRequirement | map(assetRequirement => assetRequirement.type),
         'hideAssets': missionType.assetTypesRequirement | length == 0,
+        'displayAvailableWithBooked': filters.displayAvailableWithBooked,
+        'userPropertyFilters': filters.userPropertyFilters | default({}),
     } | filter(val => val) %}
-
 
     <div class="table-responsive">
         <table class="table table-sm mb-5 text-center">

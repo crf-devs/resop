@@ -14,11 +14,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 
@@ -28,26 +25,13 @@ class UserType extends AbstractType
     public const DISPLAY_EDIT = 'edit';
     public const DISPLAY_ORGANIZATION = 'organization';
 
-    protected const DEFAULT_OCCUPATIONS = [
-        'Compétences pédiatriques',
-        'Infirmier.e',
-        'Médecin',
-        'Ambulancier.e',
-        'Aide soignant.e',
-        'Infirmier.e anesthésiste',
-        'Sage femme',
-        'Pharmacien',
-        'Autre personnel de santé',
-        'Pompier',
-        'Gendarme / Policier',
-        'Logisticien',
-    ];
+    private SkillSetDomain $skillSetDomain;
+    private array $userProperties;
 
-    protected SkillSetDomain $skillSetDomain;
-
-    public function __construct(SkillSetDomain $skillSetDomain)
+    public function __construct(SkillSetDomain $skillSetDomain, array $userProperties)
     {
         $this->skillSetDomain = $skillSetDomain;
+        $this->userProperties = $userProperties;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -55,12 +39,7 @@ class UserType extends AbstractType
         /** @var Organization|null $organization */
         $organization = $builder->getData()->organization;
 
-        $occupationChoices = (array) array_combine(self::DEFAULT_OCCUPATIONS, self::DEFAULT_OCCUPATIONS);
-        $occupationChoices += ['Autre' => '-'];
         $builder
-            ->add('identificationNumber', TextType::class, [
-                'empty_data' => '',
-            ])
             ->add('organization', OrganizationEntityType::class, [
                 'placeholder' => '',
                 'query_builder' => static function (OrganizationRepository $repository) use ($organization) {
@@ -75,6 +54,7 @@ class UserType extends AbstractType
 
                     return $qb;
                 },
+                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.default' : 'user.detail.organization',
             ])
             ->add('firstName', TextType::class, [
                 'empty_data' => '',
@@ -90,81 +70,35 @@ class UserType extends AbstractType
             ->add('emailAddress', EmailType::class, [
                 'empty_data' => '',
             ])
-            ->add('birthday', BirthdayType::class, [
-                'format' => 'dd MMMM yyyy',
-                'input' => 'string',
-            ])
-            ->add('occupation', ChoiceWithOtherType::class, [
-                'choices' => $occupationChoices,
-                'expanded' => true,
-                'placeholder' => false,
-                'required' => false,
-                'attr' => ['class' => 'js-occupation'],
-            ])
-            ->add('organizationOccupation', TextType::class, [
-                'required' => false,
-            ])
-            ->add('fullyEquipped', ChoiceType::class, [
-                'choices' => [
-                    'common.yes' => 1,
-                    'common.no' => 0,
-                ],
-                'required' => true,
-                'expanded' => true,
-                'placeholder' => false,
-            ])
-            ->add('drivingLicence', ChoiceType::class, [
-                'choices' => [
-                    'common.yes' => 1,
-                    'common.no' => 0,
-                ],
-                'required' => true,
-                'expanded' => true,
-                'placeholder' => false,
-            ])
             ->add('skillSet', ChoiceType::class, [
                 'choices' => array_flip($this->skillSetDomain->getSkillSet()),
                 'multiple' => true,
                 'expanded' => true,
+                'help' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? null : 'user.detail.skillSet.help',
+                'label' => self::DISPLAY_ORGANIZATION === $options['display_type'] ? 'organization.user.skillset' : 'user.detail.skillSet.label',
             ])
-            ->add('submit', SubmitType::class);
+            ->add('properties', DynamicPropertiesType::class, [
+                'label' => false,
+                'config' => $this->userProperties,
+            ]);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
-            $form = $event->getForm();
-            if (self::DISPLAY_ORGANIZATION === $options['display_type']) {
-                $form->add('vulnerable', ChoiceType::class, [
-                    'choices' => [
-                        'organization.user.isNotVulnerable' => 0,
-                        'organization.user.isVulnerable' => 1,
-                    ],
-                    'expanded' => true,
-                    'help' => 'user.detail.vulnerable.help',
-                    'help_html' => true,
-                ]);
-            } else {
-                $form->add('vulnerable', ChoiceType::class, [
-                    'choices' => [
-                        'user.detail.vulnerable.no' => 0,
-                        'user.detail.vulnerable.yes' => 1,
-                    ],
-                    'expanded' => true,
-                    'help' => 'user.detail.vulnerable.help',
-                    'help_html' => true,
-                ]);
+        if (self::DISPLAY_EDIT === $options['display_type']) {
+            return;
+        }
 
-                if (self::DISPLAY_EDIT === $options['display_type']) {
-                    $form
-                        ->remove('birthday')
-                        ->remove('identificationNumber');
-                }
-            }
-        });
+        $builder
+            ->add('identificationNumber', TextType::class, [
+                'empty_data' => '',
+            ])
+            ->add('birthday', BirthdayType::class, [
+                'format' => 'dd MMMM yyyy',
+                'input' => 'string',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setDefined('display_type')
             ->setRequired('display_type')
             ->addAllowedValues('display_type', [self::DISPLAY_NEW, self::DISPLAY_EDIT, self::DISPLAY_ORGANIZATION])
             ->setDefaults([

@@ -7,12 +7,10 @@
     <th class="item-data">{{ 'user.identificationNumber' | trans }}</th>
     <th class="item-data">{{ 'common.phoneNumberShort' | trans }}</th>
     <th class="item-data">{{ 'user.email' | trans }}</th>
-    <th class="item-data">{{ 'user.occupationTitle' | trans }}</th>
-    <th class="item-data">{{ 'user.organizationOccupation' | trans }}</th>
     <th class="item-data">{{ 'user.skills' | trans }}</th>
-    <th class="item-data">{{ 'user.fullyEquipped' | trans }}</th>
-    <th class="item-data">{{ 'user.drivingLicence' | trans }}</th>
-    <th class="item-data">{{ 'user.detail.vulnerable.label' | trans }}</th>
+    {% for user_property in user_properties %}
+        <th class="item-data">{{ user_property.columnLabel|default(user_property.label)|default }}</th>
+    {% endfor %}
 {% endblock itemDataHeader %}
 
 {% block itemDataRowHeader %}
@@ -27,12 +25,12 @@
     <td class="item-data">{{ item.entity.identificationNumber }}</td>
     <td class="item-data">{{ item.entity.phoneNumber|phone_number_format('NATIONAL') }}</td>
     <td class="item-data">{{ item.entity.emailAddress }}</td>
-    <td class="item-data" title="{{ item.entity.occupation | emptyIfSmaller(50) }}">{{ item.entity.occupation | truncate(50) }}</td>
-    <td class="item-data" title="{{ item.entity.organizationOccupation | emptyIfSmaller(50) }}">{{ item.entity.organizationOccupation | truncate(50) }}</td>
     <td class="item-data">{{ item.entity|userBadges }}</td>
-    <td class="item-data">{{ item.entity.fullyEquipped ? 'common.yes' | trans : '-' }}</td>
-    <td class="item-data">{{ item.entity.drivingLicence ? 'common.yes' | trans : '-' }}</td>
-    <td class="item-data">{{ item.entity.vulnerable ? 'common.yes' | trans : '-' }}</td>
+    {% for user_property in user_properties %}
+        <td class="item-data" title="{{ dynamicPropertyValue(item.entity.properties[user_property.key]|default('-'), user_property) }}">
+            {{ dynamicPropertyValue(item.entity.properties[user_property.key]|default('-'), user_property)|truncate(75) }}
+        </td>
+    {% endfor %}
     <td>
         {% if displayActions %}
             <button

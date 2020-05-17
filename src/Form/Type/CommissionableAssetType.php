@@ -29,7 +29,7 @@ final class CommissionableAssetType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'asset.name',
             ])
-            ->add('properties', AssetPropertiesType::class, [
+            ->add('properties', DynamicPropertiesType::class, [
                 'label' => false,
                 'config' => $assetType->properties,
             ])

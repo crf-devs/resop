@@ -15,6 +15,7 @@ use App\Entity\Organization;
 use App\Entity\User;
 use App\Entity\UserAvailability;
 use App\Exception\ConstraintViolationListException;
+use App\Form\Type\DynamicPropertiesType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -159,13 +160,13 @@ final class ApplicationFixtures extends Fixture
             $vl->organization = $organization;
             $vl->name = 'VL';
             $vl->properties = [
-                ['key' => 'radio', 'type' => AssetType::TYPE_BOOLEAN, 'label' => 'Présence d\'un mobile radio ?', 'help' => '', 'required' => true, 'hidden' => false],
-                ['key' => 'kitSecours', 'type' => AssetType::TYPE_BOOLEAN, 'label' => 'Présence d\'un lot de secours ?', 'help' => '', 'required' => true, 'hidden' => false],
-                ['key' => 'stationnement', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Lieu de stationnement', 'help' => '', 'required' => false, 'hidden' => false],
-                ['key' => 'contact', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Qui contacter ?', 'help' => '', 'required' => false, 'hidden' => false],
-                ['key' => 'places', 'type' => AssetType::TYPE_NUMBER, 'label' => 'Combien de places ?', 'help' => '', 'required' => false, 'hidden' => false],
-                ['key' => 'immatriculation', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Plaque d\'immatriculation', 'help' => '', 'required' => false, 'hidden' => false],
-                ['key' => 'commentaire', 'type' => AssetType::TYPE_TEXT, 'label' => 'Commentaires', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'radio', 'type' => DynamicPropertiesType::TYPE_BOOLEAN, 'label' => 'Présence d\'un mobile radio ?', 'help' => '', 'required' => true, 'hidden' => false],
+                ['key' => 'kitSecours', 'type' => DynamicPropertiesType::TYPE_BOOLEAN, 'label' => 'Présence d\'un lot de secours ?', 'help' => '', 'required' => true, 'hidden' => false],
+                ['key' => 'stationnement', 'type' => DynamicPropertiesType::TYPE_SMALL_TEXT, 'label' => 'Lieu de stationnement', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'contact', 'type' => DynamicPropertiesType::TYPE_SMALL_TEXT, 'label' => 'Qui contacter ?', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'places', 'type' => DynamicPropertiesType::TYPE_NUMBER, 'label' => 'Combien de places ?', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'immatriculation', 'type' => DynamicPropertiesType::TYPE_SMALL_TEXT, 'label' => 'Plaque d\'immatriculation', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'commentaire', 'type' => DynamicPropertiesType::TYPE_TEXT, 'label' => 'Commentaires', 'help' => '', 'required' => false, 'hidden' => false],
             ];
             $manager->persist($vl);
 
@@ -173,10 +174,10 @@ final class ApplicationFixtures extends Fixture
             $vpsp->organization = $organization;
             $vpsp->name = 'VPSP';
             $vpsp->properties = [
-                ['key' => 'stationnement', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Lieu de stationnement', 'help' => '', 'required' => false, 'hidden' => false],
-                ['key' => 'contact', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Qui contacter ?', 'help' => '', 'required' => false, 'hidden' => false],
-                ['key' => 'immatriculation', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Plaque d\'immatriculation', 'help' => '', 'required' => false, 'hidden' => false],
-                ['key' => 'commentaires', 'type' => AssetType::TYPE_TEXT, 'label' => 'Commentaires', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'stationnement', 'type' => DynamicPropertiesType::TYPE_SMALL_TEXT, 'label' => 'Lieu de stationnement', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'contact', 'type' => DynamicPropertiesType::TYPE_SMALL_TEXT, 'label' => 'Qui contacter ?', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'immatriculation', 'type' => DynamicPropertiesType::TYPE_SMALL_TEXT, 'label' => 'Plaque d\'immatriculation', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'commentaires', 'type' => DynamicPropertiesType::TYPE_TEXT, 'label' => 'Commentaires', 'help' => '', 'required' => false, 'hidden' => false],
             ];
             $manager->persist($vpsp);
 
@@ -184,9 +185,9 @@ final class ApplicationFixtures extends Fixture
             $drone->organization = $organization;
             $drone->name = 'DRONE';
             $drone->properties = [
-                ['key' => 'key1', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Lieu de stationnement', 'help' => '', 'required' => false, 'hidden' => false],
-                ['key' => 'key2', 'type' => AssetType::TYPE_SMALL_TEXT, 'label' => 'Qui contacter ?', 'help' => '', 'required' => false, 'hidden' => false],
-                ['key' => 'key3', 'type' => AssetType::TYPE_TEXT, 'label' => 'Commentaires', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'key1', 'type' => DynamicPropertiesType::TYPE_SMALL_TEXT, 'label' => 'Lieu de stationnement', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'key2', 'type' => DynamicPropertiesType::TYPE_SMALL_TEXT, 'label' => 'Qui contacter ?', 'help' => '', 'required' => false, 'hidden' => false],
+                ['key' => 'key3', 'type' => DynamicPropertiesType::TYPE_TEXT, 'label' => 'Commentaires', 'help' => '', 'required' => false, 'hidden' => false],
             ];
             $manager->persist($drone);
 
@@ -327,12 +328,14 @@ final class ApplicationFixtures extends Fixture
                 $user->setEmailAddress('user'.$x.'@resop.com');
                 $user->phoneNumber = $this->phoneNumberUtil->parse('0102030405', 'FR');
                 $user->birthday = '1990-01-01';
-                $user->occupation = $occupations[array_rand($occupations)];
-                $user->organizationOccupation = 'Secouriste';
+                $user->properties = [
+                    'organizationOccupation' => 'Secouriste',
+                    'fullyEquipped' => (bool) random_int(0, 1),
+                    'drivingLicence' => (bool) random_int(0, 1),
+                    'vulnerable' => (bool) random_int(0, 1),
+                    'occupation' => $occupations[array_rand($occupations)],
+                ];
                 $user->skillSet = (array) array_rand($availableSkillSet, random_int(1, 3));
-                $user->vulnerable = (bool) random_int(0, 1);
-                $user->fullyEquipped = (bool) random_int(0, 1);
-                $user->drivingLicence = (bool) random_int(0, 1);
 
                 $this->users[$organization->getParentOrganization()->id][] = $user;
 

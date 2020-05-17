@@ -22,8 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *   @ORM\Index(name="user_firstname_idx", columns={"first_name"}),
  *   @ORM\Index(name="user_lastname_idx", columns={"last_name"}),
  *   @ORM\Index(name="user_skill_set_idx", columns={"skill_set"}),
- *   @ORM\Index(name="user_vulnerable_idx", columns={"vulnerable"}),
- *   @ORM\Index(name="user_fully_equipped_idx", columns={"fully_equipped"}),
  * }))
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("emailAddress")
@@ -38,7 +36,7 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned": true})
-     * @Groups("mission:ajax")
+     * @Groups({"mission:ajax", "Default"})
      */
     public ?int $id = null;
 
@@ -87,20 +85,10 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     public string $birthday = '';
 
     /**
-     * @ORM\Column
-     */
-    public string $occupation = '';
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", fetch="EAGER")
      * @Assert\NotNull()
      */
     public ?Organization $organization = null;
-
-    /**
-     * @ORM\Column(nullable=true)
-     */
-    public ?string $organizationOccupation = null;
 
     /**
      * @ORM\Column(type="text[]", nullable=true)
@@ -113,21 +101,6 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     public array $skillSet = [];
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    public bool $vulnerable = false;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    public bool $fullyEquipped = false;
-
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    public bool $drivingLicence = false;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\UserAvailability", mappedBy="user")
      */
     private iterable $availabilities = [];
@@ -137,11 +110,15 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
      */
     public iterable $missions = [];
 
+    /**
+     * @ORM\Column(type="json", nullable=false)
+     */
+    public array $properties = [];
+
     public static function bootstrap(string $identifier = null): self
     {
         $user = new self();
         $user->birthday = '1990-01-01';
-        $user->vulnerable = true;
 
         if (empty($identifier)) {
             return $user;

@@ -20,7 +20,9 @@
     {% for prop in type | assetTypeProperties(itemDataRow) %}
         <td class="item-data">
             {% if prop != null %}
-                {{ assetsMacro.assetPropValue(item.entity.properties[prop.key] | default('')) }}
+                <span title="{{ dynamicPropertyValue(item.entity.properties[prop.key] | default('-'), prop) }}">
+                    {{ dynamicPropertyValue(item.entity.properties[prop.key] | default('-'), prop)|truncate(75) }}
+                </span>
             {% endif %}
         </td>
     {% endfor %}

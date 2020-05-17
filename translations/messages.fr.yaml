@@ -50,6 +50,7 @@ common:
   yes: Oui
   start: Début
   end: Fin
+  other: Autre
 message:
   confirmDelete: Vous êtes sur le point de supprimer l'élément
   deleteAssetWarning: Vous êtes sur le point de supprimer le véhicule suivant et toutes ses disponibilités
@@ -102,7 +103,6 @@ organization:
   editMissionType: Modifier les types de missions
   editMission: Missions
   editUserProfile: Modifier un profil
-  forecast: Projections
   label: Structure
   list: Liste des structures
   mission:
@@ -153,6 +153,8 @@ organization:
     showVulnerableUsers: Afficher aussi les personnes signalées comme vulnérables
     allSkills: Bénévoles avec toutes les compétences
     uniformOnly: Avec uniforme seulement
+    minimumAvailableHours: Afficher si disponible au moins
+    booleanFilterPlaceholder: Tout afficher
   pluralLabel: Structures
   search:
     noAssets: Aucun véhicule ne correspond à votre recherche.
@@ -168,11 +170,8 @@ organization:
   userAvailabilityNextWeek: Afficher les disponibilités de mes bénévoles pour la semaine prochaine
   userList: Liste des bénévoles
   user:
-    hasDrivingLicence: Permis B depuis plus de 3 ans ?
-    isFullyEquipped: Uniforme en dotation ?
     isVulnerable: fait partie des personnes vulnérables
     isNotVulnerable: ne fait PAS partie des personnes vulnérables
-    occupation: Fonction de cadre au sein de la structure d'emploi
     skillset: Compétences Croix-Rouge
   userTitle: Bénévole
   users: Bénévoles
@@ -202,6 +201,9 @@ organization:
     edit_form_title: Modifier un type de mission
   children_selector:
     label: Structure
+  forecast:
+    title: Projections
+    submitButton: Calculer
 project:
   contribute: Contribuez au projet
   description: Réserve opérationnelle - Croix-Rouge Française à Paris
@@ -215,27 +217,11 @@ user:
   availabilitySpecificWeek: Mes disponibilités pour la semaine du %week%
   createMyAccount: Créer mon compte
   detail:
-    drivingLicence: Avez-vous le permis B depuis plus de 3 ans ?
-    fullyEquipped: Avez-vous un uniforme en dotation chez vous ?
-    occupation: Quelle est votre profession ?
     organization: Votre structure de rattachement
-    organizationOccupation: Quelles sont vos fonctions de cadre au sein de votre structure d'emploi ?
     skillSet:
       label: Quelles sont vos compétences Croix-Rouge ?
       help: Cochez toutes vos compétences
-    vulnerable:
-      help: |
-               - malade chronique
-               - obésité morbide
-               - syndrome grippal
-               - immunodéprimé
-               - personne mineure ou personne de plus de 70 ans
-               - avis défavorable de votre unité locale ou du pole santé (local ou territorial)
-      label: Vulnérable
-      no: Je ne fais PAS partie des personnes vulnérables
-      yes: Je fais partie des personnes vulnérables
   dob: Date de naissance
-  drivingLicence: Permis
   info: Informations
   editMyInfo: Modifier mes informations
   email: E-mail
@@ -261,7 +247,6 @@ user:
   selectOrganization: Choisissez votre structure
   skill: Compétence
   skills: Compétences
-  fullyEquipped: Uniforme
   organizationOccupation: Cadre
   welcome: Bienvenue, %name%
 

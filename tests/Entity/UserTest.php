@@ -25,11 +25,7 @@ final class UserTest extends TestCase
         $user->setEmailAddress('user+ALIAS@some-domain.tld');
         $user->phoneNumber = PhoneNumberUtil::getInstance()->parse('+33102030405', 'FR');
         $user->birthday = '1990-02-28';
-        $user->occupation = 'Pharmacien';
-        $user->organizationOccupation = 'Secouriste';
         $user->skillSet = ['foo', 'bar'];
-        $user->vulnerable = true;
-        $user->fullyEquipped = true;
 
         $this->assertSame(1, $user->id);
         $this->assertSame('Alain', $user->firstName);
@@ -43,10 +39,6 @@ final class UserTest extends TestCase
         $this->assertEquals('102030405', $user->phoneNumber->getNationalNumber());
         $this->assertEquals('33', $user->phoneNumber->getCountryCode());
         $this->assertSame('1990-02-28', $user->birthday);
-        $this->assertSame('Pharmacien', $user->occupation);
-        $this->assertSame('Secouriste', $user->organizationOccupation);
         $this->assertSame(['foo', 'bar'], $user->skillSet);
-        $this->assertTrue($user->vulnerable);
-        $this->assertTrue($user->fullyEquipped);
     }
 }

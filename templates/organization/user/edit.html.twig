@@ -2,24 +2,11 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('user-form') }}
+    {{ encore_entry_script_tags('form-choice-with-other') }}
 {% endblock %}
 
 {% block body %}
     <h1>{{ 'organization.editUserProfile' | trans }}</h1>
-    {%
-        set labels = {
-        'fullyEquipped': 'organization.user.isFullyEquipped' | trans,
-        'drivingLicence': 'organization.user.hasDrivingLicence' | trans,
-        'occupation': 'user.occupationTitle' | trans,
-        'organizationOccupation': 'organization.user.occupation' | trans,
-        'skillSet': 'organization.user.skillset' | trans
-    } %}
-    {% set helps = {
-        'skillSet': null,
-        'occupation': null,
-        'organization': null
-    } %}
 
     <a
         class="btn btn-outline-danger trigger-delete float-right"
@@ -29,5 +16,5 @@
         href="#"
     >{{ 'action.delete' | trans }}</a>
 
-    {% include '/user/_user_form.html.twig' with { 'labels': labels, 'helps': helps } %}
+    {% include '/user/_user_form.html.twig' %}
 {% endblock %}

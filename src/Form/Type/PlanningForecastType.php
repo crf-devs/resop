@@ -17,6 +17,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PlanningForecastType extends AbstractType
 {
+    private array $userProperties;
+
+    public function __construct(array $userProperties)
+    {
+        $this->userProperties = $userProperties;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $organization = $builder->getData()['organization'] ?? null;
@@ -68,17 +75,15 @@ class PlanningForecastType extends AbstractType
                     'data-actions-box' => 'true',
                 ],
             ])
-            ->add('onlyFullyEquiped', CheckboxType::class, [
-                'label' => 'organization.planning.uniformOnly',
-                'required' => false,
-            ])
             ->add('displayAvailableWithBooked', CheckboxType::class, [
                 'label' => 'organization.planning.countAlreadyBooked',
                 'required' => false,
             ])
-            ->add('displayVulnerables', CheckboxType::class, [
-                'label' => 'organization.planning.countVulnerableUsers',
-                'required' => false,
+            ->add('userPropertyFilters', PlanningDynamicFiltersType::class, [
+                'config' => array_filter(
+                    $this->userProperties,
+                    fn (array $userProperty) => DynamicPropertiesType::TYPE_BOOLEAN === $userProperty['type']
+                ),
             ]);
     }
 

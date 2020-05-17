@@ -39,16 +39,15 @@ Feature:
         When I go to "/organizations/202/users"
         Then the response status code should be 403
 
-#    TODO Fix this test
-#    @javascript
-#    Scenario: As an organization, I can display a user modal
-#        Given I am authenticated as "DT75"
-#        When I go to "/organizations/201/users/?organizationId=203"
-#        And I follow "Afficher"
-#        And I wait for ".ajax-modal-content" to be visible
-#        Then I should see "Modifier"
-#        And I follow "Modifier"
-#        Then I should be on "/organizations/201/users/102/edit"
+    @javascript
+    Scenario: As an organization, I can display a user modal
+        Given I am authenticated as "DT75"
+        When I go to "/organizations/201/users/?organizationId=203"
+        And I press "Afficher"
+        And I wait for ".modal-show-user-inner" to be visible
+        Then I should see "Modifier"
+        And I follow "Modifier"
+        Then I should be on "/organizations/201/users/102/edit"
 
     Scenario Outline: As an organization, I can update a user from my organization or children organizations
         Given I am authenticated as "<login>"
@@ -59,10 +58,19 @@ Feature:
         And the "user_firstName" field should contain "Jane"
         And the "user_lastName" field should contain "DOE"
         When I fill in the following:
-            | user[identificationNumber] | 999999A                 |
-            | user[emailAddress]         | john.bon.jovi@resop.com |
-            | user[firstName]            | John                    |
-            | user[lastName]             | BON JOVI                |
+            | user[identificationNumber]               | 999999A                 |
+            | user[emailAddress]                       | john.bon.jovi@resop.com |
+            | user[firstName]                          | John                    |
+            | user[lastName]                           | BON JOVI                |
+            | user[phoneNumber]                        | 0611111111              |
+            | user[birthday][day]                      | 2                       |
+            | user[birthday][month]                    | 2                       |
+            | user[birthday][year]                     | 1980                    |
+            | user[properties][organizationOccupation] | organizationOccupation  |
+            | user[properties][vulnerable]             | 0                       |
+            | user[properties][fullyEquipped]          | 0                       |
+            | user[properties][drivingLicence]         | 0                       |
+            | user[properties][occupation][choice]     | Pompier                 |
         And I press "Valider"
         Then I should be on "<list_url>"
         And the response status code should be 200
@@ -70,10 +78,19 @@ Feature:
         When I go to "<edit_url>"
         Then I should be on "<edit_url>"
         And the response status code should be 200
-        And the "user_identificationNumber" field should contain "999999A"
-        And the "user_emailAddress" field should contain "john.bon.jovi@resop.com"
-        And the "user_firstName" field should contain "John"
-        And the "user_lastName" field should contain "BON JOVI"
+        And the "user[identificationNumber]" field should contain "999999A"
+        And the "user[emailAddress]" field should contain "john.bon.jovi@resop.com"
+        And the "user[firstName]" field should contain "John"
+        And the "user[lastName]" field should contain "BON JOVI"
+        And the "user[phoneNumber]" field should contain "06 11 11 11 11"
+        And the "user[birthday][day]" field should contain "2"
+        And the "user[birthday][month]" field should contain "2"
+        And the "user[birthday][year]" field should contain "1980"
+        And the "user[properties][organizationOccupation]" field should contain "organizationOccupation"
+        And the "user[properties][vulnerable]" field should contain "0"
+        And the "user[properties][fullyEquipped]" field should contain "0"
+        And the "user[properties][drivingLicence]" field should contain "0"
+        And the "user[properties][occupation][choice]" field should contain "Pompier"
         Examples:
             | login    | list_url                                     | edit_url                          |
             | DT75     | /organizations/201/users/?organizationId=203 | /organizations/201/users/102/edit |
