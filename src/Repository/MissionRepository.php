@@ -43,7 +43,10 @@ class MissionRepository extends ServiceEntityRepository
 
     public function findByFilters(array $filters): array
     {
-        return $this->findByFiltersQb($filters)->getQuery()->getResult();
+        $qb = $this->findByFiltersQb($filters);
+        $qb->setMaxResults(100);
+
+        return $qb->getQuery()->getResult();
     }
 
     public function findByFiltersQb(array $filters): QueryBuilder
@@ -56,8 +59,7 @@ class MissionRepository extends ServiceEntityRepository
             $qb->setParameter('types', $filters['missionTypes']);
         }
 
-        $qb->orderBy('m.startTime', 'ASC');
-        $qb->setMaxResults(100); // TODO Paginate
+        $qb->orderBy('m.startTime', 'DESC');
 
         return $qb;
     }

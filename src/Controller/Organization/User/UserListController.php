@@ -9,6 +9,7 @@ use App\Form\Factory\OrganizationSelectorFormFactory;
 use App\Repository\OrganizationRepository;
 use App\Repository\UserRepository;
 use App\Security\Voter\OrganizationVoter;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,24 +25,31 @@ class UserListController extends AbstractController
     protected UserRepository $userRepository;
     protected OrganizationRepository $organizationRepository;
     private OrganizationSelectorFormFactory $organizationSelectorFormFactory;
+    private PaginatorInterface $paginator;
 
-    public function __construct(OrganizationRepository $organizationRepository, UserRepository $userRepository, OrganizationSelectorFormFactory $organizationSelectorFormFactory)
+    public function __construct(OrganizationRepository $organizationRepository, UserRepository $userRepository, OrganizationSelectorFormFactory $organizationSelectorFormFactory, PaginatorInterface $paginator)
     {
         $this->userRepository = $userRepository;
         $this->organizationRepository = $organizationRepository;
         $this->organizationSelectorFormFactory = $organizationSelectorFormFactory;
+        $this->paginator = $paginator;
     }
 
     public function __invoke(Request $request, Organization $organization): Response
     {
         /** @var Organization $currentOrganization */
         $currentOrganization = $this->getUser();
+        $users = $this->paginator->paginate(
+            $this->userRepository->findByOrganizationAndChildrenQb($organization),
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination_default_limit')
+        );
 
         return $this->render(
             'organization/user/list.html.twig',
             [
                 'organization' => $organization,
-                'users' => $this->userRepository->findByOrganization($organization),
+                'users' => $users,
                 'organization_selector_form' => $this->organizationSelectorFormFactory->createForm(
                     $organization,
                     $currentOrganization,

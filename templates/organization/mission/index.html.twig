@@ -29,5 +29,5 @@
         </div>
     </div>
 
-    {% include('organization/mission/_list.html.twig') %}
+    {% include 'organization/mission/_list.html.twig' with {pagination: true} %}
 {% endblock %}
