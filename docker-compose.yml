@@ -90,3 +90,6 @@ services:
       - NODE_ENV=dev
     volumes:
       - ./:/srv
+
+  mailcatcher:
+    image: tophfr/mailcatcher:0.6.5

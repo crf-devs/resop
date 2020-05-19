@@ -22,6 +22,7 @@
     "symfony/form": "5.*",
     "symfony/framework-bundle": "5.*",
     "symfony/intl": "5.*",
+    "symfony/mailer": "5.0.*",
     "symfony/monolog-bundle": "^3.5",
     "symfony/orm-pack": "^1.0",
     "symfony/security-bundle": "5.0.*",
@@ -32,10 +33,12 @@
     "symfony/validator": "5.*",
     "symfony/webpack-encore-bundle": "^1.7",
     "symfony/yaml": "5.*",
+    "symfonycasts/reset-password-bundle": "^1.1",
     "twig/cache-extension": "^1.4",
     "twig/intl-extra": "^3.0"
   },
   "require-dev": {
+    "alexandresalome/mailcatcher": "dev-master",
     "behat/behat": "^3.6",
     "dama/doctrine-test-bundle": "^6.3",
     "escapestudios/symfony2-coding-standard": "^3.11",

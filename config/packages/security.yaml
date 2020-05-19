@@ -37,5 +37,6 @@ security:
     access_control:
         - { path: ^/user/new$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/reset-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }
         - { path: ^/organizations/, roles: ROLE_ORGANIZATION }

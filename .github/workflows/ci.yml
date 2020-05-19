@@ -19,6 +19,7 @@ env:
     APP_DEBUG: 0
     DATABASE_SERVER_VERSION: 11 # update service "postgresql" if this value change
     PANTHER_CHROME_DRIVER_BINARY: /usr/bin/chromedriver
+    MAILER_DSN: smtp://localhost:25
 
 jobs:
     php:
@@ -32,6 +33,11 @@ jobs:
                     - 5432:5432
                 # needed because the postgres container does not provide a healthcheck
                 options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+            mailcatcher:
+                image: tophfr/mailcatcher:0.6.5
+                ports:
+                    - 1080:80
+                    - 25:25
 
         steps:
             - name: set DATABASE_URL environment variable
@@ -131,6 +137,7 @@ jobs:
             - name: Run Behat tests
               run: |
                   bin/post-install-test.sh
+                  sed -i 's#http://mailcatcher#http://localhost:1080#' behat.yml.dist
                   vendor/bin/behat --format=progress --out=std --format=junit --out=var/behat --tags '~@javascript'
               if: always()
 
