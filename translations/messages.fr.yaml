@@ -6,6 +6,8 @@ action:
   edit: Modifier
   loading: Chargement...
   login: Connexion
+  promote: Promouvoir
+  revoke: Révoquer
   search: Rechercher
   searchQuery: Rechercher "%query%"
   loginSubmit: Je me connecte

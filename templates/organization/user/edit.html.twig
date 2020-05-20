@@ -8,13 +8,26 @@
 {% block body %}
     <h1>{{ 'organization.editUserProfile' | trans }}</h1>
 
-    <a
-        class="btn btn-outline-danger trigger-delete float-right"
-        data-message="{{ 'message.deleteUserWarning' | trans }}"
-        data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )"
-        data-href="{{ path('app_organization_user_delete', { user: user.id }) }}"
-        href="#"
-    >{{ 'action.delete' | trans }}</a>
+    <div class="float-right">
+        <a
+            class="btn btn-outline-danger trigger-delete"
+            data-message="{{ 'message.deleteUserWarning' | trans }}"
+            data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )"
+            data-href="{{ path('app_organization_user_delete', { user: user.id }) }}"
+            href="#"
+        >{{ 'action.delete' | trans }}</a>
+
+        {% if not user.organization.admins.contains(user) %}
+            <a class="btn btn-outline-primary" href="{{ path('app_organization_user_promote', { item: user.id, organization: user.organization.id }) }}" role="button">
+                {{ 'action.promote' | trans({ '%organization%': user.organization.name, '%user%': user.fullName }) }}
+            </a>
+        {% elseif app.user != user %}
+            <a class="btn btn-outline-primary" href="{{ path('app_organization_user_revoke', { item: user.id, organization: user.organization.id }) }}" role="button">
+                {{ 'action.revoke' | trans({ '%organization%': user.organization.name, '%user%': user.fullName }) }}
+            </a>
+        {% endif %}
+    </div>
+    <div class="clearfix"></div>
 
     {% include '/user/_user_form.html.twig' %}
 {% endblock %}

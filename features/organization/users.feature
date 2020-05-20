@@ -137,44 +137,49 @@ Feature:
         When I go to "/organizations/201/users/2/edit"
         Then the response status code should be 404
 
-#    TODO: Write feature
-#    Scenario Outline: As an admin of an organization, I can promote a user as admin of an organization and this user has admin privilege
-#        Given I am authenticated as "admin204@resop.com"
-#        When I go to "<url>"
-#        And I follow "Promouvoir administrateur de UL DE BRIE ET CHANTEREINE"
-#        Then I should be on "<url>"
-#        And the response status code should be 200
-#        And I should see "L'utilisateur \"<name>\" a été promu administrateur de UL DE BRIE ET CHANTEREINE avec succès."
-#        And I should see "Révoquer la fonction d'administrateur de UL DE BRIE ET CHANTEREINE"
-#        Given I am authenticated as "<email>"
-#        When I go to "/organizations/204"
-#        Then the response status code should be 200
-#        Examples:
-#            | url                               | name         | email                  |
-#            | /organizations/204/users/105/edit | Chuck NORRIS | chuck.norris@resop.com |
-#            | /organizations/204/users/101/edit | John DOE     | admin201@resop.com     |
+    Scenario: As an admin of an organization, I can promote a user as admin of an organization and this user has admin privilege
+        Given I am authenticated as "admin201@resop.com"
+        When I go to "/organizations/201/users/103/edit"
+        And I follow "Promouvoir"
+        Then I should be on "/organizations/201/users/103/edit"
+        And the response status code should be 200
+        And I should see "L'utilisateur \"Jill DOE\" a été promu administrateur de \"UL 01-02\" avec succès."
+        And I should see "Révoquer"
+        And I follow "Déconnexion"
+        When I go to "/login"
+        And I fill in the following:
+            | user_login[identifier]      | jill.doe@resop.com |
+            | user_login[birthday][day]   | 01                 |
+            | user_login[birthday][month] | 01                 |
+            | user_login[birthday][year]  | 1990               |
+        And I press "Je me connecte"
+        Then I should be on "/"
+        And the response status code should be 200
+        And I should see "Vous devez renseigner votre mot de passe afin d'administrer votre structure."
 
-#    TODO: Write feature
-#    Scenario: As an admin of an organization, I can revoke user's admin privilege of an organization and this user doesn't have admin privilege anymore
-#        Given I am authenticated as "admin202@resop.com"
-#        When I go to "/organizations/204/users/4/edit"
-#        And I follow "Révoquer la fonction d'administrateur de UL DE BRIE ET CHANTEREINE"
-#        Then I should be on "/organizations/204/users/4/edit"
-#        And the response status code should be 200
-#        And I should see "Le privilège d'administrateur pour la structure UL-DE-BRIE-ET-CHANTEREINE de \"Freddy MERCURY\" a été révoquée avec succès."
-#        And I should see "Promouvoir administrateur de UL DE BRIE ET CHANTEREINE"
-#        Given I am authenticated as "admin204@resop.com"
-#        When I go to "/organizations/204"
-#        Then the response status code should be 403
+    Scenario: As an admin of an organization, I can revoke a user admin privilege of an organization and this user doesn't have admin privilege anymore
+        Given I am authenticated as "admin201@resop.com"
+        When I go to "/organizations/201/users/102/edit"
+        And I follow "Révoquer"
+        Then I should be on "/organizations/201/users/102/edit"
+        And the response status code should be 200
+        And I should see "Le privilège d'administrateur pour la structure \"UL 01-02\" de \"Jane DOE\" a été révoquée avec succès."
+        And I should see "Promouvoir"
+        And I follow "Déconnexion"
+        When I go to "/login"
+        And I fill in the following:
+            | user_login[identifier]      | admin203@resop.com |
+            | user_login[birthday][day]   | 01                 |
+            | user_login[birthday][month] | 01                 |
+            | user_login[birthday][year]  | 1990               |
+        And I press "Je me connecte"
+        Then I should be on "/"
+        And the response status code should be 200
+        And I should not see "Vous devez renseigner votre mot de passe afin d'administrer votre structure."
 
-#    TODO: Write feature
-#    Scenario: As an admin of an organization, I cannot promote admin a user who is already admin
-#        Given I am authenticated as "admin202@resop.com"
-#        When I go to "/organizations/204/users/4/promote-admin"
-#        Then the response status code should be 400
-
-#    TODO: Write feature
-#    Scenario: As an admin of an organization, I cannot revoke a user who is not an admin
-#        Given I am authenticated as "admin202@resop.com"
-#        When I go to "/organizations/204/users/5/revoke-admin"
-#        Then the response status code should be 400
+    Scenario: As an admin of an organization, I cannot revoke my own admin privilege
+        Given I am authenticated as "admin201@resop.com"
+        When I go to "/organizations/201/users/101/edit"
+        Then I should not see "Révoquer"
+        When I go to "/organizations/201/users/101/revoke"
+        And the response status code should be 403
