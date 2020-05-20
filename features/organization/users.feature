@@ -183,3 +183,24 @@ Feature:
         Then I should not see "Révoquer"
         When I go to "/organizations/201/users/101/revoke"
         And the response status code should be 403
+
+    Scenario: As a super-admin, I can impersonate a user
+        Given I am authenticated as "michel.roca@resop.com"
+        When I go to "/organizations/201/users/"
+        Then I should see "Usurper l'identité"
+        When I follow "Usurper l'identité"
+        Then I should be on "/"
+        And the response status code should be 200
+        And I should see "Retour à l'admin"
+        And I should see "John DOE"
+
+    Scenario Outline: As a user or an admin of an organization, I cannot impersonate a user
+        Given I am authenticated as "<login>"
+        When I go to "/organizations/201/users/"
+        Then I should not see "Usurper l'identité"
+        When I go to "/?_switch_user=990004A"
+        Then the response status code should be 403
+        Examples:
+            | login              |
+            | admin201@resop.com |
+            | jill.doe@resop.com |

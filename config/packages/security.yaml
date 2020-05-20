@@ -11,7 +11,7 @@ security:
 
     role_hierarchy:
         ROLE_VOLUNTEER: ROLE_USER
-        ROLE_SUPER_ADMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
 
     firewalls:
         dev:
@@ -21,6 +21,7 @@ security:
         main:
             anonymous: lazy
             provider: users
+            switch_user: true
             guard:
                 authenticators:
                     - App\Security\UserLoginFormAuthenticator

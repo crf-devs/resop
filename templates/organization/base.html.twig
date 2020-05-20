@@ -26,6 +26,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_user_home')}}">{{ 'nav.section.volunteer' | trans }}</a>
                         </li>
+                        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ path('app_user_home', {'_switch_user': '_exit'}) }}">Retour à l'admin</a>
+                            </li>
+                        {% endif %}
                     </ul>
                     <div class="navbar-nav">
                         <form action="{{ path('app_organization_search') }}" method="get" class="mr-3">

@@ -8,6 +8,7 @@ action:
   login: Connexion
   promote: Promouvoir
   revoke: Révoquer
+  impersonate: Usurper l'identité
   search: Rechercher
   searchQuery: Rechercher "%query%"
   loginSubmit: Je me connecte
