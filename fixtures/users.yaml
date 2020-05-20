@@ -83,7 +83,7 @@ App\Entity\User:
 
   # Lady GAGA is admin of DT77. She is not volunteer.
   # As organization admin, her password is required.
-  User.lady.gaga:
+  User.lady_gaga:
     id: 106
     firstName: Lady
     lastName: GAGA
@@ -97,3 +97,18 @@ App\Entity\User:
     properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
     organizations: ['@Organization.DT77']
     roles: ['ROLE_USER']
+
+  # Michel Roca is a super-admin, he can do whatever he wants.
+  User.michel_roca:
+    id: 107
+    firstName: Michel
+    lastName: ROCA
+    organization: '@Organization.DT75'
+    identificationNumber: 990008A
+    emailAddress: michel.roca@resop.com
+    plainPassword: covid19
+    phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
+    birthday: '1990-01-01'
+    skillSet: '<randomSkillSet()>'
+    properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
+    roles: ['ROLE_SUPER_ADMIN']

@@ -13,7 +13,7 @@
                 {% set organizationsCount = app.user.organizations.count %}
                 {% if 1 == organizationsCount %}
                     <a class="nav-link active" href="{{ path('app_organization_dashboard', {organization: app.user.organizations.first.id}) }}">Gérer ma structure</a>
-                {% else %}
+                {% elseif 1 < organizationsCount %}
                     <ul>Gérer ma structure :
                         {% for organization in app.user.organizations %}
                             <li>

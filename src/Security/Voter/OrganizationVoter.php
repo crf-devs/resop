@@ -7,12 +7,20 @@ namespace App\Security\Voter;
 use App\Entity\Organization;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class OrganizationVoter extends Voter
 {
     public const ROLE_ORGANIZATION = 'ROLE_ORGANIZATION';
     public const ROLE_PARENT_ORGANIZATION = 'ROLE_PARENT_ORGANIZATION';
+
+    private AccessDecisionManagerInterface $decisionManager;
+
+    public function __construct(AccessDecisionManagerInterface $decisionManager)
+    {
+        $this->decisionManager = $decisionManager;
+    }
 
     protected function supports($attribute, $subject): bool
     {
@@ -36,6 +44,10 @@ final class OrganizationVoter extends Voter
         }
 
         if (null === $subject) {
+            return true;
+        }
+
+        if ($this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])) {
             return true;
         }
 
