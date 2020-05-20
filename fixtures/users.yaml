@@ -14,7 +14,6 @@ App\Entity\User:
     skillSet: '<randomSkillSet()>'
     properties: {"occupation": "Pharmacien", "organizationOccupation": "Secouriste", "vulnerable": true, "fullyEquipped": true, "drivingLicence": true}
     organizations: ['@Organization.DT75']
-    roles: ['ROLE_USER']
 
   # Jane DOE is volunteer and admin of UL 01-02, an organization children of DT75 managed by John DOE.
   # As organization admin, her password is required, but she didn't filled it yet.
@@ -30,7 +29,6 @@ App\Entity\User:
     skillSet: '<randomSkillSet()>'
     properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
     organizations: ['@Organization.UL-01-02']
-    roles: ['ROLE_VOLUNTEER']
 
   # Jill DOE is volunteer of UL 01-02, an organization children of DT75 managed by John DOE.
   # As volunteer, she doesn't any password, and connects using her birth date.
@@ -45,7 +43,6 @@ App\Entity\User:
     birthday: '1990-01-01'
     skillSet: '<randomSkillSet()>'
     properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
-    roles: ['ROLE_VOLUNTEER']
 
   # Freddy MERCURY is volunteer in Organization.UL-DE-BRIE-ET-CHANTEREINE, and admin of UL DE BRIE ET CHANTEREINE,
   # an organization children of DT77 managed Lady GAGA.
@@ -63,7 +60,6 @@ App\Entity\User:
     skillSet: '<randomSkillSet()>'
     properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
     organizations: ['@Organization.UL-DE-BRIE-ET-CHANTEREINE']
-    roles: ['ROLE_VOLUNTEER']
 
   # Chuck NORRIS is volunteer in UL DE BRIE ET CHANTEREINE, an organization children of DT77 managed by Lady GAGA.
   # Because he has a password, he has to connect using it.
@@ -79,7 +75,6 @@ App\Entity\User:
     birthday: '1990-01-01'
     skillSet: '<randomSkillSet()>'
     properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
-    roles: ['ROLE_VOLUNTEER']
 
   # Lady GAGA is admin of DT77. She is not volunteer.
   # As organization admin, her password is required.
@@ -96,7 +91,6 @@ App\Entity\User:
     skillSet: '<randomSkillSet()>'
     properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
     organizations: ['@Organization.DT77']
-    roles: ['ROLE_USER']
 
   # Michel Roca is a super-admin, he can do whatever he wants.
   User.michel_roca:

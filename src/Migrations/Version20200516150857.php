@@ -24,7 +24,7 @@ final class Version20200516150857 extends AbstractMigration
         $this->addSql('ALTER TABLE user_organization ADD CONSTRAINT FK_41221F7EA76ED395 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE user_organization ADD CONSTRAINT FK_41221F7E32C8A3DE FOREIGN KEY (organization_id) REFERENCES organization (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE users ADD password VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE users ADD roles TEXT NOT NULL DEFAULT \'a:1:{i:0;s:14:"ROLE_VOLUNTEER";}\'');
+        $this->addSql('ALTER TABLE users ADD roles TEXT NOT NULL DEFAULT \'a:1:{i:0;s:9:"ROLE_USER";}\'');
         $this->addSql('ALTER TABLE users ALTER roles DROP DEFAULT');
         $this->addSql('COMMENT ON COLUMN users.roles IS \'(DC2Type:array)\'');
         $this->addSql('ALTER TABLE organization DROP password');
