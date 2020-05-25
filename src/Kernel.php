@@ -39,6 +39,12 @@ class Kernel extends BaseKernel
         $container->setParameter('container.dumper.inline_factories', true);
         $confDir = $this->getProjectDir().'/config';
 
+        // Load default parameters
+        $loader->load($confDir.'/{parameters}'.self::CONFIG_EXTS, 'glob');
+
+        // Allows to override any parameter or service
+        $loader->load($confDir.'/{config}'.self::CONFIG_EXTS, 'glob');
+
         $loader->load($confDir.'/{packages}/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{packages}/'.$this->environment.'/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}'.self::CONFIG_EXTS, 'glob');

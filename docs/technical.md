@@ -274,3 +274,29 @@ services:
       - DANGEROUSLY_LOAD_FIXTURES=false # Reset DB and load fixtures on start
       - "DATABASE_URL=postgresql://<USER>:<PASSWORD>@<URL>/<DB>?serverVersion=11&charset=utf8"
 ```
+
+## Override the default configuration and/or translation
+
+The project includes its default configuration and translations.
+
+To override the default configuration, create the `config/config.yaml` file and override any parameter you want:
+
+```yaml
+# config/config.yaml
+parameters:
+  app.slot_interval: '+4 hours'
+  app.locale: it # to change the default locale
+```
+
+To override the default translations, create the `config/translations/messages.fr.yaml` file and set any translation you
+want:
+
+```yaml
+# config/translations/messages.fr.yaml
+project:
+  description: Description de votre projet
+  name: Nom de votre projet
+```
+
+To translate the project in another language than french, update the default locale from the configuration file, and
+create the translation file: `config/translations/messages.it.yaml`.

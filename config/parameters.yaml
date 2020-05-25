@@ -4,6 +4,7 @@ parameters:
     app.most_important_skills_limit: 6 # used for separing data in the planning
     app.most_important_skills_to_display: [ch_vpsp, ch_vl] # used for displaying a badge near the user name
     app.slot_interval: '%env(APP_SLOT_INTERVAL)%'
+    app.locale: fr
     app.available_skills:
         # Caution: the order matters for the planning display
         ci_bspp:
