@@ -185,7 +185,7 @@ Feature:
         And the response status code should be 403
 
     Scenario: As a super-admin, I can impersonate a user
-        Given I am authenticated as "michel.roca@resop.com"
+        Given I am authenticated as "super.admin@resop.com"
         When I go to "/organizations/201/users/"
         Then I should see "Usurper l'identité"
         When I follow "Usurper l'identité"

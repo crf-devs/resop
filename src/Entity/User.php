@@ -90,7 +90,7 @@ class User implements UserPasswordInterface, AvailabilitableInterface, UserSeria
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", fetch="EAGER")
-     * @Assert\NotNull()
+     * @Assert\Expression("'ROLE_SUPER_ADMIN' in this.roles or value != null")
      */
     public ?Organization $organization = null;
 
@@ -234,7 +234,7 @@ class User implements UserPasswordInterface, AvailabilitableInterface, UserSeria
             $this->identificationNumber,
             $this->emailAddress,
             $this->birthday,
-            $this->password) = unserialize($serialized);
+            $this->password) = unserialize($serialized, ['allowed_classes' => [__CLASS__]]);
     }
 
     public function getId(): ?int

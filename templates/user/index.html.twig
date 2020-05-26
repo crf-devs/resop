@@ -24,6 +24,18 @@
                     <span class="fa fa-angle-right"></span>
                 </a>
             </p>
+
+            {% if app.user.organizations|length %}
+                {% if  app.user.password is empty %}
+                    <p class="alert alert-danger">
+                        <a href="{{ path('app_user_password') }}">{{ 'user.passwordRequired'|trans }}</a>
+                    </p>
+                {% else %}
+                    {% for organization in app.user.organizations %}
+                        <p><a href="{{ path('app_organization_dashboard', {organization: organization.id}) }}" class="btn btn-danger">{{ organization.name }}</a></p>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
         </div>
 
         <div class="container-xl pt-xl-3">

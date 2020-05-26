@@ -6,6 +6,8 @@
 
 {% block body %}
 
+    <a href="{{ path('app_organization_assets') }}">{{ 'common.backToList' | trans }}</a>
+
     {% if asset.id %}
         <a
             class="btn btn-outline-danger trigger-delete float-right"

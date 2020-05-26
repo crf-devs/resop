@@ -24,6 +24,12 @@
                 <div class="collapse navbar-collapse" id="navbarContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_organization_dashboard')}}">
+                                {{ 'nav.section.organization' | trans }}
+                                {{ app.request.attributes.get('currentOrganization') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_user_home')}}">{{ 'nav.section.volunteer' | trans }}</a>
                         </li>
                         {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
@@ -53,7 +59,7 @@
 
                         <span class="navbar-text navbar-separator mt-1 ml-3 mr-4 d-none d-lg-block"></span>
                         <span class="navbar-text active text-dark font-weight-bold">
-                            {{ app.request.attributes.get('currentOrganization') }}
+                            {{ app.user.fullName }} - {{ app.request.attributes.get('currentOrganization') }}
                         </span>
                     </div>
                 </div>

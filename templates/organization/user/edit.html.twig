@@ -6,6 +6,8 @@
 {% endblock %}
 
 {% block body %}
+    <a href="{{ path('app_organization_user_list') }}">{{ 'common.backToList' | trans }}</a>
+
     <h1>{{ 'organization.editUserProfile' | trans }}</h1>
 
     <div class="float-right">

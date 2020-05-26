@@ -35,6 +35,10 @@ final class ApplicationFixtures extends Fixture
     private const PERCENT_ASSET_AVAILABLE = 0.30;
     private const PERCENT_ASSET_PARTIALLY_AVAILABLE = 0.30;
 
+    private const USER_TYPE = 'user';
+    private const ADMIN_TYPE = 'admin';
+    private const SUPER_ADMIN_TYPE = 'super_admin';
+
     private const ORGANIZATIONS = [
         'DT75' => [
             'UL 01-02',
@@ -97,7 +101,7 @@ final class ApplicationFixtures extends Fixture
     private array $missionTypes = [];
 
     private SkillSetDomain $skillSetDomain;
-    private int $nbUsers;
+    private int $nbUsers = 15;
     private int $nbAvailabilities;
 
     private int $availabilitiesId = 1;
@@ -116,10 +120,10 @@ final class ApplicationFixtures extends Fixture
         string $slotInterval,
         int $nbUsers = null,
         int $nbAvailabilities = null
-    ) {
+    )
+    {
         $this->validator = $validator;
         $this->skillSetDomain = $skillSetDomain;
-        $this->nbUsers = $nbUsers ?: random_int(10, 20);
         $this->nbAvailabilities = $nbAvailabilities ?: random_int(2, 6);
         $this->slotBookingGuesser = $slotBookingGuesser;
         $this->slotAvailabilityGuesser = $slotAvailabilityGuesser;
@@ -296,44 +300,62 @@ final class ApplicationFixtures extends Fixture
         $manager->flush();
     }
 
-    private function loadUsers(ObjectManager $manager): void
+    private function createUser(int $organizationUserNumber, Organization $organization = null, string $type = self::USER_TYPE): User
     {
-        $startIdNumber = 990000;
+        $organizationId = $organization ? $organization->getId() : 0;
         $firstNames = ['Audrey', 'Arnaud', 'Bastien', 'Beatrice', 'Benoit', 'Camille', 'Claire', 'Hugo', 'Fabien', 'Florian', 'Francis', 'Lilia', 'Lisa', 'Marie', 'Marine', 'Mathias', 'Mathieu', 'Michel', 'Nassim', 'Nathalie', 'Olivier', 'Pierre', 'Philippe', 'Sybille', 'Thomas', 'Tristan'];
         $lastNames = ['Bryant', 'Butler', 'Curry', 'Davis', 'Doncic', 'Durant', 'Embiid', 'Fournier', 'Grant', 'Gobert', 'Harden', 'Irving', 'James', 'Johnson', 'Jordan', 'Lilliard', 'Morant', 'Noah', 'Oneal', 'Parker', 'Pippen', 'Skywalker', 'Thompson', 'Westbrook'];
-        $occupations = ['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'];
-
-        $x = 1;
+        $occupations = [null, 'Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'];
+        $organizationOcccupations = [null, 'Secouriste', 'DLUS', 'DLAS'];
         $availableSkillSet = $this->skillSetDomain->getSkillSet();
+
+        $user = new User();
+        $user->id = $organizationId * 100 + $organizationUserNumber;
+        $user->firstName = $firstNames[array_rand($firstNames)];
+        $user->lastName = $lastNames[array_rand($lastNames)];
+        $user->organization = $organization;
+
+        // e.g. 990001A
+        $user->setIdentificationNumber($user->id.'A');
+        $user->setEmailAddress($type.$user->id.'@resop.com');
+        $user->phoneNumber = $this->phoneNumberUtil->parse('0102030405', 'FR');
+        $user->birthday = '1990-01-01';
+        $user->properties = [
+            'organizationOccupation' => $organizationOcccupations[array_rand($organizationOcccupations)],
+            'fullyEquipped' => (bool) random_int(0, 1),
+            'drivingLicence' => (bool) random_int(0, 1),
+            'vulnerable' => (bool) random_int(0, 1),
+            'occupation' => $occupations[array_rand($occupations)],
+        ];
+        $user->skillSet = (array) array_rand($availableSkillSet, random_int(1, 3));
+
+        if (self::ADMIN_TYPE === $type || self::SUPER_ADMIN_TYPE === $type) {
+            // Set encoded password directly for performances on fixtures loading
+            // Plain password is: covid19
+            $user->password = '$argon2id$v=19$m=65536,t=4,p=1$cEjk39WnLC+QRVJfNI5nmw$eM0J3UZ75hwFJRGQmph2OiBGRzJU6/NGVWcj0j+WVYw';
+
+            if (null !== $organization) {
+                $user->addOrganization($organization);
+            }
+        }
+
+        return $user;
+    }
+
+    private function loadUsers(ObjectManager $manager): void
+    {
+        $user = $this->createUser(1, null, self::SUPER_ADMIN_TYPE);
+        $user->roles[] = 'ROLE_SUPER_ADMIN';
+        $this->validateAndPersist($manager, $user);
+
         foreach ($this->organizations as $organization) {
+            $user = $this->createUser(1, $organization, self::ADMIN_TYPE);
+            $this->validateAndPersist($manager, $user);
+
             for ($i = 0; $i < $this->nbUsers; ++$i) {
-                $user = new User();
-                $user->id = $i + 1;
-                $user->firstName = $firstNames[array_rand($firstNames)];
-                $user->lastName = $lastNames[array_rand($lastNames)];
-                $user->organization = $organization;
-                // Set encoded password directly for performances on fixtures loading
-                // Plain password is: covid19
-                $user->password = '$argon2id$v=19$m=65536,t=4,p=1$cEjk39WnLC+QRVJfNI5nmw$eM0J3UZ75hwFJRGQmph2OiBGRzJU6/NGVWcj0j+WVYw';
-
-                // e.g. 990001A
-                $user->setIdentificationNumber(str_pad(''.++$startIdNumber.'', 10, '0', \STR_PAD_LEFT).'A');
-                $user->setEmailAddress('user'.$x.'@resop.com');
-                $user->phoneNumber = $this->phoneNumberUtil->parse('0102030405', 'FR');
-                $user->birthday = '1990-01-01';
-                $user->properties = [
-                    'organizationOccupation' => 'Secouriste',
-                    'fullyEquipped' => (bool) random_int(0, 1),
-                    'drivingLicence' => (bool) random_int(0, 1),
-                    'vulnerable' => (bool) random_int(0, 1),
-                    'occupation' => $occupations[array_rand($occupations)],
-                ];
-                $user->skillSet = (array) array_rand($availableSkillSet, random_int(1, 3));
-
+                $user = $this->createUser($i+2, $organization);
                 $this->users[$organization->getParentOrganization()->id][] = $user;
-
                 $this->validateAndPersist($manager, $user);
-                ++$x;
             }
         }
 

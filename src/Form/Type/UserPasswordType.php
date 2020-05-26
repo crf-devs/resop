@@ -21,10 +21,10 @@ class UserPasswordType extends AbstractType
             'type' => PasswordType::class,
             'required' => true,
             'first_options' => [
-                'label' => 'Mot de passe',
+                'label' => 'user.password',
             ],
             'second_options' => [
-                'label' => 'Confirmation',
+                'label' => 'user.confirmPassword',
             ],
         ]);
 
@@ -34,6 +34,7 @@ class UserPasswordType extends AbstractType
             if (!empty($user->getPassword())) {
                 $event->getForm()->add('currentPassword', PasswordType::class, [
                     'required' => true,
+                    'label' => 'user.currentPassword',
                 ]);
             }
         });
