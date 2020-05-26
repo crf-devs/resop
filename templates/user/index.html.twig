@@ -1,38 +1,63 @@
 {% extends 'base.html.twig' %}
+{% import 'user/_home-calendar.html.twig' as calendarMacro %}
 
 {% block title %}{{ 'nav.section.volunteer' | trans }}{% endblock %}
 
+{% block body_class 'body-user shadowless-navbar' %}
+
+{% block container_class '' %}
+
 {% block body %}
-    {{ include('misc/flash-messages.html.twig') }}
-    <h1>{{ 'user.welcome' | trans({'%name%': app.user.fullName}) }}</h1>
-    <p>{{ 'user.identificationNumber' | trans }} : {{ app.user.identificationNumber }}</p>
-    <p><a class="btn btn-outline-primary" href="{{ path('app_user_edit') }}" role="button">{{ 'user.editMyInfo' | trans }}</a></p>
+    <div class="user-homepage pt-4">
+        <div class="container-xl text-light">
+            {{ include('misc/flash-messages.html.twig') }}
 
-    <hr class="mt-5">
+            <h1 class="mt-3 mb-3 font-weight-bold">{{ 'user.welcome'|trans }} <span class="d-block d-sm-inline font-weight-normal">{{ app.user.fullName }}</span></h1>
+            <h4 class="mt-1 d-md-inline-block">{{ app.user.organization }}</h4>
+            <h5 class="mt-1 d-md-inline-block">
+                <span class="d-none d-md-inline">|</span>
+                {{ 'user.identificationNumber' | trans }} : {{ app.user.identificationNumber }}
+            </h5>
+            <p>
+                <a class="text-light font-weight-bold" href="{{ path('app_user_edit') }}">
+                    {{ 'user.editMyInfo'|trans }}
+                    <span class="fa fa-angle-right"></span>
+                </a>
+            </p>
+        </div>
 
-    <h3 class="mb-5">{{ 'common.myAvailabilities'|trans }}</h3>
+        <div class="container-xl pt-xl-3">
+            <div class="row">
+                <div class="col-xl-7 px-xl-1">
+                    {% include 'user/_home-calendar.html.twig' with {
+                        'availabilities': currentWeekAvailabilities,
+                        'missions': currentWeekMissions,
+                        'calendarTitle': 'user.calendar.currentWeek'|trans,
+                        'link': calendarMacro.editLink( path('user_availability'), 'user.calendar.currentWeek'|trans )
+                    } %}
+                </div>
+                <div class="col-xl-5 px-xl-1">
+                    {% include 'user/_home-calendar.html.twig' with {
+                        'availabilities': nextWeekAvailabilities,
+                        'missions': nextWeekMissions,
+                        'calendarTitle': 'user.calendar.nextWeek'|trans,
+                        'weekClass': 'next-week',
+                        'link': calendarMacro.editLink( path('user_availability', {week: 'next week'|date('o-\\WW')}), 'user.calendar.nextWeek'|trans )
+                    } %}
 
-    <p>
-        <a class="btn btn-primary" href="{{ path('user_availability') }}" role="button" title="{{ 'calendar.week.current'|trans }}">
-            {{ 'calendar.week.current' | trans }} : {{ 'calendar.period' | trans({ '%from%' : 'this week' | format_date('long'), '%to%' : 'sunday this week' | format_date('long') }) }}
-        </a>
-    </p>
-
-    <p>
-        <a class="btn btn-primary" href="{{ path('user_availability', { week: 'next week'|date('o-\\WW') }) }}" role="button" title="{{ 'calendar.week.next'|trans }}">
-            {{ 'calendar.week.next' | trans }} : {{ 'calendar.period' | trans({ '%from%' : 'next week' | format_date('long'), '%to%' : 'sunday next week' | format_date('long') }) }}
-        </a>
-    </p>
-
-    <p>
-        <a class="btn btn-outline-primary" href="{{ path('user_availability', { week: 'next week +1 week'|date('o-\\WW') }) }}" role="button">
-            {{ 'calendar.week.fromTo' | trans({ '%from%' : 'monday next week +1 week' | format_date('long'), '%to%' : 'sunday next week +1 week' | format_date('long') }) }}
-        </a>
-    </p>
-
-    <p>
-        <a class="btn btn-outline-primary" href="{{ path('user_availability', { week: 'next week +2 week'|date('o-\\WW') }) }}" role="button">
-            {{ 'calendar.week.fromTo' | trans({ '%from%' : 'monday next week +2 week' | format_date('long'), '%to%' : 'sunday next week +2 week' | format_date('long') }) }}
-        </a>
-    </p>
+                    <div class="white-box p-3 mt-3">
+                        <a class="btn btn-link font-weight-bold text-nowrap" href="{{ path('user_availability', { week: 'next week +1 week'|date('o-\\WW') }) }}" role="button">
+                            {{ 'calendar.week.fromTo' | trans({ '%from%' : 'monday next week +1 week' | format_date('long'), '%to%' : 'sunday next week +1 week' | format_date('long') }) }}
+                            <span class="fa fa-angle-right"></span>
+                        </a>
+                        <hr>
+                        <a class="btn btn-link font-weight-bold text-nowrap" href="{{ path('user_availability', { week: 'next week +2 week'|date('o-\\WW') }) }}" role="button">
+                            {{ 'calendar.week.fromTo' | trans({ '%from%' : 'monday next week +2 week' | format_date('long'), '%to%' : 'sunday next week +2 week' | format_date('long') }) }}
+                            <span class="fa fa-angle-right"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

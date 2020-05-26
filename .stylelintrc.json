@@ -10,9 +10,10 @@
       true,
       {
         "ignoreAtRules": [
-          "include"
+          "include", "extend"
         ]
       }
-    ]
+    ],
+    "scss/at-rule-no-unknown": true
   }
 }

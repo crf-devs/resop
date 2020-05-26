@@ -1,0 +1,273 @@
+@import "variables";
+@import "app";
+@import "~bootstrap/scss/bootstrap";
+
+.body-user {
+  background-color: $gray-100 !important;
+
+  div.container {
+    > h1 {
+      font-size: 2.5em;
+      font-weight: 600;
+    }
+
+    > h2 {
+      font-size: 1.5em;
+    }
+
+    > form {
+      @extend .white-box;
+      @extend .rounded;
+      @extend .p-5;
+      @extend .mt-4;
+    }
+  }
+}
+
+.user-homepage {
+  background-image: url(../img/user-homepage.jpg);
+  background-repeat: repeat-x;
+  background-size: auto;
+  background-position: top;
+
+  @include media-breakpoint-down(lg) {
+    background-size: 150%;
+    background-position: 50% 0;
+  }
+
+  @include media-breakpoint-down(md) {
+    background-size: 200%;
+    background-position: 70% 0;
+  }
+
+  @include media-breakpoint-down(sm) {
+    background-size: 300%;
+    background-position: 60% 0;
+  }
+
+  @include media-breakpoint-down(xs) {
+    background-size: 600%;
+    background-position: 65% 0;
+  }
+}
+
+.weekly-calendar {
+  @extend .col-12;
+  @extend .mb-2;
+  @extend .mb-xl-0;
+  @extend .p-2;
+  @extend .py-xl-3;
+  @extend .px-xl-2;
+
+  border-radius: 0.4rem !important;
+
+  .bg-unknown {
+    background-color: $colorUnknown;
+  }
+
+  .bg-available {
+    background-color: $colorAvailableUser;
+  }
+
+  .bg-booked {
+    background-color: $colorBookedUser;
+  }
+
+  .bg-locked {
+    background-color: $colorLocked;
+  }
+
+  .bg-mission {
+    background-color: $colorMissionUser;
+
+    .badge-light {
+      color: $colorMissionUser;
+    }
+  }
+
+  .calendar-title {
+    @extend .pt-1;
+    @extend .px-2;
+
+    @include media-breakpoint-up(md) {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    h3 {
+      font-size: 1em;
+      line-height: 1.5em;
+      font-weight: bold;
+
+      @include media-breakpoint-up(md) {
+        display: inline-block;
+      }
+    }
+
+    a {
+      font-weight: 600;
+
+      @include media-breakpoint-up(md) {
+        padding: 0;
+      }
+    }
+  }
+
+  &.next-week {
+    @include media-breakpoint-up(xl) {
+      .user-home-calendar {
+        .availability {
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+
+  .user-home-calendar {
+    @extend .mt-3;
+    @extend .row ;
+    @extend .mx-0;
+
+    .calendar-day {
+      padding-left: 0.125rem !important;
+      padding-right: 0.125rem !important;
+
+      @extend .col-12;
+      @extend .col-xl;
+      @extend .p-0;
+      @extend .mb-4;
+      @extend .mb-xl-0;
+
+      @include media-breakpoint-up(xl) {
+        width: percentage(1/7);
+      }
+    }
+
+    a.availability {
+      cursor: pointer;
+    }
+
+    .availability {
+      text-align: left;
+      color: white;
+
+      @extend .row;
+      @extend .rounded;
+      @extend .px-1;
+      @extend .py-1;
+      @extend .m-0;
+      @extend .mb-1;
+
+      &.previous {
+        opacity: 0.45;
+      }
+
+      @include media-breakpoint-up(xl) {
+        font-size: 0.75rem;
+      }
+
+      .title {
+        @extend .p-0;
+        @extend .col-6;
+        @extend .col-xl-12;
+        @extend .mb-xl-2;
+
+        .badge {
+          font-size: 0.7rem;
+          margin-bottom: 3px;
+        }
+      }
+
+      .hours {
+        text-align: right;
+        font-size: 90%;
+
+        @extend .text-nowrap;
+        @extend .p-0;
+        @extend .col-6;
+        @extend .col-xl-12;
+        @extend .text-xl-left;
+      }
+    }
+
+    .calendar-header {
+      font-weight: normal;
+      text-align: center;
+      text-transform: uppercase;
+      color: $gray-600;
+
+      @include media-breakpoint-up(xl) {
+        margin-bottom: 1.5rem !important;
+      }
+
+      @extend .p-0;
+      @extend .pr-xl-0;
+      @extend .col-2;
+      @extend .col-xl-12;
+
+      .day-text {
+        font-size: 1.1rem;
+        margin-bottom: 0.2em;
+
+        @include media-breakpoint-up(xl) {
+          font-size: 0.8rem;
+        }
+      }
+
+      .day-number {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: normal !important;
+        margin: auto auto auto -0.5em;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        width: auto;
+        padding-top: 0.125em;
+
+        @include media-breakpoint-up(xl) {
+          padding-top: 0.25em;
+          width: fit-content;
+          margin: auto;
+          border-radius: $badge-pill-border-radius;
+        }
+      }
+
+      &.current {
+        .day-text {
+          color: $primary;
+        }
+
+        .day-number {
+          @extend .bg-primary;
+
+          padding-top: 0.25em;
+          color: white;
+        }
+      }
+
+      &.incoming {
+        .day-number {
+          color: black;
+        }
+      }
+    }
+
+    .calendar-availabilities {
+      @extend .col-10;
+      @extend .col-xl-12;
+      @extend .p-0;
+      @extend .mt-2;
+      @extend .mt-xl-0;
+      @extend .pl-2;
+      @extend .pl-xl-0;
+
+      .missions {
+        @include media-breakpoint-up(xl) {
+          min-height: 90px;
+          border-bottom: 2px solid #f1f1f1;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}

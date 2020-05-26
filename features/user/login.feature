@@ -1,3 +1,4 @@
+@login
 Feature:
     In order to fill in my availabilities
     As a user

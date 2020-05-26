@@ -27,15 +27,21 @@ final class AvailabilityDomain
             return false;
         }
 
-        // Dates are stored as UTC even if they are not on this UTC timezone
-        // @todo Set the timezone as a parameter
-        $trueNow = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
-        $fakeUTCnow = new \DateTimeImmutable($trueNow->format('Y-m-d H:i:s'));
+        $fakeUTCnow = self::getFakeUtcNow();
 
         if (null !== $this->availability && null !== $this->disabledIntervalFromNow && AvailabilityInterface::STATUS_UNKNOW !== $this->availability->getStatus()) {
             return $this->date > $fakeUTCnow->add($this->disabledIntervalFromNow);
         }
 
         return $this->date > $fakeUTCnow;
+    }
+
+    public static function getFakeUtcNow(): \DateTimeImmutable
+    {
+        // Dates are stored as UTC even if they are not on this UTC timezone
+        // @todo Set the timezone as a parameter
+        $trueNow = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+
+        return new \DateTimeImmutable($trueNow->format('Y-m-d H:i:s'));
     }
 }

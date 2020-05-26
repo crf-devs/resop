@@ -9,6 +9,20 @@ html {
   background-color: $footerColor;
 }
 
+@media (min-width: 1400px) {
+  .container-xl {
+    max-width: 1340px !important;
+  }
+}
+
+.white-box {
+  @extend .rounded;
+
+  border-radius: 6px;
+  background-color: white;
+  box-shadow: 2px 2px 18px 0 rgba(50, 47, 47, 0.2);
+}
+
 body {
   > nav.navbar {
     background-color: white;
@@ -30,28 +44,26 @@ body {
     }
   }
 
-  > .container {
-    background-color: white;
+  &.shadowless-navbar {
+    > nav.navbar {
+      box-shadow: none;
+    }
   }
-}
 
-footer {
-  margin-top: 6rem;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-  padding-left: 4rem;
-  line-height: 1.3rem;
-  background-color: $footerColor;
-  box-shadow: inset 0 3px 3px -1px rgba(227, 227, 227, 1);
+  footer {
+    margin-top: 6rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    padding-left: 4rem;
+    line-height: 1.3rem;
+    background-color: $footerColor;
+    box-shadow: inset 0 3px 3px -1px rgba(227, 227, 227, 1);
 
-  @include media-breakpoint-down(sm) {
-    margin-top: 3rem;
-    padding-left: 1rem;
+    @include media-breakpoint-down(sm) {
+      margin-top: 3rem;
+      padding-left: 1rem;
+    }
   }
-}
-
-.nowrap {
-  white-space: pre;
 }
 
 label.required:not(.form-check-label)::before {
@@ -64,4 +76,8 @@ legend.required::before {
   color: $red;
   content: "*";
   padding-right: 4px;
+}
+
+select.selectpicker {
+  display: block !important;
 }
