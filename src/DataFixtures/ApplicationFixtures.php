@@ -101,7 +101,7 @@ final class ApplicationFixtures extends Fixture
     private array $missionTypes = [];
 
     private SkillSetDomain $skillSetDomain;
-    private int $nbUsers = 15;
+    private int $nbUsers;
     private int $nbAvailabilities;
 
     private int $availabilitiesId = 1;
@@ -118,12 +118,12 @@ final class ApplicationFixtures extends Fixture
         SlotAvailabilityGuesser $slotAvailabilityGuesser,
         PhoneNumberUtil $phoneNumberUtil,
         string $slotInterval,
-        int $nbUsers = null,
+        int $nbUsers = 15,
         int $nbAvailabilities = null
-    )
-    {
+    ) {
         $this->validator = $validator;
         $this->skillSetDomain = $skillSetDomain;
+        $this->nbUsers = $nbUsers ?: random_int(10, 20);
         $this->nbAvailabilities = $nbAvailabilities ?: random_int(2, 6);
         $this->slotBookingGuesser = $slotBookingGuesser;
         $this->slotAvailabilityGuesser = $slotAvailabilityGuesser;
@@ -353,7 +353,7 @@ final class ApplicationFixtures extends Fixture
             $this->validateAndPersist($manager, $user);
 
             for ($i = 0; $i < $this->nbUsers; ++$i) {
-                $user = $this->createUser($i+2, $organization);
+                $user = $this->createUser($i + 2, $organization);
                 $this->users[$organization->getParentOrganization()->id][] = $user;
                 $this->validateAndPersist($manager, $user);
             }
