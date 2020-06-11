@@ -95,7 +95,7 @@ LOL
 ### Je veux partager le projet autour de moi, comment faire ?
 Le plus simple est de partager le lien vers le projet : [https://github.com/crf-devs/resop](https://github.com/crf-devs/resop)
 
-### De quels profils avez-nous besoin ?
+### De quels profils avons-nous besoin ?
 Développeurs Symfony, Designers UI/UX, peu importe votre niveau de maîtrise, il y aura toujours une mission accessible !
 
 ### Je suis débutant avec Symfony, que puis-je faire ?
