@@ -12,6 +12,7 @@ use App\Entity\Organization;
 use App\Form\Type\MissionsSearchType;
 use App\Form\Type\MissionType;
 use App\Repository\MissionRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,40 +28,52 @@ class MissionController extends AbstractOrganizationController
 {
     private MissionRepository $missionRepository;
     private PlanningDomain $planningDomain;
+    private PaginatorInterface $paginator;
 
-    public function __construct(MissionRepository $missionRepository, PlanningDomain $planningDomain)
+    public function __construct(MissionRepository $missionRepository, PlanningDomain $planningDomain, PaginatorInterface $paginator)
     {
         $this->missionRepository = $missionRepository;
         $this->planningDomain = $planningDomain;
+        $this->paginator = $paginator;
     }
 
     /**
      * @Route(name="app_organization_mission_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $form = $this->planningDomain->generateForm(MissionsSearchType::class);
         $filters = $form->getData();
+        $missions = $this->paginator->paginate(
+            $this->missionRepository->findByFiltersQb($filters),
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination_default_limit')
+        );
 
         return $this->render('organization/mission/index.html.twig', [
             'filters' => $filters,
             'form' => $form->createView(),
-            'missions' => $this->missionRepository->findByFilters($filters),
+            'missions' => $missions,
         ]);
     }
 
     /**
      * @Route("/full", name="app_organization_mission_full_list", methods={"GET"})
      */
-    public function fullList(): Response
+    public function fullList(Request $request): Response
     {
         $form = $this->planningDomain->generateForm(MissionsSearchType::class);
         $filters = $form->getData();
+        $missions = $this->paginator->paginate(
+            $this->missionRepository->findByFiltersQb($filters),
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination_default_limit')
+        );
 
         return $this->render('organization/mission/list_full.html.twig', [
             'filters' => $filters,
             'form' => $form->createView(),
-            'missions' => $this->missionRepository->findByFilters($filters),
+            'missions' => $missions,
         ]);
     }
 

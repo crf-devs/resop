@@ -21,8 +21,8 @@
 {% endif %}
 
 <h3 class="mt-4">{{ 'organization.users' | trans }}</h3>
-{{ include('organization/user/_list.html.twig', {users: mission.users | sortBySkills, organization: mission.organization}) }}
+{{ include('organization/user/_list.html.twig', {users: mission.users | sortBySkills, organization: mission.organization, pagination: false}) }}
 
 <h3 class="mt-4">{{ 'organization.assets' | trans }}</h3>
-{{ include('organization/commissionable_asset/_list.html.twig', {assets: mission.assets, organization: mission.organization}) }}
+{{ include('organization/commissionable_asset/_list.html.twig', {assets: mission.assets, organization: mission.organization, pagination: false}) }}
 

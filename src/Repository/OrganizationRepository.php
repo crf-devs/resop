@@ -106,6 +106,18 @@ class OrganizationRepository extends ServiceEntityRepository implements UserLoad
         return $qb;
     }
 
+    public function findChildrenQueryBuilder(Organization $organization): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb
+            ->where('o.parent = :orga')
+            ->setParameter('orga', $organization)
+            ->addOrderBy('o.name', 'ASC');
+
+        return $qb;
+    }
+
     public function findByIdOrParentIdQueryBuilder(int $organizationId, QueryBuilder $qb = null): QueryBuilder
     {
         $alias = 'o';

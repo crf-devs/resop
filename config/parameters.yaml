@@ -1,6 +1,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    app.pagination_default_limit: 30
     app.most_important_skills_limit: 6 # used for separing data in the planning
     app.most_important_skills_to_display: [ch_vpsp, ch_vl] # used for displaying a badge near the user name
     app.slot_interval: '%env(APP_SLOT_INTERVAL)%'

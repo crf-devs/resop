@@ -72,3 +72,8 @@
         </tbody>
     </table>
 </div>
+{% if pagination is defined and pagination %}
+    <div class="navigation d-flex justify-content-center">
+        {{ knp_pagination_render(missions) }}
+    </div>
+{% endif %}

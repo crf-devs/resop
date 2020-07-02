@@ -9,6 +9,7 @@ use App\Entity\MissionType;
 use App\Entity\Organization;
 use App\Form\Type\MissionTypeType;
 use App\Repository\MissionTypeRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,11 +31,15 @@ class MissionTypeController extends AbstractOrganizationController
     /**
      * @Route(name="app_organization_mission_type_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
         /** @var Organization $organization */
         $organization = $this->getUser();
-        $missionTypes = $this->missionTypeRepository->findByOrganization($organization);
+        $missionTypes = $paginator->paginate(
+            $this->missionTypeRepository->findByOrganizationQb($organization),
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination_default_limit')
+        );
 
         return $this->render('organization/mission_type/index.html.twig', [
             'mission_types' => $missionTypes,

@@ -47,4 +47,9 @@
         {% endfor %}
         </tbody>
     </table>
+    {% if pagination is defined and pagination %}
+        <div class="navigation d-flex justify-content-center">
+            {{ knp_pagination_render(users) }}
+        </div>
+    {% endif %}
 </div>
