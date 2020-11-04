@@ -137,10 +137,10 @@ Then, run `docker-compose up -d postgres`. The DB is now available on the `local
 If you want to load huge amount of data, for example to test the performances, run the following command in the fpm container:
 
 ```bash
-bin/tools sh -c "APP_NB_USERS=15 APP_NB_AVAILABILITIES=6 bin/console doctrine:fixtures:load --purge-with-truncate --no-interaction"
+bin/tools sh -c "APP_NB_USERS=20 APP_NB_AVAILABILITIES=6 bin/console doctrine:fixtures:load --purge-with-truncate --no-interaction"
 ```
 
-- APP_NB_USERS: number of users per organization (default: 10)
+- APP_NB_USERS: number of users per organization (default: 15)
 - APP_NB_AVAILABILITIES: number of days on which generating availabilities per user (default: 3)
 
 

@@ -2,18 +2,22 @@ default:
     suites:
         default:
             contexts:
+                - Alex\MailCatcher\Behat\MailCatcherContext
                 - App\Tests\Behat\CoverageContext
                 - App\Tests\Behat\DatabaseContext
                 - App\Tests\Behat\FixturesContext
                 - App\Tests\Behat\OrganizationPlanningContext
+                - App\Tests\Behat\ResetPasswordContext
                 - App\Tests\Behat\SecurityContext
                 - App\Tests\Behat\TraversingContext
                 - App\Tests\Behat\UserPlanningContext
                 - Behat\MinkExtension\Context\MinkContext
                 - PantherExtension\Context\PantherContext
-                - PantherExtension\Context\WaitContext:
+                - PantherExtension\Context\WaitContext
     extensions:
-        PantherExtension\Extension\PantherExtension: ~
+        Alex\MailCatcher\Behat\MailCatcherExtension\Extension:
+            url: http://mailcatcher
+            purge_before_scenario: true
         Behat\MinkExtension:
             browser_name: chrome
             default_session: symfony
@@ -28,3 +32,4 @@ default:
             kernel:
                 environment: test
                 debug: true
+        PantherExtension\Extension\PantherExtension: ~

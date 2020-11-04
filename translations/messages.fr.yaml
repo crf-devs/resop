@@ -6,6 +6,9 @@ action:
   edit: Modifier
   loading: Chargement...
   login: Connexion
+  promote: Promouvoir en tant qu'admin de %organization%
+  revoke: Révoquer les droits d'admin sur %organization%
+  impersonate: Usurper l'identité
   search: Rechercher
   searchQuery: Rechercher "%query%"
   loginSubmit: Je me connecte
@@ -213,6 +216,7 @@ project:
   version: Version %tag%
 user:
   accountAction: "%action% de compte"
+  passwordAction: Mon mot de passe
   availabilities: Vos disponibilités
   availabilityCurrentWeek: Mes disponibilités pour la semaine courante
   availabilityNextWeek: Mes disponibilités pour la semaine prochaine
@@ -231,11 +235,17 @@ user:
   dob: Date de naissance
   info: Informations
   editMyInfo: Modifier mes informations
+  editMyPassword: Modifier mon mot de passe
+  createMyPassword: Renseigner mon mot de passe
+  passwordRequired: Vous devez renseigner votre mot de passe afin d'administrer votre structure
   email: E-mail
   firstName: Prénom
   identificationNumber: NIVOL
   lastName: Nom
   login: Numéro NIVOL ou Adresse e-mail
+  currentPassword: Mot de passe actuel
+  password: Mot de passe
+  confirmPassword: Confirmation du mot de passe
   mobile: Numéro de téléphone portable
   occupationTitle: Profession
   occupation:
@@ -259,6 +269,7 @@ user:
 
 # Symfony default translations
 Submit: Enregistrer
+Current password: Votre mot de passe actuel
 
 register:
   introduction: |

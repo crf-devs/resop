@@ -14,7 +14,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/{id}/delete", name="app_organization_mission_type_delete", methods={"GET"})
- * @Security("missionType.organization == user")
+ * @Security("is_granted('ROLE_PARENT_ORGANIZATION', missionType.organization)")
  */
 class MissionTypeDeleteController extends AbstractOrganizationController
 {

@@ -5,41 +5,56 @@ declare(strict_types=1);
 namespace App\Security\Voter;
 
 use App\Entity\Organization;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class OrganizationVoter extends Voter
+final class OrganizationVoter extends Voter
 {
-    public const CAN_MANAGE = 'CAN_MANAGE_ORGANIZATION';
-    public const CAN_CREATE = 'CAN_CREATE_ORGANIZATION';
+    public const ROLE_ORGANIZATION = 'ROLE_ORGANIZATION';
+    public const ROLE_PARENT_ORGANIZATION = 'ROLE_PARENT_ORGANIZATION';
+
+    private AccessDecisionManagerInterface $decisionManager;
+
+    public function __construct(AccessDecisionManagerInterface $decisionManager)
+    {
+        $this->decisionManager = $decisionManager;
+    }
 
     protected function supports($attribute, $subject): bool
     {
-        return (self::CAN_MANAGE === $attribute && $subject instanceof Organization)
-            || (self::CAN_CREATE === $attribute && null === $subject);
+        return \in_array($attribute, [
+            self::ROLE_ORGANIZATION,
+            self::ROLE_PARENT_ORGANIZATION,
+        ], true) && (null === $subject || $subject instanceof Organization);
     }
 
     /**
-     * @param string       $attribute
-     * @param Organization $subject
+     * @param string            $attribute
+     * @param Organization|null $subject
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        $loggedOrganization = $token->getUser();
+        /** @var User|null $user */
+        $user = $token->getUser();
 
-        if (!$loggedOrganization instanceof Organization) {
+        if (!$user instanceof User || null === $user->getPassword()) {
             return false;
         }
 
-        if (self::CAN_CREATE === $attribute) {
-            return $loggedOrganization->isParent();
+        if (null === $subject) {
+            return true;
         }
 
-        return $this->canManageOrganization($loggedOrganization, $subject);
-    }
+        if ($this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])) {
+            return true;
+        }
 
-    private function canManageOrganization(Organization $loggedOrganization, Organization $organization): bool
-    {
-        return $loggedOrganization === $organization || $loggedOrganization === $organization->parent;
+        if (self::ROLE_PARENT_ORGANIZATION === $attribute) {
+            return $subject->getAdmins()->contains($user) || $subject->getParentOrganization()->getAdmins()->contains($user);
+        }
+
+        return $subject->getAdmins()->contains($user);
     }
 }

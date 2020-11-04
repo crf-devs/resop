@@ -20,23 +20,23 @@ Feature:
             | jAnE dOe reSOp | admin203@resop.com | 990002A              |
 
     Scenario: As an admin of a children organization, I can search for a volunteer in my organization
-        Given I am authenticated as "admin203@resop.com"
-        And I am on "/organizations/203"
-        When I fill in "query" with " jAnE dOe reSOp "
+        Given I am authenticated as "admin204@resop.com"
+        And I am on "/organizations/204"
+        When I fill in "query" with " FrEdDy MeRcUrY reSOp "
         And I press "Rechercher"
-        Then I should be on "/organizations/203/search"
+        Then I should be on "/organizations/204/search"
         And the response status code should be 200
-        And I should see "Rechercher \"jAnE dOe reSOp\""
-        And I should see "990002A"
-        And I should see "admin203@resop.com"
+        And I should see "Rechercher \"FrEdDy MeRcUrY reSOp\""
+        And I should see "990004A"
+        And I should see "admin204@resop.com"
         And I should see "Aucun véhicule ne correspond à votre recherche."
 
     Scenario: As an admin of an organization, I cannot search for a user in another organization
-        Given I am authenticated as "admin203@resop.com"
-        And I am on "/organizations/203"
+        Given I am authenticated as "admin201@resop.com"
+        And I am on "/organizations/201"
         When I fill in "query" with " cHuCk nOrRiS reSOp "
         And I press "Rechercher"
-        Then I should be on "/organizations/203/search"
+        Then I should be on "/organizations/201/search"
         And the response status code should be 200
         And I should see "Rechercher \"cHuCk nOrRiS reSOp\""
         And I should see "Aucun bénévole ne correspond à votre recherche."
@@ -54,16 +54,16 @@ Feature:
         And I should see "<type>"
         And I should see "Aucun bénévole ne correspond à votre recherche."
         Examples:
-            | search | name   | type |
-            | 75992  | 75992  | VPSP |
-            | 75012  | 75012  | VPSP |
+            | search | name  | type |
+            | 75992  | 75992 | VPSP |
+            | 75012  | 75012 | VPSP |
 
     Scenario: As an admin of a children organization, I can search for a user in my organization
-        Given I am authenticated as "admin203@resop.com"
-        And I am on "/organizations/203"
+        Given I am authenticated as "admin201@resop.com"
+        And I am on "/organizations/201"
         When I fill in "query" with " 75012 "
         And I press "Rechercher"
-        Then I should be on "/organizations/203/search"
+        Then I should be on "/organizations/201/search"
         And the response status code should be 200
         And I should see "Rechercher \"75012\""
         And I should see "VPSP"
@@ -71,11 +71,11 @@ Feature:
         And I should see "Aucun bénévole ne correspond à votre recherche."
 
     Scenario: As an admin of an organization, I cannot search for a user in another organization
-        Given I am authenticated as "admin203@resop.com"
-        And I am on "/organizations/203"
+        Given I am authenticated as "admin201@resop.com"
+        And I am on "/organizations/201"
         When I fill in "query" with " 77282 "
         And I press "Rechercher"
-        Then I should be on "/organizations/203/search"
+        Then I should be on "/organizations/201/search"
         And the response status code should be 200
         And I should see "Rechercher \"77282\""
         And I should see "Aucun bénévole ne correspond à votre recherche."

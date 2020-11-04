@@ -21,7 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/")
- * @Security("is_granted('ROLE_PARENT_ORGANIZATION')")
  */
 class MissionController extends AbstractOrganizationController
 {
@@ -36,10 +35,11 @@ class MissionController extends AbstractOrganizationController
 
     /**
      * @Route(name="app_organization_mission_index", methods={"GET"})
+     * @Security("is_granted('ROLE_PARENT_ORGANIZATION', organization)")
      */
-    public function index(): Response
+    public function index(Organization $organization): Response
     {
-        $form = $this->planningDomain->generateForm(MissionsSearchType::class);
+        $form = $this->planningDomain->generateForm($organization, MissionsSearchType::class);
         $filters = $form->getData();
 
         return $this->render('organization/mission/index.html.twig', [
@@ -51,10 +51,11 @@ class MissionController extends AbstractOrganizationController
 
     /**
      * @Route("/full", name="app_organization_mission_full_list", methods={"GET"})
+     * @Security("is_granted('ROLE_PARENT_ORGANIZATION', organization)")
      */
-    public function fullList(): Response
+    public function fullList(Organization $organization): Response
     {
-        $form = $this->planningDomain->generateForm(MissionsSearchType::class);
+        $form = $this->planningDomain->generateForm($organization, MissionsSearchType::class);
         $filters = $form->getData();
 
         return $this->render('organization/mission/list_full.html.twig', [
@@ -66,10 +67,11 @@ class MissionController extends AbstractOrganizationController
 
     /**
      * @Route("/full/export", name="app_organization_mission_full_list_export", methods={"GET"})
+     * @Security("is_granted('ROLE_PARENT_ORGANIZATION', organization)")
      */
-    public function fullListExport(MissionDomain $missionDomain): Response
+    public function fullListExport(Organization $organization, MissionDomain $missionDomain): Response
     {
-        $form = $this->planningDomain->generateForm(MissionsSearchType::class);
+        $form = $this->planningDomain->generateForm($organization, MissionsSearchType::class);
         $filters = $form->getData();
         $query = $this->missionRepository->findByFiltersQb($filters)->getQuery();
         $em = $this->getDoctrine()->getManager();
@@ -109,12 +111,10 @@ class MissionController extends AbstractOrganizationController
 
     /**
      * @Route("/new", name="app_organization_mission_new", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_PARENT_ORGANIZATION', organization)")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Organization $organization): Response
     {
-        /** @var Organization $organization */
-        $organization = $this->getUser();
-
         $mission = new Mission();
         $mission->organization = $organization;
         $form = $this->createForm(MissionType::class, $mission);
@@ -136,7 +136,7 @@ class MissionController extends AbstractOrganizationController
 
     /**
      * @Route("/{id<\d+>}", name="app_organization_mission_show", methods={"GET"})
-     * @Security("mission.organization == user")
+     * @Security("is_granted('ROLE_PARENT_ORGANIZATION', mission.organization)")
      */
     public function show(Mission $mission): Response
     {
@@ -147,7 +147,7 @@ class MissionController extends AbstractOrganizationController
 
     /**
      * @Route("/{id<\d+>}/edit", name="app_organization_mission_edit", methods={"GET","POST"})
-     * @Security("mission.organization == user")
+     * @Security("is_granted('ROLE_PARENT_ORGANIZATION', mission.organization)")
      */
     public function edit(Request $request, Mission $mission): Response
     {
@@ -168,7 +168,7 @@ class MissionController extends AbstractOrganizationController
 
     /**
      * @Route("/{id<\d+>}/delete", name="app_organization_mission_delete", methods={"GET"})
-     * @Security("mission.organization == user")
+     * @Security("is_granted('ROLE_PARENT_ORGANIZATION', mission.organization)")
      */
     public function delete(Mission $mission): RedirectResponse
     {

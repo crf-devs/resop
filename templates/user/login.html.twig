@@ -10,6 +10,8 @@
             {% include '_navbar.html.twig' with {navbarClass: 'navbar-dark'} %}
 
             <div class="container">
+                {{ include('misc/flash-messages.html.twig') }}
+
                 <div class="row">
                     <div class="col-lg-7"></div>
                     <div class="col-lg-5 login-form-container">
@@ -23,6 +25,10 @@
                             {{ form_start(loginForm) }}
                             {{ form_row(loginForm.identifier) }}
                             {{ form_row(loginForm.birthday) }}
+                            {{ form_row(loginForm.password) }}
+                            <a href="{{ path('app_forgot_password_request') }}">
+                                <small class="form-text text-muted">Mot de passe oublié ?</small>
+                            </a>
 
                             <div class="custom-control custom-checkbox mt-4 mb-5">
                                 <input type="checkbox" class="custom-control-input" name="_remember_me" id="_remember_me">

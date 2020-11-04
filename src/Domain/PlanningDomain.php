@@ -18,6 +18,7 @@ use App\Repository\UserAvailabilityRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 
@@ -58,28 +59,18 @@ class PlanningDomain
         $this->missionTypeRepository = $missionTypeRepository;
     }
 
-    public function generateForm(string $formType = PlanningSearchType::class): FormInterface
+    public function generateForm(Organization $organization, string $formType = PlanningSearchType::class): FormInterface
     {
-        $organization = $this->security->getUser();
+        /** @var Request $request */
         $request = $this->requestStack->getCurrentRequest();
-
-        if (!$organization instanceof Organization) {
-            throw new \LogicException();
-        }
-
         $form = $this->formFactory->createNamed('', $formType, ['organization' => $organization], ['method' => 'GET', 'attr' => ['autocomplete' => 'off']]);
         $form->handleRequest($request);
 
         return $form;
     }
 
-    public function generateFilters(FormInterface $form): array
+    public function generateFilters(FormInterface $form, Organization $organization): array
     {
-        $organization = $this->security->getUser();
-        if (!$organization instanceof Organization) {
-            throw new \LogicException('Bad user type');
-        }
-
         $filters = $form->getData();
 
         // $filters['organizations'] is an ArrayCollection

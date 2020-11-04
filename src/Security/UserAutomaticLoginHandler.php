@@ -15,10 +15,8 @@ final class UserAutomaticLoginHandler
     private GuardAuthenticatorHandler $guardHandler;
     private UserLoginFormAuthenticator $formAuthenticator;
 
-    public function __construct(
-        GuardAuthenticatorHandler $guardHandler,
-        UserLoginFormAuthenticator $formAuthenticator
-    ) {
+    public function __construct(GuardAuthenticatorHandler $guardHandler, UserLoginFormAuthenticator $formAuthenticator)
+    {
         $this->guardHandler = $guardHandler;
         $this->formAuthenticator = $formAuthenticator;
     }
@@ -28,10 +26,6 @@ final class UserAutomaticLoginHandler
      */
     public function handleAuthentication(Request $request, UserInterface $user): Response
     {
-        if (!$user instanceof User) {
-            throw new \InvalidArgumentException(sprintf('Method %s only accepts a %s instance as its second argument.', __METHOD__, User::class));
-        }
-
         $response = $this->guardHandler->authenticateUserAndHandleSuccess(
             $user,
             $request,

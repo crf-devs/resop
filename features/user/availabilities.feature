@@ -20,7 +20,7 @@ Feature:
         And the response status code should be 200
 
     Scenario Outline: As authenticated user, I cannot add an availability on a booked/locked slot
-        Given I am authenticated as "admin203@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/"
         When I follow "Semaine prochaine"
         Then the url should match "/user/availability"
@@ -60,7 +60,7 @@ Feature:
         And the availability checkbox "<time>" should be unchecked
         Examples:
             | time                      |
-            | next week monday 3 pm     |
+            | next week monday 6 pm     |
             | next week tuesday 8 am    |
             | next week wednesday 12 pm |
             | next week thursday 2pm    |
@@ -87,4 +87,5 @@ Feature:
         And the availability checkbox "<time>" should be unchecked
         Examples:
             | time                    |
-            | tuesday next week 10 am |
+            | next week monday 10 am |
+            | next week monday 12 pm |

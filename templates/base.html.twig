@@ -15,6 +15,14 @@
         {% include '_navbar.html.twig' %}
 
         <div class="{% block container_class 'container my-5' %}">
+            {% if app.user and 0 < app.user.organizations.count and app.user.password is empty %}
+                <p class="alert alert-warning">
+                    <a href="{{ path('app_user_password') }}">
+                        Vous devez renseigner votre mot de passe afin d'administrer votre structure.
+                    </a>
+                </p>
+            {% endif %}
+
             {% block body %}{% endblock %}
         </div>
 

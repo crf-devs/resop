@@ -46,7 +46,7 @@ final class CreateAccountController extends AbstractController
         $bdate = $request->getSession()->get(UserLoginFormAuthenticator::SECURITY_LAST_BIRTHDAY);
         if (!empty($bdate)) {
             $request->getSession()->remove(UserLoginFormAuthenticator::SECURITY_LAST_BIRTHDAY);
-            $user->setBirthday($bdate);
+            $user->birthday = $bdate;
         }
 
         $form = $this->createForm(UserType::class, $user)->handleRequest($request);

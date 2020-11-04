@@ -5,42 +5,23 @@ security:
             entity:
                 class: App\Entity\User
 
-        organizations:
-            entity:
-                class: App\Entity\Organization
-
     encoders:
         Symfony\Component\Security\Core\User\UserInterface:
             algorithm: auto
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        organizations:
-            pattern: ^/organizations
-            anonymous: true
-            lazy: true
-            provider: organizations
-            guard:
-                authenticators:
-                    - App\Security\OrganizationLoginFormAuthenticator
-
-            logout:
-                path: app_organization_logout
-                target: app_organization_index
-
-            remember_me:
-                name: remember_me_organization
-                secret:   '%kernel.secret%'
-                lifetime: 604800 # 1 week in seconds
-                path:     /
-
         main:
             anonymous: true
             lazy: true
             provider: users
+            switch_user: true
             guard:
                 authenticators:
                     - App\Security\UserLoginFormAuthenticator
@@ -56,6 +37,8 @@ security:
                 path:     /
 
     access_control:
-        - { path: ^/(user\/new|login|organizations\/login)$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/organizations, roles: ROLE_ORGANIZATION }
+        - { path: ^/user/new$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/reset-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }
+        - { path: ^/organizations/, roles: ROLE_ORGANIZATION }

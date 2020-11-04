@@ -23,7 +23,7 @@
                 <td>
                     <span class="badge badge-secondary">{{ mission.type.name | default('') }}</span>
 
-                    <button type="button" class="btn btn-link p-0 text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_mission_modal', {id: mission.id}) }}">
+                    <button type="button" class="btn btn-link p-0 text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_mission_modal', {mission: mission.id}) }}">
                         <span class="fa fa-copy"></span> {{ mission.name }}
                     </button>
                 </td>
@@ -45,7 +45,7 @@
                     <td colspan="3"></td>
                     <td>{{ user.organization.name }}</td>
                     <td>
-                        <button type="button" class="btn btn-link p-0 text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', {userToShow: user.id, organization: user.organization.id}) }}">
+                        <button type="button" class="btn btn-link p-0 text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', {user: user.id}) }}">
                             <span class="fa fa-copy"></span> {{ user.fullName }}
                         </button>
                     </td>
@@ -66,7 +66,7 @@
                     <td colspan="3"></td>
                     <td>{{ asset.organization.name }}</td>
                     <td>
-                        <button type="button" class="btn btn-link p-0 text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_asset_show_modal', {asset: asset.id, organization: asset.organization.id}) }}">
+                        <button type="button" class="btn btn-link p-0 text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_asset_show_modal', {asset: asset.id}) }}">
                             <span class="fa fa-copy"></span> {{ asset }}
                         </button>
                     </td>

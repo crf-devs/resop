@@ -15,11 +15,11 @@
     <hr/>
     <h3>Bénévoles</h3>
     {% if users|length %}
-        {% include 'organization/user/_list.html.twig' with {organization: app.user} %}
+        {% include 'organization/user/_list.html.twig' %}
     {% else %}
         <p>{{ 'organization.search.noUsers' | trans }}</p>
     {% endif %}
-    <p><a class="btn btn-secondary" role="button" href="{{ path('app_organization_user_list', {'organization': app.user.id}) }}">Afficher la liste de mes bénévoles inscrits</a></p>
+    <p><a class="btn btn-secondary" role="button" href="{{ path('app_organization_user_list') }}">Afficher la liste de mes bénévoles inscrits</a></p>
 
     <hr/>
     <h3>Véhicules</h3>
@@ -28,5 +28,5 @@
     {% else %}
         <p>{{ 'organization.search.noAssets' | trans }}</p>
     {% endif %}
-    <p><a class="btn btn-secondary" href="{{ path('app_organization_assets', {'organization': app.user.id}) }}" role="button">Afficher la liste de mes véhicules</a></p>
+    <p><a class="btn btn-secondary" href="{{ path('app_organization_assets') }}" role="button">Afficher la liste de mes véhicules</a></p>
 {% endblock %}

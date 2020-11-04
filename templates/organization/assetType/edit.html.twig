@@ -11,9 +11,9 @@
     <a href="{{ path('app_organization_assetType_list') }}">{{ 'common.backToList' | trans }}</a>
     <h1>
         {% if app.request.get('_route') == 'app_organization_assetType_new' %}
-            {{ 'organization.asset_type.add_new' | trans }} - {{ app.user }}
+            {{ 'organization.asset_type.add_new' | trans }} - {{ organization }}
         {% else %}
-            {{ 'organization.asset_type.edit_form_title' | trans }} - {{ app.user }}
+            {{ 'organization.asset_type.edit_form_title' | trans }} - {{ organization }}
         {% endif %}
     </h1>
 

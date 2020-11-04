@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace App\Twig\Extension;
 
 use App\Entity\Organization;
-use App\Entity\User;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class OrganizationExtension extends AbstractExtension
 {
-    private Security $security;
+    private RequestStack $requestStack;
     private RoutingExtension $routingExtension;
 
-    public function __construct(Security $security, RoutingExtension $routingExtension)
+    public function __construct(RequestStack $requestStack, RoutingExtension $routingExtension)
     {
-        $this->security = $security;
+        $this->requestStack = $requestStack;
         $this->routingExtension = $routingExtension;
     }
 
@@ -45,16 +44,19 @@ final class OrganizationExtension extends AbstractExtension
 
     private function buildParameters(string $name, array $parameters): array
     {
-        /** @var Organization|User|null $user */
-        $user = $this->security->getUser();
-        if (!$user instanceof Organization || !preg_match('/^app_organization_.*$/', $name)) {
+        $request = $this->requestStack->getCurrentRequest();
+        if (!preg_match('/^app_organization_.*$/', $name)
+            || !$request
+            || !($organization = $request->attributes->get('currentOrganization'))
+            || !$organization instanceof Organization
+        ) {
             return $parameters;
         }
 
-        $organization = $parameters['organization'] ?? null;
-        $parameters = array_merge($parameters, ['organization' => $user->getId()]);
-        if (null !== $organization && $parameters['organization'] !== $organization) {
-            $parameters['organizationId'] = $organization;
+        $parameter = $parameters['organization'] ?? null;
+        $parameters = array_merge($parameters, ['organization' => $organization->getId()]);
+        if (null !== $parameter && $parameters['organization'] !== $parameter) {
+            $parameters['organizationId'] = $parameter;
         }
 
         return $parameters;

@@ -38,9 +38,14 @@
                 </td>
                 {% if showLinks is not defined or showLinks %}
                     <td>
-                        <button class="btn btn-outline-primary text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', { 'userToShow': user.id }) }}">
+                        <button class="btn btn-outline-primary text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', { user: user.id }) }}">
                             <span class="fa fa-copy"></span> {{ 'action.show' | trans }}
                         </button>
+                        {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
+                            <a class="btn btn-outline-primary text-nowrap" href="{{ path('app_user_home', { _switch_user: user.username }) }}" role="button">
+                                {{ 'action.impersonate' | trans({ '%user%': user.fullName }) }}
+                            </a>
+                        {% endif %}
                     </td>
                 {% endif %}
             </tr>

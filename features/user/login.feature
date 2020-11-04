@@ -30,7 +30,6 @@ Feature:
             | user_login[password]   | invalid |
         And I press "Je me connecte"
         Then I should be on "/login"
-        And the response status code should be 400
         And I should see "Veuillez saisir un numéro NIVOL ou une adresse e-mail valide, ou la date de naissance ne corresponds pas à ce NIVOL/email."
         Examples:
             | login              |
@@ -46,7 +45,6 @@ Feature:
             | user_login[birthday][year]  | 1990    |
         And I press "Je me connecte"
         Then I should be on "/login"
-        And the response status code should be 400
         And I should see "Veuillez saisir un numéro NIVOL ou une adresse e-mail valide, ou la date de naissance ne corresponds pas à ce NIVOL/email."
         Examples:
             | login              |
@@ -63,11 +61,11 @@ Feature:
         And I press "Je me connecte"
         Then I should be on "/"
         And the response status code should be 200
-        And I should see "NIVOL : 990002A"
+        And I should see "NIVOL : <identificationNumber>"
         Examples:
-            | login              |
-            | admin203@resop.com |
-            | 990001A            |
+            | login              | identificationNumber |
+            | admin203@resop.com | 990002A              |
+            | 990003A            | 990003A              |
 
     Scenario Outline: As a user without a password, I cannot log in with an invalid birth date
         Given I am on "/login"
@@ -78,12 +76,11 @@ Feature:
             | user_login[birthday][year]  | 1992    |
         And I press "Je me connecte"
         Then I should be on "/login"
-        And the response status code should be 400
         And I should see "Veuillez saisir un numéro NIVOL ou une adresse e-mail valide, ou la date de naissance ne corresponds pas à ce NIVOL/email."
         Examples:
             | login              |
             | admin203@resop.com |
-            | 990001A            |
+            | 990003A            |
 
     Scenario: As an authenticated user, I can log out
         Given I am authenticated as "admin201@resop.com"

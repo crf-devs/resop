@@ -31,11 +31,8 @@ class MissionsFindController extends AbstractController
 
     public function __invoke(Request $request): JsonResponse
     {
+        /** @var User $user */
         $user = $this->getUser();
-        if (!$user instanceof User) {
-            throw $this->createAccessDeniedException();
-        }
-
         [$start, $end] = $this->getDatesByWeek($request->attributes->get('week'));
 
         $data = $this->missionRepository->findByPlanningFilters(['from' => $start, 'to' => $end], [[(int) $user->getId()], []]);

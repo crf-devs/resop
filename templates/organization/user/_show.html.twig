@@ -1,5 +1,5 @@
-{% if app.user == user.organization or app.user == user.organization.parent %}
-    <a class="btn btn-primary float-right" href="{{ path('app_organization_user_edit', {userToEdit: user.id}) }}">{{ 'action.edit' | trans }}</a>
+{% if is_granted('ROLE_PARENT_ORGANIZATION', user.organization) %}
+    <a class="btn btn-primary float-right" href="{{ path('app_organization_user_edit', {user: user.id}) }}">{{ 'action.edit' | trans }}</a>
 {% endif %}
 
 <h1 class="mb-4">{{ user }}</h1>

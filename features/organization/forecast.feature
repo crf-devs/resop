@@ -5,12 +5,12 @@ Feature:
     I must be able to search for available users and assets.
 
     Scenario: As an authenticated children organization, I cannot use the forecast search form
-        Given I am authenticated as "UL 01-02"
-        When I go to "/organizations/201/forecast/"
+        Given I am authenticated as "admin204@resop.com"
+        When I go to "/organizations/202/forecast/"
         Then the response status code should be 403
 
     Scenario: As an authenticated parent organization, I can access the forecast search form
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         When I go to "/organizations/201"
         Then I should see "Projections"
         When I follow "Projections"
@@ -20,7 +20,7 @@ Feature:
 
     @javascript
     Scenario: As an authenticated parent organization, I can use the forecast search form
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/organizations/201/forecast/"
         When I click on "#availableRange"
         Then I wait for ".daterangepicker" to be visible
