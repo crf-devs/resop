@@ -23,7 +23,7 @@ class SkillSetDomain
      */
     public function getSkillSet(): array
     {
-        return array_map(fn (array $skill) => $skill['label'], $this->availableSkillSets);
+        return array_map(static fn (array $skill) => $skill['label'], $this->availableSkillSets);
     }
 
     public function getSkillSetKeys(): array

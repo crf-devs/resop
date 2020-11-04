@@ -47,7 +47,7 @@ final class OrganizationExtension extends AbstractExtension
     {
         /** @var Organization|User|null $user */
         $user = $this->security->getUser();
-        if (!preg_match('/^app_organization_.*$/', $name) || !$user instanceof Organization) {
+        if (!$user instanceof Organization || !preg_match('/^app_organization_.*$/', $name)) {
             return $parameters;
         }
 

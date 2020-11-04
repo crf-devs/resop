@@ -70,7 +70,7 @@ trait AvailabilitableTrait
         return $date;
     }
 
-    private function initialize(?int $id, \DateTimeImmutable $startTime, \DateTimeImmutable $endTime, string $status = self::STATUS_AVAILABLE): void
+    private function initialize(?int $id, \DateTimeImmutable $startTime, \DateTimeImmutable $endTime, string $status = AvailabilityInterface::STATUS_AVAILABLE): void
     {
         $this->id = $id;
         $this->startTime = $startTime;
@@ -87,7 +87,7 @@ trait AvailabilitableTrait
 
     public function declareAvailable(Organization $planningAgent = null): void
     {
-        $this->updateStatus(self::STATUS_AVAILABLE, $planningAgent);
+        $this->updateStatus(AvailabilityInterface::STATUS_AVAILABLE, $planningAgent);
     }
 
     public function lock(Organization $planningAgent = null, string $comment = ''): void

@@ -81,7 +81,7 @@ services:
         hard: "65536"
 
   node:
-    image: node:13-alpine
+    image: node:15-alpine
     init: true
     working_dir: /srv
     # command: yarn encore dev --watch # Uncomment and add the "node" service in "make start" in order to watch webpack updates

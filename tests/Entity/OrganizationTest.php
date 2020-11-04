@@ -15,10 +15,10 @@ final class OrganizationTest extends TestCase
         $organization->id = 1;
         $organization->name = 'DT75';
 
-        $this->assertSame(1, $organization->id);
-        $this->assertSame('DT75', $organization->name);
-        $this->assertSame('DT75', (string) $organization);
-        $this->assertNull($organization->parent);
+        self::assertSame(1, $organization->id);
+        self::assertSame('DT75', $organization->name);
+        self::assertSame('DT75', (string) $organization);
+        self::assertNull($organization->parent);
     }
 
     public function testCreateOrganizationWithParent(): void
@@ -31,9 +31,9 @@ final class OrganizationTest extends TestCase
         $child->name = 'UL09';
         $child->parent = $parent;
 
-        $this->assertSame(2, $child->id);
-        $this->assertSame('UL09', $child->name);
-        $this->assertSame('DT75 - UL09', (string) $child);
-        $this->assertSame($parent, $child->parent);
+        self::assertSame(2, $child->id);
+        self::assertSame('UL09', $child->name);
+        self::assertSame('DT75 - UL09', (string) $child);
+        self::assertSame($parent, $child->parent);
     }
 }

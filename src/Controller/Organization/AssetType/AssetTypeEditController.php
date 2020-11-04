@@ -30,7 +30,7 @@ class AssetTypeEditController extends AbstractOrganizationController
             $assetType->organization = $organization;
         }
 
-        $persistedKeys = array_map(fn (array $properties) => $properties['key'], $assetType->properties);
+        $persistedKeys = array_map(static fn (array $properties) => $properties['key'], $assetType->properties);
 
         $form = $this->createForm(AssetTypeType::class, $assetType);
         $form->handleRequest($request);

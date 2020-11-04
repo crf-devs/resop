@@ -81,3 +81,8 @@ services:
     datetime_normalizer:
         class: Symfony\Component\Serializer\Normalizer\DateTimeNormalizer
         tags: [serializer.normalizer]
+
+    Doctrine\Migrations\Version\DbalMigrationFactory: ~
+    App\Migrations\Factory\MigrationFactoryDecorator:
+        decorates: Doctrine\Migrations\Version\DbalMigrationFactory
+        arguments: ['@App\Migrations\Factory\MigrationFactoryDecorator.inner', '@service_container']

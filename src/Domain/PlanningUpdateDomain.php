@@ -128,7 +128,7 @@ class PlanningUpdateDomain
         $availabilities = $availabilityRepository->findByOwnerAndDates($entities, new \DateTimeImmutable($startSearch), new \DateTimeImmutable($endSearch));
 
         foreach ($data as $entityId => $schedules) {
-            $search = array_filter($entities, fn (AvailabilitableInterface $entity) => (int) $entityId === $entity->getId());
+            $search = array_filter($entities, static fn (AvailabilitableInterface $entity) => (int) $entityId === $entity->getId());
 
             if (empty($search)) {
                 throw new \InvalidArgumentException('Invalid entity');

@@ -80,7 +80,11 @@ If you want to run a symfony or a php command: `bin/tools <command>`, example: `
 You don't need to build all the stack every time. If there is no new vendor, you can simply run:
 
 ```bash
+# If you want to start the stack and reset the DB
 make start
+
+# If you want to start the stack whithout reseting the DB
+make start-preserve-db
 ```
 
 ## Access

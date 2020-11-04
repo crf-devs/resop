@@ -132,7 +132,7 @@ class PlanningSearchType extends AbstractType
             ->add('userPropertyFilters', PlanningDynamicFiltersType::class, [
                 'config' => array_filter(
                     $this->userProperties,
-                    fn (array $userProperty) => DynamicPropertiesType::TYPE_BOOLEAN === $userProperty['type']
+                    static fn (array $userProperty) => DynamicPropertiesType::TYPE_BOOLEAN === $userProperty['type']
                 ),
             ]);
 
@@ -145,7 +145,7 @@ class PlanningSearchType extends AbstractType
         $data = $event->getData();
 
         if (empty($data['from'])) {
-            $data['from'] = new \DateTimeImmutable('today');
+            $data['from'] = new DateTimeImmutable('today');
         }
 
         if (empty($data['to'])) {

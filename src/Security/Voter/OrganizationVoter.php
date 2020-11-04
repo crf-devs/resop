@@ -15,8 +15,8 @@ class OrganizationVoter extends Voter
 
     protected function supports($attribute, $subject): bool
     {
-        return self::CAN_MANAGE === $attribute && $subject instanceof Organization
-            || self::CAN_CREATE === $attribute && null === $subject;
+        return (self::CAN_MANAGE === $attribute && $subject instanceof Organization)
+            || (self::CAN_CREATE === $attribute && null === $subject);
     }
 
     /**

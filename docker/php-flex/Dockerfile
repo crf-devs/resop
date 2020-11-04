@@ -54,7 +54,7 @@ RUN set -eux; \
   \
   apk del .build-deps
 
-RUN curl https://getcomposer.org/composer-stable.phar -o /usr/bin/composer \
+RUN curl https://getcomposer.org/composer-1.phar -o /usr/bin/composer \
     && chmod +x /usr/bin/composer \
     && mkdir /.composer \
     && chown -R www-data:www-data /.composer \
@@ -98,6 +98,7 @@ WORKDIR /srv
 
 FROM withoutsources AS withoutsources-fpm
 
+EXPOSE 9000
 ENTRYPOINT ["entrypoint"]
 CMD []
 HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=3 CMD REDIRECT_STATUS=true SCRIPT_FILENAME=/srv/public/ping.php REQUEST_URI=/ REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9000

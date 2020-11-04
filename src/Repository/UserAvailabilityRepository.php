@@ -36,7 +36,7 @@ class UserAvailabilityRepository extends ServiceEntityRepository implements Avai
         return $this->getRawSlots($qb, $from, $to);
     }
 
-    public function findBetweenDates(User $user, \DateTimeInterface $start, \DateTimeInterface $end): array
+    public function findBetweenDates(User $user, DateTimeInterface $start, DateTimeInterface $end): array
     {
         return $this->createQueryBuilder('ua')
             ->where('ua.user = :user')
@@ -51,7 +51,7 @@ class UserAvailabilityRepository extends ServiceEntityRepository implements Avai
             ->getResult();
     }
 
-    public function findByOwnerAndDates(array $owners, \DateTimeInterface $start, \DateTimeInterface $end): array
+    public function findByOwnerAndDates(array $owners, DateTimeInterface $start, DateTimeInterface $end): array
     {
         return $this->createQueryBuilder('ua')
             ->where('ua.user IN (:owners)')

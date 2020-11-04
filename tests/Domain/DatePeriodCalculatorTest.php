@@ -24,19 +24,19 @@ final class DatePeriodCalculatorTest extends TestCase
     {
         $period = $this->datePeriodCalculator->getPeriod();
 
-        $this->assertSame('2020-04-22T20:00:00+00:00', $period->start->format(\DateTimeInterface::ATOM));
-        $this->assertSame('2:0:0', $period->interval->format('%h:%i:%s'));
-        $this->assertSame('2020-04-23T02:00:00+00:00', $period->end->format(\DateTimeInterface::ATOM));
+        self::assertSame('2020-04-22T20:00:00+00:00', $period->start->format(\DateTimeInterface::ATOM));
+        self::assertSame('2:0:0', $period->interval->format('%h:%i:%s'));
+        self::assertSame('2020-04-23T02:00:00+00:00', $period->end ? $period->end->format(\DateTimeInterface::ATOM) : null);
     }
 
     public function testGetInterval(): void
     {
-        $this->assertSame('2:0:0', $this->datePeriodCalculator->getInterval()->format('%h:%i:%s'));
+        self::assertSame('2:0:0', $this->datePeriodCalculator->getInterval()->format('%h:%i:%s'));
     }
 
     public function testGetSlots(): void
     {
-        $this->assertEquals([
+        self::assertEquals([
             new \DateTimeImmutable('2020-04-22 20:00:00'),
             new \DateTimeImmutable('2020-04-22 22:00:00'),
             new \DateTimeImmutable('2020-04-23 00:00:00'),
@@ -45,7 +45,7 @@ final class DatePeriodCalculatorTest extends TestCase
 
     public function testGetDays(): void
     {
-        $this->assertEquals([
+        self::assertEquals([
             '2020-04-22' => [
                 'date' => new \DateTimeImmutable('2020-04-22 00:00:00'),
                 'slots' => 2,
@@ -59,12 +59,12 @@ final class DatePeriodCalculatorTest extends TestCase
 
     public function testGetFrom(): void
     {
-        $this->assertSame('2020-04-22T20:00:00+00:00', $this->datePeriodCalculator->getFrom()->format(\DateTimeInterface::ATOM));
+        self::assertSame('2020-04-22T20:00:00+00:00', $this->datePeriodCalculator->getFrom()->format(\DateTimeInterface::ATOM));
     }
 
     public function testGetTo(): void
     {
-        $this->assertSame('2020-04-23T02:00:00+00:00', $this->datePeriodCalculator->getTo()->format(\DateTimeInterface::ATOM));
+        self::assertSame('2020-04-23T02:00:00+00:00', $this->datePeriodCalculator->getTo()->format(\DateTimeInterface::ATOM));
     }
 
     public function testCreateRoundedToDay(): void
@@ -76,20 +76,20 @@ final class DatePeriodCalculatorTest extends TestCase
         );
 
         $period = $created->getPeriod();
-        $this->assertSame('2020-04-22T00:00:00+00:00', $period->start->format(\DateTimeInterface::ATOM));
-        $this->assertSame('2020-04-24T00:00:00+00:00', $period->end->format(\DateTimeInterface::ATOM));
+        self::assertSame('2020-04-22T00:00:00+00:00', $period->start->format(\DateTimeInterface::ATOM));
+        self::assertSame('2020-04-24T00:00:00+00:00', $period->end ? $period->end->format(\DateTimeInterface::ATOM) : null);
     }
 
     public function testIntervalToSeconds(): void
     {
-        $this->assertSame(7200, DatePeriodCalculator::intervalToSeconds(new \DateInterval('PT2H')));
-        $this->assertSame(1892527680, DatePeriodCalculator::intervalToSeconds(new \DateInterval('P2Y4DT6H8M')));
+        self::assertSame(7200, DatePeriodCalculator::intervalToSeconds(new \DateInterval('PT2H')));
+        self::assertSame(1892527680, DatePeriodCalculator::intervalToSeconds(new \DateInterval('P2Y4DT6H8M')));
     }
 
     /** @dataProvider roundToDailyIntervalProvider */
     public function testRoundToDailyInterval(string $expectedDate, string $date, string $interval, bool $floor = true): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             new \DateTimeImmutable($expectedDate),
             DatePeriodCalculator::roundToDailyInterval(
                 new \DateTimeImmutable($date),

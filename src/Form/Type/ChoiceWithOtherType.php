@@ -51,7 +51,7 @@ final class ChoiceWithOtherType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         // Borrowed form Symfony\Component\Form\Extension\Core\Type\ChoiceType :)
-        $emptyData = function (Options $options) {
+        $emptyData = static function (Options $options) {
             if ($options['expanded'] && !$options['multiple']) {
                 return null;
             }
@@ -63,11 +63,11 @@ final class ChoiceWithOtherType extends AbstractType
             return '';
         };
 
-        $placeholderDefault = function (Options $options) {
+        $placeholderDefault = static function (Options $options) {
             return $options['required'] ? null : '';
         };
 
-        $compound = function (Options $options) {
+        $compound = static function (Options $options) {
             return $options['expanded'];
         };
 

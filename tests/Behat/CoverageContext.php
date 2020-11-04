@@ -7,6 +7,7 @@ namespace App\Tests\Behat;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\Report\Clover;
 use SebastianBergmann\CodeCoverage\Report\Text;
@@ -25,8 +26,8 @@ final class CoverageContext implements Context
         }
 
         $filter = new Filter();
-        $filter->addDirectoryToWhitelist(__DIR__.'/../../src');
-        self::$coverage = new CodeCoverage(null, $filter);
+        $filter->includeDirectory(__DIR__.'/../../src');
+        self::$coverage = new CodeCoverage((new Selector())->forLineCoverage($filter), $filter);
     }
 
     /**

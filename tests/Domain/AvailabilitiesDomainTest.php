@@ -34,7 +34,7 @@ final class AvailabilitiesDomainTest extends TestCase
      */
     public function testNewAvailabilitiesDomain(string $slotInterval): void
     {
-        $this->assertInstanceOf(AvailabilitiesDomain::class, new AvailabilitiesDomain([], $slotInterval));
+        self::assertInstanceOf(AvailabilitiesDomain::class, new AvailabilitiesDomain([], $slotInterval));
     }
 
     public function getValidSlotIntervals(): array

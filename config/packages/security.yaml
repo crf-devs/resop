@@ -20,7 +20,8 @@ security:
 
         organizations:
             pattern: ^/organizations
-            anonymous: lazy
+            anonymous: true
+            lazy: true
             provider: organizations
             guard:
                 authenticators:
@@ -37,7 +38,8 @@ security:
                 path:     /
 
         main:
-            anonymous: lazy
+            anonymous: true
+            lazy: true
             provider: users
             guard:
                 authenticators:

@@ -82,7 +82,7 @@ class PlanningForecastType extends AbstractType
             ->add('userPropertyFilters', PlanningDynamicFiltersType::class, [
                 'config' => array_filter(
                     $this->userProperties,
-                    fn (array $userProperty) => DynamicPropertiesType::TYPE_BOOLEAN === $userProperty['type']
+                    static fn (array $userProperty) => DynamicPropertiesType::TYPE_BOOLEAN === $userProperty['type']
                 ),
             ]);
     }
