@@ -25,7 +25,7 @@ final class SearchController extends AbstractOrganizationController
         $organization = $this->getUser();
 
         /** @var string $query */
-        $query = preg_replace('/\s+/', ' ', trim($request->query->get('query')));
+        $query = preg_replace('/\s+/', ' ', trim((string) $request->query->get('query')));
         if (empty($query)) {
             return $this->redirectToRoute('app_organization_dashboard');
         }

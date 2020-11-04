@@ -29,7 +29,7 @@ class UserAvailability implements AvailabilityInterface
         User $user,
         \DateTimeImmutable $startTime,
         \DateTimeImmutable $endTime,
-        string $status = self::STATUS_AVAILABLE
+        string $status = AvailabilityInterface::STATUS_AVAILABLE
     ) {
         $this->initialize($id, $startTime, $endTime, $status);
         $this->user = $user;

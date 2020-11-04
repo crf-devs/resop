@@ -14,7 +14,7 @@ final class RequestGeneratorTest extends TestCase
      */
     public function testItGeneratesAValidKeyFromArray(string $expected, array $data): void
     {
-        $this->assertEquals($expected, (new RequestGenerator())->generateKey($data));
+        self::assertEquals($expected, (new RequestGenerator())->generateKey($data));
     }
 
     public function getFilters(): array

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use App\Domain\SkillSetDomain;
-use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use MartinGeorgiev\Utils\DataStructure;
@@ -26,14 +25,17 @@ final class Version20200415085822 extends AbstractMigration implements Container
         $this->abortIf('postgresql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'postgresql\'.');
 
         $skillSetDomain = $this->container->get(SkillSetDomain::class);
+        if (null === $skillSetDomain) {
+            throw new \RuntimeException('Unable to find the SkillSet domain class');
+        }
 
         // avoids annoying red message in dev when running migrations with a fresh database
-        $nbUsers = (int) $this->connection->executeQuery('SELECT count(users) FROM users')->fetch(FetchMode::COLUMN);
+        $nbUsers = (int) $this->connection->executeQuery('SELECT count(users) FROM users')->fetchOne();
         $this->skipIf(0 === $nbUsers, 'No users in database');
 
         $statement = $this->connection->executeQuery('SELECT id, skill_set as skill_set FROM users');
 
-        while ($row = $statement->fetch(FetchMode::ASSOCIATIVE)) {
+        while ($row = $statement->fetchAssociative()) {
             $skills = str_replace('nouveau', 'benevole', DataStructure::transformPostgresTextArrayToPHPArray($row['skill_set']));
             $skills = $skillSetDomain->getIncludedSkillsFromSkillSet($skills);
 

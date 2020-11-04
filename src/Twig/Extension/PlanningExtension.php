@@ -62,7 +62,7 @@ final class PlanningExtension extends AbstractExtension
 
     public function calendarTimeSlot(\DateTimeImmutable $start, \DateTimeImmutable $end): string
     {
-        $hourFormat = fn (\DateTimeImmutable $date) => '0' === $date->format('G') ? '00' : $date->format('G');
+        $hourFormat = static fn (\DateTimeImmutable $date) => '0' === $date->format('G') ? '00' : $date->format('G');
 
         if ($this->isFullHourInterval()) {
             if ('00' === $start->format('H') && '00' === $end->format('H')) {

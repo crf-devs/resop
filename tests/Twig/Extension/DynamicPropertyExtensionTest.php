@@ -21,9 +21,9 @@ class DynamicPropertyExtensionTest extends TestCase
         $dynamicPropertyExtension = new DynamicPropertyExtension(
             $translator = $this->createMock(TranslatorInterface::class)
         );
-        $translator->expects($this->any())->method('trans')->willReturnArgument(0);
+        $translator->expects(self::any())->method('trans')->willReturnArgument(0);
 
-        $this->assertSame($expected, $dynamicPropertyExtension->dynamicPropertyValue($value, $propertyDefinition));
+        self::assertSame($expected, $dynamicPropertyExtension->dynamicPropertyValue($value, $propertyDefinition));
     }
 
     public function dynamicPropertyValueProvider(): array

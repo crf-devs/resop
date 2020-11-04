@@ -20,5 +20,5 @@ interface AvailabilityRepositoryInterface
      *
      * @return AvailabilityInterface[]
      */
-    public function findByOwnerAndDates(array $owners, \DateTimeInterface $start, \DateTimeInterface $end): array;
+    public function findByOwnerAndDates(array $owners, DateTimeInterface $start, DateTimeInterface $end): array;
 }

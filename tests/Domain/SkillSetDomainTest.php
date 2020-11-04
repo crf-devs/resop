@@ -29,7 +29,7 @@ final class SkillSetDomainTest extends TestCase
 
     public function testGetSkillSet(): void
     {
-        $this->assertSame(
+        self::assertSame(
             $this->skillSetDomain->getSkillSet(),
             [
                 'skill1' => 'Skill 1',
@@ -44,7 +44,7 @@ final class SkillSetDomainTest extends TestCase
 
     public function testGetSkillSetKeys(): void
     {
-        $this->assertSame(
+        self::assertSame(
             $this->skillSetDomain->getSkillSetKeys(),
             ['skill1', 'skill2', 'skill3', 'skill4', 'skill5', 'skill6']
         );
@@ -52,7 +52,7 @@ final class SkillSetDomainTest extends TestCase
 
     public function testGetImportantSkills(): void
     {
-        $this->assertSame(
+        self::assertSame(
             $this->skillSetDomain->getImportantSkills(),
             ['skill1', 'skill2', 'skill3']
         );
@@ -60,7 +60,7 @@ final class SkillSetDomainTest extends TestCase
 
     public function testGetSkillsToDisplay(): void
     {
-        $this->assertSame(
+        self::assertSame(
             $this->skillSetDomain->getSkillsToDisplay(),
             ['skill1', 'skill5']
         );
@@ -69,7 +69,7 @@ final class SkillSetDomainTest extends TestCase
     /** @dataProvider includedSkillsFromSkillSetProvider */
     public function testGetIncludedSkillsFromSkillSet(array $skills, array $expectedSkills): void
     {
-        $this->assertSame($expectedSkills, $this->skillSetDomain->getIncludedSkillsFromSkillSet($skills));
+        self::assertSame($expectedSkills, $this->skillSetDomain->getIncludedSkillsFromSkillSet($skills));
     }
 
     public function includedSkillsFromSkillSetProvider(): array
@@ -119,7 +119,7 @@ final class SkillSetDomainTest extends TestCase
     {
         $skillSetDomain = new SkillSetDomain($skillSetWithInfiniteLoop);
 
-        $this->assertSame($expectedSkillSet, $skillSetDomain->getIncludedSkillsFromSkillSet(['skill1']));
+        self::assertSame($expectedSkillSet, $skillSetDomain->getIncludedSkillsFromSkillSet(['skill1']));
     }
 
     public function getIncludedSkillsFromSkillSetPreventsInfiniteLoopProvider(): array
@@ -146,7 +146,7 @@ final class SkillSetDomainTest extends TestCase
     /** @dataProvider filterIncludedSkillsProvider */
     public function testFilterIncludedSkills(array $skills, array $expectedDisplayableSkills): void
     {
-        $this->assertSame($expectedDisplayableSkills, $this->skillSetDomain->filterIncludedSkills($skills));
+        self::assertSame($expectedDisplayableSkills, $this->skillSetDomain->filterIncludedSkills($skills));
     }
 
     public function filterIncludedSkillsProvider(): array
@@ -201,7 +201,7 @@ final class SkillSetDomainTest extends TestCase
             ]
         );
 
-        $this->assertSame(
+        self::assertSame(
             ['skill1'],
             $skillSetDomain->filterIncludedSkills(['skill1', 'skill2', 'skill3'])
         );

@@ -31,6 +31,7 @@ services:
 #  node: # Uncomment for MacOS
 #    volumes: # Uncomment for MacOS
 #      - ./:/srv:cached # Uncomment for MacOS
+#      - ./.cache/node:/tmp/.cache/ # Uncomment if you want to cache yarn tmp files
 
   postgres:
     volumes:

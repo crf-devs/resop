@@ -34,7 +34,7 @@ class CommissionableAssetAvailabilityRepository extends ServiceEntityRepository 
         return $this->getRawSlots($qb, $from, $to);
     }
 
-    public function findBetweenDates(CommissionableAsset $asset, \DateTimeInterface $start, \DateTimeInterface $end): array
+    public function findBetweenDates(CommissionableAsset $asset, DateTimeInterface $start, DateTimeInterface $end): array
     {
         return $this->createQueryBuilder('caa')
             ->where('caa.asset = :asset')
@@ -49,7 +49,7 @@ class CommissionableAssetAvailabilityRepository extends ServiceEntityRepository 
             ->getResult();
     }
 
-    public function findByOwnerAndDates(array $owners, \DateTimeInterface $start, \DateTimeInterface $end): array
+    public function findByOwnerAndDates(array $owners, DateTimeInterface $start, DateTimeInterface $end): array
     {
         return $this->createQueryBuilder('ua')
             ->where('ua.asset IN (:owners)')

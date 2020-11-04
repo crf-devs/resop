@@ -15,6 +15,7 @@ if echo ${DOCKER_HOST} | grep unix:///run/user/ > /dev/null 2>&1; then
     # Docker rootless
     ${DOCKER_COMPOSE} run --rm tools "$@"
 elif [ -t 1 -a 1 -ne "${DISABLE_TTY}" ]; then
+    # Common run
     ${DOCKER_COMPOSE} run --rm -u $(id -u):$(id -g) tools "$@"
 else
     # CI and other runners

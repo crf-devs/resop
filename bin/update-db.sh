@@ -3,5 +3,5 @@ set -ex
 
 bin/console doctrine:mapping:info || true
 
-bin/console doctrine:migrations:migrate -n || true
+bin/console doctrine:migrations:migrate -n --allow-no-migration || true
 

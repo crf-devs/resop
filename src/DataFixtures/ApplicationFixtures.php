@@ -389,9 +389,9 @@ final class ApplicationFixtures extends Fixture
             implode(', ', $data)
         );
 
-        $manager->getConnection()->exec($insert);
+        $manager->getConnection()->executeStatement($insert);
 
-        $manager->getConnection()->exec(sprintf(
+        $manager->getConnection()->executeStatement(sprintf(
             'SELECT setval(\'%s\', %d, true)',
             UserAvailability::class === $class ? 'user_availability_id_seq' : 'commissionable_asset_availability_id_seq',
             $this->availabilitiesId

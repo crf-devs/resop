@@ -83,7 +83,7 @@ final class UserPlanningContext extends RawMinkContext
         $locator .= 'checked' === $state ? ':not(:checked)' : ':checked';
         $count = \count($page->findAll('css', $locator));
         if (0 < $count) {
-            throw new ExpectationException(sprintf('%d checkboxes of column "%s" are not %s.', (int) $count, $time, (string) $state), $this->getSession()->getDriver());
+            throw new ExpectationException(sprintf('%d checkboxes of column "%s" are not %s.', (int) $count, $time, $state), $this->getSession()->getDriver());
         }
     }
 }

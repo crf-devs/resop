@@ -15,7 +15,7 @@ configure:
 ifeq ($(shell uname -s), Darwin)
 	sed -i '' 's/#\(.*\)# Uncomment for MacOS/\1/g' docker-compose.override.yml
 endif
-	mkdir -p .cache/ssl
+	mkdir -p .cache/ssl .cache/node
 	test -f .cache/ssl/local.crt || (docker run --rm -v $$(pwd):/src alpine:3.9 sh -c "apk add openssl && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /src/.cache/ssl/local.key -out /src/.cache/ssl/local.crt -subj \"/C=FR/ST=Paris/L=Paris/O=Resop/CN=*.resop.docker\" && cat /src/.cache/ssl/local.crt /src/.cache/ssl/local.key > /src/.cache/ssl/local.pem  && chown -R $$(id -u):$$(id -g) /src/.cache")
 
 unconfigure:
@@ -38,8 +38,15 @@ start-db:
 	$(DOCKER_COMPOSE_UP) traefik postgres adminer
 	docker-compose run --rm wait -c postgres:5432
 
-start: init-db
+start-php:
 	$(DOCKER_COMPOSE_UP_RECREATE) traefik nginx fpm
+	docker-compose run --rm wait -c fpm:9000,nginx:80
+	@echo -n "\nStack started with success:\nhttp://resop.vcap.me:7500/login => user1@resop.com : 01/01/1990"
+	@echo -n "\nhttp://resop.vcap.me:7500/organizations/login => DT75 : covid19\n"
+
+start: init-db start-php
+
+start-preserve-db: start-db start-php
 
 stop:
 	docker-compose stop

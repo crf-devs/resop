@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -41,13 +40,13 @@ final class Version20200420214426 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        throw new \Exception('Migration not downable');
+        $this->throwIrreversibleMigrationException();
     }
 
     public function migrateData(): void
     {
         // avoids annoying red message in dev when running migrations with a fresh database
-        $nbUsers = (int) $this->connection->executeQuery('SELECT count(users) FROM users')->fetch(FetchMode::COLUMN);
+        $nbUsers = (int) $this->connection->executeQuery('SELECT count(users) FROM users')->fetchOne();
         if (0 === $nbUsers) {
             return;
         }
@@ -60,7 +59,7 @@ final class Version20200420214426 extends AbstractMigration
 
         $statement = $this->connection->executeQuery('SELECT id, type, has_mobile_radio, has_first_aid_kit, parking_location, contact, seating_capacity, license_plate, comments  FROM commissionable_asset');
 
-        while ($row = $statement->fetch(FetchMode::ASSOCIATIVE)) {
+        while ($row = $statement->fetchAssociative()) {
             $properties = [
                 'stationnement' => !empty($row['parking_location']) ? $row['parking_location'] : '',
                 'places' => !empty($row['seating_capacity']) ? $row['seating_capacity'] : '',
@@ -90,15 +89,15 @@ final class Version20200420214426 extends AbstractMigration
 
         // migration mission types
         $statement = $this->connection->executeQuery('SELECT id, asset_types_requirement  FROM mission_type');
-        while ($row = $statement->fetch(FetchMode::ASSOCIATIVE)) {
+        while ($row = $statement->fetchAssociative()) {
             $requirements = json_decode($row['asset_types_requirement'], true);
             $countRequirements = \count($requirements);
             if (0 === $countRequirements) {
                 continue;
             }
 
-            for ($i = 0; $i < $countRequirements; ++$i) {
-                $current = $requirements[$i];
+            foreach ($requirements as $i => $iValue) {
+                $current = $iValue;
                 $current['type'] = 'VL' === $current['type'] ? 1 : 2;
 
                 $requirements[$i] = $current;

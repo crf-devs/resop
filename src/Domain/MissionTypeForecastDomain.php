@@ -93,12 +93,12 @@ class MissionTypeForecastDomain
 
     private function getSortedSkills(MissionType $missionType): array
     {
-        $skillKeys = array_map(fn ($skillRequirement) => $skillRequirement['skill'] ?? null, $missionType->userSkillsRequirement);
+        $skillKeys = array_map(static fn ($skillRequirement) => $skillRequirement['skill'] ?? null, $missionType->userSkillsRequirement);
         $skills = (array) array_combine($skillKeys, $missionType->userSkillsRequirement);
 
         $orderedSkills = $this->skillSetDomain->getSkillSetKeys();
         $skillKeys = array_intersect($orderedSkills, $skillKeys);
 
-        return array_map(fn ($key) => $skills[$key], $skillKeys);
+        return array_map(static fn ($key) => $skills[$key], $skillKeys);
     }
 }

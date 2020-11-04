@@ -21,9 +21,9 @@ class CommissionableAssetVoterTest extends TestCase
         $voter = new CommissionableAssetVoter();
         $token = $this->createMock(TokenInterface::class);
 
-        $token->expects($this->exactly($expectedResult ? 1 : 0))->method('getUser')->willReturn($user);
+        $token->expects(self::exactly($expectedResult ? 1 : 0))->method('getUser')->willReturn($user);
 
-        $this->assertSame($expectedResult, $voter->vote($token, $subject, [$attribute]));
+        self::assertSame($expectedResult, $voter->vote($token, $subject, [$attribute]));
     }
 
     public function voteProvider(): array
