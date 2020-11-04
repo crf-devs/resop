@@ -21,10 +21,10 @@ class UserPasswordType extends AbstractType
             'type' => PasswordType::class,
             'required' => true,
             'first_options' => [
-                'label' => 'user.password',
+                'label' => 'user.newPassword',
             ],
             'second_options' => [
-                'label' => 'user.confirmPassword',
+                'label' => 'user.confirmNewPassword',
             ],
         ]);
 

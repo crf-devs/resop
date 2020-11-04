@@ -54,13 +54,13 @@ RUN set -eux; \
   \
   apk del .build-deps
 
-RUN curl https://getcomposer.org/composer-1.phar -o /usr/bin/composer \
+RUN curl https://getcomposer.org/composer-stable.phar -o /usr/bin/composer \
     && chmod +x /usr/bin/composer \
     && mkdir /.composer \
     && chown -R www-data:www-data /.composer \
     && setfacl -R -m o::rwX /.composer \
     && setfacl -dR -m o::rwX /.composer \
-    && su-exec www-data composer global require "hirak/prestissimo" "jderusse/composer-warmup" --prefer-dist --no-progress --no-suggest --classmap-authoritative \
+    && su-exec www-data composer global require "jderusse/composer-warmup" --prefer-dist --no-progress --classmap-authoritative \
     && su-exec www-data composer clear-cache -n
 
 RUN test -z "$DEBUG_TOOLS" || ( \
@@ -134,7 +134,7 @@ COPY --chown=www-data:www-data composer.* symfony.lock /srv/
 RUN chown -R www-data:www-data /srv
 USER www-data
 
-RUN composer install --no-dev --no-scripts --prefer-dist --no-suggest && composer clear-cache -n
+RUN composer install --no-dev --no-scripts --prefer-dist && composer clear-cache -n
 
 COPY --chown=www-data:www-data .env ./
 RUN composer dump-env prod && rm .env

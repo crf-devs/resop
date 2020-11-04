@@ -1,3 +1,4 @@
+@home
 Feature:
     In order to manage an organization,
     As an admin of an organization,
@@ -11,7 +12,7 @@ Feature:
     Scenario: As an admin of an organization, I can go to the homepage of my organization
         Given I am authenticated as "admin201@resop.com"
         And I am on the homepage
-        When I follow "Gérer ma structure"
+        When I follow "DT75"
         Then I should be on "/organizations/201"
         And the response status code should be 200
         And I should see "DT75"

@@ -22,7 +22,7 @@ jobs:
             -   name: Get the version
                 id: vars
                 run: |
-                    echo ::set-output name=BUILD_TAG::$(git describe --tags)
+                    echo ::set-output name=BUILD_TAG::$(git describe --tags --always)
                     echo ::set-output name=CI_COMMIT_REF_SLUG::${GITHUB_REF#refs/*/}
 
             -   name: Pull existing Docker image

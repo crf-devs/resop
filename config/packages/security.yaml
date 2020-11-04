@@ -10,7 +10,7 @@ security:
             algorithm: auto
 
     role_hierarchy:
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH, ROLE_ORGANIZATION]
 
     firewalls:
         dev:
@@ -40,5 +40,6 @@ security:
         - { path: ^/user/new$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/reset-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: ROLE_USER }
         - { path: ^/organizations/, roles: ROLE_ORGANIZATION }
+        - { path: ^/admin/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/, roles: ROLE_USER }

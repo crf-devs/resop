@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{user<\d+>}/missions/add/modal", name="app_organization_user_add_to_mission_modal", methods={"GET"})
- * @Security("is_granted('ROLE_PARENT_ORGANIZATION', user.organization)")
+ * @Route("/{item<\d+>}/missions/add/modal", name="app_organization_user_add_to_mission_modal", methods={"GET"})
+ * @Security("is_granted('ROLE_PARENT_ORGANIZATION', item.organization)")
  */
 class AddToMissionModalController extends AbstractController
 {
@@ -29,13 +29,13 @@ class AddToMissionModalController extends AbstractController
         $this->missionRepository = $missionRepository;
     }
 
-    public function __invoke(User $user, Organization $organization): Response
+    public function __invoke(User $item, Organization $organization): Response
     {
         $form = $this->planningDomain->generateForm($organization, MissionsSearchType::class);
         $filters = $form->getData();
 
         return $this->render('organization/mission/add-to-mission-modal-content.html.twig', [
-            'userToAdd' => $user,
+            'userToAdd' => $item,
             'filters' => $filters,
             'form' => $form->createView(),
             'missions' => $this->missionRepository->findByFilters($filters),

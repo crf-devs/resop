@@ -1,3 +1,4 @@
+@reset_password
 Feature:
     In order to reset my password,
     As a user,
@@ -13,22 +14,27 @@ Feature:
         When I go to "/"
         Then I should be on "/login"
         And the response status code should be 200
-        And I should see "Mot de passe oublié ?"
-        When I follow "Mot de passe oublié ?"
+        And I should see "J'ai oublié mon mot de passe"
+        When I follow "J'ai oublié mon mot de passe"
         Then I should be on "/reset-password"
         And the response status code should be 200
         When I fill in "reset_password_request_form[emailAddress]" with "admin201@resop.com"
-        And I press "Envoyer le lien"
+        And I press "Valider"
         Then I should be on "/reset-password/check-email"
         And I should see "Un email vous a été envoyé contenant un lien vous permettant de réinitialiser mon mot de passe. Ce lien expirera dans 1 heure(s)."
         And 1 mail should be sent
+        # TODO Check email content & link
+        Then I open mail with subject "J'ai oublié mon mot de passe"
+        And I click on the "#reset-password" link in mail
+        Then I should be on "/reset-password/reset"
+        Then I purge mails
 
-    Scenario: As anonymous, I cannot request a token if I already requested one in the configured time
+        # As anonymous, I cannot request a token if I already requested one in the configured time
         Given I am on "/reset-password"
-        When I fill in "reset_password_request_form[emailAddress]" with "admin203@resop.com"
-        And I press "Envoyer le lien"
+        When I fill in "reset_password_request_form[emailAddress]" with "admin201@resop.com"
+        And I press "Valider"
         Then I should be on "/reset-password"
-        And I should see "Une erreur est survenue durant la réinitialisation de votre mot de passe - You have already requested a reset password email. Please check your email or try again soon."
+        And I should see "Vous avez déjà demandé la réinitialisation de votre mot de passe."
         And 0 mail should be sent
 
     Scenario: As a user, I cannot reset my password using a valid token
@@ -62,3 +68,4 @@ Feature:
         When I go to "/reset-password/reset/invalid"
         Then I should be on "/reset-password"
         And the response status code should be 200
+        And I should see "Le lien de réinitialisation est invalide ou a expiré"

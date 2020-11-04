@@ -42,21 +42,25 @@ final class OrganizationExtension extends AbstractExtension
         return $this->routingExtension->getUrl($name, $this->buildParameters($name, $parameters), $schemeRelative);
     }
 
-    private function buildParameters(string $name, array $parameters): array
+    private function buildParameters(string $routeName, array $parameters): array
     {
         $request = $this->requestStack->getCurrentRequest();
-        if (!preg_match('/^app_organization_.*$/', $name)
+        if (0 !== strpos($routeName, 'app_organization_')
             || !$request
-            || !($organization = $request->attributes->get('currentOrganization'))
-            || !$organization instanceof Organization
+            || !($currentOrganization = $request->attributes->get('currentOrganization'))
+            || !$currentOrganization instanceof Organization
         ) {
             return $parameters;
         }
 
-        $parameter = $parameters['organization'] ?? null;
-        $parameters = array_merge($parameters, ['organization' => $organization->getId()]);
-        if (null !== $parameter && $parameters['organization'] !== $parameter) {
-            $parameters['organizationId'] = $parameter;
+        $organizationParameter = $parameters['organization'] ?? null;
+        $parameters = array_merge($parameters, ['organization' => $currentOrganization->getId()]);
+        if (null !== $organizationParameter && $parameters['organization'] !== $organizationParameter) {
+            if ('app_organization_dashboard' === $routeName) {
+                $parameters['organization'] = $organizationParameter;
+            } else {
+                $parameters['organizationId'] = $organizationParameter;
+            }
         }
 
         return $parameters;

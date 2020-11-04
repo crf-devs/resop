@@ -1,5 +1,15 @@
 {% if is_granted('ROLE_PARENT_ORGANIZATION', user.organization) %}
-    <a class="btn btn-primary float-right" href="{{ path('app_organization_user_edit', {user: user.id}) }}">{{ 'action.edit' | trans }}</a>
+    <a class="btn btn-primary float-right" href="{{ path('app_organization_user_edit', {item: user.id}) }}">{{ 'action.edit' | trans }}</a>
+{% endif %}
+
+{% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
+    <a class="btn btn-outline-danger float-right mr-1 text-nowrap" href="{{ path('app_user_home', { _switch_user: user.username }) }}" role="button">{{ 'action.impersonate' | trans }}</a>
+{% endif %}
+
+{% if is_granted('ROLE_PARENT_ORGANIZATION', user.organization) and not user.organization.admins.contains(user) %}
+    <a class="btn btn-outline-danger float-right mr-1" href="{{ path('app_organization_user_promote', { item: user.id, organization: user.organization.id }) }}" role="button">
+        {{ 'action.promote' | trans({ '%organization%': user.organization.name, '%user%': user.fullName }) }}
+    </a>
 {% endif %}
 
 <h1 class="mb-4">{{ user }}</h1>
@@ -25,6 +35,34 @@
         </dd>
     {% endfor %}
 </dl>
+
+{% if is_granted('ROLE_PARENT_ORGANIZATION', user.organization) and user.managedOrganizations|length %}
+    <h6 class="mt-4">{{ 'organization.isAdminOf'|trans }}</h6>
+    <div class="table-responsive mb-4">
+        <table class="table text-nowrap">
+            <thead class="thead-light">
+            <tr>
+                <th>{{ 'common.name' | trans }}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for managedOrganization in user.managedOrganizations %}
+                <tr>
+                    <td>{{ managedOrganization }}</td>
+                    <td>
+                        {% if app.user != user %}
+                            <a class="btn btn-outline-danger" href="{{ path('app_organization_user_revoke', { item: user.id, organization: managedOrganization.id }) }}" role="button">
+                                {{ 'action.revoke' | trans({ '%organization%': managedOrganization.name, '%user%': user.fullName }) }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
 
 <h5>{{ 'organization.mission.listTitle'|trans }}</h5>
 {% include 'organization/mission/_list.html.twig' with {missions: user.missions, modalLinks: true} %}

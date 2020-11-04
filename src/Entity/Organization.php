@@ -46,7 +46,7 @@ class Organization
     public Collection $children;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="organizations")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="managedOrganizations")
      */
     public Collection $admins;
 
@@ -137,7 +137,7 @@ class Organization
     {
         if (!$this->admins->contains($admin)) {
             $this->admins[] = $admin;
-            $admin->addOrganization($this);
+            $admin->addManagedOrganization($this);
         }
     }
 

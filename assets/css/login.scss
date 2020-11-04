@@ -2,16 +2,6 @@
 
 $xs: 380px;
 
-@media (min-width: 360px) and (max-width: map-get($grid-breakpoints, "sm")) {
-  .form-inline {
-    .form-control {
-      display: inline-block;
-      width: auto;
-      vertical-align: middle;
-    }
-  }
-}
-
 body.login {
   .navbar-and-body {
     background-image: url(../img/login-background.jpg);

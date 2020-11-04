@@ -1,11 +1,11 @@
-<h1>Bonjour !</h1>
+{% extends 'mailer/_template.html.twig' %}
 
-<p>
-    Pour réinitialiser votre mot de passe, veuillez aller sur
-    <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">
-        {{ url('app_reset_password', {token: resetToken.token}) }}
-    </a>
-    Ce lien expirera dans {{ tokenLifetime|date('g') }} heure(s)..
-</p>
+{% block content %}
+    {% import 'mailer/_macro.html.twig' as template %}
 
-<p>Cordialement</p>
+    <p>
+        {{ 'user.resetPassword.emailText'|trans({'%hours%': tokenLifetime|date('g')}) }}
+    </p>
+
+    {{ template.button(url('app_reset_password', {token: resetToken.token}), 'user.resetPassword.button'|trans, 'reset-password') }}
+{% endblock %}

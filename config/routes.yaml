@@ -1,4 +1,9 @@
 # {organization} parameter is useless for the moment, but will be useful in ticket https://github.com/crf-devs/resop/issues/338
+_admin:
+    resource: ../src/Controller/Admin/
+    type: annotation
+    prefix: /admin
+
 _organizations:
     resource: ../src/Controller/Organization/
     type: annotation

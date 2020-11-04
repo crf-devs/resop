@@ -45,7 +45,7 @@
                     <td colspan="3"></td>
                     <td>{{ user.organization.name }}</td>
                     <td>
-                        <button type="button" class="btn btn-link p-0 text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', {user: user.id}) }}">
+                        <button type="button" class="btn btn-link p-0 text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', {item: user.id}) }}">
                             <span class="fa fa-copy"></span> {{ user.fullName }}
                         </button>
                     </td>

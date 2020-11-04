@@ -2,7 +2,6 @@ default:
     suites:
         default:
             contexts:
-                - Alex\MailCatcher\Behat\MailCatcherContext
                 - App\Tests\Behat\CoverageContext
                 - App\Tests\Behat\DatabaseContext
                 - App\Tests\Behat\FixturesContext
@@ -11,6 +10,7 @@ default:
                 - App\Tests\Behat\SecurityContext
                 - App\Tests\Behat\TraversingContext
                 - App\Tests\Behat\UserPlanningContext
+                - App\Tests\Behat\MailsContext
                 - Behat\MinkExtension\Context\MinkContext
                 - PantherExtension\Context\PantherContext
                 - PantherExtension\Context\WaitContext

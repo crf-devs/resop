@@ -27,7 +27,7 @@ final class OrganizationVoter extends Voter
         return \in_array($attribute, [
             self::ROLE_ORGANIZATION,
             self::ROLE_PARENT_ORGANIZATION,
-        ], true) && (null === $subject || $subject instanceof Organization);
+        ], true);
     }
 
     /**
@@ -43,8 +43,8 @@ final class OrganizationVoter extends Voter
             return false;
         }
 
-        if (null === $subject) {
-            return true;
+        if (!$subject instanceof Organization) {
+            return !$user->getManagedOrganizations()->isEmpty();
         }
 
         if ($this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])) {

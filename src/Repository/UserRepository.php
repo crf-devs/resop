@@ -29,7 +29,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     {
         parent::__construct($registry, User::class);
 
-        $this->slotInterval = $slotInterval;
+        $this->slotInterval = $slotInterval; // Used in AvailabilityQueryTrait methods
     }
 
     public function findOneByIdAndOrganization(int $id, Organization $organization): ?User
@@ -180,5 +180,22 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             ->addOrderBy('u.firstName', 'ASC');
 
         return $qb;
+    }
+
+    public function usersCount(): int
+    {
+        return$this->createQueryBuilder('u')
+            ->select('COUNT(u) as total_count')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()['total_count'] ?? 0;
+    }
+
+    public function addUserRoles(User $user): void
+    {
+        // The first user is the super admin
+        if (0 === $this->usersCount()) {
+            $user->roles[] = 'ROLE_SUPER_ADMIN';
+        }
     }
 }

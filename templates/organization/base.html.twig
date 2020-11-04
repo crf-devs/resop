@@ -24,19 +24,11 @@
                 <div class="collapse navbar-collapse" id="navbarContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_organization_dashboard')}}">
-                                {{ 'nav.section.organization' | trans }}
+                            <a class="nav-link" href="{{ path('app_organization_dashboard')}}" title="{{ app.request.attributes.get('currentOrganization') }}">
+                                {{ 'nav.section.organization' | trans }} -
                                 {{ app.request.attributes.get('currentOrganization') }}
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_user_home')}}">{{ 'nav.section.volunteer' | trans }}</a>
-                        </li>
-                        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                            <li class="nav-item">
-                                <a class="nav-link active" href="{{ path('app_user_home', {'_switch_user': '_exit'}) }}">Retour à l'admin</a>
-                            </li>
-                        {% endif %}
                     </ul>
                     <div class="navbar-nav">
                         <form action="{{ path('app_organization_search') }}" method="get" class="mr-3">
@@ -55,12 +47,32 @@
 
                         {% include 'organization/_help.html.twig' %}
 
-                        <a class="nav-link" href="{{ logout_path() }}">{{ 'action.logout' | trans }}</a>
-
                         <span class="navbar-text navbar-separator mt-1 ml-3 mr-4 d-none d-lg-block"></span>
-                        <span class="navbar-text active text-dark font-weight-bold">
-                            {{ app.user.fullName }} - {{ app.request.attributes.get('currentOrganization') }}
-                        </span>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark font-weight-bold" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ app.user.fullName }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                    <a class="dropdown-item text-danger" href="{{ path('app_organization_user_list', {'organization': app.user.organization.id, '_switch_user': '_exit'}) }}">{{ 'nav.section.exitImpersonation' | trans }}</a>
+                                    <hr>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <a class="dropdown-item" href="{{ path('app_admin_organizations') }}">{{ 'nav.section.admin' | trans }}</a>
+                                {% endif %}
+
+                                <a class="dropdown-item" href="{{ path('app_user_home')}}">{{ 'nav.section.volunteer' | trans }}</a>
+
+                                {% for organization in app.user.managedOrganizations %}
+                                    <a class="dropdown-item" href="{{ path('app_organization_dashboard', {organization: organization.id}) }}">{{ organization.name }}</a>
+                                {% endfor %}
+
+                                <hr>
+                                <a class="dropdown-item text-danger" href="{{ logout_path() }}">{{ 'action.logout' | trans }}</a>
+                            </div>
+                        </li>
                     </div>
                 </div>
             </div>

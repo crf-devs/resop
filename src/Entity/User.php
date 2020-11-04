@@ -45,7 +45,7 @@ class User implements UserPasswordInterface, AvailabilitableInterface, UserSeria
     public ?int $id = null;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      * @Assert\NotBlank
      * @Assert\Regex(
      *     pattern=User::NIVOL_FORMAT,
@@ -55,7 +55,7 @@ class User implements UserPasswordInterface, AvailabilitableInterface, UserSeria
     private string $identificationNumber = '';
 
     /**
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      * @Assert\NotBlank
      * @Assert\Email
      */
@@ -100,7 +100,7 @@ class User implements UserPasswordInterface, AvailabilitableInterface, UserSeria
      * @ORM\ManyToMany(targetEntity="App\Entity\Organization", inversedBy="admins")
      * @ORM\OrderBy({"name"="ASC"})
      */
-    public Collection $organizations;
+    public Collection $managedOrganizations;
 
     /**
      * @ORM\Column(type="text[]", nullable=true)
@@ -116,6 +116,11 @@ class User implements UserPasswordInterface, AvailabilitableInterface, UserSeria
      * @ORM\OneToMany(targetEntity="App\Entity\UserAvailability", mappedBy="user")
      */
     private iterable $availabilities = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ResetPasswordRequest", mappedBy="user", cascade={"remove"})
+     */
+    private iterable $resetPasswordRequests = []; // Used for cascade
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Mission", mappedBy="users")
@@ -181,7 +186,7 @@ class User implements UserPasswordInterface, AvailabilitableInterface, UserSeria
 
     public function __construct()
     {
-        $this->organizations = new ArrayCollection();
+        $this->managedOrganizations = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -229,12 +234,13 @@ class User implements UserPasswordInterface, AvailabilitableInterface, UserSeria
      */
     public function unserialize($serialized): void
     {
-        list(
+        [
             $this->id,
             $this->identificationNumber,
             $this->emailAddress,
             $this->birthday,
-            $this->password) = unserialize($serialized, ['allowed_classes' => [__CLASS__]]);
+            $this->password,
+        ] = unserialize($serialized, ['allowed_classes' => [__CLASS__]]);
     }
 
     public function getId(): ?int
@@ -314,21 +320,21 @@ class User implements UserPasswordInterface, AvailabilitableInterface, UserSeria
     /**
      * @return Collection|Organization[]
      */
-    public function getOrganizations(): Collection
+    public function getManagedOrganizations(): Collection
     {
-        return $this->organizations;
+        return $this->managedOrganizations;
     }
 
-    public function addOrganization(Organization $organization): void
+    public function addManagedOrganization(Organization $organization): void
     {
-        if (!$this->organizations->contains($organization) && !$this->organizations->contains($organization->getParentOrganization())) {
-            $this->organizations[] = $organization;
+        if (!$this->managedOrganizations->contains($organization)) {
+            $this->managedOrganizations[] = $organization;
             $organization->addAdmin($this);
         }
     }
 
-    public function removeOrganization(Organization $organization): void
+    public function removeManagedOrganization(Organization $organization): void
     {
-        $this->organizations->removeElement($organization);
+        $this->managedOrganizations->removeElement($organization);
     }
 }

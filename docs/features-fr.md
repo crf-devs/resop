@@ -60,7 +60,7 @@ Chaque `structure` (une Unité Locale, par exemple) peut :
 
 Identifiants de démo :
 
-* structure: `UL09`
+* structure: `admin201@resop.com`
 * mot de passe: `covid19`
 
 ### Planning
@@ -86,5 +86,36 @@ Les `structure parentes` (une Direction Territoriale, par exemple) peut :
 
 Identifiants de démo :
 
-* structure: `DT75`
+* structure: `admin101@resop.com`
 * mot de passe: `covid19`
+
+----
+
+# Espace admin
+
+L'interface d'administration permet de :
+
+- Se connecter à toutes les structures
+- Rendre un bénévole administrateur d'une structure
+- Se connecter en tant qu'un autre utilisateur
+
+Identifiants de démo :
+
+* structure: `super_admin1@resop.com`
+* mot de passe: `covid19`
+
+----
+
+# Installation
+
+Voir la partie [Usage in production](docs/technical.md) de la documentation technique pour installer l'application.
+
+## Super admin
+
+Le premier utilisateur créé sera automatiquement Super Admin de l'application et pourra nommer des administrateurs de structures.
+
+Il est possible de promouvoir un autre utilisateur en tant que super admin grâce à la commande:
+
+```bash
+bin/console app:admin-promote --email foobar@resop.com
+```

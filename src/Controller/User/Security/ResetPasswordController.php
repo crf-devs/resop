@@ -16,22 +16,28 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
+use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
+use SymfonyCasts\Bundle\ResetPassword\Exception\InvalidResetPasswordTokenException;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
+use SymfonyCasts\Bundle\ResetPassword\Exception\TooManyPasswordRequestsException;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 /**
  * @Route("/reset-password")
  */
-class ResetPasswordController extends AbstractController
+final class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
 
-    private $resetPasswordHelper;
+    private ResetPasswordHelperInterface $resetPasswordHelper;
+    private TranslatorInterface $translator;
 
-    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper)
+    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper, TranslatorInterface $translator)
     {
         $this->resetPasswordHelper = $resetPasswordHelper;
+        $this->translator = $translator;
     }
 
     /**
@@ -56,7 +62,7 @@ class ResetPasswordController extends AbstractController
         }
 
         return $this->render('reset_password/request.html.twig', [
-            'requestForm' => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -108,11 +114,16 @@ class ResetPasswordController extends AbstractController
         try {
             /** @var User $user */
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
+        } catch (ExpiredResetPasswordTokenException $e) {
+            $this->addFlash('error', $this->translator->trans('user.resetPassword.expired'));
+
+            return $this->redirectToRoute('app_forgot_password_request');
+        } catch (InvalidResetPasswordTokenException $e) {
+            $this->addFlash('error', $this->translator->trans('user.resetPassword.expired'));
+
+            return $this->redirectToRoute('app_forgot_password_request');
         } catch (ResetPasswordExceptionInterface $e) {
-            $this->addFlash('error', sprintf(
-                'Une erreur est survenue durant la réinitialisation de votre mot de passe - %s',
-                $e->getReason()
-            ));
+            $this->addFlash('error', $e->getReason());
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
@@ -136,7 +147,7 @@ class ResetPasswordController extends AbstractController
 
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
-            $this->addFlash('success', 'Votre mot de passe a été mis à jour avec succès.');
+            $this->addFlash('success', $this->translator->trans('user.resetPassword.sucess'));
 
             return $this->redirectToRoute('app_login');
         }
@@ -162,19 +173,20 @@ class ResetPasswordController extends AbstractController
 
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
+        } catch (TooManyPasswordRequestsException $e) {
+            $this->addFlash('error', $this->translator->trans('user.resetPassword.tooMany'));
+
+            return $this->redirectToRoute('app_forgot_password_request');
         } catch (ResetPasswordExceptionInterface $e) {
-            $this->addFlash('error', sprintf(
-                'Une erreur est survenue durant la réinitialisation de votre mot de passe - %s',
-                $e->getReason()
-            ));
+            $this->addFlash('error', $e->getReason());
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
 
         $email = (new TemplatedEmail())
-            ->from(new Address('noreply@resop.com', 'Réserve opérationnelle - Croix-Rouge Française'))
+            ->from(new Address($this->translator->trans('project.emailSender'), $this->translator->trans('project.name')))
             ->to($user->getEmailAddress())
-            ->subject('Mot de passe oublié')
+            ->subject($this->translator->trans('user.passwordForgotten.title'))
             ->htmlTemplate('reset_password/email.html.twig')
             ->context([
                 'resetToken' => $resetToken,

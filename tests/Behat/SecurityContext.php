@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use App\Repository\UserRepository;
-use Behat\Behat\Context\Environment\InitializedContextEnvironment;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\MinkExtension\Context\MinkContext;
 use Behat\MinkExtension\Context\RawMinkContext;
 use PantherExtension\Driver\PantherDriver;
 use Symfony\Component\BrowserKit\Cookie;
@@ -20,26 +17,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final class SecurityContext extends RawMinkContext
 {
+    use MinkContextTrait;
+
     private UserRepository $userRepository;
     private SessionInterface $session;
-    private MinkContext $minkContext;
 
     public function __construct(UserRepository $userRepository, SessionInterface $session)
     {
         $this->userRepository = $userRepository;
         $this->session = $session;
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function gatherContext(BeforeScenarioScope $scope): void
-    {
-        /** @var InitializedContextEnvironment $environment */
-        $environment = $scope->getEnvironment();
-        /** @var MinkContext $minkContext */
-        $minkContext = $environment->getContext(MinkContext::class);
-        $this->minkContext = $minkContext;
     }
 
     /**
@@ -75,12 +61,13 @@ final class SecurityContext extends RawMinkContext
      */
     private function loginForPanther(UserInterface $user): void
     {
+        $minkContext = $this->getMinkContext();
         try {
-            $this->minkContext->visit('/login');
-            $this->minkContext->fillField('user_login[identifier]', $user->getUsername());
-            $this->minkContext->fillField('user_login[password]', 'covid19');
-            $this->minkContext->pressButton('Je me connecte');
-            $this->minkContext->assertPageAddress('/');
+            $minkContext->visit('/login');
+            $minkContext->fillField('user_login[identifier]', $user->getUsername());
+            $minkContext->fillField('user_login[password]', 'covid19');
+            $minkContext->pressButton('Je me connecte');
+            $minkContext->assertPageAddress('/');
         } catch (\Exception $exception) {
             throw new ExpectationException(sprintf('Impossible to connect user: %s', $exception->getMessage()), $this->getSession(), $exception);
         }

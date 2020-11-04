@@ -97,6 +97,7 @@ The `*.vcap.me` domain names are binded on localhost. In order to use them offli
 
 - [http://resop.vcap.me:7500](http://resop.vcap.me:7500)
 - [http://adminer.vcap.me:7500](http://adminer.vcap.me:7500)
+- [http://mailcatcher.vcap.me:7500](http://mailcatcher.vcap.me:7500)
 - [http://traefik.vcap.me:7500](http://traefik.vcap.me:7500)
 
 Caution: the traefik proxy will only serve healthy containers. The api container can be unaccessible before the first healthcheck (5s).
@@ -143,6 +144,9 @@ bin/tools sh -c "APP_NB_USERS=20 APP_NB_AVAILABILITIES=6 bin/console doctrine:fi
 - APP_NB_USERS: number of users per organization (default: 15)
 - APP_NB_AVAILABILITIES: number of days on which generating availabilities per user (default: 3)
 
+### Mails
+
+When using the default dev env, all mails are sent to the [mailcatcher](http://mailcatcher.vcap.me:7500) service.
 
 ### HTTPS
 

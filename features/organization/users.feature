@@ -137,13 +137,18 @@ Feature:
         When I go to "/organizations/201/users/2/edit"
         Then the response status code should be 404
 
+    @javascript
     Scenario: As an admin of an organization, I can promote a user as admin of an organization and this user has admin privilege
         Given I am authenticated as "admin201@resop.com"
-        When I go to "/organizations/201/users/103/edit"
+        When I go to "/organizations/201/users/?organizationId=203"
+        And I press "Afficher la fiche de Jill DOE"
+        And I wait for ".modal-show-user-inner" to be visible
         And I follow "Promouvoir"
-        Then I should be on "/organizations/201/users/103/edit"
+        Then I should be on "/organizations/201/users/?organizationId=203"
         And the response status code should be 200
         And I should see "L'utilisateur \"Jill DOE\" a été promu administrateur de \"UL 01-02\" avec succès."
+        And I press "Afficher la fiche de Jill DOE"
+        And I wait for ".modal-show-user-inner" to be visible
         And I should see "Révoquer"
         And I follow "Déconnexion"
         When I go to "/login"
@@ -155,15 +160,20 @@ Feature:
         And I press "Je me connecte"
         Then I should be on "/"
         And the response status code should be 200
-        And I should see "Vous devez renseigner votre mot de passe afin d'administrer votre structure."
+        And I should see "Vous devez renseigner votre mot de passe afin d'administrer votre structure"
 
+    @javascript
     Scenario: As an admin of an organization, I can revoke a user admin privilege of an organization and this user doesn't have admin privilege anymore
         Given I am authenticated as "admin201@resop.com"
-        When I go to "/organizations/201/users/102/edit"
+        When I go to "/organizations/201/users/?organizationId=203"
+        And I press "Afficher la fiche de Jill DOE"
+        And I wait for ".modal-show-user-inner" to be visible
         And I follow "Révoquer"
-        Then I should be on "/organizations/201/users/102/edit"
+        Then I should be on "/organizations/201/users/?organizationId=203"
         And the response status code should be 200
         And I should see "Le privilège d'administrateur pour la structure \"UL 01-02\" de \"Jane DOE\" a été révoquée avec succès."
+        And I press "Afficher la fiche de Jill DOE"
+        And I wait for ".modal-show-user-inner" to be visible
         And I should see "Promouvoir"
         And I follow "Déconnexion"
         When I go to "/login"
@@ -175,11 +185,14 @@ Feature:
         And I press "Je me connecte"
         Then I should be on "/"
         And the response status code should be 200
-        And I should not see "Vous devez renseigner votre mot de passe afin d'administrer votre structure."
+        And I should not see "Vous devez renseigner votre mot de passe afin d'administrer votre structure"
 
+    @javascript
     Scenario: As an admin of an organization, I cannot revoke my own admin privilege
         Given I am authenticated as "admin201@resop.com"
-        When I go to "/organizations/201/users/101/edit"
+        When I go to "/organizations/201/users/"
+        And I press "Afficher la fiche de John DOE"
+        And I wait for ".modal-show-user-inner" to be visible
         Then I should not see "Révoquer"
         When I go to "/organizations/201/users/101/revoke"
         And the response status code should be 403

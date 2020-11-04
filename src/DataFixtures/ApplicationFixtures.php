@@ -119,7 +119,7 @@ final class ApplicationFixtures extends Fixture
         PhoneNumberUtil $phoneNumberUtil,
         string $slotInterval,
         int $nbUsers = 15,
-        int $nbAvailabilities = null
+        ?int $nbAvailabilities = null
     ) {
         $this->validator = $validator;
         $this->skillSetDomain = $skillSetDomain;
@@ -335,7 +335,7 @@ final class ApplicationFixtures extends Fixture
             $user->password = '$argon2id$v=19$m=65536,t=4,p=1$cEjk39WnLC+QRVJfNI5nmw$eM0J3UZ75hwFJRGQmph2OiBGRzJU6/NGVWcj0j+WVYw';
 
             if (null !== $organization) {
-                $user->addOrganization($organization);
+                $user->addManagedOrganization($organization);
             }
         }
 

@@ -36,8 +36,9 @@ class UserType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var Organization|null $organization */
-        $organization = $builder->getData()->organization;
+        /** @var User|null $data */
+        $data = $builder->getData();
+        $organization = $data->organization ?? null;
 
         $builder
             ->add('organization', OrganizationEntityType::class, [
@@ -49,7 +50,7 @@ class UserType extends AbstractType
                         ->addOrderBy('o.name', 'ASC');
 
                     if ($organization instanceof Organization) {
-                        $qb = $repository->findByIdOrParentIdQueryBuilder($organization->getId(), $qb);
+                        $qb = $repository->findByIdOrParentIdQueryBuilder($organization->getParentOrganization()->getId(), $qb);
                     }
 
                     return $qb;

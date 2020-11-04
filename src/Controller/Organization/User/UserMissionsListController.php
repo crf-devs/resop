@@ -11,16 +11,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{user<\d+>}/missions", name="app_organization_user_missions_list", methods={"GET"})
+ * @Route("/{item<\d+>}/missions", name="app_organization_user_missions_list", methods={"GET"})
  * @Security("is_granted('ROLE_PARENT_ORGANIZATION', user.organization)")
  */
 class UserMissionsListController extends AbstractController
 {
-    public function __invoke(User $user): Response
+    public function __invoke(User $item): Response
     {
         return $this->render('organization/user/missions_list.html.twig', [
-            'user' => $user,
-            'missions' => $user->missions,
+            'user' => $item,
+            'missions' => $item->missions,
         ]);
     }
 }

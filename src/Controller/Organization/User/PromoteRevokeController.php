@@ -26,14 +26,14 @@ class PromoteRevokeController extends AbstractOrganizationController
     public function __invoke(EntityManagerInterface $entityManager, Organization $organization, User $item, bool $promote): Response
     {
         if ($promote) {
-            $item->addOrganization($organization);
+            $item->addManagedOrganization($organization);
             $this->addFlash('success', sprintf('L\'utilisateur "%s" a été promu administrateur de "%s" avec succès.', $item->getFullName(), $organization->getName()));
         } else {
-            $item->removeOrganization($organization);
+            $item->removeManagedOrganization($organization);
             $this->addFlash('success', sprintf('Le privilège d\'administrateur pour la structure "%s" de "%s" a été révoquée avec succès.', $organization->getName(), $item->getFullName()));
         }
-        $entityManager->flush($item);
+        $entityManager->flush();
 
-        return $this->redirectToRoute('app_organization_user_edit', ['user' => $item->id, 'organization' => $item->getNotNullOrganization()->id]);
+        return $this->redirectToRoute('app_organization_user_list', ['organization' => $item->getNotNullOrganization()->id]);
     }
 }

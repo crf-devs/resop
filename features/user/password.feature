@@ -1,3 +1,4 @@
+@password
 Feature:
     In order to update my password,
     As a user,
@@ -13,7 +14,7 @@ Feature:
         When I go to "/"
         Then I should be on "/"
         And the response status code should be 200
-        And I should see "Vous devez renseigner votre mot de passe afin d'administrer votre structure."
+        And I should see "Vous devez renseigner votre mot de passe afin d'administrer votre structure"
 
     Scenario: As a user, I cannot set my password with empty data
         Given I am authenticated as "admin203@resop.com"
@@ -22,7 +23,7 @@ Feature:
         When I fill in the following:
             | user_password[plainPassword][first]  |  |
             | user_password[plainPassword][second] |  |
-        And I press "Valider"
+        And I press "Modifier mon mot de passe"
         Then I should be on "/user/password"
         And the response status code should be 400
         And I should see "Cette valeur ne doit pas être vide." in the "label[for=user_password_plainPassword_first] .form-error-message" element
@@ -34,7 +35,7 @@ Feature:
         When I fill in the following:
             | user_password[plainPassword][first]  | foo |
             | user_password[plainPassword][second] | bar |
-        And I press "Valider"
+        And I press "Modifier mon mot de passe"
         Then I should be on "/user/password"
         And the response status code should be 400
         And I should see "Cette valeur n'est pas valide." in the "label[for=user_password_plainPassword_first] .form-error-message" element
@@ -46,7 +47,7 @@ Feature:
             | user_password[currentPassword]       | <value> |
             | user_password[plainPassword][first]  | foo     |
             | user_password[plainPassword][second] | foo     |
-        And I press "Valider"
+        And I press "Modifier mon mot de passe"
         Then I should be on "/user/password"
         And the response status code should be 400
         And I should see "<message>" in the "label[for=user_password_currentPassword] .form-error-message" element
@@ -62,7 +63,7 @@ Feature:
             | user_password[currentPassword]       | covid19 |
             | user_password[plainPassword][first]  | covid20 |
             | user_password[plainPassword][second] | covid20 |
-        And I press "Valider"
+        And I press "Modifier mon mot de passe"
         Then I should be on "/"
         And the response status code should be 200
         And I should see "Votre mot de passe a été mis à jour avec succès."
@@ -86,7 +87,7 @@ Feature:
         When I fill in the following:
             | user_password[plainPassword][first]  | covid20 |
             | user_password[plainPassword][second] | covid20 |
-        And I press "Valider"
+        And I press "Modifier mon mot de passe"
         Then I should be on "/"
         And the response status code should be 200
         And I should see "Votre mot de passe a été mis à jour avec succès."

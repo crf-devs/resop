@@ -27,12 +27,11 @@ class ChangePasswordFormType extends AbstractType
                             'max' => 4096,
                         ]),
                     ],
-                    'label' => 'Mot de passe',
+                    'label' => 'user.newPassword',
                 ],
                 'second_options' => [
-                    'label' => 'Confirmation',
+                    'label' => 'user.confirmNewPassword',
                 ],
-                'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 // Instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,

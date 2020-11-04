@@ -28,9 +28,9 @@ Feature:
         When I follow "Afficher les disponibilités de mes bénévoles pour la semaine prochaine"
         Then I should be on "/organizations/201/planning/"
         And the response status code should be 200
-        And availability of user "John DOE" should be "locked" on "next monday" at 02:00
-        And availability of user "John DOE" should be "unknown" on "next monday" at 10:00
-        And availability of user "John DOE" should be "available" on "next tuesday" at 10:00
+        And availability of user "John DOE" should be "locked" on "monday next week" at 02:00
+        And availability of user "John DOE" should be "unknown" on "monday next week" at 10:00
+        And availability of user "John DOE" should be "available" on "tuesday next week" at 10:00
         And availability of asset "VPSP - 75992" should be "unknown" on "tuesday next week" at 02:00
 
     Scenario: As a parent organization, I have access to the planning of my children organizations
@@ -52,21 +52,21 @@ Feature:
         Given I am authenticated as "admin201@resop.com"
         And I am on "/organizations/201/planning/"
         Then I should see "Jane DOE"
-        And I should see "John DOE"
+        And I should see "Jill DOE"
         And I should see "VPSP - 75992"
         And I should see "VL - 75996"
         When I select "VPSP" from "assetTypes[]"
         And I select "1" from "userPropertyFilters[vulnerable]"
         And I press "search-planning-button"
         Then I should be on "/organizations/201/planning/"
-        And I should see "John DOE"
+        And I should see "Jill DOE"
         And I should not see "Jane DOE"
         And I should see "VPSP - 75992"
         And I should not see "VL - 75996"
         And I select "0" from "userPropertyFilters[vulnerable]"
         And I press "search-planning-button"
         Then I should be on "/organizations/201/planning/"
-        And I should not see "John DOE"
+        And I should not see "Jill DOE"
         And I should see "Jane DOE"
         When I check "hideUsers"
         And I check "hideAssets"

@@ -8,6 +8,7 @@ action:
   login: Connexion
   promote: Promouvoir en tant qu'admin de %organization%
   revoke: Révoquer les droits d'admin sur %organization%
+  showUser: Afficher la fiche de %user%
   impersonate: Usurper l'identité
   search: Rechercher
   searchQuery: Rechercher "%query%"
@@ -73,6 +74,8 @@ nav:
   section:
     volunteer: Espace bénévole
     organization: Espace structure
+    admin: Admin
+    exitImpersonation: Retour à l'admin
   welcome: Bienvenue
 organization:
   add: Ajouter une structure
@@ -180,6 +183,9 @@ organization:
     skillset: Compétences Croix-Rouge
   userTitle: Bénévole
   users: Bénévoles
+  addAdmin: Pour ajouter un admin, utiliser le bouton "Promouvoir en tant qu'admin" dans la fiche d'un bénévole.
+  addAdminOtherOrganization: Pour promouvoir un bénévole d'une autre structure, vous devez le changer de structure, le promouvoir, puis changer à nouveau.
+  isAdminOf: Ce bénévole est administrateur des structures (et de leurs sous-structures) 
   asset_type:
     main_title: Types de véhicule
     add_new: Ajouter un nouveau type de véhicule
@@ -214,7 +220,9 @@ project:
   description: Réserve opérationnelle - Croix-Rouge Française à Paris
   name: ResOP
   version: Version %tag%
+  emailSender: noreply@resop.com
 user:
+  admin: Admin
   accountAction: "%action% de compte"
   passwordAction: Mon mot de passe
   availabilities: Vos disponibilités
@@ -243,9 +251,13 @@ user:
   identificationNumber: NIVOL
   lastName: Nom
   login: Numéro NIVOL ou Adresse e-mail
+  loginWithBirthday: Je me connecte avec ma date de naissance
+  loginWithPassword: Je me connecte avec mon mot de passe
   currentPassword: Mot de passe actuel
   password: Mot de passe
   confirmPassword: Confirmation du mot de passe
+  newPassword: Nouveau mot de passe
+  confirmNewPassword: Confirmation du nouveau mot de passe
   mobile: Numéro de téléphone portable
   occupationTitle: Profession
   occupation:
@@ -265,7 +277,22 @@ user:
   skill: Compétence
   skills: Compétences
   organizationOccupation: Cadre
-  welcome: Bienvenue, 
+  welcome: Bienvenue,
+  passwordForgotten:
+    title: J'ai oublié mon mot de passe
+    request: Veuillez saisir votre adresse email afin d'obtenir un lien de réinitialisation de votre mot de passe.
+    emailCheck: |
+      Si votre adresse mail est valide, un email vous a été envoyé contenant un lien vous permettant de réinitialiser mon mot de passe.
+      Ce lien expirera dans %hours% heure(s).
+    emailCheckAgain: Si vous ne recevez pas cet email, veuillez vérifier vos spams ou <a href="%link%">réessayez</a>.
+  resetPassword:
+    button: Réinitialiser mon mot de passe
+    tooMany: Vous avez déjà demandé la réinitialisation de votre mot de passe. Attendez une minute avant de recommencer si vous n'avez rien reçu.
+    expired: Le lien de réinitialisation est invalide ou a expiré. Réessayez à nouveau de réinitialiser votre mot de passe.
+    emailText: |
+      Afin de réinitialiser votre mot de passe, cliquez sur le bouton ci-dessous.
+      Attention: le lien expirera dans %hours% heure(s).
+    sucess: Votre mot de passe a été mis à jour avec succès.
 
 # Symfony default translations
 Submit: Enregistrer

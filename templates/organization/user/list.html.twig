@@ -12,5 +12,45 @@
 
     {{ form(organization_selector_form) }}
 
+    <div class="table-responsive">
+        <table class="table table-striped text-nowrap mt-3 mb-0">
+            <thead  class="thead-light">
+            <tr>
+                <th>{{ 'user.admin' | trans }}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in organization.admins %}
+                <tr>
+                    <td>{{ user }}</td>
+                    <td>
+                        <button class="btn btn-outline-primary text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', { item: user.id }) }}">
+                            <span class="fa fa-copy"></span> {{ 'action.show' | trans }}
+                        </button>
+                        {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
+                            <a class="btn btn-outline-danger text-nowrap" href="{{ path('app_user_home', { _switch_user: user.username }) }}" role="button">{{ 'action.impersonate' | trans }}</a>
+                        {% endif %}
+                        {% if is_granted('ROLE_PARENT_ORGANIZATION', organization) and app.user != user %}
+                            <a class="btn btn-outline-danger" href="{{ path('app_organization_user_revoke', { item: user.id, organization: organization.id }) }}" role="button">
+                                {{ 'action.revoke' | trans({ '%organization%': organization.name, '%user%': user.fullName }) }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">{{ 'message.noAvailableData' | trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <p class="font-italic text-right small mb-5">
+        {{ 'organization.addAdmin' | trans }}<br>
+        {{ 'organization.addAdminOtherOrganization' | trans }}
+    </p>
+
     {{ include('organization/user/_list.html.twig') }}
 {% endblock %}
