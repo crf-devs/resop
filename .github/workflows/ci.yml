@@ -35,7 +35,9 @@ jobs:
 
         steps:
             - name: set DATABASE_URL environment variable
-              run: echo "::set-env name=DATABASE_URL::pgsql://postgres:password@127.0.0.1:${{ job.services.postgres.ports[5432] }}/postgres"
+              run: echo "DATABASE_URL=pgsql://postgres:password@127.0.0.1:${PGSQL_PORT}/postgres" >> $GITHUB_ENV
+              env:
+                PGSQL_PORT: ${{ job.services.postgres.ports[5432] }}
 
             - name: Install PHP
               uses: shivammathur/setup-php@v2
