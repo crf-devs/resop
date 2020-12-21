@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\User\Security;
 
-use App\Entity\Organization;
 use App\Entity\User;
 use App\Form\Type\UserLoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,14 +26,10 @@ final class LoginController extends AbstractController
 
     public function __invoke(Session $session): Response
     {
-        /** @var Organization|User|null $user */
+        /** @var User|null $user */
         $user = $this->getUser();
         if (\is_object($user)) {
-            if ($user instanceof User) {
-                return $this->redirectToRoute('app_user_home');
-            }
-
-            return $this->redirectToRoute('app_organization_dashboard', ['organization' => $user->getId()]);
+            return $this->redirectToRoute('app_user_home');
         }
 
         $loginForm = $this->createForm(UserLoginType::class, [

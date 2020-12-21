@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/user/availability/missions/{id<\d+>}/modal", name="app_user_availability_mission_modal", methods={"GET"}, options={"expose"=true})
+ * @Route("/user/availability/missions/{mission<\d+>}/modal", name="app_user_availability_mission_modal", methods={"GET"}, options={"expose"=true})
  * @Security("mission.users.contains(user)")
  */
 class MissionModalController extends AbstractController

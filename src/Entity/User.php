@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\EntityListener\AddDependantSkillsEntityListener;
+use App\EntityListener\UserPasswordEntityListener;
+use App\Validator\Constraints\CurrentPassword;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use function Symfony\Component\String\u;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,9 +29,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("emailAddress")
  * @UniqueEntity("identificationNumber")
- * @ORM\EntityListeners({AddDependantSkillsEntityListener::class})
+ * @CurrentPassword(groups={"Default", "user:password"})
+ * @ORM\EntityListeners({AddDependantSkillsEntityListener::class, UserPasswordEntityListener::class})
  */
-class User implements UserInterface, AvailabilitableInterface, UserSerializableInterface, \Serializable
+class User implements UserPasswordInterface, AvailabilitableInterface, UserSerializableInterface /*, \Serializable*/
 {
     public const NIVOL_FORMAT = '#^\d+[A-Z]$#';
 
@@ -41,7 +45,7 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     public ?int $id = null;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      * @Assert\NotBlank
      * @Assert\Regex(
      *     pattern=User::NIVOL_FORMAT,
@@ -51,7 +55,7 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     private string $identificationNumber = '';
 
     /**
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      * @Assert\NotBlank
      * @Assert\Email
      */
@@ -86,9 +90,17 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", fetch="EAGER")
-     * @Assert\NotNull()
+     * @Assert\Expression("'ROLE_SUPER_ADMIN' in this.roles or value != null")
      */
     public ?Organization $organization = null;
+
+    /**
+     * Organizations whose user is admin.
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Organization", inversedBy="admins")
+     * @ORM\OrderBy({"name"="ASC"})
+     */
+    public Collection $managedOrganizations;
 
     /**
      * @ORM\Column(type="text[]", nullable=true)
@@ -106,6 +118,11 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     private iterable $availabilities = [];
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ResetPasswordRequest", mappedBy="user", cascade={"remove"})
+     */
+    private iterable $resetPasswordRequests = []; // Used for cascade
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Mission", mappedBy="users")
      */
     public iterable $missions = [];
@@ -114,6 +131,28 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
      * @ORM\Column(type="json", nullable=false)
      */
     public array $properties = [];
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $password = null;
+
+    /**
+     * Not persisted in database, used to encode password.
+     *
+     * @Assert\NotBlank(groups={"user:password"})
+     */
+    public ?string $plainPassword = null;
+
+    /**
+     * Not persisted in database, used to update password.
+     */
+    public ?string $currentPassword = null;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    public array $roles = ['ROLE_USER'];
 
     public static function bootstrap(string $identifier = null): self
     {
@@ -143,6 +182,11 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     public static function normalizeEmailAddress(string $emailAddress): string
     {
         return u($emailAddress)->trim()->lower()->toString();
+    }
+
+    public function __construct()
+    {
+        $this->managedOrganizations = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -181,6 +225,7 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
             $this->identificationNumber,
             $this->emailAddress,
             $this->birthday,
+            $this->password,
         ]);
     }
 
@@ -189,11 +234,13 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
      */
     public function unserialize($serialized): void
     {
-        list(
+        [
             $this->id,
             $this->identificationNumber,
             $this->emailAddress,
-            $this->birthday) = unserialize($serialized);
+            $this->birthday,
+            $this->password,
+        ] = unserialize($serialized, ['allowed_classes' => [__CLASS__]]);
     }
 
     public function getId(): ?int
@@ -233,12 +280,22 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return $this->roles;
     }
 
-    public function getPassword(): string
+    public function getPlainPassword(): ?string
     {
-        return '';
+        return $this->plainPassword;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
     }
 
     public function getSalt(): ?string
@@ -255,18 +312,29 @@ class User implements UserInterface, AvailabilitableInterface, UserSerializableI
     {
     }
 
-    public function getBirthday(): string
-    {
-        return $this->birthday;
-    }
-
-    public function setBirthday(string $birthday): void
-    {
-        $this->birthday = $birthday;
-    }
-
     public function getAvailabilities(): iterable
     {
         return $this->availabilities;
+    }
+
+    /**
+     * @return Collection|Organization[]
+     */
+    public function getManagedOrganizations(): Collection
+    {
+        return $this->managedOrganizations;
+    }
+
+    public function addManagedOrganization(Organization $organization): void
+    {
+        if (!$this->managedOrganizations->contains($organization)) {
+            $this->managedOrganizations[] = $organization;
+            $organization->addAdmin($this);
+        }
+    }
+
+    public function removeManagedOrganization(Organization $organization): void
+    {
+        $this->managedOrganizations->removeElement($organization);
     }
 }

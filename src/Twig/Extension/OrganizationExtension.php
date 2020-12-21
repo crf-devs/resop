@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace App\Twig\Extension;
 
 use App\Entity\Organization;
-use App\Entity\User;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class OrganizationExtension extends AbstractExtension
 {
-    private Security $security;
+    private RequestStack $requestStack;
     private RoutingExtension $routingExtension;
 
-    public function __construct(Security $security, RoutingExtension $routingExtension)
+    public function __construct(RequestStack $requestStack, RoutingExtension $routingExtension)
     {
-        $this->security = $security;
+        $this->requestStack = $requestStack;
         $this->routingExtension = $routingExtension;
     }
 
@@ -43,18 +42,25 @@ final class OrganizationExtension extends AbstractExtension
         return $this->routingExtension->getUrl($name, $this->buildParameters($name, $parameters), $schemeRelative);
     }
 
-    private function buildParameters(string $name, array $parameters): array
+    private function buildParameters(string $routeName, array $parameters): array
     {
-        /** @var Organization|User|null $user */
-        $user = $this->security->getUser();
-        if (!$user instanceof Organization || !preg_match('/^app_organization_.*$/', $name)) {
+        $request = $this->requestStack->getCurrentRequest();
+        if (0 !== strpos($routeName, 'app_organization_')
+            || !$request
+            || !($currentOrganization = $request->attributes->get('currentOrganization'))
+            || !$currentOrganization instanceof Organization
+        ) {
             return $parameters;
         }
 
-        $organization = $parameters['organization'] ?? null;
-        $parameters = array_merge($parameters, ['organization' => $user->getId()]);
-        if (null !== $organization && $parameters['organization'] !== $organization) {
-            $parameters['organizationId'] = $organization;
+        $organizationParameter = $parameters['organization'] ?? null;
+        $parameters = array_merge($parameters, ['organization' => $currentOrganization->getId()]);
+        if (null !== $organizationParameter && $parameters['organization'] !== $organizationParameter) {
+            if ('app_organization_dashboard' === $routeName) {
+                $parameters['organization'] = $organizationParameter;
+            } else {
+                $parameters['organizationId'] = $organizationParameter;
+            }
         }
 
         return $parameters;

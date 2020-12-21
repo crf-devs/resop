@@ -15,16 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/new", name="app_organization_assetType_new", methods={"GET", "POST"})
- * @Route("/{id<\d+>}/edit", name="app_organization_assetType_edit", methods={"GET", "POST"})
- * @Security("is_granted('ROLE_PARENT_ORGANIZATION')")
+ * @Route("/{assetType<\d+>}/edit", name="app_organization_assetType_edit", methods={"GET", "POST"})
+ * @Security("organization.isParent() and (null === assetType or is_granted('ROLE_PARENT_ORGANIZATION', assetType.organization))")
  */
 class AssetTypeEditController extends AbstractOrganizationController
 {
-    public function __invoke(Request $request, ?AssetType $assetType): Response
+    public function __invoke(Request $request, Organization $organization, ?AssetType $assetType): Response
     {
-        /** @var Organization $organization */
-        $organization = $this->getUser();
-
         if (null === $assetType) {
             $assetType = new AssetType();
             $assetType->organization = $organization;
@@ -47,6 +44,7 @@ class AssetTypeEditController extends AbstractOrganizationController
         return $this->render('organization/assetType/edit.html.twig', [
             'persistedKeys' => $persistedKeys,
             'form' => $form->createView(),
+            'organization' => $organization,
         ]);
     }
 }

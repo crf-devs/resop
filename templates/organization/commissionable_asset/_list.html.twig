@@ -32,7 +32,7 @@
 
                 {% if showLinks is not defined or showLinks %}
                     <td>
-                        <button class="btn btn-outline-primary text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_asset_show_modal', { 'asset': asset.id }) }}" title="{{ 'action.show' | trans }}">
+                        <button class="btn btn-outline-primary text-nowrap" data-toggle="ajax-modal" data-href="{{ path('app_organization_asset_show_modal', { asset: asset.id }) }}" title="{{ 'action.show' | trans }}">
                             <span class="fa fa-copy"></span> {{ 'action.show' | trans }}
                         </button>
                     </td>

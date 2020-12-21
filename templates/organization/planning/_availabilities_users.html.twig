@@ -14,7 +14,7 @@
 {% endblock itemDataHeader %}
 
 {% block itemDataRowHeader %}
-    <button type="button" class="btn btn-link p-0" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', {userToShow: item.entity.id, organization: item.entity.organization.id}) }}">
+    <button type="button" class="btn btn-link p-0" data-toggle="ajax-modal" data-href="{{ path('app_organization_user_show_modal', {item: item.entity.id}) }}">
         {{ item.entity }}
     </button>
 
@@ -41,7 +41,7 @@
                     from: periodCalculator.from | date('Y-m-d\\T00:00:00'),
                     to: periodCalculator.to | date_modify('- 1 minute') | date('Y-m-d\\T00:00:00'),
                     organization: item.entity.organization.id,
-                    userToAdd: item.entity.id
+                    item: item.entity.id
                 }) }}"
                 title="{{ 'organization.asset.engage' | trans }}"
             ><span class="fa fa-plus"></span> {{ 'organization.mission.title' | trans }}</button>

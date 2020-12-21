@@ -6,7 +6,7 @@ App\Entity\UserAvailability:
         - '<{app.slot_interval}>'
         - '@User.john_doe'
         - 'next monday <current()>:00'
-        - '<randomElement(["locked", "booked"])>'
+        - 'locked'
 
   # John DOE is available tuesday next week from 10:00 to 13:59
   UserAvailability.john_doe.next-week.tuesday.{10..12,2}:

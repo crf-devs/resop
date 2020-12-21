@@ -6,15 +6,20 @@
 {% endblock %}
 
 {% block body %}
+    <a href="{{ path('app_organization_user_list') }}">{{ 'common.backToList' | trans }}</a>
+
     <h1>{{ 'organization.editUserProfile' | trans }}</h1>
 
-    <a
-        class="btn btn-outline-danger trigger-delete float-right"
-        data-message="{{ 'message.deleteUserWarning' | trans }}"
-        data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )"
-        data-href="{{ path('app_organization_user_delete', { 'userToDelete': user.id }) }}"
-        href="#"
-    >{{ 'action.delete' | trans }}</a>
+    <div class="float-right">
+        <a
+            class="btn btn-outline-danger trigger-delete"
+            data-message="{{ 'message.deleteUserWarning' | trans }}"
+            data-display-name="{{ user.firstName }} {{ user.lastName }} ( {{ user.identificationNumber }} )"
+            data-href="{{ path('app_organization_user_delete', { item: user.id }) }}"
+            href="#"
+        >{{ 'action.delete' | trans }}</a>
+    </div>
+    <div class="clearfix"></div>
 
     {% include '/user/_user_form.html.twig' %}
 {% endblock %}

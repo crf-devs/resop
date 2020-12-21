@@ -6,6 +6,7 @@ namespace App\Controller\Organization\Forecast;
 
 use App\Domain\MissionTypeForecastDomain;
 use App\Domain\PlanningDomain;
+use App\Entity\Organization;
 use App\Form\Type\PlanningForecastType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(name="app_organization_forecast", methods={"GET"})
- * @Security("is_granted('ROLE_PARENT_ORGANIZATION')")
+ * @Security("organization.isParent()")
  */
 class PlanningForecastController extends AbstractController
 {
@@ -28,10 +29,10 @@ class PlanningForecastController extends AbstractController
         $this->missionTypeForecastDomain = $missionTypeForecastDomain;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, Organization $organization): Response
     {
-        $form = $this->planningDomain->generateForm(PlanningForecastType::class);
-        $filters = $this->planningDomain->generateFilters($form);
+        $form = $this->planningDomain->generateForm($organization, PlanningForecastType::class);
+        $filters = $this->planningDomain->generateFilters($form, $organization);
 
         return $this->render('organization/forecast/forecast.html.twig', [
             'filters' => $filters,

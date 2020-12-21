@@ -90,3 +90,10 @@ services:
       - NODE_ENV=dev
     volumes:
       - ./:/srv
+
+  mailcatcher:
+    image: tophfr/mailcatcher:0.6.5
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=80'
+      - 'traefik.frontend.rule=Host:mailcatcher.vcap.me'

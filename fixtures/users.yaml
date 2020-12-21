@@ -1,34 +1,110 @@
+# This file is only used for tests.
+# See App\DataFixtures\ApplicationFixtures for dev data
 App\Entity\User:
+  # John DOE is admin of DT75. He is not volunteer.
+  # As organization admin, his password is required.
   User.john_doe:
     id: 101
     firstName: John
     lastName: DOE
     organization: '@Organization.DT75'
     identificationNumber: 990001A
-    emailAddress (unique): john.doe@resop.com
+    emailAddress: admin201@resop.com
+    plainPassword: covid19
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
     skillSet: '<randomSkillSet()>'
     properties: {"occupation": "Pharmacien", "organizationOccupation": "Secouriste", "vulnerable": true, "fullyEquipped": true, "drivingLicence": true}
+    managedOrganizations: ['@Organization.DT75']
+
+  # Jane DOE is volunteer and admin of UL 01-02, an organization children of DT75 managed by John DOE.
+  # As organization admin, her password is required, but she didn't filled it yet.
   User.jane_doe:
     id: 102
     firstName: Jane
     lastName: DOE
     organization: '@Organization.UL-01-02'
     identificationNumber: 990002A
-    emailAddress (unique): jane.doe@resop.com
+    emailAddress: admin203@resop.com
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
     skillSet: '<randomSkillSet()>'
     properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
-  User.chuck_norris:
+    managedOrganizations: ['@Organization.UL-01-02']
+
+  # Jill DOE is volunteer of UL 01-02, an organization children of DT75 managed by John DOE.
+  # As volunteer, she doesn't any password, and connects using her birth date.
+  User.jill_doe:
     id: 103
+    firstName: Jill
+    lastName: DOE
+    organization: '@Organization.UL-01-02'
+    identificationNumber: 990003A
+    emailAddress: jill.doe@resop.com
+    phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
+    birthday: '1990-01-01'
+    skillSet: '<randomSkillSet()>'
+    properties: {"occupation": "Pompier", "organizationOccupation": "Secouriste", "vulnerable": true, "fullyEquipped": true, "drivingLicence": true}
+
+  # Freddy MERCURY is volunteer in Organization.UL-DE-BRIE-ET-CHANTEREINE, and admin of UL DE BRIE ET CHANTEREINE,
+  # an organization children of DT77 managed Lady GAGA.
+  # As organization admin, his password is required.
+  User.freddy_mercury:
+    id: 104
+    firstName: Freddy
+    lastName: MERCURY
+    organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
+    identificationNumber: 990004A
+    emailAddress: admin204@resop.com
+    plainPassword: covid19
+    phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
+    birthday: '1990-01-01'
+    skillSet: '<randomSkillSet()>'
+    properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
+    managedOrganizations: ['@Organization.UL-DE-BRIE-ET-CHANTEREINE']
+
+  # Chuck NORRIS is volunteer in UL DE BRIE ET CHANTEREINE, an organization children of DT77 managed by Lady GAGA.
+  # Because he has a password, he has to connect using it.
+  User.chuck_norris:
+    id: 105
     firstName: Chuck
     lastName: NORRIS
     organization: '@Organization.UL-DE-BRIE-ET-CHANTEREINE'
-    identificationNumber: 990003A
-    emailAddress (unique): chuck.norris@resop.com
+    identificationNumber: 990005A
+    emailAddress: chuck.norris@resop.com
+    plainPassword: covid19
     phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
     birthday: '1990-01-01'
     skillSet: '<randomSkillSet()>'
     properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
+
+  # Lady GAGA is admin of DT77. She is not volunteer.
+  # As organization admin, her password is required.
+  User.lady_gaga:
+    id: 106
+    firstName: Lady
+    lastName: GAGA
+    organization: '@Organization.DT77'
+    identificationNumber: 990006A
+    emailAddress: admin202@resop.com
+    plainPassword: covid19
+    phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
+    birthday: '1990-01-01'
+    skillSet: '<randomSkillSet()>'
+    properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
+    managedOrganizations: ['@Organization.DT77']
+
+  # Super ADMIN is a super-admin, he can do whatever he wants.
+  User.super_admin:
+    id: 107
+    firstName: Super
+    lastName: ADMIN
+    organization: '@Organization.DT75'
+    identificationNumber: 990008A
+    emailAddress: super.admin@resop.com
+    plainPassword: covid19
+    phoneNumber: '<phoneNumberObject("0612345678", "FR")>'
+    birthday: '1990-01-01'
+    skillSet: '<randomSkillSet()>'
+    properties: {"occupation": "<randomElement(['Pharmacien', 'Pompier', 'Ambulancier.e', 'Logisticien', 'Infirmier.e'])>", "organizationOccupation": "Secouriste", "vulnerable": <boolean(50)>, "fullyEquipped": <boolean(50)>, "drivingLicence": <boolean(50)>}
+    roles: ['ROLE_SUPER_ADMIN']

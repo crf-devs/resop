@@ -9,6 +9,8 @@
 {% endblock %}
 
 {% block body %}
+    <a href="{{ path('app_organization_assets') }}">{{ 'common.backToList' | trans }}</a>
+
     <h1>{{ 'organization.asset.availabilities' | trans ({ '%asset%' : asset }) }}</h1>
 
     {% include 'availability/_table.html.twig' with { availabilityType: 'assets', availabilityId: asset.id } %}

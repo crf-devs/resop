@@ -11,7 +11,7 @@
 {% endblock itemDataHeader %}
 
 {% block itemDataRowHeader %}
-    <button type="button" class="btn btn-link p-0" data-toggle="ajax-modal" data-href="{{ path('app_organization_asset_show_modal', {asset: item.entity.id, organization: item.entity.organization.id}) }}">
+    <button type="button" class="btn btn-link p-0" data-toggle="ajax-modal" data-href="{{ path('app_organization_asset_show_modal', {asset: item.entity.id}) }}">
         {{ item.entity }}
     </button>
 {% endblock itemDataRowHeader %}

@@ -16,13 +16,47 @@
                         <form method="post">
                             <h1 class="h1 mb-3">{{ 'action.login' | trans }}</h1>
 
+                            {{ include('misc/flash-messages.html.twig', {class: 'small'}) }}
+
                             {% if error %}
                                 <div class="alert alert-danger small">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                             {% endif %}
 
                             {{ form_start(loginForm) }}
                             {{ form_row(loginForm.identifier) }}
-                            {{ form_row(loginForm.birthday) }}
+
+                            <div id="accordion">
+                                <div class="card">
+                                    <div class="card-header" id="login-birthday">
+                                        <button type="button" class="btn btn-link text-dark p-1" data-toggle="collapse" data-target="#login-birthday-body" aria-expanded="true" aria-controls="login-birthday-body">
+                                            {{ 'user.loginWithBirthday' | trans }}
+                                        </button>
+                                    </div>
+                                    <div id="login-birthday-body" class="collapse show" aria-labelledby="login-birthday" data-parent="#accordion">
+                                        <div class="card-body">
+                                            {{ form_errors(loginForm.birthday) }}
+                                            {{ form_widget(loginForm.birthday) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="login-password">
+                                        <button type="button" class="btn btn-link text-dark p-1 collapsed" data-toggle="collapse" data-target="#login-password-body" aria-expanded="false" aria-controls="login-password-body">
+                                            {{ 'user.loginWithPassword' | trans }}
+                                        </button>
+                                    </div>
+                                    <div id="login-password-body" class="collapse" aria-labelledby="login-password" data-parent="#accordion">
+                                        <div class="card-body">
+                                            {{ form_errors(loginForm.password) }}
+                                            {{ form_widget(loginForm.password) }}
+
+                                            <a href="{{ path('app_forgot_password_request') }}">
+                                                <small class="form-text text-muted">{{ 'user.passwordForgotten.title' | trans }}</small>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="custom-control custom-checkbox mt-4 mb-5">
                                 <input type="checkbox" class="custom-control-input" name="_remember_me" id="_remember_me">

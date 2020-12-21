@@ -4,18 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Behat;
 
-use App\Entity\Organization;
-use App\Entity\User;
-use App\Repository\OrganizationRepository;
 use App\Repository\UserRepository;
-use Behat\Behat\Context\Environment\InitializedContextEnvironment;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\MinkExtension\Context\MinkContext;
 use Behat\MinkExtension\Context\RawMinkContext;
 use PantherExtension\Driver\PantherDriver;
-use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -24,43 +17,25 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final class SecurityContext extends RawMinkContext
 {
-    private UserRepository $userRepository;
-    private OrganizationRepository $organizationRepository;
-    private SessionInterface $session;
-    private MinkContext $minkContext;
+    use MinkContextTrait;
 
-    public function __construct(UserRepository $userRepository, OrganizationRepository $organizationRepository, SessionInterface $session)
+    private UserRepository $userRepository;
+    private SessionInterface $session;
+
+    public function __construct(UserRepository $userRepository, SessionInterface $session)
     {
         $this->userRepository = $userRepository;
-        $this->organizationRepository = $organizationRepository;
         $this->session = $session;
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function gatherContext(BeforeScenarioScope $scope): void
-    {
-        /** @var InitializedContextEnvironment $environment */
-        $environment = $scope->getEnvironment();
-        /** @var MinkContext $minkContext */
-        $minkContext = $environment->getContext(MinkContext::class);
-        $this->minkContext = $minkContext;
     }
 
     /**
      * @Given I am authenticated as :username
      */
-    public function login(string $username, UserLoaderInterface $repository = null): void
+    public function login(string $username): void
     {
-        if ($repository) {
-            $user = $repository->loadUserByUsername($username);
-        } elseif (!$user = $this->userRepository->loadUserByUsername($username)) {
-            $user = $this->organizationRepository->loadUserByUsername($username);
-        }
-
+        $user = $this->userRepository->loadUserByUsername($username);
         if (!$user) {
-            throw new UsernameNotFoundException(\sprintf('%s is not a valid User or Organization.', $username));
+            throw new UsernameNotFoundException(\sprintf('%s is not a valid User.', $username));
         }
 
         /** @var BrowserKitDriver|PantherDriver $driver */
@@ -72,10 +47,9 @@ final class SecurityContext extends RawMinkContext
             return;
         }
 
-        $firewall = $user instanceof Organization ? 'organizations' : 'main';
         $this->session->set(
-            "_security_$firewall",
-            serialize(new UsernamePasswordToken($user, null, $firewall, $user->getRoles()))
+            '_security_main',
+            serialize(new UsernamePasswordToken($user, null, 'main', $user->getRoles()))
         );
         $this->session->save();
 
@@ -87,33 +61,15 @@ final class SecurityContext extends RawMinkContext
      */
     private function loginForPanther(UserInterface $user): void
     {
+        $minkContext = $this->getMinkContext();
         try {
-            if ($user instanceof User) {
-                $this->loginUserForPantherDriver($user);
-            }
-
-            if ($user instanceof Organization) {
-                $this->loginOrganizationForPantherDriver($user);
-            }
+            $minkContext->visit('/login');
+            $minkContext->fillField('user_login[identifier]', $user->getUsername());
+            $minkContext->fillField('user_login[password]', 'covid19');
+            $minkContext->pressButton('Je me connecte');
+            $minkContext->assertPageAddress('/');
         } catch (\Exception $exception) {
             throw new ExpectationException(sprintf('Impossible to connect user: %s', $exception->getMessage()), $this->getSession(), $exception);
         }
-    }
-
-    private function loginUserForPantherDriver(User $user): void
-    {
-        $this->minkContext->visit('/login');
-        $this->minkContext->fillField('user_login[identifier]', $user->getIdentificationNumber());
-        $this->minkContext->pressButton('Je me connecte');
-        $this->minkContext->assertPageAddress('/');
-    }
-
-    private function loginOrganizationForPantherDriver(Organization $user): void
-    {
-        $this->minkContext->visit('/organizations/login');
-        $this->minkContext->selectOption('identifier', $user->getUsername());
-        $this->minkContext->fillField('password', 'covid19');
-        $this->minkContext->pressButton('Je me connecte');
-        $this->minkContext->assertPageAddress('/organizations/'.$user->getId());
     }
 }

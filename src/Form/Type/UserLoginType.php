@@ -6,6 +6,7 @@ namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,6 +23,11 @@ final class UserLoginType extends AbstractType
                 'format' => 'dd MMMM yyyy',
                 'input' => 'string',
                 'label' => 'user.dob',
+                'required' => false,
+            ])
+            ->add('password', PasswordType::class, [
+                'label' => 'user.password',
+                'required' => false,
             ]);
     }
 

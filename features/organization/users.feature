@@ -1,28 +1,23 @@
 @users
 Feature:
     In order to manage the users in my organization,
-    As an organization,
+    As an admin of an organization,
     I must be able to list, edit and delete users in my organization.
 
-    Scenario: As anonymous, I cannot list the users from an organization
-        When I go to "/organizations/1/users"
-        Then I should be on "/organizations/login"
-        And the response status code should be 200
-
-    Scenario: As an organization, I can list the users from my organization
-        Given I am authenticated as "DT75"
+    Scenario: As an admin of an organization, I can list the users from my organization
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/organizations/201"
         When I follow "Afficher la liste de mes bénévoles inscrits"
         Then I should be on "/organizations/201/users/"
         And the response status code should be 200
-        And I should see "john.doe@resop.com"
-        And I should not see "jane.doe@resop.com"
+        And I should see "admin201@resop.com"
+        And I should not see "admin203@resop.com"
         And I should not see "jill.doe@resop.com"
         And I should not see "chuck.norris@resop.com"
-        And I should not see "freddy.mercury@resop.com"
+        And I should not see "admin204@resop.com"
 
-    Scenario: As a parent organization, I can list the users from my children organizations
-        Given I am authenticated as "DT75"
+    Scenario: As an admin of a parent organization, I can list the users from my children organizations
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/organizations/201"
         When I follow "Modifier mes structures"
         Then I should be on "/organizations/201/children/"
@@ -30,18 +25,20 @@ Feature:
         When I follow "Liste des bénévoles"
         Then I should be on "/organizations/201/users/?organizationId=203"
         And the response status code should be 200
-        And I should see "jane.doe@resop.com"
-        And I should not see "john.doe@resop.com"
+        And I should see "admin203@resop.com"
+        And I should see "jill.doe@resop.com"
+        And I should not see "admin201@resop.com"
         And I should not see "chuck.norris@resop.com"
+        And I should not see "admin204@resop.com"
 
     Scenario: As an admin of an organization, I cannot list the users from another organization
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         When I go to "/organizations/202/users"
         Then the response status code should be 403
 
     @javascript
-    Scenario: As an organization, I can display a user modal
-        Given I am authenticated as "DT75"
+    Scenario: As an admin of an organization, I can display a user modal
+        Given I am authenticated as "admin201@resop.com"
         When I go to "/organizations/201/users/?organizationId=203"
         And I press "Afficher"
         And I wait for ".modal-show-user-inner" to be visible
@@ -49,14 +46,11 @@ Feature:
         And I follow "Modifier"
         Then I should be on "/organizations/201/users/102/edit"
 
-    Scenario Outline: As an organization, I can update a user from my organization or children organizations
+    Scenario Outline: As an admin of an organization, I can update a user from my organization or children organizations
         Given I am authenticated as "<login>"
         When I go to "<edit_url>"
+        Then I should be on "<edit_url>"
         And the response status code should be 200
-        And the "user_identificationNumber" field should contain "990002A"
-        And the "user_emailAddress" field should contain "jane.doe@resop.com"
-        And the "user_firstName" field should contain "Jane"
-        And the "user_lastName" field should contain "DOE"
         When I fill in the following:
             | user[identificationNumber]               | 999999A                 |
             | user[emailAddress]                       | john.bon.jovi@resop.com |
@@ -92,14 +86,18 @@ Feature:
         And the "user[properties][drivingLicence]" field should contain "0"
         And the "user[properties][occupation][choice]" field should contain "Pompier"
         Examples:
-            | login    | list_url                                     | edit_url                          |
-            | DT75     | /organizations/201/users/?organizationId=203 | /organizations/201/users/102/edit |
-            | UL 01-02 | /organizations/203/users/                    | /organizations/203/users/102/edit |
+            | login              | list_url                                     | edit_url                          |
+            | admin201@resop.com | /organizations/201/users/?organizationId=203 | /organizations/201/users/102/edit |
+            | admin204@resop.com | /organizations/204/users/                    | /organizations/204/users/104/edit |
 
-    Scenario: As an admin of an organization, I cannot update a user from another organizations
-        Given I am authenticated as "DT75"
-        When I go to "/organizations/204/users/103/edit"
-        Then the response status code should be 403
+    Scenario Outline: As an admin of an organization, I cannot update a user from another organizations
+        Given I am authenticated as "admin201@resop.com"
+        When I go to "<url>"
+        Then the response status code should be 404
+        Examples:
+            | url                               |
+            | /organizations/201/users/104/edit |
+            | /organizations/201/users/105/edit |
 
     @javascript
     Scenario Outline: As an organization, I can delete a user from my organization or children organizations
@@ -111,25 +109,111 @@ Feature:
         When I press "Supprimer"
         Then I should be on "<list_url>"
         And I should see "Le bénévole a été supprimé avec succès."
-        And I should not see "jill.doe@resop.com"
+        And I should not see "jane.doe@resop.com"
         Examples:
-            | login    | list_url                                     | edit_url                          |
-            | DT75     | /organizations/201/users/?organizationId=203 | /organizations/201/users/102/edit |
-            | UL 01-02 | /organizations/203/users/                    | /organizations/203/users/102/edit |
+            | login              | list_url                                     | edit_url                          |
+            | admin201@resop.com | /organizations/201/users/?organizationId=203 | /organizations/201/users/102/edit |
 
+#    TODO: Waiting for https://github.com/crf-devs/resop/issues/348
 #    Scenario: As an admin of an organization, I cannot directly delete a user from my organization
-#        Given I am authenticated as "john.doe@resop.com"
+#        Given I am authenticated as "admin201@resop.com"
 #        When I go to "/organizations/201/users/3/delete?organizationId=203"
 #        Then the response status code should be 405
 
     Scenario: As an admin of an organization, I cannot delete a user from another organization
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         When I go to "/organizations/204/users"
         Then the response status code should be 403
         When I go to "/organizations/204/users/103/delete"
         Then the response status code should be 403
 
     Scenario: As an admin of an organization, I cannot access an invalid user
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         When I go to "/organizations/201/users/108/edit"
         Then the response status code should be 404
+
+    Scenario: As an admin of an organization, I cannot access a user with a mismatched url
+        Given I am authenticated as "admin201@resop.com"
+        When I go to "/organizations/201/users/2/edit"
+        Then the response status code should be 404
+
+    @javascript
+    Scenario: As an admin of an organization, I can promote a user as admin of an organization and this user has admin privilege
+        Given I am authenticated as "admin201@resop.com"
+        When I go to "/organizations/201/users/?organizationId=203"
+        And I press "Afficher la fiche de Jill DOE"
+        And I wait for ".modal-show-user-inner" to be visible
+        And I follow "Promouvoir"
+        Then I should be on "/organizations/201/users/?organizationId=203"
+        And the response status code should be 200
+        And I should see "L'utilisateur \"Jill DOE\" a été promu administrateur de \"UL 01-02\" avec succès."
+        And I press "Afficher la fiche de Jill DOE"
+        And I wait for ".modal-show-user-inner" to be visible
+        And I should see "Révoquer"
+        And I follow "Déconnexion"
+        When I go to "/login"
+        And I fill in the following:
+            | user_login[identifier]      | jill.doe@resop.com |
+            | user_login[birthday][day]   | 01                 |
+            | user_login[birthday][month] | 01                 |
+            | user_login[birthday][year]  | 1990               |
+        And I press "Je me connecte"
+        Then I should be on "/"
+        And the response status code should be 200
+        And I should see "Vous devez renseigner votre mot de passe afin d'administrer votre structure"
+
+    @javascript
+    Scenario: As an admin of an organization, I can revoke a user admin privilege of an organization and this user doesn't have admin privilege anymore
+        Given I am authenticated as "admin201@resop.com"
+        When I go to "/organizations/201/users/?organizationId=203"
+        And I press "Afficher la fiche de Jill DOE"
+        And I wait for ".modal-show-user-inner" to be visible
+        And I follow "Révoquer"
+        Then I should be on "/organizations/201/users/?organizationId=203"
+        And the response status code should be 200
+        And I should see "Le privilège d'administrateur pour la structure \"UL 01-02\" de \"Jane DOE\" a été révoquée avec succès."
+        And I press "Afficher la fiche de Jill DOE"
+        And I wait for ".modal-show-user-inner" to be visible
+        And I should see "Promouvoir"
+        And I follow "Déconnexion"
+        When I go to "/login"
+        And I fill in the following:
+            | user_login[identifier]      | admin203@resop.com |
+            | user_login[birthday][day]   | 01                 |
+            | user_login[birthday][month] | 01                 |
+            | user_login[birthday][year]  | 1990               |
+        And I press "Je me connecte"
+        Then I should be on "/"
+        And the response status code should be 200
+        And I should not see "Vous devez renseigner votre mot de passe afin d'administrer votre structure"
+
+    @javascript
+    Scenario: As an admin of an organization, I cannot revoke my own admin privilege
+        Given I am authenticated as "admin201@resop.com"
+        When I go to "/organizations/201/users/"
+        And I press "Afficher la fiche de John DOE"
+        And I wait for ".modal-show-user-inner" to be visible
+        Then I should not see "Révoquer"
+        When I go to "/organizations/201/users/101/revoke"
+        And the response status code should be 403
+
+    Scenario: As a super-admin, I can impersonate a user
+        Given I am authenticated as "super.admin@resop.com"
+        When I go to "/organizations/201/users/"
+        Then I should see "Usurper l'identité"
+        When I follow "Usurper l'identité"
+        Then I should be on "/"
+        And the response status code should be 200
+        And I should see "Retour à l'admin"
+        And I should see "John DOE"
+
+    Scenario Outline: As a user or an admin of an organization, I cannot impersonate a user
+        Given I am authenticated as "<login>"
+        When I go to "/organizations/201/users/"
+        Then I should not see "Usurper l'identité"
+        When I go to "/?_switch_user=990004A"
+        Then the response status code should be 403
+        Examples:
+            | login              |
+            | admin201@resop.com |
+            | jill.doe@resop.com |

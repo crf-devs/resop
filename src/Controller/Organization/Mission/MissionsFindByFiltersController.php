@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace App\Controller\Organization\Mission;
 
 use App\Domain\PlanningDomain;
+use App\Entity\Organization;
 use App\Repository\MissionRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/find", name="app_organization_mission_find_by_filters", methods={"GET"}, options={"expose"=true})
+ * @Security("is_granted('ROLE_PARENT_ORGANIZATION', organization)")
  */
 class MissionsFindByFiltersController
 {
@@ -26,10 +29,10 @@ class MissionsFindByFiltersController
         $this->serializer = $serializer;
     }
 
-    public function __invoke(): JsonResponse
+    public function __invoke(Organization $organization): JsonResponse
     {
-        $form = $this->planningDomain->generateForm();
-        $filters = $this->planningDomain->generateFilters($form);
+        $form = $this->planningDomain->generateForm($organization);
+        $filters = $this->planningDomain->generateFilters($form, $organization);
 
         $data = $this->missionRepository->findByPlanningFilters($filters, $this->planningDomain->getAvailableResources($filters, true));
 

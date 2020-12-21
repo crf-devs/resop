@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'user.passwordForgotten.title' | trans }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'user.passwordForgotten.title' | trans }}</h1>
+
+    <p class="alert alert-info mt-5">
+        {{ 'user.passwordForgotten.emailCheck' | trans({'%hours%': tokenLifetime|date('g')}) }}
+        <br><br>
+        {{ 'user.passwordForgotten.emailCheckAgain' | trans({'%link%': path('app_forgot_password_request')}) | raw }}
+    </p>
+{% endblock %}

@@ -4,28 +4,24 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
-use App\Entity\Organization;
 use App\Repository\AssetTypeRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
 
 class MissionTypeAssetTypesType extends AbstractType
 {
-    protected array $assetTypes;
+    private RequestStack $requestStack;
+    private AssetTypeRepository $assetTypeRepository;
 
-    public function __construct(Security $security, AssetTypeRepository $assetTypeRepository)
+    public function __construct(RequestStack $requestStack, AssetTypeRepository $assetTypeRepository)
     {
-        /** @var Organization $organization */
-        $organization = $security->getUser();
-
-        $assetTypes = $assetTypeRepository->findByOrganization($organization->getParentOrganization());
-        foreach ($assetTypes as $assetType) {
-            $this->assetTypes[$assetType->id] = $assetType->name;
-        }
+        $this->requestStack = $requestStack;
+        $this->assetTypeRepository = $assetTypeRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -34,7 +30,7 @@ class MissionTypeAssetTypesType extends AbstractType
         $builder
             ->add('type', ChoiceType::class, [
                 'label' => 'organization.missionType.assetTypes.type',
-                'choices' => array_flip($this->assetTypes),
+                'choices' => array_flip($this->getAssetTypes()),
                 'placeholder' => '',
                 'row_attr' => ['class' => 'row'],
                 'label_attr' => ['class' => 'col-sm-2'],
@@ -57,5 +53,19 @@ class MissionTypeAssetTypesType extends AbstractType
                 'class' => 'shadow p-3 mt-3 rounded col-sm-10 mx-auto',
             ],
         ]);
+    }
+
+    private function getAssetTypes(): array
+    {
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
+        $organization = $request->attributes->get('organization');
+        $assetTypes = $this->assetTypeRepository->findByOrganization($organization->getParentOrganization());
+        $data = [];
+        foreach ($assetTypes as $assetType) {
+            $data[$assetType->id] = $assetType->name;
+        }
+
+        return $data;
     }
 }

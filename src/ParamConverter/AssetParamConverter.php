@@ -15,12 +15,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class AssetParamConverter implements ParamConverterInterface
 {
     private CommissionableAssetRepository $assetRepository;
-    private OrganizationParamConverter $organizationParamConverter;
 
-    public function __construct(CommissionableAssetRepository $assetRepository, OrganizationParamConverter $organizationParamConverter)
+    public function __construct(CommissionableAssetRepository $assetRepository)
     {
         $this->assetRepository = $assetRepository;
-        $this->organizationParamConverter = $organizationParamConverter;
     }
 
     /**
@@ -30,15 +28,8 @@ class AssetParamConverter implements ParamConverterInterface
     {
         $name = $configuration->getName();
 
-        /** @var Organization|int|null $organization */
+        /** @var Organization $organization */
         $organization = $request->attributes->get('organization');
-
-        // Force OrganizationParamConverter to retrieve the organization
-        if (!\is_object($organization)) {
-            $this->organizationParamConverter->apply($request, new ParamConverter(['name' => 'organization']));
-            $organization = $request->attributes->get('organization');
-        }
-
         $id = $request->attributes->getInt($name);
         $asset = $this->assetRepository->findOneByIdAndOrganization($id, $organization);
 

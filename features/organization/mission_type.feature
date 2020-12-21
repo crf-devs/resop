@@ -4,13 +4,8 @@ Feature:
     As an organization,
     I must be able to list, edit and delete mission types.
 
-    Scenario: As anonymous, I cannot list mission types from an organization
-        When I go to "/organizations/201/mission_type/new"
-        Then I should be on "/organizations/login"
-        And the response status code should be 200
-
     Scenario: As an organization, I can list my mission types
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/organizations/201"
         When I follow "Modifier les types de missions"
         Then I should be on "/organizations/201/mission_type/"
@@ -22,7 +17,7 @@ Feature:
 
     @javascript
     Scenario: As an organization, I can create a mission type
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/organizations/201/mission_type/"
         When I follow "Ajouter un nouveau type de mission"
         Then I should be on "/organizations/201/mission_type/new"
@@ -48,7 +43,7 @@ Feature:
 
     @javascript
     Scenario: As an organization, I cannot create a mission type with duplicate requirements
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/organizations/201/mission_type/"
         When I follow "Ajouter un nouveau type de mission"
         Then I should be on "/organizations/201/mission_type/new"
@@ -74,7 +69,7 @@ Feature:
 
     @javascript
     Scenario: As an organization, I can edit a mission type
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/organizations/201/mission_type/"
         When I follow "Modifier"
         Then I should be on "/organizations/201/mission_type/751/edit"
@@ -89,13 +84,13 @@ Feature:
         And I should see "CI Réseau BSPP"
 
     Scenario: As an organization, I cannot edit a mission type of another organization
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/organizations/201/mission_type/771/edit"
         Then the response status code should be 403
 
     @javascript
     Scenario: As an organization, I can delete a mission type
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/organizations/201/mission_type/"
         When I follow "Supprimer"
         And I wait for "#delete-item-modal" to be visible
@@ -106,7 +101,7 @@ Feature:
         And I should not see "Mission type DT75 1"
 
     Scenario: As an organization, I cannot delete a mission type of another organization
-        Given I am authenticated as "DT75"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/organizations/201/mission_type/771/delete"
         Then the response status code should be 403
 

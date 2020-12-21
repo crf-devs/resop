@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(name="app_organization_assetType_list", methods={"GET"})
- * @Security("is_granted('ROLE_PARENT_ORGANIZATION')")
+ * @Security("organization.isParent()")
  */
 class AssetTypeListController extends AbstractController
 {
@@ -24,13 +24,11 @@ class AssetTypeListController extends AbstractController
         $this->assetTypeRepository = $assetTypeRepository;
     }
 
-    public function __invoke(): Response
+    public function __invoke(Organization $organization): Response
     {
-        /** @var Organization $organization */
-        $organization = $this->getUser();
-
         return $this->render('organization/assetType/list.html.twig', [
             'assetTypes' => $this->assetTypeRepository->findByOrganization($organization),
+            'organization' => $organization,
         ]);
     }
 }

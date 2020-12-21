@@ -10,6 +10,7 @@ use App\Domain\SkillSetDomain;
 use App\Entity\Organization;
 use App\Repository\AssetTypeRepository;
 use Psr\Cache\CacheItemPoolInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,7 @@ use Twig\CacheExtension\CacheStrategyInterface;
 
 /**
  * @Route(name="app_organization_planning", methods={"GET"})
+ * @Security("is_granted('ROLE_PARENT_ORGANIZATION', organization)")
  */
 class PlanningController extends AbstractController
 {
@@ -42,13 +44,10 @@ class PlanningController extends AbstractController
         $this->cacheTwig = $cacheTwig;
     }
 
-    public function __invoke(Request $request, string $slotInterval): Response
+    public function __invoke(Request $request, Organization $organization, string $slotInterval): Response
     {
-        /** @var Organization $organization */
-        $organization = $this->getUser();
-
-        $form = $this->planningDomain->generateForm();
-        $filters = $this->planningDomain->generateFilters($form);
+        $form = $this->planningDomain->generateForm($organization);
+        $filters = $this->planningDomain->generateFilters($form, $organization);
 
         if (!isset($filters['from'], $filters['to'])) {
             // This may happen if the passed date is invalid. TODO check it before, the format must be 2020-03-30T00:00:00
@@ -77,6 +76,7 @@ class PlanningController extends AbstractController
 
         return $this->render('organization/planning/planning.html.twig', [
             'filters' => $filters,
+            'organization' => $organization,
             'form' => $form->createView(),
             'periodCalculator' => $periodCalculator,
             'assetsTypes' => $assetTypes,

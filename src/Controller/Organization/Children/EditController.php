@@ -7,28 +7,27 @@ namespace App\Controller\Organization\Children;
 use App\Controller\Organization\AbstractOrganizationController;
 use App\Entity\Organization;
 use App\Form\Type\OrganizationType;
-use App\Security\Voter\OrganizationVoter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{object<\d+>}/edit", name="app_organization_edit", methods={"GET", "POST"})
- * @IsGranted(OrganizationVoter::CAN_MANAGE, subject="object")
+ * @Route("/{organizationToEdit<\d+>}/edit", name="app_organization_edit", methods={"GET", "POST"})
+ * @Security("organization.isParent() and !organizationToEdit.isParent() and is_granted('ROLE_PARENT_ORGANIZATION', organizationToEdit)")
  */
 class EditController extends AbstractOrganizationController
 {
-    public function __invoke(Request $request, Organization $object): Response
+    public function __invoke(Request $request, Organization $organizationToEdit): Response
     {
-        $form = $this->createForm(OrganizationType::class, $object);
+        $form = $this->createForm(OrganizationType::class, $organizationToEdit);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $flashMessage = 'La structure a été mise à jour avec succès.';
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($object);
+            $entityManager->persist($organizationToEdit);
             $entityManager->flush();
 
             $this->addFlash('success', $flashMessage);
@@ -39,7 +38,7 @@ class EditController extends AbstractOrganizationController
         return $this->render(
             'organization/edit.html.twig',
             [
-                'organization' => $object,
+                'organization' => $organizationToEdit,
                 'form' => $form->createView(),
             ]
         )->setStatusCode($form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);

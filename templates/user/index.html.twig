@@ -10,8 +10,6 @@
 {% block body %}
     <div class="user-homepage pt-4">
         <div class="container-xl text-light">
-            {{ include('misc/flash-messages.html.twig') }}
-
             <h1 class="mt-3 mb-3 font-weight-bold">{{ 'user.welcome'|trans }} <span class="d-block d-sm-inline font-weight-normal">{{ app.user.fullName }}</span></h1>
             <h4 class="mt-1 d-md-inline-block">{{ app.user.organization }}</h4>
             <h5 class="mt-1 d-md-inline-block">
@@ -24,6 +22,14 @@
                     <span class="fa fa-angle-right"></span>
                 </a>
             </p>
+
+            {% if app.user.managedOrganizations|length and app.user.password is empty %}
+                <p class="alert alert-danger">
+                    <a href="{{ path('app_user_password') }}" class="text-danger">{{ 'user.passwordRequired'|trans }}</a>
+                </p>
+            {% endif %}
+
+            {{ include('misc/flash-messages.html.twig') }}
         </div>
 
         <div class="container-xl pt-xl-3">

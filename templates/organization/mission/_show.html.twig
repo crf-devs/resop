@@ -1,4 +1,4 @@
-{% if app.user == mission.organization %}
+{% if organization == mission.organization %}
     <a class="btn btn-primary float-right" href="{{ path('app_organization_mission_edit', {'id': mission.id}) }}">{{ 'action.edit' | trans }}</a>
 {% endif %}
 

@@ -16,11 +16,11 @@ function setSlotMisssion(mission, $slot) {
   missionsText += ' ';
 
   // User part
-  let url = Routing.generate('app_user_availability_mission_modal', { id: mission.id });
+  let url = Routing.generate('app_user_availability_mission_modal', { mission: mission.id });
 
   if (window.location.pathname.indexOf('organizations') >= 0 && !!mission?.organization?.id) {
     // Organization part
-    url = Routing.generate('app_organization_mission_modal', { organization: mission.organization.id, id: mission.id });
+    url = Routing.generate('app_organization_mission_modal', { organization: mission.organization.id, mission: mission.id });
   }
 
   missionsText += $(`<button type="button" class="btn btn-link" data-toggle="ajax-modal" data-href="${url}">`).text(mission.name)[0].outerHTML;

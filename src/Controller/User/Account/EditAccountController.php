@@ -26,11 +26,8 @@ final class EditAccountController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
-
-        if (!$user instanceof User) {
-            throw $this->createAccessDeniedException();
-        }
 
         $form = $this->createForm(UserType::class, $user)->handleRequest($request);
 

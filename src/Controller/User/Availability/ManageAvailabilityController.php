@@ -35,12 +35,8 @@ final class ManageAvailabilityController extends AbstractController
 
     public function __invoke(Request $request, string $slotInterval): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
-
-        if (!$user instanceof User) {
-            throw $this->createAccessDeniedException();
-        }
-
         [$start, $end] = $this->getDatesByWeek($request->attributes->get('week'));
 
         $blockedSlotsInterval = new \DateInterval('PT12H');

@@ -1,0 +1,11 @@
+{% extends 'mailer/_template.html.twig' %}
+
+{% block content %}
+    {% import 'mailer/_macro.html.twig' as template %}
+
+    <p>
+        {{ 'user.resetPassword.emailText'|trans({'%hours%': tokenLifetime|date('g')}) }}
+    </p>
+
+    {{ template.button(url('app_reset_password', {token: resetToken.token}), 'user.resetPassword.button'|trans, 'reset-password') }}
+{% endblock %}

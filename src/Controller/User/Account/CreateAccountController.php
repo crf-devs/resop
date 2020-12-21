@@ -6,6 +6,7 @@ namespace App\Controller\User\Account;
 
 use App\Entity\User;
 use App\Form\Type\UserType;
+use App\Repository\UserRepository;
 use App\Security\UserAutomaticLoginHandler;
 use App\Security\UserLoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,15 +24,18 @@ final class CreateAccountController extends AbstractController
     private AuthenticationUtils $authenticationUtils;
     private EntityManagerInterface $entityManager;
     private UserAutomaticLoginHandler $automaticLoginHandler;
+    private UserRepository $userRepository;
 
     public function __construct(
         AuthenticationUtils $authenticationUtils,
         EntityManagerInterface $entityManager,
-        UserAutomaticLoginHandler $automaticLoginHandler
+        UserAutomaticLoginHandler $automaticLoginHandler,
+        UserRepository $userRepository
     ) {
         $this->authenticationUtils = $authenticationUtils;
         $this->entityManager = $entityManager;
         $this->automaticLoginHandler = $automaticLoginHandler;
+        $this->userRepository = $userRepository;
     }
 
     public function __invoke(Request $request): Response
@@ -46,12 +50,13 @@ final class CreateAccountController extends AbstractController
         $bdate = $request->getSession()->get(UserLoginFormAuthenticator::SECURITY_LAST_BIRTHDAY);
         if (!empty($bdate)) {
             $request->getSession()->remove(UserLoginFormAuthenticator::SECURITY_LAST_BIRTHDAY);
-            $user->setBirthday($bdate);
+            $user->birthday = $bdate;
         }
 
         $form = $this->createForm(UserType::class, $user)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->userRepository->addUserRoles($user);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 

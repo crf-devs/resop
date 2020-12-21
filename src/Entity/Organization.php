@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\EntityListener\UserPasswordEntityListener;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,9 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *   }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
- * @ORM\EntityListeners({UserPasswordEntityListener::class})
  */
-class Organization implements UserPasswordInterface, UserSerializableInterface
+class Organization
 {
     /**
      * @ORM\Id
@@ -37,28 +35,25 @@ class Organization implements UserPasswordInterface, UserSerializableInterface
     public string $name = '';
 
     /**
-     * @ORM\Column(nullable=true)
-     */
-    public ?string $password = null;
-
-    /**
-     * Not persisted in database, used to encode password.
-     */
-    public ?string $plainPassword = null;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="children")
      */
     public ?self $parent = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Organization", mappedBy="parent", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"name"="ASC"})
      */
     public Collection $children;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="managedOrganizations")
+     */
+    public Collection $admins;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->admins = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -70,14 +65,6 @@ class Organization implements UserPasswordInterface, UserSerializableInterface
         return $this->name;
     }
 
-    public function userSerialize(): array
-    {
-        return [
-            'id' => $this->id,
-            'name' => $this->__toString(),
-        ];
-    }
-
     public function getId(): int
     {
         if (null === $this->id) {
@@ -85,41 +72,6 @@ class Organization implements UserPasswordInterface, UserSerializableInterface
         }
 
         return $this->id;
-    }
-
-    public function getRoles(): array
-    {
-        $roles = ['ROLE_ORGANIZATION'];
-
-        if ($this->isParent()) {
-            $roles[] = 'ROLE_PARENT_ORGANIZATION';
-        }
-
-        return $roles;
-    }
-
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function getSalt(): ?string
-    {
-        return null;
-    }
-
-    public function getUsername(): string
-    {
-        return $this->name;
-    }
-
-    public function eraseCredentials(): void
-    {
     }
 
     public function getName(): string
@@ -173,8 +125,24 @@ class Organization implements UserPasswordInterface, UserSerializableInterface
         $this->children->removeElement($organization);
     }
 
-    public function setPassword(?string $password): void
+    /**
+     * @return Collection|User[]
+     */
+    public function getAdmins(): Collection
     {
-        $this->password = $password;
+        return $this->admins;
+    }
+
+    public function addAdmin(User $admin): void
+    {
+        if (!$this->admins->contains($admin)) {
+            $this->admins[] = $admin;
+            $admin->addManagedOrganization($this);
+        }
+    }
+
+    public function removeAdmin(User $admin): void
+    {
+        $this->admins->removeElement($admin);
     }
 }

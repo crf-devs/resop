@@ -35,14 +35,13 @@ build-prod:
 	docker build -t resop:latest -f docker/php-flex/Dockerfile .
 
 start-db:
-	$(DOCKER_COMPOSE_UP) traefik postgres adminer
+	$(DOCKER_COMPOSE_UP) traefik postgres adminer mailcatcher
 	docker-compose run --rm wait -c postgres:5432
 
 start-php:
 	$(DOCKER_COMPOSE_UP_RECREATE) traefik nginx fpm
 	docker-compose run --rm wait -c fpm:9000,nginx:80
-	@echo -n "\nStack started with success:\nhttp://resop.vcap.me:7500/login => user1@resop.com : 01/01/1990"
-	@echo -n "\nhttp://resop.vcap.me:7500/organizations/login => DT75 : covid19\n"
+	@echo -n "\nStack started with success: http://resop.vcap.me:7500/\nuser102@resop.com : covid19\nadmin101@resop.com : covid19\nsuper_admin1@resop.com : covid19\n"
 
 start: init-db start-php
 
@@ -130,6 +129,7 @@ test-coverage:
 	bin/tools sh -c "COVERAGE=true vendor/bin/behat --format=progress"
 
 move-test-profiler:
+	@echo "You must set 'profiler: { collect: true }' in config/packages/test/web_profiler.yaml in order to use this command"
 	bin/tools sh -c "rm -rf var/cache/dev/profiler && mkdir -p var/cache/dev && cp -R var/cache/test/profiler var/cache/dev/profiler"
 	@echo "Done : http://resop.vcap.me:7500/_profiler/search?limit=10"
 

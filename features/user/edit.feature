@@ -9,10 +9,10 @@ Feature:
         Then I should be on "/login"
 
     Scenario: As a user, I can see my account
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         When I go to "/user/edit"
         Then the "user[identificationNumber]" field should contain "990001A"
-        And the "user[emailAddress]" field should contain "john.doe@resop.com"
+        And the "user[emailAddress]" field should contain "admin201@resop.com"
         And the "user[firstName]" field should contain "John"
         And the "user[lastName]" field should contain "DOE"
         And the "user[phoneNumber]" field should contain "06 12 34 56 78"
@@ -26,7 +26,7 @@ Feature:
         And the "user[properties][occupation][choice]" field should contain "Pharmacien"
 
     Scenario: As a user, I cannot update my account with empty data
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/user/edit"
         When I fill in the following:
             | user[identificationNumber] |  |
@@ -44,7 +44,7 @@ Feature:
         And I should see "Cette valeur ne doit pas être nulle." in the "label[for=user_phoneNumber] .form-error-message" element
 
     Scenario: As a user, I cannot update my account with invalid data
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/user/edit"
         When I fill in the following:
             | user[identificationNumber] | invalid |
@@ -58,7 +58,7 @@ Feature:
         And I should see "Cette valeur n'est pas un numéro de téléphone valide." in the "label[for=user_phoneNumber] .form-error-message" element
 
     Scenario: As a user, I can update my account
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/user/edit"
         When I fill in the following:
             | user[identificationNumber]               | 899999A                |
@@ -95,7 +95,7 @@ Feature:
 
     @javascript
     Scenario: As a user, I can update my occupation with a free text
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/user/edit"
         When I check "Autre"
         Then I wait for "#user_properties_occupation_other" to be visible
@@ -108,7 +108,7 @@ Feature:
         And the "user[properties][occupation][other]" field should contain "Plombier"
 
     Scenario Outline: As a user, I can update my email and login using the new email
-        Given I am authenticated as "john.doe@resop.com"
+        Given I am authenticated as "admin201@resop.com"
         And I am on "/user/edit"
         When I fill in the following:
             | user[identificationNumber] | 899999A           |
@@ -117,12 +117,11 @@ Feature:
         And I press "Valider"
         Then I should be on "/"
         And I should see "Vos informations ont été mises à jour avec succès."
+        And I should see "NIVOL : 899999A"
         When I follow "Déconnexion"
         And I fill in the following:
-            | user_login[identifier]      | <login> |
-            | user_login[birthday][day]   | 01      |
-            | user_login[birthday][month] | 01      |
-            | user_login[birthday][year]  | 1990    |
+            | user_login[identifier] | <login> |
+            | user_login[password]   | covid19 |
         And I press "Je me connecte"
         Then I should be on "/"
         And I should see "NIVOL : 899999A"

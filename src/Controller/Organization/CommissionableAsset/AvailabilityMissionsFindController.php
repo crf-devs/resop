@@ -7,6 +7,7 @@ namespace App\Controller\Organization\CommissionableAsset;
 use App\Controller\User\Availability\UserAvailabityControllerTrait;
 use App\Entity\CommissionableAsset;
 use App\Repository\MissionRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * @Route("/{asset<\d+>}/availability/missions", name="app_organization_asset_availability_missions", methods={"GET"})
  * @Route("/{asset<\d+>}/availability/{week<\d{4}-W\d{2}>?}/missions", name="app_organization_asset_availability_missions_week", methods={"GET"})
+ * @Security("is_granted('ROLE_PARENT_ORGANIZATION', asset.organization)")
  */
 class AvailabilityMissionsFindController extends AbstractController
 {
